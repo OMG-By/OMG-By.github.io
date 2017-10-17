@@ -82,12 +82,10 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="计算机网络," />
 
 
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="OMG_By" type="application/atom+xml" />
@@ -97,14 +95,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="OMG_By">
-<meta property="og:url" content="http://yoursite.com/404.html">
+<meta name="description" content="1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。2.TCP提供可靠的传输服务；UDP提供不可靠的传输服务。3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。5.TCP传输速度慢；UDP传输速度快。 TCP适合文件下载等传输">
+<meta name="keywords" content="计算机网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP与UDP的区别">
+<meta property="og:url" content="http://yoursite.com/2017/10/17/tcp与udp/index.html">
 <meta property="og:site_name" content="OMG_By">
+<meta property="og:description" content="1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。2.TCP提供可靠的传输服务；UDP提供不可靠的传输服务。3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。5.TCP传输速度慢；UDP传输速度快。 TCP适合文件下载等传输">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-17T03:46:16.552Z">
+<meta property="og:updated_time" content="2017-10-17T13:27:06.978Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OMG_By">
+<meta name="twitter:title" content="TCP与UDP的区别">
+<meta name="twitter:description" content="1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。2.TCP提供可靠的传输服务；UDP提供不可靠的传输服务。3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。5.TCP传输速度慢；UDP传输速度快。 TCP适合文件下载等传输">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/404.html"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/17/tcp与udp/"/>
 
 
 
 
 
-  <title> | OMG_By</title>
+  <title>TCP与UDP的区别 | OMG_By</title>
   
 
 
@@ -275,48 +277,167 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/17/tcp与udp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline"></h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <!DOCTYPE HTML>
-<html>
-<head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8;">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="robots" content="all">
-  <meta name="robots" content="index,follow">
-  <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
-</head>
-<body>
-  <script type="text/plain" src="http://www.qq.com/404/search_children.js" charset="utf-8" homepageurl="/" homepagename="回到我的主页">
-  </script>
-  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
-  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script>
-</body>
-</html>
+          <h1 class="post-title" itemprop="name headline">TCP与UDP的区别</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T20:14:16+08:00">
+                2017-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。<br>2.TCP提供<strong>可靠</strong>的传输服务；UDP提供<strong>不可靠</strong>的传输服务。<br>3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。<br>4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。<br>5.TCP传输速度慢；UDP传输速度快。</p>
+<p>TCP适合文件下载等传输任务，UDP适合媒体流等看中传输速度的传输任务。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/17/四种线程池/" rel="next" title="Java的四种线程池">
+                <i class="fa fa-chevron-left"></i> Java的四种线程池
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
