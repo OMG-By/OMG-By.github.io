@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。2.TCP提供可靠的传输服务；UDP提供不可靠的传输服务。3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。5.TCP传输速度慢；UDP传输速度快。 TCP适合文件下载等传输">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-17T13:27:06.978Z">
+<meta property="og:updated_time" content="2017-10-18T04:22:34.370Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP与UDP的区别">
 <meta name="twitter:description" content="1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。2.TCP提供可靠的传输服务；UDP提供不可靠的传输服务。3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。5.TCP传输速度慢；UDP传输速度快。 TCP适合文件下载等传输">
@@ -246,16 +246,6 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
-          </a>
-        </li>
-      
 
       
         <li class="menu-item menu-item-search">
@@ -388,6 +378,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/17/tcp与udp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/10/17/tcp与udp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -485,6 +485,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -637,7 +644,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        
 <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
@@ -661,11 +668,7 @@
 
 -->
 
-<div class="powered-by">
-<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
-  本站访客数:<span id="busuanzi_value_site_uv"></span>
-</span>
-</div>
+
 
         
 <div class="busuanzi-count">
@@ -835,6 +838,43 @@
 
 
 
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'OMG_By',
+            repo: 'omg-by.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '',
+            
+                client_id: 'e8c376d1a9f0fbfd2728'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 

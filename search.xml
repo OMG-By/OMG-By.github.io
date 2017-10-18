@@ -52,6 +52,12 @@
 <p>顺序执行每个任务。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> 学习 </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -67,6 +73,7 @@
       <content type="html"><![CDATA[<p>有若干个活动，第i个开始时间和结束时间是[Si,fi)，只有一个教室，活动之间不能交叠，求最多安排多少个活动？</p>
 <p>输入</p>
 <p>第1行：1个数N，线段的数量(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行2个数，线段的起点和终点(-10^9 &lt;= S,E &lt;= 10^9)<br>输出</p>
+<a id="more"></a>
 <p>输出最多可以选择的线段数量。</p>
 <p>输入示例</p>
 <p>3<br>1 5<br>2 3<br>3 6</p>
@@ -99,7 +106,7 @@
       <url>/2016/03/04/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E5%AE%8C%E7%BE%8E%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
       <content type="html"><![CDATA[<p>约翰认为字符串的完美度等于它里面所有字母的完美度之和。每个字母的完美度可以由你来分配，不同字母的完美度不同，分别对应一个1-26之间的整数。</p>
 <p>约翰不在乎字母大小写。（也就是说字母F和f）的完美度相同。给定一个字符串，输出它的最大可能的完美度。例如：dad，你可以将26分配给d，25分配给a，这样整个字符串完美度为77。</p>
-<p>//这题水题，只要把每个字母出现的次数统计出来然后再排序一下就OK了。</p>
+<p>//这题水题，只要把每个字母出现的次数统计出来然后再排序一下就OK了。<br><a id="more"></a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 10001</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="built_in">string</span> s;</div><div class="line">    <span class="keyword">while</span>(<span class="built_in">cin</span>&gt;&gt;s)&#123;</div><div class="line">	<span class="keyword">int</span> sum[<span class="number">60</span>]=&#123;<span class="number">0</span>&#125;,len,i,j,a,maxsum=<span class="number">0</span>;</div><div class="line">	len=s.size();</div><div class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">	    a=s[i]-<span class="string">'A'</span>+<span class="number">1</span>;</div><div class="line">	    a&lt;=<span class="number">26</span>?sum[a]++:sum[a<span class="number">-32</span>]++;</div><div class="line">	&#125;</div><div class="line">	sort(sum,sum+<span class="number">27</span>);</div><div class="line">	<span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=<span class="number">26</span>;j++)&#123;</div><div class="line">	    maxsum+=j*sum[j];</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,maxsum);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
       
         <categories>
