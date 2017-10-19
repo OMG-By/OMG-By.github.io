@@ -1340,7 +1340,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/05/51nod贪心算法入门-活动安排问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/21/51nod贪心算法入门-任务分配问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -1359,7 +1359,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/05/51nod贪心算法入门-活动安排问题/" itemprop="url">51nod贪心算法入门-----活动安排问题</a></h1>
+                <a class="post-title-link" href="/2016/03/21/51nod贪心算法入门-任务分配问题/" itemprop="url">51nod贪心算法入门-----任务分配问题</a></h1>
         
 
         <div class="post-meta">
@@ -1371,8 +1371,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-05T23:18:12+08:00">
-                2016-03-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T22:30:07+08:00">
+                2016-03-21
               </time>
             
 
@@ -1432,16 +1432,12 @@
 
       
         
-          <p>有若干个活动，第i个开始时间和结束时间是[Si,fi)，只有一个教室，活动之间不能交叠，求最多安排多少个活动？</p>
-<p>输入</p>
-<p>第1行：1个数N，线段的数量(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行2个数，线段的起点和终点(-10^9 &lt;= S,E &lt;= 10^9)<br>输出</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/05/51nod贪心算法入门-活动安排问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <p>任务执行顺序</p>
+<p>有N个任务需要执行，第i个任务计算时占R[i]个空间，而后会释放一部分，最后储存计算结果需要占据O[i]个空间（O[i] &lt; R[i]）。</p>
+<p>分析：<br>     可以抽象成，从一个整数开始，每次减去a，再加上b (a,b都是正数)，要求每次操作都不产生负数。<br>      令a[i] = R[i], b[i] = R[i] – O[i]，O[i] &lt; R[i],有0<b[i]<a[i]。 所以尽管每次有减有加，但是加的没有减的多，总数在不断减小。所以——按照b[i]递增的顺序排序，是最“有利”的。="" <figure="" class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></div><div class="line">    <span class="keyword">int</span> r,o;</div><div class="line">&#125;p[<span class="number">100001</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(point x,point y)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> x.o&gt;y.o;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//p1099t11in.txt","r",stdin);</span></div><div class="line">    <span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> i,N,sum,ans;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;N))&#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;p[i].r,&amp;p[i].o);</div><div class="line">            p[i].o=p[i].r-p[i].o;</div><div class="line">        &#125;</div><div class="line">        sort(p,p+N,cmp);</div><div class="line">        sum=p[<span class="number">0</span>].r;</div><div class="line">        ans=p[<span class="number">0</span>].r;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(ans&lt;p[i].r)&#123;</div><div class="line">                sum=sum+p[i].r-ans;</div><div class="line">                ans=p[i].r;</div><div class="line">            &#125;</div><div class="line">                ans=ans-p[i].r+p[i].o;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,sum);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></b[i]<a[i]。></p>
+
+          
         
       
     </div>
@@ -1488,7 +1484,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/04/51nod贪心算法入门-完美字符串/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/21/51nod动态规划-矩阵取数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -1507,7 +1503,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/04/51nod贪心算法入门-完美字符串/" itemprop="url">51nod贪心算法入门-----完美字符串</a></h1>
+                <a class="post-title-link" href="/2016/03/21/51nod动态规划-矩阵取数/" itemprop="url">51nod动态规划-----矩阵取数</a></h1>
         
 
         <div class="post-meta">
@@ -1519,8 +1515,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-04T23:01:30+08:00">
-                2016-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T22:27:36+08:00">
+                2016-03-21
               </time>
             
 
@@ -1580,16 +1576,171 @@
 
       
         
-          <p>约翰认为字符串的完美度等于它里面所有字母的完美度之和。每个字母的完美度可以由你来分配，不同字母的完美度不同，分别对应一个1-26之间的整数。</p>
-<p>约翰不在乎字母大小写。（也就是说字母F和f）的完美度相同。给定一个字符串，输出它的最大可能的完美度。例如：dad，你可以将26分配给d，25分配给a，这样整个字符串完美度为77。</p>
-<p>//这题水题，只要把每个字母出现的次数统计出来然后再排序一下就OK了。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/04/51nod贪心算法入门-完美字符串/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <p>一个N<em>N矩阵中有不同的正整数，经过这个格子，就能获得相应价值的奖励，从左上走到右下，只能向下向右走，求能够获得的最大价值。<br>例如：3 </em> 3的方格。</p>
+<p>1 3 3</p>
+<p>2 1 3</p>
+<p>2 2 1</p>
+<p>能够获得的最大价值为：11。</p>
+<p>Input</p>
+<p>第1行：N，N为矩阵的大小。(2 &lt;= N &lt;= 500)</p>
+<p>第2 - N + 1行：每行N个数，中间用空格隔开，对应格子中奖励的价值。（1 &lt;= N[i] &lt;= 10000)</p>
+<p>OutPut</p>
+<p>输出能够获得的最大价值。</p>
+<p>Input示例</p>
+<p>3</p>
+<p>1 3 3</p>
+<p>2 1 3</p>
+<p>2 2 1</p>
+<p>Output示例</p>
+<p>11</p>
+<p>状态转移方程：f(i,j) = max{f(i+1,j),f(i,j+1)|i<n,j<n}+a[i][j]; <figure="" class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//1.txt","r",stdin);</span></div><div class="line">    <span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> N,i,j;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;N))&#123;</div><div class="line">        <span class="keyword">int</span> <span class="built_in">map</span>[<span class="number">505</span>][<span class="number">505</span>];</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;N;j++)</div><div class="line">                <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;<span class="built_in">map</span>[i][j]);</div><div class="line">        <span class="keyword">int</span> dp[<span class="number">505</span>][<span class="number">505</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//不知道为什么这个不能跟前面的map一起定义。。。</span></div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;N;j++)</div><div class="line">                dp[i][j]=max(dp[i<span class="number">-1</span>][j],dp[i][j<span class="number">-1</span>])+<span class="built_in">map</span>[i][j];</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[N<span class="number">-1</span>][N<span class="number">-1</span>]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></n,j<n}+a[i][j];></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/20/51nod贪心算法入门-独木舟问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/20/51nod贪心算法入门-独木舟问题/" itemprop="url">51nod贪心算法入门-----独木舟问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T22:25:23+08:00">
+                2016-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>独木舟问题</p>
+<p>n个人，已知每个人体重，独木舟承重固定，每只独木舟最多坐两个人，可以坐一个人或者两个人。显然要求总重量不超过独木舟承重，假设每个人体重也不超过独木舟承重，问最少需要几只独木舟？</p>
+<p>分析：按照人的体重排序，最轻的人跟最重的人尽量安排在一条船上，如果超过就安排最重的.<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m;</div><div class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;m)==<span class="number">2</span>)&#123;</div><div class="line">        <span class="keyword">int</span> i,j,ans=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> a[<span class="number">10001</span>];</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</div><div class="line">        &#125;</div><div class="line">        sort(a,a+n);</div><div class="line">        j=n<span class="number">-1</span>;</div><div class="line">        i=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</div><div class="line">            <span class="keyword">if</span>(a[i]+a[j]&lt;=m)&#123;</div><div class="line">                ans++;</div><div class="line">                i++;</div><div class="line">                j--;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span>&#123;</div><div class="line">                ans++;</div><div class="line">                j--;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(i==j)</div><div class="line">            ans++;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+          
         
       
     </div>
@@ -1626,6 +1777,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1673,7 +1828,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1695,7 +1850,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
