@@ -3,6 +3,45 @@
   
     
     <entry>
+      <title><![CDATA[Java内存区域]]></title>
+      <url>/2017/10/20/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+      <content type="html"><![CDATA[<h1 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h1><h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p><img src="http://ocx5m3vc3.bkt.clouddn.com/JVM_1.jpg" alt=""><br><a id="more"></a></p>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>&ensp;&ensp;程序计数器是一块较小的内存空间，它可以看做是当前线程所执行的字节码的行号指示器。（此内存区域是唯一一个在JAVA虚拟机规范中没有规定任何OME情况的区域）</p>
+<h3 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h3><p>&ensp;&ensp;与程序计数器一样，Java虚拟机栈也是线程私有的，它的生命周期与线程相同。虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成的过程，就对应着一个栈帧在虚拟机中入栈到出栈的过程。</p>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>&ensp;&ensp;本地方法栈与虚拟机栈所发挥的作用是非常相似的，它们之间的区别不过是虚拟机栈为虚拟机执行Java（也就是字节码）服务，而本地方法栈则为虚拟机使用的Native方法服务。在虚拟机规范中对本地方法栈中使用的语言、使用方式、与数据结构并没有强制规定，因此具体的虚拟机可以自由的实现它。甚至有的虚拟机直接就把本地方法栈和虚拟机栈合二为一。</p>
+<h3 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h3><p>&ensp;&ensp;对于大多数应用来说，Java堆是Java虚拟机所管理的内存中最大的一块，Java堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例都在这里分配内存。这一点在Java虚拟机规范中的描述是：所有的对象实例以及数组都要在堆上分配，但随着JIT编译器的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化发生，所有的对象都分配在堆上也渐渐变得不是那么“绝对”了。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>&ensp;&ensp;方法区与Java堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个一个别名叫做Non-Heap（非栈），目的应该是与Java堆分开来。</p>
+<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>&ensp;&ensp;运行时常量池是方法区的一部分。Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放。</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存并不是虚拟机运行时数据区的一部分，已不是Java虚拟机规范中定义的内存区域。但是这部分内存也被频繁地使用。</p>
+<h2 id="虚拟机对象探索"><a href="#虚拟机对象探索" class="headerlink" title="虚拟机对象探索"></a>虚拟机对象探索</h2><h3 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h3><p>&ensp;&ensp;虚拟机遇到一条new指令时，首先将去检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如果没有，那么必须先执行相应的类加载过程。<br>&ensp;&ensp;在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需内存的大小在类加载完成后完全可以确定，为对象分配空间的任务等同于把一块确定大小的内存从Java堆中划分出来。</p>
+<ul>
+<li>指针碰撞</li>
+<li>空闲列表</li>
+</ul>
+<p>&ensp;&ensp;内存分配完成后，虚拟机需要将分配到的内存空间都初始化零值。<br>&ensp;&ensp;接下来，虚拟机要对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希码、对象的GC分代年龄等信息。<br>&ensp;&ensp;在上面工作都完成后，从虚拟机的视角看，一个新的对象已经产生了，但从Java程序的视角来就看，对象创建才刚刚开始—<init>方法还没有执行所有字段都还为零。</init></p>
+<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3><p>&ensp;&ensp;对象在内存中存储的布局可以分为3块区域：对象头、实例数据、对齐填充。</p>
+<h3 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h3><ul>
+<li>句柄访问</li>
+<li>直接指针</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> JAVA </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> JVM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[static]]></title>
       <url>/2017/10/18/static/</url>
       <content type="html"><![CDATA[<h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用:"></a>static的作用:</h1><h2 id="不考虑类"><a href="#不考虑类" class="headerlink" title="不考虑类"></a>不考虑类</h2><h3 id="第一个作用：隐藏"><a href="#第一个作用：隐藏" class="headerlink" title="第一个作用：隐藏"></a>第一个作用：隐藏</h3><p>&ensp;&ensp;当我们同时编译多个文件时，所有未加static前缀的<strong>全局变量</strong>和<strong>函数</strong>都具有全局可见性。</p>
@@ -248,7 +287,7 @@
       
         <categories>
             
-            <category> 学习 </category>
+            <category> JAVA </category>
             
         </categories>
         
@@ -280,9 +319,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 贪心 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -321,9 +360,9 @@
         
         <tags>
             
-            <tag> 动态规划 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 动态规划 </tag>
             
         </tags>
         
@@ -346,9 +385,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 贪心 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -370,9 +409,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 贪心 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -404,9 +443,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 贪心 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -429,9 +468,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 贪心 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
