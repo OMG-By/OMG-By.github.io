@@ -3,6 +3,172 @@
   
     
     <entry>
+      <title><![CDATA[servlet的9大内置对象]]></title>
+      <url>/2017/10/28/servlet%E7%9A%849%E5%A4%A7%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<table>
+<thead>
+<tr>
+<th style="text-align:center">隐式对象</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">request</td>
+<td style="text-align:center">转译后的HttpServletRquest/ServletRequest对象</td>
+</tr>
+<tr>
+<td style="text-align:center">response</td>
+<td style="text-align:center">转译后对应HttpServletRespons/ServletResponse对象</td>
+</tr>
+<tr>
+<td style="text-align:center">session</td>
+<td style="text-align:center">转译后对应HttpSession对象</td>
+</tr>
+<tr>
+<td style="text-align:center">application</td>
+<td style="text-align:center">转译后对应ServletContext对象</td>
+</tr>
+<tr>
+<td style="text-align:center">out</td>
+<td style="text-align:center">转译后对应JspWriter对象，其内部关联一个PringWriter对象</td>
+</tr>
+<tr>
+<td style="text-align:center">page</td>
+<td style="text-align:center">转译后对应this</td>
+</tr>
+<tr>
+<td style="text-align:center">config</td>
+<td style="text-align:center">转译后对应ServletConfig对象</td>
+</tr>
+<tr>
+<td style="text-align:center">exception</td>
+<td style="text-align:center">转译后对应Throwable对象，代表由其他JSP页面抛出的异常对象，只会出现于JSP错误页面(isErrorPage设置为true的JSP页面)</td>
+</tr>
+<tr>
+<td style="text-align:center">pageContext</td>
+<td style="text-align:center">转译后对应PageContext对象，它提供了JSP页面资源的封装，并可设置页面范围属性</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h2 id="JSP隐含变量"><a href="#JSP隐含变量" class="headerlink" title="JSP隐含变量"></a>JSP隐含变量</h2><p>1.out 来源于Java.io.Writer类，它用于发送输出流到客户端。<br>2.request 来源于javax.servlet.http.HttpServletRequest接口。它被关联到每一个HTTP请求。<br>3.response 来源于javax.servlet.http.HttpServletResponse。response对象用于把取得的数据返回到客户端。<br>4.pageContext 提供访问JSP页面的命名空间。它也提供用来访问其他的JSP隐含对象。<br>5.session 来源于javax.servlet.http.HttpSession。它用于存储客户端请求的信息，因此它是有状态交互式的。<br>6.application 来源于javax.servlet.ServletContext。<br>7.config 来源于ServletConfig，它包含了当前JSP/Servlet所在的WEB应用的配置信息。<br>8.page 来源于当前被访问JSP页面的实例化。它实际使用的是JSP转换成的Servlet。<br>9.exception 用于捕获JSP抛出的异常。它只有在JSP页面属性isErrorPage=true时才可用。</p>
+<h3 id="一、request对象："><a href="#一、request对象：" class="headerlink" title="一、request对象："></a>一、request对象：</h3><p>&ensp;&ensp;该对象封装了用户提交的信息，通过调用该对象相应的方法可以获取封装的信息， 即使用该对象可以获取用户提交信息。 客户端的请求参数都被封装到这个对象里面</p>
+<h3 id="二、response对象："><a href="#二、response对象：" class="headerlink" title="二、response对象："></a>二、response对象：</h3><p>&ensp;&ensp;对客户的请求做出动态的响应，向客户发送数据。</p>
+<h3 id="三、session对象："><a href="#三、session对象：" class="headerlink" title="三、session对象："></a>三、session对象：</h3><p>&ensp;&ensp;1.什么是session：session对象是一个JSP内置对象，它在第一个JSP页面被装载时自动创建，完成会话期管理。<br>从一个客户打开浏览器并连接到服务器开始，到客户关闭浏览器离开这个服务器结束，被称为一个会话。当一个客户访问一个服务器时，可能会在这个服务器的几个页面之间反复连接，反复刷新一个页面，服务器应当通过某种办法知道这是同一个客户，这就需要session对象。</p>
+<p>&ensp;&ensp;2．session对象的ID：当一个客户首次访问服务器上的一个JSP页面时，JSP引擎产生一个session对象，同时分配一个String类型的ID号，JSP引擎同时将这个ID号发送到客户端，存放在Cookie中，这样session对象和客户之间就建立了一一对应的关系。当客户再访问连接该服务器的其他页面时，不再分配给客户新的session对象，直到客户关闭浏览器后，服务器端该客户的session对象才取消，并且和客户的会话对应关系消失。当客户重新打开浏览器再连接到该服务器时，服务器为该客户再创建一个新的session对象。</p>
+<h3 id="四、aplication对象："><a href="#四、aplication对象：" class="headerlink" title="四、aplication对象："></a>四、aplication对象：</h3><p>&ensp;&ensp;1．什么是application:<br>服务器启动后就产生了这个application对象，当客户在所访问的网站的各个页面之间浏览时，这个application对象都是同一个，直到服务器关闭。但是与session不同的是，所有客户的application对象都是同一个，即所有客户共享这个内置的application对象。</p>
+<p>&ensp;&ensp;2．application对象常用方法:<br>(1)public void setAttribute(String key,Object obj): 将参数Object指定的对象obj添加到application对象中，并为添加的对象指定一个索引关键字。<br>(2)public Object getAttribute(String key): 获取application对象中含有关键字的对象。 </p>
+<h3 id="五、out对象："><a href="#五、out对象：" class="headerlink" title="五、out对象："></a>五、out对象：</h3><p>&ensp;&ensp;out 对象是一个输出流，用来向客户端输出数据。out对象用于各种数据的输出。</p>
+<h3 id="六、page-java-lang-Object："><a href="#六、page-java-lang-Object：" class="headerlink" title="六、page java.lang.Object："></a>六、page java.lang.Object：</h3><p>&ensp;&ensp;对应this关键字。JSP网页本身<br>page对象是当前页面转换后的Servlet类的实例。从转换后的Servlet类的代码中，可以看到这种关系：<br>Object page = this;<br>在JSP页面中，很少使用page对象。</p>
+<h3 id="七、config："><a href="#七、config：" class="headerlink" title="七、config："></a>七、config：</h3><p>&ensp;&ensp;javax.servlet. ServletConfig 的实例，该实例代表该JSP 的配置信息。常用的方法有getInitPararneter(String paramNarne) 及getInitPararneternarnes() 等方法。事实上， JSP 页面通常无须配置，也就不存在配置信息。因此，该对象更多地在Servlet 中有效。</p>
+<h3 id="八、exception-java-lang-Throwable-的实例："><a href="#八、exception-java-lang-Throwable-的实例：" class="headerlink" title="八、exception java.lang.Throwable 的实例："></a>八、exception java.lang.Throwable 的实例：</h3><p>&ensp;&ensp;该实例代表其他页面中的异常和错误。只有当页面是错误处理页面，即编译指令page 的isErrorPage 属性为true 时，该对象才可以使用。常用的方法有getMessageO和printStackTraceO等。</p>
+<h3 id="九、pageContext："><a href="#九、pageContext：" class="headerlink" title="九、pageContext："></a>九、pageContext：</h3><p>&ensp;&ensp;out 对象是一个输出流，用来向客户端输出数据。out对象用于各种数据的输出。</p>
+<hr>
+<p>//使用pageContext 设置属性，该属性默认在page 范围内<br>pageContext. setAttribute (“page” , “hello”) ; </p>
+<p>  //使用request 设置属性，该属性默认在request 范围内<br>request. setAttribute (“request” , “hello”); </p>
+<p>  //使用pageContext将属性设置在request 范围中<br>pageContext.setAttribute(“request2” , “hello” , pageContext.REQUEST_SCOPE); </p>
+<p>  // 使用session将属性设置在session 范围中<br>session.setAttribute(“session” , “hello”l; </p>
+<p>  //使用pageContext将属性设置在session范围中<br>pageContext.setAttribute(“session2” , “hello” , pageContext.SESSION_SCOPE); </p>
+<p>  //使用application将属性设置在application范围中<br>application. setAttribute (“app” , “hello”) ; </p>
+<p>  //使用pageContext 将属性设置在application 范围中<br>pageContext.setAttribute(“app2” , “hello” , pageContext.APPL 工CATION_SCOPE) ;</p>
+<hr>
+<h2 id="四个作用域："><a href="#四个作用域：" class="headerlink" title="四个作用域："></a>四个作用域：</h2><h3 id="application："><a href="#application：" class="headerlink" title="application："></a>application：</h3><p>全局作用范围，整个应用程序共享，就是在部署文件中的同一个webApp共享，生命周期为：应用程序启动到停止。</p>
+<h3 id="session："><a href="#session：" class="headerlink" title="session："></a>session：</h3><p>会话作用域，当用户首次访问时，产生一个新的会话，以后服务器就可以记住这个会话状态。生命周期：会话超时，或者服务器端强制使会话失效。</p>
+<h3 id="request"><a href="#request" class="headerlink" title="request:"></a>request:</h3><p>请求作用域，就是客户端的一次请求。</p>
+<h3 id="page："><a href="#page：" class="headerlink" title="page："></a>page：</h3><p>一个JSP页面。</p>
+<p>以上作用范围使越来越小， request和page的生命周期都是短暂的，他们之间的区别就是：一个request可以包含多个page页(include，forward以及filter)。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> JAVA </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> JAVA </tag>
+            
+            <tag> Servlet </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux常用命令（简）]]></title>
+      <url>/2017/10/24/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+      <content type="html"><![CDATA[<h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
+<h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h3><p>&ensp;&ensp;查看当前目录下的目录、文件等及其相应权限。<br>&ensp;&ensp;命令格式： ls [选项] 目录</p>
+<h3 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h3><p>&ensp;&ensp;查看当前工作目录的完整路径。<br>&ensp;&ensp;pwd [选项]</p>
+<h3 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h3><p>&ensp;&ensp;创建一个指定的名称的目录，要求创建目录的用户具有权限且该目录名不存在。<br>&ensp;&ensp;mkdir [选项]目录<br><a id="more"></a></p>
+<h3 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h3><p>&ensp;&ensp;删除一个目录中的一个或多个文件或目录。<br>&ensp;&ensp;rm [选项] 文件或目录</p>
+<h3 id="rmdir命令"><a href="#rmdir命令" class="headerlink" title="rmdir命令"></a>rmdir命令</h3><p>&ensp;&ensp;删除空目录。<br>&ensp;&ensp;rmdir [选项] 目录</p>
+<h3 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h3><p>&ensp;&ensp;移动文件或者将文件改名，经常用来备份文件或者目录。<br>&ensp;&ensp;mv [选项] 源文件或目录 目标文件或者目录</p>
+<h3 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h3><p>&ensp;&ensp;复制文件，如果目标文件已经存在，会询问是否覆盖。<br>&ensp;&ensp;cp [选项] 源文件或目录  目的目录</p>
+<h3 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h3><p>&ensp;&ensp;用来修改文件时间戳或者新建一个不存在的文件。<br>&ensp;&ensp;touch [选项] 文件</p>
+<h3 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h3><p>&ensp;&ensp;显示文件内容 或者将几个文件连接起来显示 或者从标准输入读取内容并显示，常与重定向符号配合使用。<br>&ensp;&ensp;cat [选项] 文件</p>
+<p><br><br><br><br><center> <strong>长期不定期更新中。。。。。。。。。</strong></center></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ActionContext]]></title>
+      <url>/2017/10/21/ActionContext/</url>
+      <content type="html"><![CDATA[<h3 id="ActionContext"><a href="#ActionContext" class="headerlink" title="ActionContext"></a><center>ActionContext</center></h3><p>&ensp;&ensp;ActionContext是Action的上下文，Struct2自动在其中保存了一些在Action执行过程中所需的对象，比如session、parameters、locale等。Struts2会根据每个执行HTTp请求的线程来创建对应的ActionContext，即一个线程只有一个唯一的ActionContext。因此，使用者可以使用静态方法ActionContext.getContext&#40;&#41;来获取当前线程的ActionContext，也正是由于这个原因，使用者不用去操心让Action是线程安全的。</p>
+<p>&ensp;&ensp;无论如何，ActionContext都是用来存放数据的。Struts2本身会在其中放入不少数据，而使用者也可以放入自己想要的数据。ActionContext本身的数据结构是映射结构，即一个Map，用key来映射value。所以使用者完全可以像使用Map一样来使用它，或者直接使用Action.getContextMap&#40;&#41;方法来对Map进行操作。</p>
+<p>&ensp;&ensp;Struts2本身在其中放入的数据有Actionlnvocation、application&#40;即ServletContext&#41;、conversionErrors、Locale、action的name、request的参数、HTTP的Session以及值栈等。完整的列表请参考它的Javadoc。</p>
+<p>&ensp;&ensp;由于ActionContext的线程唯一和静态方法就能获得的特性，使得在非Action类中可以直接获得它，而不需要等待Action传入或注入。<font color="#DC143C">需要注意的是，它仅在由于request而创建的线程中有效&#40;因为request时才创建对应的ActionContext&#41;，而在服务器启动的线程中&#40;比如fliter的init方法&#41;无效。</font>由于在非Action类中访问其的方便性，ActionContext也可以用来在非Action类中向JSP传递数据&#40;因为JSP也能很方便的访问它&#41;。<br><a id="more"></a></p>
+<h3 id="ValueStack与ActionContext的联系和区别"><a href="#ValueStack与ActionContext的联系和区别" class="headerlink" title="ValueStack与ActionContext的联系和区别"></a><center>ValueStack与ActionContext的联系和区别</center></h3><p>&ensp;&ensp;<font color="#DC143C">相同点：它们都是在一次HTTP请求的范围内使用的，即它们的生命周期都是一次请求。<br>&ensp;&ensp;不同点：值栈是栈的结构，ActionContext是映射&#40;Map&#41;的结构。</font></p>
+<p>&ensp;&ensp;联系：ValueStack.getContext&#40;&#41;方法得到的Map其实就是ActionContext的Map。查看Struts2的源代码可知&#40;Struts2.3.1.2的org.apache.struts2.dispatcher.ng.PrepareOperations的第79行，createActionContext方法&#41;，在创建ActionContext时，就是把ValueStack.getContext&#40;&#41;作为ActionContext的构造函数的参数。所以，ValueStack和ActionContext本质上可以互相获得。</p>
+<p>&ensp;&ensp;注意：在一些文档中，会出现把对象存入“stack‘s context”的字样，其实就是把值存入了ActionContext。所以在阅读这些文档时，要看清楚，到底是放入了栈结构&#40;即值栈&#41;，还是映射结构&#40;值栈的context，即ActionContext&#41;。</p>
+<h3 id="如何获得ActionContext"><a href="#如何获得ActionContext" class="headerlink" title="如何获得ActionContext"></a><center>如何获得ActionContext</center></h3><p>&ensp;&ensp;在自定义的拦截器中：使用ActionInvocation.getInvocationContext&#40;&#41;或者使用ActionContext.getContext&#40;&#41;。</p>
+<p>&ensp;&ensp;在Action类中：让拦截器注入或者使用ActionContext.getContext&#40;&#41;。</p>
+<p>&ensp;&ensp;在非Action类中：让Action类传递参数、使用注入机制注入或者使用ActionContext.getContext&#40;&#41;。</p>
+<p>&ensp;&ensp;<font color="#DC143C">注意：只有运行在request线程中的代码才能调用ActionContext.getContext&#40;&#41;，否则返回的是null。<br>在JSP中：一般不需要获得ActionContext本身。</font></p>
+<h3 id="如何向ActionContext存入值"><a href="#如何向ActionContext存入值" class="headerlink" title="如何向ActionContext存入值"></a><center>如何向ActionContext存入值</center></h3><p>&ensp;&ensp;在拦截器、Action类、非Action类等Java类中：使用ActionContext.put&#40;Object key,Object value&#41;方法。</p>
+<p>&ensp;&ensp;在JSP中：标签<s:set value="...">默认将值存入ActionContext中&#40;当然，<s:set>标签还可以把值存到其他地方&#41;。</s:set></s:set></p>
+<p>&ensp;&ensp;另外，许多标签都有var属性&#40;以前用的是id属性，现在id属性已被抛弃&#41;，这个属性能向ActionContext存入值，key为var属性的值，value为标签的value值。&#40;有些文档写的是向ValueStack的context存入值，其实是一样的&#41;</p>
+<h3 id="如何向ActionContext读取值"><a href="#如何向ActionContext读取值" class="headerlink" title="如何向ActionContext读取值"></a><center>如何向ActionContext读取值</center></h3><p>&ensp;&ensp;在拦截器、Action类、非Action类等Java类中：使用ActionContext.get&#40;Object key&#41;方法。</p>
+<p>&ensp;&ensp;在JSP中：使用#开头的Ognl表达式解析，则需要使用%&#123;&#125;把表达式括起来，于是就会出现类似“%&#123;#name&#125;”的表达式。</p>
+<p>&ensp;&ensp;在JSP中：总之，在JSP中使用ActionContext一方面由于它是映射结构，另一方面是能读取Action的一些配置。当你需要为许多Action提供通用的值的话，可以让每个Action都提供getXXX&#40;&#41;方法，但更好的方法是在拦截器或JSP模板中把这些通用的值存放到ActionC中&#40;因为拦截器或JSP模板往往通用于多个Action&#41;。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 本类将演示拦截器中对ActionContext的操作   </span></div><div class="line">publicclass MyInterceptor extends AbstractInterceptor &#123;   </div><div class="line">  </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">intercept</span><span class="params">(ActionInvocation invocation)</span> <span class="keyword">throws</span> Exception </span>&#123;   </div><div class="line">        <span class="comment">// 获得ActionContext   </span></div><div class="line">        ActionContext actionContext = invocation.getInvocationContext();   </div><div class="line">        <span class="comment">// 存入值   </span></div><div class="line">        Person person = <span class="keyword">new</span> Person();   </div><div class="line">        actionContext.put(<span class="string">"person"</span>, person);   </div><div class="line">        <span class="comment">// 获取值   </span></div><div class="line">        Object value = actionContext.get(<span class="string">"person"</span>);   </div><div class="line">        <span class="comment">// 获取HttpServletRequest   </span></div><div class="line">        HttpServletRequest request = (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);   </div><div class="line">        <span class="comment">// 获取request的Map，即HttpServletRequest.getAttribute(...)和HttpServletRequest.setAttribute(...)所操作的值  </span></div><div class="line">        Map requestMap = (Map) actionContext.get(<span class="string">"request"</span>);   </div><div class="line">        <span class="comment">// 其他代码   </span></div><div class="line">        <span class="comment">// ......   </span></div><div class="line">        <span class="keyword">return</span> invocation.invoke();   </div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 本类将演示在Action中对ActionContext进行操作   </span></div><div class="line">publicclass MyAction extends ActionSupport &#123;   </div><div class="line">  </div><div class="line">    <span class="meta">@Override</span>  </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">execute</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;   </div><div class="line">        <span class="comment">// 获得值栈   </span></div><div class="line">        ActionContext actionContext = ActionContext.getContext();   </div><div class="line">        <span class="comment">// 存入值   </span></div><div class="line">        Person person = <span class="keyword">new</span> Person();<span class="comment">// 这是之前例子中定义的类  </span></div><div class="line">        actionContext.put(<span class="string">"person"</span>, person);   </div><div class="line">        <span class="comment">// 获取值   </span></div><div class="line">        Object object = actionContext.get(<span class="string">"person"</span>);   </div><div class="line">        <span class="comment">// 其他代码   </span></div><div class="line">        <span class="comment">// ......   </span></div><div class="line">        <span class="keyword">return</span> SUCCESS;   </div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">metahttp-equiv="Content-Type"content="text</span>/<span class="attr">html</span>; <span class="attr">charset</span>=<span class="string">UTF-8</span>"&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>JSP Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 本JSP将演示在JSP中对ActionContext的使用 --&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 本JSP为MyAction对应的JSP --&gt;</span>  </div><div class="line">  </div><div class="line">        <span class="comment">&lt;!-- 由于Action中已经向ActionContext存入了key为"person"的值，所以可以使用“#person”来获取它，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#person"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 获得person的name属性，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#person.name"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 获得Struts2在ActionContext中存入的值，比如request的Map，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#request"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 获得Struts2在ActionContext中存入的值，比如session的Map，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#session"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 获得Struts2在ActionContext中存入的值，request请求传递的GET参数或POST参数的Map，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#parameters"</span>/&gt;</span>  </div><div class="line">           </div><div class="line">        <span class="comment">&lt;!-- 以下演示在JSP中把值存入ActionContext中  --&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 存入一个字符串"myName"，key为"myKey"，如下 --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:setvalue="%&#123;‘myName‘&#125;"var="myKey"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 使用s:bean标签来创建一个对象，并把它存入ActionContext中，key为myObject，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:beanname="com.example.Person"var="myObject"</span>/&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 之后就可以用“#”来读取它们，如下  --&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#myKey"</span>/&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">s:propertyvalue="#myObject"</span>/&gt;</span>  </div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Struts2 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Java内存区域]]></title>
       <url>/2017/10/20/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
       <content type="html"><![CDATA[<h1 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h1><h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p><img src="http://ocx5m3vc3.bkt.clouddn.com/JVM_1.jpg" alt=""><br><a id="more"></a></p>
@@ -301,6 +467,53 @@
     </entry>
     
     <entry>
+      <title><![CDATA[51nod1085-----01背包]]></title>
+      <url>/2016/03/27/51nod1085-----01%E8%83%8C%E5%8C%85/</url>
+      <content type="html"><![CDATA[<p>在N件物品取出若干件放在容量为W的背包里，每件物品的体积为W1，W2……Wn（Wi为整数），与之相对应的价值为P1,P2……Pn（Pi为整数）。求背包能够容纳的最大价值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> dp[<span class="number">101</span>][<span class="number">10001</span>];</div><div class="line"><span class="keyword">int</span> w[<span class="number">101</span>],p[<span class="number">101</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,W,i,j;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;W);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;w[i],&amp;p[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=W;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(j&lt;w[i])</div><div class="line">                dp[i][j]=dp[i<span class="number">-1</span>][j];</div><div class="line">            <span class="keyword">else</span></div><div class="line">                dp[i][j]=max(dp[i<span class="number">-1</span>][j],dp[i<span class="number">-1</span>][j-w[i]]+p[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[n][W]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> acm </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 51nod </tag>
+            
+            <tag> 背包 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[51nod1046快速幂取余]]></title>
+      <url>/2016/03/26/51nod1046%E5%BF%AB%E9%80%9F%E5%B9%82%E5%8F%96%E4%BD%99/</url>
+      <content type="html"><![CDATA[<p>给出3个正整数A B C，求A^B Mod C。</p>
+<p>例如，3 5 8，3^5 Mod 8 = 3。<br>Input<br>3个正整数A B C，中间用空格分隔。(1 &lt;= A,B,C &lt;= 10^9)<br>Output<br>输出计算结果<br>Input示例<br>3 5 8<br>Output示例<br>3</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#include&lt;stdio.h&gt;</div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span>  <span class="title">quickmod</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a,<span class="keyword">long</span> <span class="keyword">long</span> b,<span class="keyword">long</span> <span class="keyword">long</span> m)</span></span>&#123;</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans=<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(b)&#123;</div><div class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</div><div class="line">            ans=(ans*a)%m;<span class="comment">//这里a是a^(2^i)%m</span></div><div class="line">            b--;</div><div class="line">        &#125;</div><div class="line">        b/=<span class="number">2</span>;</div><div class="line">        a=a*a%m;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> a,b,m;</div><div class="line">    <span class="keyword">while</span>(scanf(<span class="string">"%d%d%d"</span>,&amp;a,&amp;b,&amp;m)!=EOF)&#123;</div><div class="line">      <span class="keyword">long</span> <span class="keyword">long</span>   ans=quickmod(a,b,m);</div><div class="line">        printf(<span class="string">"%lld"</span>,ans);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> acm </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 快速幂 </tag>
+            
+            <tag> 51nod </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[51nod贪心算法入门-----任务分配问题]]></title>
       <url>/2016/03/21/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>任务执行顺序</p>
@@ -319,9 +532,9 @@
         
         <tags>
             
-            <tag> 贪心 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 贪心 </tag>
             
         </tags>
         
@@ -385,9 +598,9 @@
         
         <tags>
             
-            <tag> 贪心 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 贪心 </tag>
             
         </tags>
         
@@ -409,9 +622,9 @@
         
         <tags>
             
-            <tag> 贪心 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 贪心 </tag>
             
         </tags>
         
@@ -443,9 +656,9 @@
         
         <tags>
             
-            <tag> 贪心 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 贪心 </tag>
             
         </tags>
         
@@ -468,9 +681,9 @@
         
         <tags>
             
-            <tag> 贪心 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 贪心 </tag>
             
         </tags>
         
