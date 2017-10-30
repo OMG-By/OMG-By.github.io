@@ -4,8 +4,58 @@
 
     
   <url>
+    <loc>http://yoursite.com/1900/01/01/Linux/cd/</loc>
+    <lastmod>2017-10-30T13:12:54.794Z</lastmod>
+    <data>
+        <display>
+        <title>cd命令</title>
+        <pubTime>1899-12-31T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/1900/01/01/Linux/ls/</loc>
+    <lastmod>2017-10-30T13:07:19.735Z</lastmod>
+    <data>
+        <display>
+        <title>ls命令</title>
+        <pubTime>1899-12-31T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2117/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2017-10-30T13:00:59.133Z</lastmod>
+    <data>
+        <display>
+        <title>Linux常用命令（简）</title>
+        <pubTime>2117-10-24T11:31:09.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/10/30/Redis/Redis%E5%AD%A6%E4%B9%A0--List%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
-    <lastmod>2017-10-30T12:34:19.454Z</lastmod>
+    <lastmod>2017-10-30T12:37:49.813Z</lastmod>
     <data>
         <display>
         <title>Redis学习--List数据类型</title>
@@ -38,41 +88,6 @@
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2017-10-30T11:37:27.200Z</lastmod>
-    <data>
-        <display>
-        <title>Linux常用命令（简）</title>
-        <pubTime>2017-10-24T11:31:09.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/1900/01/01/Linux/ls/</loc>
-    <lastmod>2017-10-29T15:38:57.281Z</lastmod>
-    <data>
-        <display>
-        <title>ls命令</title>
-        <pubTime>1899-12-31T16:00:00.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
