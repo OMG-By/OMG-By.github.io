@@ -3,6 +3,304 @@
   
     
     <entry>
+      <title><![CDATA[Redis学习--List数据类型]]></title>
+      <url>/2017/10/30/Redis/Redis%E5%AD%A6%E4%B9%A0--List%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+      <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&ensp;&ensp;在Redis中，List类型是按照插入顺序排序的字符串链表。和数据结构中的普通链表一样，我们可以在其头部(left)和尾部(right)添加新的元素。在插入时，如果该键并不存在，Redis将为该键创建一个新的链表。与此相反，如果链表中所有的元素均被移除，那么该键也将会被从数据库中删除。List中可以包含的最大元素数量是4294967295。<br>&ensp;&ensp;从元素插入和删除的效率视角来看，如果我们是在链表的两头插入或删除元素，这将会是非常高效的操作，即使链表中已经存储了百万条记录，该操作也可以在常量时间内完成。然而需要说明的是，如果元素插入或删除操作是作用于链表中间，那将会是非常低效的。相信对于有良好数据结构基础的开发者而言，这一点并不难理解。<br><a id="more"></a></p>
+<h3 id="相关命令列表"><a href="#相关命令列表" class="headerlink" title="相关命令列表"></a>相关命令列表</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">命令原型</th>
+<th style="text-align:center">时间复杂度</th>
+<th style="text-align:center">命令描述</th>
+<th style="text-align:center">返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">LPUSH key value [value …]</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">在指定Key所关联的List Value的头部插入参数中给出的所有Values。如果该Key不存在，该命令将在插入之前创建一个与该Key关联的空链表，之后再将数据从链表的头部插入。如果该键的Value不是链表类型，该命令将返回相关的错误信息。</td>
+<td style="text-align:center">插入后链表中元素的数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">LPUSHX key value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">仅有当参数中指定的Key存在时，该命令才会在其所关联的List Value的头部插入参数中给出的Value，否则将不会有任何操作发生。</td>
+<td style="text-align:center">插入后链表中元素的数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">LRANGE key start stop</td>
+<td style="text-align:center">O(S+N)</td>
+<td style="text-align:center">时间复杂度中的S为start参数表示的偏移量，N表示元素的数量。该命令的参数start和end都是0-based。即0表示链表头部(leftmost)的第一个元素。其中start的值也可以为负值，-1将表示链表中的最后一个元素，即尾部元素，-2表示倒数第二个并以此类推。该命令在获取元素时，start和end位置上的元素也会被取出。如果start的值大于链表中元素的数量，空链表将会被返回。如果end的值大于元素的数量，该命令则获取从start(包括start)开始，链表中剩余的所有元素。</td>
+<td style="text-align:center">返回指定范围内元素的列表。</td>
+</tr>
+<tr>
+<td style="text-align:center">LPOP key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回并弹出指定Key关联的链表中的第一个元素，即头部元素，。如果该Key不存，返回nil。</td>
+<td style="text-align:center">链表头部的元素。</td>
+</tr>
+<tr>
+<td style="text-align:center">LLEN key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回指定Key关联的链表中元素的数量，如果该Key不存在，则返回0。如果与该Key关联的Value的类型不是链表，则返回相关的错误信息。</td>
+<td style="text-align:center">链表中元素的数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">LREM key count value</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中N表示链表中元素的数量。在指定Key关联的链表中，删除前count个值等于value的元素。如果count大于0，从头向尾遍历并删除，如果count小于0，则从尾向头遍历并删除。如果count等于0，则删除链表中所有等于value的元素。如果指定的Key不存在，则直接返回0。</td>
+<td style="text-align:center">返回被删除的元素数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">LSET key index value</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中N表示链表中元素的数量。但是设定头部或尾部的元素时，其时间复杂度为O(1)。设定链表中指定位置的值为新值，其中0表示第一个元素，即头部元素，-1表示尾部元素。如果索引值Index超出了链表中元素的数量范围，该命令将返回相关的错误信息。</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">LINDEX key index</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中N表示在找到该元素时需要遍历的元素数量。对于头部或尾部元素，其时间复杂度为O(1)。该命令将返回链表中指定位置(index)的元素，index是0-based，表示头部元素，如果index为-1，表示尾部元素。如果与该Key关联的不是链表，该命令将返回相关的错误信息。</td>
+<td style="text-align:center">返回请求的元素，如果index超出范围，则返回nil。</td>
+</tr>
+<tr>
+<td style="text-align:center">LTRIM key start stop</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">N表示被删除的元素数量。该命令将仅保留指定范围内的元素，从而保证链接中的元素数量相对恒定。start和stop参数都是0-based，0表示头部元素。和其他命令一样，start和stop也可以为负值，-1表示尾部元素。如果start大于链表的尾部，或start大于stop，该命令不错报错，而是返回一个空的链表，与此同时该Key也将被删除。如果stop大于元素的数量，则保留从start开始剩余的所有元素。</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">LINSERT key BEFORE\</td>
+<td style="text-align:center">AFTER pivot value</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中N表示在找到该元素pivot之前需要遍历的元素数量。这样意味着如果pivot位于链表的头部或尾部时，该命令的时间复杂度为O(1)。该命令的功能是在pivot元素的前面或后面插入参数中的元素value。如果Key不存在，该命令将不执行任何操作。如果与Key关联的Value类型不是链表，相关的错误信息将被返回。</td>
+<td>成功插入后链表中元素的数量，如果没有找到pivot，返回-1，如果key不存在，返回0。</td>
+</tr>
+<tr>
+<td style="text-align:center">RPUSH key value [value …]</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">指定Key所关联的List Value的尾部插入参数中给出的所有Values。如果该Key不存在，该命令将在插入之前创建一个与该Key关联的空链表，之后再将数据从链表的尾部插入。如果该键的Value不是链表类型，该命令将返回相关的错误信息。</td>
+<td style="text-align:center">插入后链表中元素的数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">RPUSHX key value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">仅有当参数中指定的Key存在时，该命令才会在其所关联的List Value的尾部插入参数中给出的Value，否则将不会有任何操作发生。</td>
+<td style="text-align:center">插入后链表中元素的数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">RPOP key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回并弹出指定Key关联的链表中的最后一个元素，即尾部元素，。如果该Key不存，返回nil</td>
+<td style="text-align:center"></td>
+<td>链表尾部的元素</td>
+</tr>
+<tr>
+<td style="text-align:center">RPOPLPUSH source destination</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">原子性的从与source键关联的链表尾部弹出一个元素，同时再将弹出的元素插入到与destination键关联的链表的头部。如果source键不存在，该命令将返回nil，同时不再做任何其它的操作了。如果source和destination是同一个键，则相当于原子性的将其关联链表中的尾部元素移到该链表的头部。</td>
+<td style="text-align:center">返回弹出和插入的元素。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="命令示例"><a href="#命令示例" class="headerlink" title="命令示例"></a>命令示例</h3><ol>
+<li><p>LPUSH/LPUSHX/LRANGE:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">/&gt; redis-cli    #在Shell提示符下启动redis客户端工具。</div><div class="line">redis 127.0.0.1:6379&gt; del mykey</div><div class="line">(integer) 1</div><div class="line">#mykey键并不存在，该命令会创建该键及与其关联的List，之后在将参数中的values从左到右依次插入。</div><div class="line">redis 127.0.0.1:6379&gt; lpush mykey a b c d</div><div class="line">(integer) 4</div><div class="line">#取从位置0开始到位置2结束的3个元素。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 2</div><div class="line">1) &quot;d&quot;</div><div class="line">2) &quot;c&quot;</div><div class="line">3) &quot;b&quot;</div><div class="line">#取链表中的全部元素，其中0表示第一个元素，-1表示最后一个元素。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;d&quot;</div><div class="line">2) &quot;c&quot;</div><div class="line">3) &quot;b&quot;</div><div class="line">4) &quot;a&quot;</div><div class="line">#mykey2键此时并不存在，因此该命令将不会进行任何操作，其返回值为0。</div><div class="line">redis 127.0.0.1:6379&gt; lpushx mykey2 e</div><div class="line">(integer) 0</div><div class="line">#可以看到mykey2没有关联任何List Value。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey2 0 -1</div><div class="line">(empty list or set)</div><div class="line">#mykey键此时已经存在，所以该命令插入成功，并返回链表中当前元素的数量。</div><div class="line">redis 127.0.0.1:6379&gt; lpushx mykey e</div><div class="line">(integer) 5</div><div class="line">#获取该键的List Value的头部元素。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 0</div><div class="line">1) &quot;e&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>LPOP/LLEN:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; lpush mykey a b c d</div><div class="line">(integer) 4</div><div class="line">redis 127.0.0.1:6379&gt; lpop mykey</div><div class="line">&quot;d&quot;</div><div class="line">redis 127.0.0.1:6379&gt; lpop mykey</div><div class="line">&quot;c&quot;</div><div class="line">#在执行lpop命令两次后，链表头部的两个元素已经被弹出，此时链表中元素的数量是2</div><div class="line">redis 127.0.0.1:6379&gt; llen mykey</div><div class="line">(integer) 2</div></pre></td></tr></table></figure>
+</li>
+<li><p>LREM/LSET/LINDEX/LTRIM:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">#为后面的示例准备测试数据。</div><div class="line">redis 127.0.0.1:6379&gt; lpush mykey a b c d a c</div><div class="line">(integer) 6</div><div class="line">#从头部(left)向尾部(right)变量链表，删除2个值等于a的元素，返回值为实际删除的数量。</div><div class="line">redis 127.0.0.1:6379&gt; lrem mykey 2 a</div><div class="line">(integer) 2</div><div class="line">#看出删除后链表中的全部元素。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;c&quot;</div><div class="line">2) &quot;d&quot;</div><div class="line">3) &quot;c&quot;</div><div class="line">4) &quot;b&quot;</div><div class="line">#获取索引值为1(头部的第二个元素)的元素值。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 1</div><div class="line">&quot;d&quot;</div><div class="line">#将索引值为1(头部的第二个元素)的元素值设置为新值e。</div><div class="line">redis 127.0.0.1:6379&gt; lset mykey 1 e</div><div class="line">OK</div><div class="line">#查看是否设置成功。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 1</div><div class="line">&quot;e&quot;</div><div class="line">#索引值6超过了链表中元素的数量，该命令返回nil。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 6</div><div class="line">(nil)</div><div class="line">#设置的索引值6超过了链表中元素的数量，设置失败，该命令返回错误信息。</div><div class="line">redis 127.0.0.1:6379&gt; lset mykey 6 hh</div><div class="line">(error) ERR index out of range</div><div class="line">#仅保留索引值0到2之间的3个元素，注意第0个和第2个元素均被保留。</div><div class="line">redis 127.0.0.1:6379&gt; ltrim mykey 0 2</div><div class="line">OK</div><div class="line">#查看trim后的结果。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;c&quot;</div><div class="line">2) &quot;e&quot;</div><div class="line">3) &quot;c&quot;</div></pre></td></tr></table></figure>
+<ol>
+<li>LINSERT:<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#删除该键便于后面的测试。</div><div class="line">redis 127.0.0.1:6379&gt; del mykey</div><div class="line">(integer) 1</div><div class="line">#为后面的示例准备测试数据。</div><div class="line">redis 127.0.0.1:6379&gt; lpush mykey a b c d e</div><div class="line">(integer) 5</div><div class="line">#在a的前面插入新元素a1。</div><div class="line">redis 127.0.0.1:6379&gt; linsert mykey before a a1</div><div class="line">(integer) 6</div><div class="line">#查看是否插入成功，从结果看已经插入。注意lindex的index值是0-based。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 0</div><div class="line">&quot;e&quot;</div><div class="line">#在e的后面插入新元素e2，从返回结果看已经插入成功。</div><div class="line">redis 127.0.0.1:6379&gt; linsert mykey after e e2</div><div class="line">(integer) 7</div><div class="line">#再次查看是否插入成功。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 1</div><div class="line">&quot;e2&quot;</div><div class="line">#在不存在的元素之前或之后插入新元素，该命令操作失败，并返回-1。</div><div class="line">redis 127.0.0.1:6379&gt; linsert mykey after k a</div><div class="line">(integer) -1</div><div class="line">#为不存在的Key插入新元素，该命令操作失败，返回0。</div><div class="line">redis 127.0.0.1:6379&gt; linsert mykey1 after a a2</div><div class="line">(integer) 0</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>RPUSH/RPUSHX/RPOP/RPOPLPUSH:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">#删除该键，以便于后面的测试。</div><div class="line">redis 127.0.0.1:6379&gt; del mykey</div><div class="line">(integer) 1</div><div class="line">#从链表的尾部插入参数中给出的values，插入顺序是从左到右依次插入。</div><div class="line">redis 127.0.0.1:6379&gt; rpush mykey a b c d</div><div class="line">(integer) 4</div><div class="line">#通过lrange的可以获悉rpush在插入多值时的插入顺序。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;a&quot;</div><div class="line">2) &quot;b&quot;</div><div class="line">3) &quot;c&quot;</div><div class="line">4) &quot;d&quot;</div><div class="line">#该键已经存在并且包含4个元素，rpushx命令将执行成功，并将元素e插入到链表的尾部。</div><div class="line">redis 127.0.0.1:6379&gt; rpushx mykey e</div><div class="line">(integer) 5</div><div class="line">#通过lindex命令可以看出之前的rpushx命令确实执行成功，因为索引值为4的元素已经是新元素了。</div><div class="line">redis 127.0.0.1:6379&gt; lindex mykey 4</div><div class="line">&quot;e&quot;</div><div class="line">#由于mykey2键并不存在，因此该命令不会插入数据，其返回值为0。</div><div class="line">redis 127.0.0.1:6379&gt; rpushx mykey2 e</div><div class="line">(integer) 0</div><div class="line">#在执行rpoplpush命令前，先看一下mykey中链表的元素有哪些，注意他们的位置关系。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;a&quot;</div><div class="line">2) &quot;b&quot;</div><div class="line">3) &quot;c&quot;</div><div class="line">4) &quot;d&quot;</div><div class="line">5) &quot;e&quot;</div><div class="line">#将mykey的尾部元素e弹出，同时再插入到mykey2的头部(原子性的完成这两步操作)。</div><div class="line">redis 127.0.0.1:6379&gt; rpoplpush mykey mykey2</div><div class="line">&quot;e&quot;</div><div class="line">#通过lrange命令查看mykey在弹出尾部元素后的结果。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;a&quot;</div><div class="line">2) &quot;b&quot;</div><div class="line">3) &quot;c&quot;</div><div class="line">4) &quot;d&quot;</div><div class="line">#通过lrange命令查看mykey2在插入元素后的结果。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey2 0 -1</div><div class="line">1) &quot;e&quot;</div><div class="line">#将source和destination设为同一键，将mykey中的尾部元素移到其头部。</div><div class="line">redis 127.0.0.1:6379&gt; rpoplpush mykey mykey</div><div class="line">&quot;d&quot;</div><div class="line">#查看移动结果。</div><div class="line">redis 127.0.0.1:6379&gt; lrange mykey 0 -1</div><div class="line">1) &quot;d&quot;</div><div class="line">2) &quot;a&quot;</div><div class="line">3) &quot;b&quot;</div><div class="line">4) &quot;c&quot;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="链表结构的小技巧"><a href="#链表结构的小技巧" class="headerlink" title="链表结构的小技巧"></a>链表结构的小技巧</h3><p>&ensp;&ensp; 针对链表结构的Value，Redis在其官方文档中给出了一些实用技巧，如RPOPLPUSH命令，下面给出具体的解释。<br>&ensp;&ensp; Redis链表经常会被用于消息队列的服务，以完成多程序之间的消息交换。假设一个应用程序正在执行LPUSH操作向链表中添加新的元素，我们通常将这样的程序称之为”生产者(Producer)”，而另外一个应用程序正在执行RPOP操作从链表中取出元素，我们称这样的程序为”消费者(Consumer)”。如果此时，消费者程序在取出消息元素后立刻崩溃，由于该消息已经被取出且没有被正常处理，那么我们就可以认为该消息已经丢失，由此可能会导致业务数据丢失，或业务状态的不一致等现象的发生。然而通过使用RPOPLPUSH命令，消费者程序在从主消息队列中取出消息之后再将其插入到备份队列中，直到消费者程序完成正常的处理逻辑后再将该消息从备份队列中删除。同时我们还可以提供一个守护进程，当发现备份队列中的消息过期时，可以重新将其再放回到主消息队列中，以便其它的消费者程序继续处理。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Redis </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Redis学习--String数据类型]]></title>
+      <url>/2017/10/30/Redis/Redis%E5%AD%A6%E4%B9%A0-String%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+      <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&ensp;&ensp;字符串类型是Redis中最为基础的数据存储类型，它在Redis中是二进制安全的，这便意味着该类型可以接受任何格式的数据，如JPEG图像数据或Json对象描述信息等。在Redis中字符串类型的Value最多可以容纳的数据长度是512M。<br><a id="more"></a></p>
+<h3 id="相关命令列表"><a href="#相关命令列表" class="headerlink" title="相关命令列表"></a>相关命令列表</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">命令原型</th>
+<th style="text-align:center">时间复杂度</th>
+<th style="text-align:center">命令描述</th>
+<th style="text-align:center">返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">APPEND key value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">如果该Key已经存在，APPEND命令将参数Value的数据追加到已存在Value的末尾。如果该Key不存在，APPEND命令将会创建一个新的Key/Value。</td>
+<td style="text-align:center">追加后Value的长度。</td>
+</tr>
+<tr>
+<td style="text-align:center">DECR key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">将指定Key的Value原子性的递减1。如果该Key不存在，其初始值为0，在decr之后其值为-1。如果Value的值不能转换为整型值，如Hello，该操作将执行失败并返回相应的错误信息。注意：该操作的取值范围是64位有符号整型。</td>
+<td style="text-align:center">递减后的Value值。</td>
+</tr>
+<tr>
+<td style="text-align:center">INCR key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">将指定Key的Value原子性的递增1。如果该Key不存在，其初始值为0，在incr之后其值为1。如果Value的值不能转换为整型值，如Hello，该操作将执行失败并返回相应的错误信息。注意：该操作的取值范围是64位有符号整型。</td>
+<td style="text-align:center">递增后的Value值。</td>
+</tr>
+<tr>
+<td style="text-align:center">DECRBY key decrement</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">将指定Key的Value原子性的减少decrement。如果该Key不存在，其初始值为0，在decrby之后其值为-decrement。如果Value的值不能转换为整型值，如Hello，该操作将执行失败并返回相应的错误信息。注意：该操作的取值范围是64位有符号整型。</td>
+<td style="text-align:center">减少后的Value值。</td>
+</tr>
+<tr>
+<td style="text-align:center">INCRBY key increment</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">将指定Key的Value原子性的增加increment。如果该Key不存在，其初始值为0，在incrby之后其值为increment。如果Value的值不能转换为整型值，如Hello，该操作将执行失败并返回相应的错误信息。注意：该操作的取值范围是64位有符号整型。</td>
+<td style="text-align:center">增加后的Value值。</td>
+</tr>
+<tr>
+<td style="text-align:center">GET key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">获取指定Key的Value。如果与该Key关联的Value不是string类型，Redis将返回错误信息，因为GET命令只能用于获取string Value。</td>
+<td style="text-align:center">与该Key相关的Value，如果该Key不存在，返回nil。</td>
+</tr>
+<tr>
+<td style="text-align:center">SET key value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">原子性的设置该Key为指定的Value，同时返回该Key的原有值。和GET命令一样，该命令也只能处理string Value，否则Redis将给出相关的错误信息。</td>
+<td style="text-align:center">返回该Key的原有值，如果该Key之前并不存在，则返回nil。</td>
+</tr>
+<tr>
+<td style="text-align:center">STRLEN key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回指定Key的字符值长度，如果Value不是string类型，Redis将执行失败并给出相关的错误信息。</td>
+<td style="text-align:center">返回指定Key的Value字符长度，如果该Key不存在，返回0。</td>
+</tr>
+<tr>
+<td style="text-align:center">SETEX key seconds value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">原子性完成两个操作，一是设置该Key的值为指定字符串，同时设置该Key在Redis服务器中的存活时间(秒数)。该命令主要应用于Redis被当做Cache服务器使用时。</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">SETNX key value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">如果指定的Key不存在，则设定该Key持有指定字符串Value，此时其效果等价于SET命令。相反，如果该Key已经存在，该命令将不做任何操作并返回。</td>
+<td style="text-align:center">1表示设置成功，否则0。</td>
+</tr>
+<tr>
+<td style="text-align:center">SETRANGE key offset value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">替换指定Key的部分字符串值。从offset开始，替换的长度为该命令第三个参数value的字符串长度，其中如果offset的值大于该Key的原有值Value的字符串长度，Redis将会在Value的后面补齐(offset - strlen(value))数量的0x00，之后再追加新值。如果该键不存在，该命令会将其原值的长度假设为0，并在其后添补offset个0x00后再追加新值。鉴于字符串Value的最大长度为512M，因此offset的最大值为536870911。最后需要注意的是，如果该命令在执行时致使指定Key的原有值长度增加，这将会导致Redis重新分配足够的内存以容纳替换后的全部字符串，因此就会带来一定的性能折损。</td>
+<td style="text-align:center">修改后的字符串Value长度。</td>
+</tr>
+<tr>
+<td style="text-align:center">GETRANGE key start end</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">如果截取的字符串长度很短，我们可以该命令的时间复杂度视为O(1)，否则就是O(N)，这里N表示截取的子字符串长度。该命令在截取子字符串时，将以闭区间的方式同时包含start(0表示第一个字符)和end所在的字符，如果end值超过Value的字符长度，该命令将只是截取从start开始之后所有的字符数据。</td>
+<td style="text-align:center">子字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">SETBIT key offset value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">设置在指定Offset上BIT的值，该值只能为1或0，在设定后该命令返回该Offset上原有的BIT值。如果指定Key不存在，该命令将创建一个新值，并在指定的Offset上设定参数中的BIT值。如果Offset大于Value的字符长度，Redis将拉长Value值并在指定Offset上设置参数中的BIT值，中间添加的BIT值为0。最后需要说明的是Offset值必须大于0</td>
+<td style="text-align:center">在指定Offset上的BIT原有值。</td>
+</tr>
+<tr>
+<td style="text-align:center">GETBIT key offset</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回在指定Offset上BIT的值，0或1。如果Offset超过string value的长度，该命令将返回0，所以对于空字符串始终返回0。</td>
+<td style="text-align:center">在指定Offset上的BIT值。</td>
+</tr>
+<tr>
+<td style="text-align:center">MGET key [key …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">N表示获取Key的数量。返回所有指定Keys的Values，如果其中某个Key不存在，或者其值不为string类型，该Key的Value将返回nil。</td>
+<td style="text-align:center">返回一组指定Keys的Values的列表。</td>
+</tr>
+<tr>
+<td style="text-align:center">MSET key value [key value …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">N表示指定Key的数量。该命令原子性的完成参数中所有key/value的设置操作，其具体行为可以看成是多次迭代执行SET命令。</td>
+<td style="text-align:center">该命令不会失败，始终返回OK。</td>
+</tr>
+<tr>
+<td style="text-align:center">MSETNX key value [key value …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">N表示指定Key的数量。该命令原子性的完成参数中所有key/value的设置操作，其具体行为可以看成是多次迭代执行SETNX命令。然而这里需要明确说明的是，如果在这一批Keys中有任意一个Key已经存在了，那么该操作将全部回滚，即所有的修改都不会生效。</td>
+<td style="text-align:center">1表示所有Keys都设置成功，0则表示没有任何Key被修改</td>
+</tr>
+</tbody>
+</table>
+<h3 id="命令示例"><a href="#命令示例" class="headerlink" title="命令示例"></a>命令示例</h3><ol>
+<li><p>SET/GET/APPEND/STRLEN:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/&gt; redis-cli   #执行Redis客户端工具。</div><div class="line">redis 127.0.0.1:6379&gt; exists mykey                   #判断该键是否存在，存在返回1，否则返回0。</div><div class="line">(integer) 0</div><div class="line">redis 127.0.0.1:6379&gt; append mykey &quot;hello&quot;      #该键并不存在，因此append命令返回当前Value的长度。</div><div class="line">(integer) 5</div><div class="line">redis 127.0.0.1:6379&gt; append mykey &quot; world&quot;    #该键已经存在，因此返回追加后Value的长度。</div><div class="line">(integer) 11</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                      #通过get命令获取该键，以判断append的结果。</div><div class="line">&quot;hello world&quot;</div><div class="line">redis 127.0.0.1:6379&gt; set mykey &quot;this is a test&quot; #通过set命令为键设置新值，并覆盖原有值。</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; get mykey</div><div class="line">&quot;this is a test&quot;</div><div class="line">redis 127.0.0.1:6379&gt; strlen mykey                  #获取指定Key的字符长度，等效于C库中strlen函数。</div><div class="line">(integer) 14</div></pre></td></tr></table></figure>
+</li>
+<li><p>INCR/DECR/INCRBY/DECRBY:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; set mykey 20     #设置Key的值为20</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; incr mykey         #该Key的值递增1</div><div class="line">(integer) 21</div><div class="line">redis 127.0.0.1:6379&gt; decr mykey        #该Key的值递减1</div><div class="line">(integer) 20</div><div class="line">redis 127.0.0.1:6379&gt; del mykey          #删除已有键。</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; decr mykey        #对空值执行递减操作，其原值被设定为0，递减后的值为-1</div><div class="line">(integer) -1</div><div class="line">redis 127.0.0.1:6379&gt; del mykey   </div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; incr mykey        #对空值执行递增操作，其原值被设定为0，递增后的值为1</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; set mykey hello #将该键的Value设置为不能转换为整型的普通字符串。</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; incr mykey        #在该键上再次执行递增操作时，Redis将报告错误信息。</div><div class="line">(error) ERR value is not an integer or out of range</div><div class="line">redis 127.0.0.1:6379&gt; set mykey 10</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; decrby mykey 5 </div><div class="line">(integer) 5</div><div class="line">redis 127.0.0.1:6379&gt; incrby mykey 10</div><div class="line">(integer) 15</div></pre></td></tr></table></figure>
+</li>
+<li><p>GETSET：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; incr mycounter      #将计数器的值原子性的递增1</div><div class="line">(integer) 1</div><div class="line">#在获取计数器原有值的同时，并将其设置为新值，这两个操作原子性的同时完成。</div><div class="line">redis 127.0.0.1:6379&gt; getset mycounter 0  </div><div class="line">&quot;1&quot;</div><div class="line">redis 127.0.0.1:6379&gt; get mycounter       #查看设置后的结果。</div><div class="line">&quot;0&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>SETEX:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; setex mykey 10 &quot;hello&quot;   #设置指定Key的过期时间为10秒。</div><div class="line">OK    </div><div class="line">#通过ttl命令查看一下指定Key的剩余存活时间(秒数)，0表示已经过期，-1表示永不过期。</div><div class="line">redis 127.0.0.1:6379&gt; ttl mykey                       </div><div class="line">(integer) 4</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                      #在该键的存活期内我们仍然可以获取到它的Value。</div><div class="line">&quot;hello&quot;</div><div class="line">redis 127.0.0.1:6379&gt; ttl mykey                        #该ttl命令的返回值显示，该Key已经过期。</div><div class="line">(integer) 0</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                      #获取已过期的Key将返回nil。</div><div class="line">(nil)</div></pre></td></tr></table></figure>
+</li>
+<li><p>SETNX:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; del mykey                      #删除该键，以便于下面的测试验证。</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; setnx mykey &quot;hello&quot;        #该键并不存在，因此该命令执行成功。</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; setnx mykey &quot;world&quot;       #该键已经存在，因此本次设置没有产生任何效果。</div><div class="line">(integer) 0</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                      #从结果可以看出，返回的值仍为第一次设置的值。</div><div class="line">&quot;hello&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>SETRANGE/GETRANGE:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; set mykey &quot;hello world&quot;       #设定初始值。</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; setrange mykey 6 dd          #从第六个字节开始替换2个字节(dd只有2个字节)</div><div class="line">(integer) 11</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                         #查看替换后的值。</div><div class="line">&quot;hello ddrld&quot;</div><div class="line">redis 127.0.0.1:6379&gt; setrange mykey 20 dd        #offset已经超过该Key原有值的长度了，该命令将会在末尾补0。</div><div class="line">(integer) 22</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                           #查看补0后替换的结果。</div><div class="line">&quot;hello ddrld\x00\x00\x00\x00\x00\x00\x00\x00\x00dd&quot;</div><div class="line">redis 127.0.0.1:6379&gt; del mykey                         #删除该Key。</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; setrange mykey 2 dd         #替换空值。</div><div class="line">(integer) 4</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                        #查看替换空值后的结果。</div><div class="line">&quot;\x00\x00dd&quot;   </div><div class="line">redis 127.0.0.1:6379&gt; set mykey &quot;0123456789&quot;   #设置新值。</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; getrange mykey 1 2      #截取该键的Value，从第一个字节开始，到第二个字节结束。</div><div class="line">&quot;12&quot;</div><div class="line">redis 127.0.0.1:6379&gt; getrange mykey 1 20   #20已经超过Value的总长度，因此将截取第一个字节后面的所有字节。</div><div class="line">&quot;123456789&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>SETBIT/GETBIT:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; del mykey</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; setbit mykey 7 1       #设置从0开始计算的第七位BIT值为1，返回原有BIT值0</div><div class="line">(integer) 0</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                #获取设置的结果，二进制的0000 0001的十六进制值为0x01</div><div class="line">&quot;\x01&quot;</div><div class="line">redis 127.0.0.1:6379&gt; setbit mykey 6 1       #设置从0开始计算的第六位BIT值为1，返回原有BIT值0</div><div class="line">(integer) 0</div><div class="line">redis 127.0.0.1:6379&gt; get mykey                #获取设置的结果，二进制的0000 0011的十六进制值为0x03</div><div class="line">&quot;\x03&quot;</div><div class="line">redis 127.0.0.1:6379&gt; getbit mykey 6          #返回了指定Offset的BIT值。</div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; getbit mykey 10        #Offset已经超出了value的长度，因此返回0。</div><div class="line">(integer) 0</div></pre></td></tr></table></figure>
+</li>
+<li><p>MSET/MGET/MSETNX:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">redis 127.0.0.1:6379&gt; mset key1 &quot;hello&quot; key2 &quot;world&quot;   #批量设置了key1和key2两个键。</div><div class="line">OK</div><div class="line">redis 127.0.0.1:6379&gt; mget key1 key2                        #批量获取了key1和key2两个键的值。</div><div class="line">1) &quot;hello&quot;</div><div class="line">2) &quot;world&quot;</div><div class="line">#批量设置了key3和key4两个键，因为之前他们并不存在，所以该命令执行成功并返回1。</div><div class="line">redis 127.0.0.1:6379&gt; msetnx key3 &quot;stephen&quot; key4 &quot;liu&quot; </div><div class="line">(integer) 1</div><div class="line">redis 127.0.0.1:6379&gt; mget key3 key4                   </div><div class="line">1) &quot;stephen&quot;</div><div class="line">2) &quot;liu&quot;</div><div class="line">#批量设置了key3和key5两个键，但是key3已经存在，所以该命令执行失败并返回0。</div><div class="line">redis 127.0.0.1:6379&gt; msetnx key3 &quot;hello&quot; key5 &quot;world&quot; </div><div class="line">(integer) 0</div><div class="line">#批量获取key3和key5，由于key5没有设置成功，所以返回nil。</div><div class="line">redis 127.0.0.1:6379&gt; mget key3 key5                   </div><div class="line">1) &quot;stephen&quot;</div><div class="line">2) (nil)</div></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> Redis </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[servlet的9大内置对象]]></title>
       <url>/2017/10/28/servlet%E7%9A%849%E5%A4%A7%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1/</url>
       <content type="html"><![CDATA[<table>
@@ -99,9 +397,9 @@
     
     <entry>
       <title><![CDATA[Linux常用命令（简）]]></title>
-      <url>/2017/10/24/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+      <url>/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
-<h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a><a href="https://omg-by.github.io/1900/01/01/ls/" title="ls详细介绍" target="_blank" rel="external">ls命令</a></h3><p>&ensp;&ensp;查看当前目录下的目录、文件等及其相应权限。<br>&ensp;&ensp;命令格式： ls [选项] 目录</p>
+<h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/ls/" title="ls详细介绍" target="_blank" rel="external">ls命令</a></h3><p>&ensp;&ensp;查看当前目录下的目录、文件等及其相应权限。<br>&ensp;&ensp;命令格式： ls [选项] 目录</p>
 <h3 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h3><p>&ensp;&ensp;查看当前工作目录的完整路径。<br>&ensp;&ensp;pwd [选项]</p>
 <h3 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h3><p>&ensp;&ensp;创建一个指定的名称的目录，要求创建目录的用户具有权限且该目录名不存在。<br>&ensp;&ensp;mkdir [选项]目录<br><a id="more"></a></p>
 <h3 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h3><p>&ensp;&ensp;删除一个目录中的一个或多个文件或目录。<br>&ensp;&ensp;rm [选项] 文件或目录</p>
@@ -473,7 +771,7 @@
     
     <entry>
       <title><![CDATA[51nod1085-----01背包]]></title>
-      <url>/2016/03/27/51nod1085-----01%E8%83%8C%E5%8C%85/</url>
+      <url>/2016/03/27/ACM/51nod1085-----01%E8%83%8C%E5%8C%85/</url>
       <content type="html"><![CDATA[<p>在N件物品取出若干件放在容量为W的背包里，每件物品的体积为W1，W2……Wn（Wi为整数），与之相对应的价值为P1,P2……Pn（Pi为整数）。求背包能够容纳的最大价值。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> dp[<span class="number">101</span>][<span class="number">10001</span>];</div><div class="line"><span class="keyword">int</span> w[<span class="number">101</span>],p[<span class="number">101</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,W,i,j;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;W);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;w[i],&amp;p[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=W;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(j&lt;w[i])</div><div class="line">                dp[i][j]=dp[i<span class="number">-1</span>][j];</div><div class="line">            <span class="keyword">else</span></div><div class="line">                dp[i][j]=max(dp[i<span class="number">-1</span>][j],dp[i<span class="number">-1</span>][j-w[i]]+p[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[n][W]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
       
@@ -486,9 +784,9 @@
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 背包 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -496,7 +794,7 @@
     
     <entry>
       <title><![CDATA[51nod1046快速幂取余]]></title>
-      <url>/2016/03/26/51nod1046%E5%BF%AB%E9%80%9F%E5%B9%82%E5%8F%96%E4%BD%99/</url>
+      <url>/2016/03/26/ACM/51nod1046%E5%BF%AB%E9%80%9F%E5%B9%82%E5%8F%96%E4%BD%99/</url>
       <content type="html"><![CDATA[<p>给出3个正整数A B C，求A^B Mod C。</p>
 <p>例如，3 5 8，3^5 Mod 8 = 3。<br>Input<br>3个正整数A B C，中间用空格分隔。(1 &lt;= A,B,C &lt;= 10^9)<br>Output<br>输出计算结果<br>Input示例<br>3 5 8<br>Output示例<br>3</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#include&lt;stdio.h&gt;</div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span>  <span class="title">quickmod</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a,<span class="keyword">long</span> <span class="keyword">long</span> b,<span class="keyword">long</span> <span class="keyword">long</span> m)</span></span>&#123;</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans=<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(b)&#123;</div><div class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</div><div class="line">            ans=(ans*a)%m;<span class="comment">//这里a是a^(2^i)%m</span></div><div class="line">            b--;</div><div class="line">        &#125;</div><div class="line">        b/=<span class="number">2</span>;</div><div class="line">        a=a*a%m;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> a,b,m;</div><div class="line">    <span class="keyword">while</span>(scanf(<span class="string">"%d%d%d"</span>,&amp;a,&amp;b,&amp;m)!=EOF)&#123;</div><div class="line">      <span class="keyword">long</span> <span class="keyword">long</span>   ans=quickmod(a,b,m);</div><div class="line">        printf(<span class="string">"%lld"</span>,ans);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
@@ -510,9 +808,9 @@
         
         <tags>
             
-            <tag> 快速幂 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 快速幂 </tag>
             
         </tags>
         
@@ -520,7 +818,7 @@
     
     <entry>
       <title><![CDATA[51nod贪心算法入门-----任务分配问题]]></title>
-      <url>/2016/03/21/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98/</url>
+      <url>/2016/03/21/ACM/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>任务执行顺序</p>
 <p>有N个任务需要执行，第i个任务计算时占R[i]个空间，而后会释放一部分，最后储存计算结果需要占据O[i]个空间（O[i] &lt; R[i]）。</p>
 <p>分析：可以抽象成，从一个整数开始，每次减去a，再加上b (a,b都是正数)，要求每次操作都不产生负数。令a[i] = R[i], b[i] = R[i] – O[i]，O[i] &lt; R[i],有0&lt;b[i]&lt;a[i]。 所以尽管每次有减有加，但是加的没有减的多，总数在不断减小。所以——按照b[i]递增的顺序排序，是最“有利”的。</p>
@@ -547,7 +845,7 @@
     
     <entry>
       <title><![CDATA[51nod动态规划-----矩阵取数]]></title>
-      <url>/2016/03/21/51nod%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E7%9F%A9%E9%98%B5%E5%8F%96%E6%95%B0/</url>
+      <url>/2016/03/21/ACM/51nod%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E7%9F%A9%E9%98%B5%E5%8F%96%E6%95%B0/</url>
       <content type="html"><![CDATA[<p>一个N<em>N矩阵中有不同的正整数，经过这个格子，就能获得相应价值的奖励，从左上走到右下，只能向下向右走，求能够获得的最大价值。<br>例如：3 </em> 3的方格。</p>
 <p>1 3 3</p>
 <p>2 1 3</p>
@@ -588,7 +886,7 @@
     
     <entry>
       <title><![CDATA[51nod贪心算法入门-----独木舟问题]]></title>
-      <url>/2016/03/20/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E7%8B%AC%E6%9C%A8%E8%88%9F%E9%97%AE%E9%A2%98/</url>
+      <url>/2016/03/20/ACM/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E7%8B%AC%E6%9C%A8%E8%88%9F%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>独木舟问题</p>
 <p>n个人，已知每个人体重，独木舟承重固定，每只独木舟最多坐两个人，可以坐一个人或者两个人。显然要求总重量不超过独木舟承重，假设每个人体重也不超过独木舟承重，问最少需要几只独木舟？</p>
 <p>分析：按照人的体重排序，最轻的人跟最重的人尽量安排在一条船上，如果超过就安排最重的.<br><a id="more"></a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m;</div><div class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;m)==<span class="number">2</span>)&#123;</div><div class="line">        <span class="keyword">int</span> i,j,ans=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> a[<span class="number">10001</span>];</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</div><div class="line">        &#125;</div><div class="line">        sort(a,a+n);</div><div class="line">        j=n<span class="number">-1</span>;</div><div class="line">        i=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</div><div class="line">            <span class="keyword">if</span>(a[i]+a[j]&lt;=m)&#123;</div><div class="line">                ans++;</div><div class="line">                i++;</div><div class="line">                j--;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span>&#123;</div><div class="line">                ans++;</div><div class="line">                j--;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(i==j)</div><div class="line">            ans++;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -613,7 +911,7 @@
     
     <entry>
       <title><![CDATA[51nod贪心算法入门-----活动安排问题2]]></title>
-      <url>/2016/03/17/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E6%B4%BB%E5%8A%A8%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%982/</url>
+      <url>/2016/03/17/ACM/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E6%B4%BB%E5%8A%A8%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%982/</url>
       <content type="html"><![CDATA[<p>题目大意就是给几个活动，问要几个教室能够弄完。</p>
 <p>这个题目的想法就是把活动的开始——结束的时间看做是数轴上的一段线段，教室的个数就是在某点的时间厚度，求最大的时间厚度就是所需要的教室个数。<br><a id="more"></a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">   <span class="keyword">int</span> start;</div><div class="line">   <span class="keyword">int</span> end;</div><div class="line">&#125;s[<span class="number">10001</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *a,<span class="keyword">const</span> <span class="keyword">void</span> *b)</span><span class="comment">//结构体的一级排序</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> (*(node*)a).start&gt;(*(node*)b).start?<span class="number">1</span>:<span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//data.txt","r",stdin);</span></div><div class="line"><span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> n,i,rooms=<span class="number">0</span>;</div><div class="line">     priority_queue&lt;<span class="keyword">int</span>,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt; myqueue;<span class="comment">//优先队列类型</span></div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;s[i].start,&amp;s[i].end);</div><div class="line">    qsort(s,n,<span class="keyword">sizeof</span>(node),cmp);</div><div class="line">    myqueue.push(s[<span class="number">0</span>].end);</div><div class="line">    rooms=<span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(s[i].start&lt;myqueue.top())&#123;</div><div class="line">            rooms++;</div><div class="line">            myqueue.push(s[i].end);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">            myqueue.pop();</div><div class="line">            myqueue.push(s[i].end);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,rooms);</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
@@ -637,7 +935,7 @@
     
     <entry>
       <title><![CDATA[51nod贪心算法入门-----活动安排问题]]></title>
-      <url>/2016/03/05/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E6%B4%BB%E5%8A%A8%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/</url>
+      <url>/2016/03/05/ACM/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E6%B4%BB%E5%8A%A8%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>有若干个活动，第i个开始时间和结束时间是[Si,fi)，只有一个教室，活动之间不能交叠，求最多安排多少个活动？</p>
 <p>输入</p>
 <p>第1行：1个数N，线段的数量(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行2个数，线段的起点和终点(-10^9 &lt;= S,E &lt;= 10^9)<br>输出</p>
@@ -671,7 +969,7 @@
     
     <entry>
       <title><![CDATA[51nod贪心算法入门-----完美字符串]]></title>
-      <url>/2016/03/04/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E5%AE%8C%E7%BE%8E%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+      <url>/2016/03/04/ACM/51nod%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8-%E5%AE%8C%E7%BE%8E%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
       <content type="html"><![CDATA[<p>约翰认为字符串的完美度等于它里面所有字母的完美度之和。每个字母的完美度可以由你来分配，不同字母的完美度不同，分别对应一个1-26之间的整数。</p>
 <p>约翰不在乎字母大小写。（也就是说字母F和f）的完美度相同。给定一个字符串，输出它的最大可能的完美度。例如：dad，你可以将26分配给d，25分配给a，这样整个字符串完美度为77。</p>
 <p>//这题水题，只要把每个字母出现的次数统计出来然后再排序一下就OK了。<br><a id="more"></a></p>
@@ -696,7 +994,7 @@
     
     <entry>
       <title><![CDATA[ls命令]]></title>
-      <url>/1900/01/01/ls/</url>
+      <url>/1900/01/01/Linux/ls/</url>
       <content type="html"><![CDATA[<p>&ensp;&ensp;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印当前目录的清单，如果你是指定其他目录，那么就会显示指定目录里的文件及文件夹清单。通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限（包括目录、文件夹、文件权限），查看目录信息等等。</p>
 <h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>ls 【选项】【目录名】</p>
 <h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;列出目标目录中所有的子目录和文件。</p>
