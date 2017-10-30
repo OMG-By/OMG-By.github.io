@@ -133,8 +133,7 @@
 <td style="text-align:center">RPOP key</td>
 <td style="text-align:center">O(1)</td>
 <td style="text-align:center">返回并弹出指定Key关联的链表中的最后一个元素，即尾部元素，。如果该Key不存，返回nil</td>
-<td style="text-align:center"></td>
-<td>链表尾部的元素</td>
+<td style="text-align:center">链表尾部的元素</td>
 </tr>
 <tr>
 <td style="text-align:center">RPOPLPUSH source destination</td>
@@ -1001,7 +1000,7 @@
       <url>/1900/01/01/Linux/ls/</url>
       <content type="html"><![CDATA[<p>&ensp;&ensp;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印当前目录的清单，如果你是指定其他目录，那么就会显示指定目录里的文件及文件夹清单。通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限（包括目录、文件夹、文件权限），查看目录信息等等。</p>
 <h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>ls 【选项】【目录名】</p>
-<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;列出目标目录中所有的子目录和文件。</p>
+<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;列出目标目录中所有的子目录和文件。<br><a id="more"></a></p>
 <h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><ul>
 <li>-a , -all 列出，目录下的所有文件，包括以 <strong>.</strong> 开头的隐含文件</li>
 <li>-A , 同-a，但不列出“.”（表示当前目录）和“..”（表示当前目录的父目录）</li>
@@ -1070,7 +1069,7 @@
       <url>/1900/01/01/Linux/cd/</url>
       <content type="html"><![CDATA[<p>&ensp;&ensp;cd命令可以说是Linux中最基本的命令语句，其他命令要进行操作，都是建立在使用cd命令上的。</p>
 <h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>cd [目录名]</p>
-<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;切换当前目录到dirName</p>
+<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;切换当前目录到dirName<br><a id="more"></a></p>
 <h3 id="常用范例"><a href="#常用范例" class="headerlink" title="常用范例"></a>常用范例</h3><hr>
 <h4 id="例1：进入系统根目录"><a href="#例1：进入系统根目录" class="headerlink" title="例1：进入系统根目录"></a>例1：进入系统根目录</h4><p>cd /</p>
 <hr>
