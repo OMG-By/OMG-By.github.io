@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Sorted-Sets%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
+    
+    <lastmod>2017-10-31T04:55:40.842Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Hashs%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    
+    <lastmod>2017-10-31T01:59:54.384Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Set%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    
+    <lastmod>2017-10-31T01:39:55.041Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/05/27/ACM/51nod1269%20B%E5%90%9B%E7%9A%84%E5%9C%86%E9%94%A5/</loc>
     
     <lastmod>2017-10-30T15:51:23.551Z</lastmod>

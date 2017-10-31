@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="51nod," />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="1174 区间中最大的数基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注给出一个有N个数的序列，编号0 - N - 1。进行Q次查询，查询编号i至j的所有数中，最大的数是多少。例如: 1 7 6 3 1。i = 1, j = 3，对应的数为7 6 3，最大的数为7。（该问题也被称为RMQ问题）Input第1行：1个数N，表示序列的长度。(2 &amp;lt;= N">
-<meta name="keywords" content="51nod">
+<meta name="description" content="概述&amp;ensp;&amp;ensp;我们可以将Redis中的Hashes类型看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="51nod1174区间中最大的数">
-<meta property="og:url" content="http://yoursite.com/2016/04/05/ACM/51nod1174区间中最大的数/index.html">
+<meta property="og:title" content="Redis学习--Hashs数据结构">
+<meta property="og:url" content="http://yoursite.com/2017/10/31/Redis/Redis学习--Hashs数据结构/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="1174 区间中最大的数基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注给出一个有N个数的序列，编号0 - N - 1。进行Q次查询，查询编号i至j的所有数中，最大的数是多少。例如: 1 7 6 3 1。i = 1, j = 3，对应的数为7 6 3，最大的数为7。（该问题也被称为RMQ问题）Input第1行：1个数N，表示序列的长度。(2 &amp;lt;= N">
+<meta property="og:description" content="概述&amp;ensp;&amp;ensp;我们可以将Redis中的Hashes类型看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-30T15:41:51.924Z">
+<meta property="og:updated_time" content="2017-10-31T01:59:54.384Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="51nod1174区间中最大的数">
-<meta name="twitter:description" content="1174 区间中最大的数基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注给出一个有N个数的序列，编号0 - N - 1。进行Q次查询，查询编号i至j的所有数中，最大的数是多少。例如: 1 7 6 3 1。i = 1, j = 3，对应的数为7 6 3，最大的数为7。（该问题也被称为RMQ问题）Input第1行：1个数N，表示序列的长度。(2 &amp;lt;= N">
+<meta name="twitter:title" content="Redis学习--Hashs数据结构">
+<meta name="twitter:description" content="概述&amp;ensp;&amp;ensp;我们可以将Redis中的Hashes类型看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。">
 
 
 
@@ -136,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/04/05/ACM/51nod1174区间中最大的数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/31/Redis/Redis学习--Hashs数据结构/"/>
 
 
 
 
 
-  <title>51nod1174区间中最大的数 | OMG_By</title>
+  <title>Redis学习--Hashs数据结构 | OMG_By</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/05/ACM/51nod1174区间中最大的数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/31/Redis/Redis学习--Hashs数据结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -330,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">51nod1174区间中最大的数</h1>
+          <h1 class="post-title" itemprop="name headline">Redis学习--Hashs数据结构</h1>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-05T20:14:16+08:00">
-                2016-04-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-31T09:46:18+08:00">
+                2017-10-31
               </time>
             
 
@@ -365,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -407,10 +407,100 @@
       
 
       
-        <p>1174 区间中最大的数<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出一个有N个数的序列，编号0 - N - 1。进行Q次查询，查询编号i至j的所有数中，最大的数是多少。<br>例如: 1 7 6 3 1。i = 1, j = 3，对应的数为7 6 3，最大的数为7。（该问题也被称为RMQ问题）<br>Input<br>第1行：1个数N，表示序列的长度。(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行1个数，对应序列中的元素。(0 &lt;= S[i] &lt;= 10^9)<br>第N + 2行：1个数Q，表示查询的数量。(2 &lt;= Q &lt;= 10000)<br>第N + 3 - N + Q + 2行：每行2个数，对应查询的起始编号i和结束编号j。(0 &lt;= i &lt;= j &lt;= N - 1)<br>Output<br>共Q行，对应每一个查询区间的最大值。<br>Input示例<br>5<br>1<br>7<br>6<br>3<br>1<br>3<br>0 1<br>1 3<br>3 4<br>Output示例<br>7<br>7<br>3</p>
-<p>自己写的O（n）的也能水过，特地去看了一下RMQ算法~</p>
-<p>然后就变成O（logn)了</p>
-<p>参考博客<a href="http://blog.csdn.net/liang5630/article/details/7917702" target="_blank" rel="external">http://blog.csdn.net/liang5630/article/details/7917702</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> dp[<span class="number">10010</span>][<span class="number">30</span>],num[<span class="number">10010</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">RMQ_init</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,j;</div><div class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</div><div class="line">        dp[i][<span class="number">0</span>]=num[i];</div><div class="line">    <span class="keyword">for</span>(j=<span class="number">1</span>;(<span class="number">1</span>&lt;&lt;j)&lt;=n;j++)&#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i+(<span class="number">1</span>&lt;&lt;j<span class="number">-1</span>)&lt;n;i++)</div><div class="line">        dp[i][j]=max(dp[i][j<span class="number">-1</span>],dp[i+(<span class="number">1</span>&lt;&lt;j<span class="number">-1</span>)][j<span class="number">-1</span>]);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">RMQ</span><span class="params">(<span class="keyword">int</span> L,<span class="keyword">int</span> R)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>((<span class="number">1</span>&lt;&lt;(k+<span class="number">1</span>))&lt;=R-L+<span class="number">1</span>) ++k;</div><div class="line">    <span class="keyword">return</span> max(dp[L][k],dp[R-(<span class="number">1</span>&lt;&lt;k)+<span class="number">1</span>][k]);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m,i,j;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;num[i]);</div><div class="line">        RMQ_init(n);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;m);</div><div class="line">        <span class="keyword">int</span> L,R;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=m;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;L,&amp;R);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,RMQ(L+<span class="number">1</span>,R+<span class="number">1</span>));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&ensp;&ensp;我们可以将Redis中的Hashes类型看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。<br><a id="more"></a></p>
+<h3 id="相关命令列表"><a href="#相关命令列表" class="headerlink" title="相关命令列表"></a>相关命令列表</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">命令原型</th>
+<th style="text-align:center">时间复杂度</th>
+<th style="text-align:center">命令描述</th>
+<th style="text-align:center">返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">HSET key field value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">为指定的Key设定Field/Value对，如果Key不存在，该命令将创建新Key以参数中的Field/Value对，如果参数中的Field在该Key中已经存在，则用新值覆盖其原有值。</td>
+<td style="text-align:center">1表示新的Field被设置了新值，0表示Field已经存在，用新值覆盖原有值。</td>
+</tr>
+<tr>
+<td style="text-align:center">HGET key field</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">返回指定Key中指定Field的关联值。</td>
+<td style="text-align:center">返回参数中Field的关联值，如果参数中的Key或Field不存，返回nil。</td>
+</tr>
+<tr>
+<td style="text-align:center">HEXISTS key field</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">判断指定Key中的指定Field是否存在。</td>
+<td style="text-align:center">1表示存在，0表示参数中的Field或Key不存在。</td>
+</tr>
+<tr>
+<td style="text-align:center">HLEN key</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">获取该Key所包含的Field的数量。</td>
+<td style="text-align:center">返回Key包含的Field数量，如果Key不存在，返回0。</td>
+</tr>
+<tr>
+<td style="text-align:center">HDEL key field [field …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示参数中待删除的字段数量。从指定Key的Hashes Value中删除参数中指定的多个字段，如果不存在的字段将被忽略。如果Key不存在，则将其视为空Hashes，并返回0.</td>
+<td style="text-align:center">实际删除的Field数量。</td>
+</tr>
+<tr>
+<td style="text-align:center">HSETNX key field value</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">只有当参数中的Key或Field不存在的情况下，为指定的Key设定Field/Value对，否则该命令不会进行任何操作。</td>
+<td style="text-align:center">1表示新的Field被设置了新值，0表示Key或Field已经存在，该命令没有进行任何操作。</td>
+</tr>
+<tr>
+<td style="text-align:center">HINCRBY key field increment</td>
+<td style="text-align:center">O(1)</td>
+<td style="text-align:center">增加指定Key中指定Field关联的Value的值。如果Key或Field不存在，该命令将会创建一个新Key或新Field，并将其关联的Value初始化为0，之后再指定数字增加的操作。该命令支持的数字是64位有符号整型，即increment可以负数。</td>
+<td style="text-align:center">返回运算后的值。</td>
+</tr>
+<tr>
+<td style="text-align:center">HGETALL key</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示Key包含的Field数量。获取该键包含的所有Field/Value。其返回格式为一个Field、一个Value，并以此类推。</td>
+<td style="text-align:center">Field/Value的列表。</td>
+</tr>
+<tr>
+<td style="text-align:center">HKEYS key</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示Key包含的Field数量。返回指定Key的所有Fields名</td>
+<td style="text-align:center">Field的列表。</td>
+</tr>
+<tr>
+<td style="text-align:center">HVALS key</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示Key包含的Field数量。返回指定Key的所有Values名。</td>
+<td style="text-align:center">Value的列表。</td>
+</tr>
+<tr>
+<td style="text-align:center">HMGET key field [field …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示请求的Field数量。获取和参数中指定Fields关联的一组Values。如果请求的Field不存在，其值返回nil。如果Key不存在，该命令将其视为空Hash，因此返回一组nil。</td>
+<td style="text-align:center">返回和请求Fields关联的一组Values，其返回顺序等同于Fields的请求顺序。</td>
+</tr>
+<tr>
+<td style="text-align:center">HMSET key field value [field value …]</td>
+<td style="text-align:center">O(N)</td>
+<td style="text-align:center">时间复杂度中的N表示被设置的Field数量。逐对依次设置参数中给出的Field/Value对。如果其中某个Field已经存在，则用新值覆盖原有值。如果Key不存在，则创建新Key，同时设定参数中的Field/Value。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="命令示例"><a href="#命令示例" class="headerlink" title="命令示例"></a>命令示例</h3><ol>
+<li><p>LPUSH/LPUSHX/LRANGE:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">#在Shell命令行启动Redis客户端程序</div><div class="line">/&gt; redis-cli</div><div class="line">#给键值为myhash的键设置字段为field1，值为stephen。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset myhash field1 <span class="string">"stephen"</span></div><div class="line">(integer) <span class="number">1</span></div><div class="line">#获取键值为myhash，字段为field1的值。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hget myhash field1</div><div class="line"><span class="string">"stephen"</span></div><div class="line"><span class="meta">#myhash键中不存在field2字段，因此返回nil。</span></div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hget myhash field2</div><div class="line">(nil)</div><div class="line">#给myhash关联的Hashes值添加一个新的字段field2，其值为liu。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset myhash field2 <span class="string">"liu"</span></div><div class="line">(integer) <span class="number">1</span></div><div class="line">#获取myhash键的字段数量。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hlen myhash</div><div class="line">(integer) <span class="number">2</span></div><div class="line">#判断myhash键中是否存在字段名为field1的字段，由于存在，返回值为<span class="number">1</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hexists myhash field1</div><div class="line">(integer) <span class="number">1</span></div><div class="line">#删除myhash键中字段名为field1的字段，删除成功返回<span class="number">1</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hdel myhash field1</div><div class="line">(integer) <span class="number">1</span></div><div class="line">#再次删除myhash键中字段名为field1的字段，由于上一条命令已经将其删除，因为没有删除，返回<span class="number">0</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hdel myhash field1</div><div class="line">(integer) <span class="number">0</span></div><div class="line">#判断myhash键中是否存在field1字段，由于上一条命令已经将其删除，因为返回<span class="number">0</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hexists myhash field1</div><div class="line">(integer) <span class="number">0</span></div><div class="line">#通过hsetnx命令给myhash添加新字段field1，其值为stephen，因为该字段已经被删除，所以该命令添加成功并返回<span class="number">1</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hsetnx myhash field1 stephen</div><div class="line">(integer) <span class="number">1</span></div><div class="line">#由于myhash的field1字段已经通过上一条命令添加成功，因为本条命令不做任何操作后返回<span class="number">0</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hsetnx myhash field1 stephen</div><div class="line">(integer) <span class="number">0</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>HINCRBY：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#删除该键，便于后面示例的测试。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; del myhash</div><div class="line">(integer) <span class="number">1</span></div><div class="line">#准备测试数据，该myhash的field字段设定值<span class="number">1</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset myhash field <span class="number">5</span></div><div class="line">(integer) <span class="number">1</span></div><div class="line">#给myhash的field字段的值加<span class="number">1</span>，返回加后的结果。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hincrby myhash field <span class="number">1</span></div><div class="line">(integer) <span class="number">6</span></div><div class="line">#给myhash的field字段的值加<span class="number">-1</span>，返回加后的结果。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hincrby myhash field <span class="number">-1</span></div><div class="line">(integer) <span class="number">5</span></div><div class="line">#给myhash的field字段的值加<span class="number">-10</span>，返回加后的结果。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hincrby myhash field <span class="number">-10</span></div><div class="line">(integer) <span class="number">-5</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>HGETALL/HKEYS/HVALS/HMGET/HMSET:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">#删除该键，便于后面示例测试。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; del myhash</div><div class="line">(integer) <span class="number">1</span></div><div class="line">#为该键myhash，一次性设置多个字段，分别是field1 = <span class="string">"hello"</span>, field2 = <span class="string">"world"</span>。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hmset myhash field1 <span class="string">"hello"</span> field2 <span class="string">"world"</span></div><div class="line">OK</div><div class="line">#获取myhash键的多个字段，其中field3并不存在，因为在返回结果中与该字段对应的值为nil。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hmget myhash field1 field2 field3</div><div class="line"><span class="number">1</span>) <span class="string">"hello"</span></div><div class="line"><span class="number">2</span>) <span class="string">"world"</span></div><div class="line"><span class="number">3</span>) (nil)</div><div class="line">#返回myhash键的所有字段及其值，从结果中可以看出，他们是逐对列出的。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hgetall myhash</div><div class="line"><span class="number">1</span>) <span class="string">"field1"</span></div><div class="line"><span class="number">2</span>) <span class="string">"hello"</span></div><div class="line"><span class="number">3</span>) <span class="string">"field2"</span></div><div class="line"><span class="number">4</span>) <span class="string">"world"</span></div><div class="line">#仅获取myhash键中所有字段的名字。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hkeys myhash</div><div class="line"><span class="number">1</span>) <span class="string">"field1"</span></div><div class="line"><span class="number">2</span>) <span class="string">"field2"</span></div><div class="line">#仅获取myhash键中所有字段的值。</div><div class="line">redis <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hvals myhash</div><div class="line"><span class="number">1</span>) <span class="string">"hello"</span></div><div class="line"><span class="number">2</span>) <span class="string">"world"</span></div></pre></td></tr></table></figure></li>
+</ol>
 
       
     </div>
@@ -428,7 +518,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/51nod/" rel="tag"># 51nod</a>
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
           
         </div>
       
@@ -441,8 +531,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/31/ACM/51nod1134 最长递增子序列/" rel="next" title="51nod1134 最长递增子序列">
-                <i class="fa fa-chevron-left"></i> 51nod1134 最长递增子序列
+              <a href="/2017/10/31/Redis/Redis学习--Set数据结构/" rel="next" title="Redis学习--Set数据类型">
+                <i class="fa fa-chevron-left"></i> Redis学习--Set数据类型
               </a>
             
           </div>
@@ -451,8 +541,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/04/08/ACM/51nod1242 斐波那契数列 矩阵快速幂/" rel="prev" title="51nod1242 斐波那契数列 矩阵快速幂">
-                51nod1242 斐波那契数列 矩阵快速幂 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/31/Redis/Redis学习--Sorted-Sets数据类型/" rel="prev" title="Redis学习--Hashs数据结构">
+                Redis学习--Hashs数据结构 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -505,8 +595,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -619,6 +718,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关命令列表"><span class="nav-number">2.</span> <span class="nav-text">相关命令列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令示例"><span class="nav-number">3.</span> <span class="nav-text">命令示例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
