@@ -309,6 +309,451 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/21/ActionContext/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/21/ActionContext/" itemprop="url">ActionContext</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T20:14:16+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="ActionContext"><a href="#ActionContext" class="headerlink" title="ActionContext"></a><center>ActionContext</center></h3><p>&ensp;&ensp;ActionContext是Action的上下文，Struct2自动在其中保存了一些在Action执行过程中所需的对象，比如session、parameters、locale等。Struts2会根据每个执行HTTp请求的线程来创建对应的ActionContext，即一个线程只有一个唯一的ActionContext。因此，使用者可以使用静态方法ActionContext.getContext&#40;&#41;来获取当前线程的ActionContext，也正是由于这个原因，使用者不用去操心让Action是线程安全的。</p>
+<p>&ensp;&ensp;无论如何，ActionContext都是用来存放数据的。Struts2本身会在其中放入不少数据，而使用者也可以放入自己想要的数据。ActionContext本身的数据结构是映射结构，即一个Map，用key来映射value。所以使用者完全可以像使用Map一样来使用它，或者直接使用Action.getContextMap&#40;&#41;方法来对Map进行操作。</p>
+<p>&ensp;&ensp;Struts2本身在其中放入的数据有Actionlnvocation、application&#40;即ServletContext&#41;、conversionErrors、Locale、action的name、request的参数、HTTP的Session以及值栈等。完整的列表请参考它的Javadoc。</p>
+<p>&ensp;&ensp;由于ActionContext的线程唯一和静态方法就能获得的特性，使得在非Action类中可以直接获得它，而不需要等待Action传入或注入。<font color="#DC143C">需要注意的是，它仅在由于request而创建的线程中有效&#40;因为request时才创建对应的ActionContext&#41;，而在服务器启动的线程中&#40;比如fliter的init方法&#41;无效。</font>由于在非Action类中访问其的方便性，ActionContext也可以用来在非Action类中向JSP传递数据&#40;因为JSP也能很方便的访问它&#41;。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/21/ActionContext/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/20/Java虚拟机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/20/Java虚拟机/" itemprop="url">Java内存区域</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:22:31+08:00">
+                2017-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h1><h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p><img src="http://ocx5m3vc3.bkt.clouddn.com/JVM_1.jpg" alt=""><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/20/Java虚拟机/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/static/" itemprop="url">static</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:59:26+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-基础知识/" itemprop="url" rel="index">
+                    <span itemprop="name">C++基础知识</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用:"></a>static的作用:</h1><h2 id="不考虑类"><a href="#不考虑类" class="headerlink" title="不考虑类"></a>不考虑类</h2><h3 id="第一个作用：隐藏"><a href="#第一个作用：隐藏" class="headerlink" title="第一个作用：隐藏"></a>第一个作用：隐藏</h3><p>&ensp;&ensp;当我们同时编译多个文件时，所有未加static前缀的<strong>全局变量</strong>和<strong>函数</strong>都具有全局可见性。</p>
+<p>&ensp;&ensp;如果加了static，就会对其他源文件隐藏，利用这一特性可以在不同的文件中定义同名函数和同名变量，而不必担心命名冲突。</p>
+<hr>
+<ul>
+<li>static可以用作函数和变量的前缀，对于函数来讲，static的作用仅限于隐藏，而对于变量，static还有下面两个作用
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/18/static/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/虚函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -411,6 +856,154 @@
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/小软件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/小软件/" itemprop="url">软件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:46:12+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/软件/" itemprop="url" rel="index">
+                    <span itemprop="name">软件</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>各种杂七杂八的软件：</p>
+<ul>
+<li><a href="http://pan.baidu.com/s/1jIvLufG" target="_blank" rel="external">Mybatis逆向工程Jar包</a></li>
+<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="external">Windows FX</a></li>
+<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="external">Myeclipse</a></li>
+<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="external">Kali系统</a></li>
+</ul>
+
+          
         
       
     </div>
@@ -753,7 +1346,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Spring工作流程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/SpringMVC工作流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -772,7 +1365,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/Spring工作流程/" itemprop="url">Spring工作流程</a></h1>
+                <a class="post-title-link" href="/2017/10/18/SpringMVC工作流程/" itemprop="url">SpringMVC工作流程</a></h1>
         
 
         <div class="post-meta">
@@ -848,7 +1441,7 @@
           <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Spring_Running_1.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/18/Spring工作流程/#more" rel="contents">
+            <a class="btn" href="/2017/10/18/SpringMVC工作流程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1177,593 +1770,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/27/ACM/51nod1269 B君的圆锥/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/27/ACM/51nod1269 B君的圆锥/" itemprop="url">51nod1269 B君的圆锥</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-27T20:14:16+08:00">
-                2016-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1629 B君的圆锥<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 10 难度：2级算法题<br> 收藏<br> 关注<br>B君要用一个表面积为S的圆锥将白山云包起来。</p>
-<p>B君希望包住的白山云体积尽量大，B君想知道体积最大可以是多少。</p>
-<p>注意圆锥的表面积包括底面和侧面。<br>Input<br>一行一个整数，表示表面积S。(1 &lt;= S &lt;= 10^9)<br>Output<br>一行一个实数，表示体积。<br>Input示例<br>8<br>Output示例<br>1.504506<br>wwwwodddd (题目提供者)<br>拿到这道题的第一想法就是写出面积体积关系，然后再找关系。<br>大神们说这道题的标准做法是用三分法~可以作为渣渣的我并不会—-以后学了再来补上。<br>不过群巨给了另一种数学建模的思想：<br>  　　 要达成面积/体积最佳比，则模型样式是一致的。可以按比例缩放的。以放大2倍为例：<br>　　   R=r<em>2<br>　　　S=S底+S侧=2^2</em>s底+2^2<em>s底=2^2s<br>　　　V=1/3</em>S底<em>H=1/3</em>2^2s底<em>2</em>h=2^3v<br>~简直奇妙~~又让渣渣我学到一招~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">pow</span><span class="params">(<span class="keyword">double</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>(n*n*n);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> s;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;s))&#123;</div><div class="line">        <span class="keyword">double</span> v;</div><div class="line">        v = (<span class="keyword">double</span>)<span class="number">1.504506</span>*<span class="built_in">pow</span>(s/<span class="number">8.0</span>);</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%lf\n"</span>,v);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/16/ACM/51nod 1021 石头归并/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/16/ACM/51nod 1021 石头归并/" itemprop="url">51nod 1021 石头归并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-16T20:14:16+08:00">
-                2016-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1021 石子归并<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 20 难度：3级算法题<br> 收藏<br> 关注<br>N堆石子摆成一条线。现要将石子有次序地合并成一堆。规定每次只能选相邻的2堆石子合并成新的一堆，并将新的一堆石子数记为该次合并的代价。计算将N堆石子合并成一堆的最小代价。</p>
-<p>例如： 1 2 3 4，有不少合并方法<br>1 2 3 4 =&gt; 3 3 4(3) =&gt; 6 4(9) =&gt; 10(19)<br>1 2 3 4 =&gt; 1 5 4(5) =&gt; 1 9(14) =&gt; 10(24)<br>1 2 3 4 =&gt; 1 2 7(7) =&gt; 3 7(10) =&gt; 10(20)</p>
-<p>括号里面为总代价可以看出，第一种方法的代价最低，现在给出n堆石子的数量，计算最小合并代价。</p>
-<p>Input<br>第1行：N（2 &lt;= N &lt;= 100)<br>第2 - N + 1：N堆石子的数量（1 &lt;= A[i] &lt;= 10000)<br>Output<br>输出最小合并代价<br>Input示例<br>4<br>1<br>2<br>3<br>4<br>Output示例<br>19<br>这道题初一看很容易往贪心方向想，后来看了提示才知道是dp，可是并不知道怎么dp。。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;</div><div class="line"><span class="keyword">int</span> sum[<span class="number">1005</span>];</div><div class="line"><span class="keyword">int</span> vis[<span class="number">1005</span>];</div><div class="line"><span class="keyword">int</span> dp[<span class="number">1005</span>][<span class="number">1005</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        <span class="keyword">int</span> i,len,temp;</div><div class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));</div><div class="line">        <span class="built_in">memset</span>(sum,<span class="number">0</span>,<span class="keyword">sizeof</span>(sum));</div><div class="line">        <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;vis[i]);</div><div class="line">            sum[i]=sum[i<span class="number">-1</span>]+vis[i];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(len=<span class="number">1</span>;len&lt;n;len++)&#123;</div><div class="line">            <span class="keyword">for</span>(i=<span class="number">1</span>;i+len&lt;=n;i++)&#123;</div><div class="line">                dp[i][i + len] = INF;</div><div class="line">                temp=sum[i+len]-sum[i<span class="number">-1</span>];</div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k=i;k&lt;i+len;k++)</div><div class="line">                    dp[i][i+len]=min(dp[i][i+len],dp[i][k]+dp[k+<span class="number">1</span>][i+len]+temp);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[<span class="number">1</span>][n]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/09/ACM/51nod1417 天堂里的游戏/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/09/ACM/51nod1417 天堂里的游戏/" itemprop="url">51nod1417 天堂里的游戏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T20:14:16+08:00">
-                2016-05-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1417 天堂里的游戏<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 10 难度：2级算法题<br> 收藏<br> 关注<br>多年后，每当Noder看到吉普赛人，就会想起那个遥远的下午。</p>
-<p>Noder躺在草地上漫无目的的张望，二楼的咖啡馆在日光下闪着亮，像是要进化成一颗巨大的咖啡豆。天气稍有些冷，但草还算暖和。不远的地方坐着一个吉普赛姑娘，手里拿着塔罗牌，带着耳机，边上是她的狗。狗看起来有点凶，姑娘却漂亮。Noder开始计算各种搭讪方式的成功概率，然而狗的存在……。</p>
-<p>奇怪的事情发生了，姑娘自己走了过来，把耳机戴在Noder的耳朵上，里面播放着：“……Knock-knock-knockin’ on heaven’s door ……”。姑娘冲他诡异的一笑，Noder只觉得自己眼前一阵眩晕，然后就站在了天堂的门口。</p>
-<p>正当Noder惊魂未定的时候，走来一个美女，要求和他一起玩个数学游戏。美女提议：“让我们各自亮出硬币的一面，或正或反。如果我们都是正面，那么我给你A元，如果我们都是反面，我给你B元（A + B为偶数）。剩下的情况你给我（A + B） / 2元就可以了。</p>
-<p>Noder知道这个游戏他多半要输，可他并不在乎，他只想让自己输的慢一点。</p>
-<p>那么你来帮美女计算一下，她选择出正面的概率应该是多少（以最简分数形式输出）？</p>
-<p>当Noder输光了钱后从草地上醒来，吉普赛姑娘已经不见了，只留下了这样一张塔罗牌，上面印有那个美女的照片。<br><img src="http://img.51nod.com/upload/000FBECA/08D271A9F742E9BE0000000000000008.jpeg?_=5474275" alt=""></p>
-<p>关于样例的解释：</p>
-<p>美女采取了(3/8,5/8)这个方案，不论Noder采用什么方案，都是不能改变局面的。如果全部出正面，每次的期望收益是 (3+3+3-2-2-2-2-2)/8=-1/8元；如果全部出反面，每次的期望收益也是(-2-2-2+1+1+1+1+1)/8=-1/8元。而任何策略无非只是上面两种策略的线性组合，所以期望还是-1/8元。</p>
-<p>Input<br>第1行：一个数T，表示后面用作输入测试的数的数量（1 &lt;= T &lt;= 20)。<br>第2 - T + 1行：每行2个数A, B中间用空格分隔。(1 &lt;= A, B &lt;= 10^9，且A + B为偶数)。<br>Output<br>输出共T行，对应美女选择正面的概率，以最简分数形式输出，具体请参看输出样例。<br>Input示例<br>2<br>3 1<br>1 3<br>Output示例<br>3/8<br>5/8<br>PS: 给的提示标签是博弈论，结果是个数学问题；<br> 不管是正是反，女的赢的几率都是一样的，所以左边的式子设正面为x，右边的式子设反面为x，写出期望，然后两边相等，就可以列方程了，然后最大公约数用辗转相乘法弄一下就出来了<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</div><div class="line"><span class="function">LL <span class="title">gcd</span><span class="params">(LL a,LL b)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> b==<span class="number">0</span> ? a : gcd(b,a%b);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> t;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t))&#123;</div><div class="line">        <span class="keyword">while</span>(t--)&#123;</div><div class="line">            LL a,b;</div><div class="line">            LL x,y;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%I64d%I64d"</span>,&amp;a,&amp;b);</div><div class="line">            x=a+<span class="number">3</span>*b;</div><div class="line">            y=<span class="number">4</span>*(a+b);</div><div class="line">            LL t=gcd(x,y);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%I64d/%I64d\n"</span>,x/t,y/t);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/11/ACM/51nod1265四点共面/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/04/11/ACM/51nod1265四点共面/" itemprop="url">51nod1265四点共面</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T20:14:16+08:00">
-                2016-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1265 四点共面<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出三维空间上的四个点（点与点的位置均不相同），判断这4个点是否在同一个平面内（4点共线也算共面）。如果共面，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - 4T + 1行：每行4行表示一组数据，每行3个数，x, y, z, 表示该点的位置坐标(-1000 &lt;= x, y, z &lt;= 1000)。<br>Output<br>输出共T行，如果共面输出”Yes”，否则输出”No”。<br>Input示例<br>1<br>1 2 0<br>2 3 0<br>4 0 0<br>0 0 0<br>Output示例<br>Yes<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*利用四点组成构成的三个向量的混合积为0来判断是否共面*/</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></div><div class="line">    <span class="keyword">double</span> x,y,z;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> t;</div><div class="line">    point a,b,c,d;</div><div class="line">    <span class="keyword">double</span> r1,r2,r3,r4,r5,r6,r7,r8,r9;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</div><div class="line">    <span class="keyword">while</span>(t--)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;a.z);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;b.x,&amp;b.y,&amp;b.z);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;c.x,&amp;c.y,&amp;c.z);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;d.x,&amp;d.y,&amp;d.z);</div><div class="line">        r1=a.x-b.x; r2=a.y-b.y; r3=a.z-b.z;</div><div class="line">        r4=a.x-c.x; r5=a.y-c.y; r6=a.z-c.z;</div><div class="line">        r7=a.x-d.x; r8=a.y-d.y; r9=a.z-d.z;</div><div class="line">        <span class="keyword">double</span> n=r1*r5*r9+r2*r6*r7+r3*r4*r8-r3*r5*r7-r2*r4*r9-r1*r6*r8;</div><div class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>)</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</div><div class="line">        <span class="keyword">else</span></div><div class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1813,7 +1824,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1824,7 +1835,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1835,7 +1846,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
