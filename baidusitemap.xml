@@ -4,6 +4,44 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Sorted-Sets%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
+    <lastmod>2017-11-08T07:38:00.544Z</lastmod>
+    <data>
+        <display>
+        <title>Redis学习--Sorted-Sets数据结构</title>
+        <pubTime>2017-10-31T04:20:18.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/11/07/CentOS%E4%B8%AD%E5%AE%89%E8%A3%85tomcat/</loc>
+    <lastmod>2017-11-07T14:48:55.481Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS中安装tomcat7</title>
+        <pubTime>2017-11-07T13:42:13.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/11/07/CentOS%E5%AE%89%E8%A3%85JDK/</loc>
     <lastmod>2017-11-07T12:55:34.041Z</lastmod>
     <data>
@@ -92,26 +130,6 @@
            
              
               <breadCrumb title="学习" url="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Sorted-Sets%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
-    <lastmod>2017-10-31T04:55:40.842Z</lastmod>
-    <data>
-        <display>
-        <title>Redis学习--Hashs数据结构</title>
-        <pubTime>2017-10-31T04:20:18.000Z</pubTime>
-        
-        <tag>Redis</tag>
-         
-         
-           
-             
-              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
           
         </display>
     </data>
