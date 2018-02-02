@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2017/11/07/CentOS%E5%AE%89%E8%A3%85JDK/</loc>
+    <loc>http://yoursite.com/2017/11/07/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     
-    <lastmod>2018-02-02T14:11:28.935Z</lastmod>
+    <lastmod>2018-02-02T14:34:33.706Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2017/11/14/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
     
-    <lastmod>2017-11-14T06:01:21.510Z</lastmod>
+    <lastmod>2018-02-02T14:33:56.806Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/11/07/CentOS%E5%AE%89%E8%A3%85JDK/</loc>
+    
+    <lastmod>2018-02-02T14:33:13.960Z</lastmod>
     
   </url>
   
@@ -26,13 +33,6 @@
     <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Sorted-Sets%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
     
     <lastmod>2017-11-08T07:38:00.544Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/11/07/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
-    
-    <lastmod>2017-11-07T12:53:12.741Z</lastmod>
     
   </url>
   
