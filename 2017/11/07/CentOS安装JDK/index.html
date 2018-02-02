@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="软件安装," />
 
 
 
@@ -95,17 +95,18 @@
 
 
 
-<meta name="description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK看到网上有的博客写的都很多，像什么要先下载rmp安装包。。。我的在云服务器上，安装包又放不进去= =最后终于找">
+<meta name="description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK123456789101112131415161718192021222324251.查看是否安装JDK	rp">
+<meta name="keywords" content="软件安装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS安装JDK和zookeeper">
+<meta property="og:title" content="CentOS安装JDK、MySQL、tomcat、zookeeper">
 <meta property="og:url" content="http://yoursite.com/2017/11/07/CentOS安装JDK/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK看到网上有的博客写的都很多，像什么要先下载rmp安装包。。。我的在云服务器上，安装包又放不进去= =最后终于找">
+<meta property="og:description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK123456789101112131415161718192021222324251.查看是否安装JDK	rp">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-07T12:55:34.041Z">
+<meta property="og:updated_time" content="2018-02-02T14:11:28.935Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CentOS安装JDK和zookeeper">
-<meta name="twitter:description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK看到网上有的博客写的都很多，像什么要先下载rmp安装包。。。我的在云服务器上，安装包又放不进去= =最后终于找">
+<meta name="twitter:title" content="CentOS安装JDK、MySQL、tomcat、zookeeper">
+<meta name="twitter:description" content="&amp;ensp;&amp;ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–&amp;ensp;&amp;ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =  云帆校园扶持计划-美团云   安装JDK123456789101112131415161718192021222324251.查看是否安装JDK	rp">
 
 
 
@@ -141,7 +142,7 @@
 
 
 
-  <title>CentOS安装JDK和zookeeper | OMG_By</title>
+  <title>CentOS安装JDK、MySQL、tomcat、zookeeper | OMG_By</title>
   
 
 
@@ -329,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CentOS安装JDK和zookeeper</h1>
+          <h1 class="post-title" itemprop="name headline">CentOS安装JDK、MySQL、tomcat、zookeeper</h1>
         
 
         <div class="post-meta">
@@ -411,13 +412,11 @@
 <li><a href="https://www.mtyun.com/activity-school?site=mos&amp;campaign=20170706sales" target="_blank" rel="external">云帆校园扶持计划-美团云</a></li>
 </ul>
 <hr>
-<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>看到网上有的博客写的都很多，像什么要先下载rmp安装包。。。<br>我的在云服务器上，安装包又放不进去= =<br>最后终于找到了解决办法</p>
-<ul>
-<li>首先    yum update</li>
-<li>然后    yum install java-1.8.0-openjdk* -y</li>
-</ul>
-<p>两步解决！简单粗暴！！<br>不过如果你之前安装过了JDK那么就得先清除。。。。<br>在执行上面操作之前先输入以下命令，查看已安装JAVA版本<br>java -version</p>
-<p>如果已经安装了，那么执行下列命令，将它们删除<br>yum remove java-1.6.0-openjdk<br>yum remove java-1.7.0-openjdk</p>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">1.查看是否安装JDK</div><div class="line">	rpm -qa|grep java</div><div class="line"></div><div class="line">2.卸载已经安装的两个openJDK</div><div class="line">	rpm -e--nodeps [要卸载的软件]</div><div class="line"></div><div class="line">3.上传JDK到Linux</div><div class="line">//安装JDK运行需要的插件 yum install glibc.i686</div><div class="line">4.解压JDK到/usr/local/目录下</div><div class="line">	tar –xvf jdk-7u71-linux-i586.tar.gz –C /usr/local</div><div class="line"></div><div class="line">5.配置JDK环境变量，将下面的配置拷贝进去</div><div class="line">	vim /etc/profile</div><div class="line"></div><div class="line">	#set java environment</div><div class="line">	JAVA_HOME=/usr/local/jdk1.7.0_71</div><div class="line">	CLASSPATH=.:$JAVA_HOME/lib.tools.jar</div><div class="line">	PATH=$JAVA_HOME/bin:$PATH</div><div class="line">	export JAVA_HOME CLASSPATH PATH </div><div class="line"></div><div class="line">6.重新加载/etc/profile配置文件</div><div class="line">	source /etc/profile</div><div class="line"></div><div class="line">测试是否安装成功</div><div class="line">	java -version</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">1.查看Centos自带的MySQL</div><div class="line">	rpm -qa|grep mysql</div><div class="line"></div><div class="line">2.卸载自带的MySQL  （rpm -e--nodeps)</div><div class="line"></div><div class="line">3.上传MySQL到Linux</div><div class="line">/*</div><div class="line">安装MySQL所需要的依赖</div><div class="line">yum -y install libaio.so.1 libgcc_s.so.1 libstdc++.so.6</div><div class="line">yum  update libstdc++-4.4.7-4.el6.x86_64</div><div class="line">*/</div><div class="line">4.解压Mysql到/usr/local/下的mysql目录(mysql目录需要手动创建)内</div><div class="line">	cd /usr/local</div><div class="line">	mkdir mysql</div><div class="line">	tar -xvf MySQL-5.6.22-1.el6.i686.rpm-bundle.tar -C /usr/local/mysql</div><div class="line">5.在/usr/local/mysql下安装mysql</div><div class="line">安装服务器端：rpm -ivh MySQL-server-5.6.22-1.el6.i686.rpm</div><div class="line">安装客户端：rpm -ivh MySQL-client-5.6.22-1.el6.i686.rpm</div><div class="line">6.启动mysql</div><div class="line">	service mysql start</div><div class="line">7.将mysql加到系统服务中并设置开机启动</div><div class="line">加入到系统服务：chkconfig --add mysql</div><div class="line">自动启动：chkconfig mysql on</div><div class="line">8.登录mysql</div><div class="line">mysql安装好后会生成一个临时随机密码，存储位置在/root/.mysql_secret</div><div class="line">9.登录后修改密码</div><div class="line">	set password = password(&apos;root&apos;);</div><div class="line">10.开启mysql的远程登录</div><div class="line">默认情况下mysql为安全起见，不支持远程登录mysql，所以需要设置开启	远程登录mysql的权限</div><div class="line">登录mysql后输入如下命令：</div><div class="line">	grant all privileges on *.* to &apos;root&apos; @&apos;%&apos; identified by &apos;root&apos;;</div><div class="line">flush privileges;</div><div class="line">11.开放Linux的对外访问的端口3306</div><div class="line">	/sbin/iptables -I INPUT -p tcp --dport 3306 -j ACCEPT</div><div class="line">	/etc/rc.d/init.d/iptables save ---将修改永久保存到防火墙中</div><div class="line"></div><div class="line">PS：后面操作数据库时发现中文会乱码。。。。</div><div class="line">-进入/etc/my.cnf文件</div><div class="line">	在[mysqld]段增加下面的代码</div><div class="line">	character-set-server=utf8</div><div class="line">	collation-server=utf8_general_ci</div><div class="line">重启mysql。</div><div class="line">/*</div><div class="line">	如果没有这个文件只需要复制一个/usr/share/mysql目录下的.cnf文件到/etc目录，并改名为my.cnf即可。</div><div class="line">*/</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h3><p><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="external">tomcat压缩包</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1.上传Tomcat到linux上</div><div class="line">2.解压Tomcat到/usr/local下</div><div class="line">3.开放Linux的对外访问的端口8080</div><div class="line">/sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT</div><div class="line">/etc/rc.d/init.d/iptables save</div><div class="line">4.启动关闭Tomcat</div><div class="line">进入tomcat的bin下启动：./startup.sh</div><div class="line">进入tomcat的bin下关闭：./shutdown.sh</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="安装zookeeper"><a href="#安装zookeeper" class="headerlink" title="安装zookeeper"></a>安装zookeeper</h3><ol>
 <li><p>创建/usr/local/zookeeper文件夹：</p>
@@ -473,6 +472,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/软件安装/" rel="tag"># 软件安装</a>
+          
+        </div>
       
 
       
@@ -598,7 +603,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -680,7 +685,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装JDK"><span class="nav-number">1.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装zookeeper"><span class="nav-number">2.</span> <span class="nav-text">安装zookeeper</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装JDK"><span class="nav-number">1.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MySQL"><span class="nav-number">2.</span> <span class="nav-text">安装MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装tomcat"><span class="nav-number">3.</span> <span class="nav-text">安装tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装zookeeper"><span class="nav-number">4.</span> <span class="nav-text">安装zookeeper</span></a></li></ol></div>
             
 
           </div>
@@ -701,7 +706,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         
-<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -4,6 +4,64 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/11/07/CentOS%E5%AE%89%E8%A3%85JDK/</loc>
+    <lastmod>2018-02-02T14:11:28.935Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS安装JDK、MySQL、tomcat、zookeeper</title>
+        <pubTime>2017-11-07T08:28:05.000Z</pubTime>
+        
+        <tag>软件安装</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/11/14/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
+    <lastmod>2017-11-14T06:01:21.510Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS中搭建redis</title>
+        <pubTime>2017-11-14T05:10:24.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</loc>
+    <lastmod>2017-11-14T04:37:14.517Z</lastmod>
+    <data>
+        <display>
+        <title>软件</title>
+        <pubTime>2017-10-18T13:46:12.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="软件" url="http://yoursite.com/categories/%E8%BD%AF%E4%BB%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/10/31/Redis/Redis%E5%AD%A6%E4%B9%A0--Sorted-Sets%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
     <lastmod>2017-11-08T07:38:00.544Z</lastmod>
     <data>
@@ -24,42 +82,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/11/07/CentOS%E4%B8%AD%E5%AE%89%E8%A3%85tomcat/</loc>
-    <lastmod>2017-11-07T14:48:55.481Z</lastmod>
-    <data>
-        <display>
-        <title>CentOS中安装tomcat7</title>
-        <pubTime>2017-11-07T13:42:13.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/11/07/CentOS%E5%AE%89%E8%A3%85JDK/</loc>
-    <lastmod>2017-11-07T12:55:34.041Z</lastmod>
-    <data>
-        <display>
-        <title>CentOS安装JDK和zookeeper</title>
-        <pubTime>2017-11-07T08:28:05.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2017/11/07/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     <lastmod>2017-11-07T12:53:12.741Z</lastmod>
     <data>
@@ -71,24 +93,6 @@
            
              
               <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</loc>
-    <lastmod>2017-11-07T12:50:25.084Z</lastmod>
-    <data>
-        <display>
-        <title>软件</title>
-        <pubTime>2017-10-18T13:46:12.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="软件" url="http://yoursite.com/categories/%E8%BD%AF%E4%BB%B6/"/>
           
         </display>
     </data>
