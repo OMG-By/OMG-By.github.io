@@ -42,9 +42,37 @@
   </entry>
   
   <entry>
+    <title>Hibernate</title>
+    <link href="http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/"/>
+    <id>http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/</id>
+    <published>2018-02-03T12:14:16.000Z</published>
+    <updated>2018-02-03T14:29:07.045Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>Hibernate框架关键词：dao层框架、以面向对象的方式操作数据库、orm思想（对象关系映射，通过映射文件配置对象和数据库中表的关系）</li></ul><p>一、Hibernate框架搭建：<br>&ensp;&ensp;&ensp;&ensp;1.导包<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;required+驱动包<br>&ensp;&ensp;&ensp;&ensp;2.准备实体类以及orm元数据<br>&ensp;&ensp;&ensp;&ensp;3.创建主配置文件<br>&ensp;&ensp;&ensp;&ensp;4.书写测试代码</p><p>二、配置文件详解：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">orm元数据(xxx.hbm.xml)</div><div class="line"></div><div class="line">&lt;hibernate-mapping package=&quot;&quot;&gt;</div><div class="line">&lt;class name table&gt;</div><div class="line">&lt;id name &gt;</div><div class="line">&lt;generator class=&quot;&quot;&gt;</div><div class="line">&lt;/id&gt;</div><div class="line">&lt;property name=&quot;&quot; /&gt;</div><div class="line">&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div><div class="line"></div><div class="line">hibernate.cfg.xml</div><div class="line"></div><div class="line">必选配置</div><div class="line">4+1方言</div><div class="line">可选配置</div><div class="line">显示sql</div><div class="line">格式化sql</div><div class="line">自动生成表</div><div class="line">|-update</div></pre></td></tr></table></figure></p><p>三、api详解：<br>&ensp;&ensp;&ensp;&ensp;Configuration 读取配置<br>&ensp;&ensp;&ensp;&ensp;sessionFactory 创建session<br>&ensp;&ensp;&ensp;&ensp;Session  获得事务操作对象，以及数据增删改查<br>&ensp;&ensp;&ensp;&ensp; Transaction 控制事务        </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;Hibernate框架关键词：dao层框架、以面向对象的方式操作数据库、orm思想（对象关系映射，通过映射文件配置对象和数据库中表的关系）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一、Hibernate框架搭建：&lt;br&gt;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;1.导
+      
+    
+    </summary>
+    
+      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS中搭建redis</title>
-    <link href="http://yoursite.com/2017/11/14/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/"/>
-    <id>http://yoursite.com/2017/11/14/CentOS中搭建redis集群/</id>
+    <link href="http://yoursite.com/2017/11/14/Redis/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/"/>
+    <id>http://yoursite.com/2017/11/14/Redis/CentOS中搭建redis集群/</id>
     <published>2017-11-14T05:10:24.000Z</published>
     <updated>2018-02-02T14:33:56.806Z</updated>
     
@@ -332,8 +360,8 @@
   
   <entry>
     <title>ActionContext</title>
-    <link href="http://yoursite.com/2017/10/21/ActionContext/"/>
-    <id>http://yoursite.com/2017/10/21/ActionContext/</id>
+    <link href="http://yoursite.com/2017/10/21/kuangjia/Struts/ActionContext/"/>
+    <id>http://yoursite.com/2017/10/21/kuangjia/Struts/ActionContext/</id>
     <published>2017-10-21T12:14:16.000Z</published>
     <updated>2017-10-28T15:08:00.529Z</updated>
     
@@ -508,8 +536,8 @@
   
   <entry>
     <title>SpringMVC工作流程</title>
-    <link href="http://yoursite.com/2017/10/18/SpringMVC%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/"/>
-    <id>http://yoursite.com/2017/10/18/SpringMVC工作流程/</id>
+    <link href="http://yoursite.com/2017/10/18/kuangjia/SpringMVC/SpringMVC%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/"/>
+    <id>http://yoursite.com/2017/10/18/kuangjia/SpringMVC/SpringMVC工作流程/</id>
     <published>2017-10-18T08:43:38.000Z</published>
     <updated>2017-11-07T12:44:18.372Z</updated>
     
@@ -525,31 +553,6 @@
     
     
       <category term="SpringMVC" scheme="http://yoursite.com/tags/SpringMVC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TCP与UDP的区别</title>
-    <link href="http://yoursite.com/2017/10/17/tcp%E4%B8%8Eudp/"/>
-    <id>http://yoursite.com/2017/10/17/tcp与udp/</id>
-    <published>2017-10-17T12:14:16.000Z</published>
-    <updated>2017-10-18T04:22:34.370Z</updated>
-    
-    <content type="html"><![CDATA[<p>1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。<br>2.TCP提供<strong>可靠</strong>的传输服务；UDP提供<strong>不可靠</strong>的传输服务。<br>3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。<br>4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。<br>5.TCP传输速度慢；UDP传输速度快。</p><p>TCP适合文件下载等传输任务，UDP适合媒体流等看中传输速度的传输任务。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。&lt;br&gt;2.TCP提供&lt;strong&gt;可靠&lt;/strong&gt;的传输服务；UDP提供&lt;strong&gt;不可靠&lt;/strong&gt;的传输服务。&lt;br&gt;3.TCP发送数据大小会受发送窗口、接
-      
-    
-    </summary>
-    
-      <category term="学习" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="计算机网络" scheme="http://yoursite.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   

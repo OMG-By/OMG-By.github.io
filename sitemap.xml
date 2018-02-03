@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/</loc>
+    
+    <lastmod>2018-02-03T14:29:07.045Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/11/07/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     
     <lastmod>2018-02-02T14:34:33.706Z</lastmod>
@@ -9,7 +16,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/11/14/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
+    <loc>http://yoursite.com/2017/11/14/Redis/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
     
     <lastmod>2018-02-02T14:33:56.806Z</lastmod>
     
@@ -37,7 +44,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/10/18/SpringMVC%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/2017/10/18/kuangjia/SpringMVC/SpringMVC%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/</loc>
     
     <lastmod>2017-11-07T12:44:18.372Z</lastmod>
     
@@ -212,7 +219,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/10/21/ActionContext/</loc>
+    <loc>http://yoursite.com/2017/10/21/kuangjia/Struts/ActionContext/</loc>
     
     <lastmod>2017-10-28T15:08:00.529Z</lastmod>
     
