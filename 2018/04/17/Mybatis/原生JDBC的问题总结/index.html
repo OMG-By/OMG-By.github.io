@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结1.数据库连接，使用时就创建，不使用">
+<meta name="description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结">
 <meta name="keywords" content="Mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="原生JDBC的问题总结">
 <meta property="og:url" content="http://yoursite.com/2018/04/17/Mybatis/原生JDBC的问题总结/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结1.数据库连接，使用时就创建，不使用">
+<meta property="og:description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-17T02:16:20.959Z">
+<meta property="og:updated_time" content="2018-04-17T06:51:10.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="原生JDBC的问题总结">
-<meta name="twitter:description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结1.数据库连接，使用时就创建，不使用">
+<meta name="twitter:description" content="JDBC编程步骤1.加载数据库驱动2.创建并获取数据库连接3.创建jdbc statement对象4.设置SQL语句5.设置SQL语句中的参数（使用preparedStatement)6.通过statement执行sql并获取结果7.对sql执行结果进行解析处理8.释放资源（resultSet、preparedStatement、connection) 问题总结">
 
 
 
@@ -408,7 +408,8 @@
 
       
         <h3 id="JDBC编程步骤"><a href="#JDBC编程步骤" class="headerlink" title="JDBC编程步骤"></a>JDBC编程步骤</h3><p>1.加载数据库驱动<br>2.创建并获取数据库连接<br>3.创建jdbc statement对象<br>4.设置SQL语句<br>5.设置SQL语句中的参数（使用preparedStatement)<br>6.通过statement执行sql并获取结果<br>7.对sql执行结果进行解析处理<br>8.释放资源（resultSet、preparedStatement、connection)</p>
-<h3 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h3><p>1.数据库连接，使用时就创建，不使用立即释放，对数据库进行频繁连接开启和关闭，造成数据库资源浪费，影响数据库性能。</p>
+<h3 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h3><a id="more"></a>
+<p>1.数据库连接，使用时就创建，不使用立即释放，对数据库进行频繁连接开启和关闭，造成数据库资源浪费，影响数据库性能。</p>
 <p>设想：使用数据库连接池管理数据库连接。</p>
 <p>2.将sql语句硬编码到java代码中，如果sql语句修改，需要重新编译java代码，不利于系统维护。</p>
 <p>设想：将SQL语句配置在xml配置文件中，即时SQL变化，不需要对java代码进行重新编译。</p>
