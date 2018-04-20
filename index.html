@@ -458,6 +458,337 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Mybatis/输入映射和输出映射/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/20/Mybatis/输入映射和输出映射/" itemprop="url">输入映射和输出映射</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T13:10:35+08:00">
+                2018-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="输入映射"><a href="#输入映射" class="headerlink" title="输入映射"></a>输入映射</h2><p>Mybatis映射文件通过<font color="red">parameterType</font>指定输入参数的类型，类型可以是  </p>
+<ul>
+<li>简单类型</li>
+<li>hashmap</li>
+<li>pojo的包装类型</li>
+</ul>
+<p>在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。<br>如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  </p>
+<p>即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。</p>
+<hr>
+<h2 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h2><p>输入映射主要有两种方式： </p>
+<ul>
+<li><font color="red">resultType</font></li>
+<li><font color="red">resultMap</font>
+
+</li>
+</ul>
+<h3 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h3><ul>
+<li>使用<font color="red">resultType</font>进行输出映射时，只有查询出来的列名和pojo中的属性名一致，才能映射成功。<ul>
+<li>列名与pojo的属性名<b>只要有一个不一致</b>就不会创建pojo对象，此时会报错。</li>
+<li>列名与pojo的属性名<b>只要有一个一致</b>就会创建一个pojo对象并返回。</li>
+</ul>
+</li>
+</ul>
+<h3 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h3><p>如果查询出来的列名和pojo的属性名不一致，可以通过定义一个resultMap对列名和属性名之间进行映射。<br>1.定义resultMap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=&quot;user&quot; id=&quot;userResultMap&quot;&gt;</div><div class="line">        &lt;!-- id表示查询结果集中唯一标识 </div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">        --&gt;</div><div class="line">        &lt;id column=&quot;id_&quot; property=&quot;id&quot;/&gt;</div><div class="line">        &lt;!-- </div><div class="line">        result：对普通名映射定义</div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">         --&gt;</div><div class="line">        &lt;result column=&quot;username_&quot; property=&quot;username&quot;/&gt;</div><div class="line"></div><div class="line">     &lt;/resultMap&gt;</div></pre></td></tr></table></figure>
+<p>2.使用resultMap作为statement的输出映射类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 使用resultMap进行输出映射</div><div class="line">        resultMap：指定定义的resultMap的id，如果这个resultMap在其它的mapper文件，前边需要加namespace</div><div class="line">        --&gt;</div><div class="line">    &lt;select id=&quot;findUserByIdResultMap&quot; parameterType=&quot;int&quot; resultMap=&quot;userResultMap&quot;&gt;</div><div class="line">        SELECT id id_,username username_ FROM USER WHERE id=#&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>使用resultMap多表查询时，可能会导致重复字段赋值错误。<br>解决方法：在查询时定义别名。resultMap中根据别名列来映射</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Mybatis/SqlMapConfig/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/20/Mybatis/SqlMapConfig/" itemprop="url">SqlMapConfig</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T11:29:14+08:00">
+                2018-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>SqlMapConfig.xml中配置的内容和顺序： </p>
+<ul>
+<li>properties(属性)</li>
+<li>settings(全局配置参数)</li>
+<li><b>typeAliases(类型别名)</b></li>
+<li><em>objectFactory(对象工厂)</em></li>
+<li><em>plugins(插件)</em></li>
+<li>environments(环境集合属性对象)  <ul>
+<li>environment(环境属性对象)<ul>
+<li>transactionManager(事务管理)</li>
+<li>dataSource(数据源)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><b>mappers(映射器）</b></li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/20/Mybatis/SqlMapConfig/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Mybatis/Mybatis-原始dao和mapper代理方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1486,306 +1817,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/14/Redis/CentOS中搭建redis集群/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/14/Redis/CentOS中搭建redis集群/" itemprop="url">CentOS中搭建redis</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T13:10:24+08:00">
-                2017-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="单机版"><a href="#单机版" class="headerlink" title="单机版"></a>单机版</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">首先安装环境：</div><div class="line">yum install gcc-c++</div><div class="line"></div><div class="line">安装步骤：</div><div class="line">1. 将Redis源码包上传到服务器</div><div class="line"></div><div class="line">2. 解压缩</div><div class="line">tar zxf redis-3.0.0.tar.gz</div><div class="line"></div><div class="line">3. 进入redis-3.0.0目录下编译</div><div class="line">make</div><div class="line"></div><div class="line">4. 安装</div><div class="line">make install PREFIX=/root/redis</div><div class="line"></div><div class="line">5.复制配置文件</div><div class="line">cp redis.conf ~/redis-3.0.0/redis.conf </div><div class="line"></div><div class="line">6.修改配置文件</div><div class="line">vim redis.conf</div><div class="line">修改    daemonize yes</div><div class="line">	</div><div class="line">7.启动</div><div class="line">./redis-server redis.conf</div><div class="line">这样redis在后端启动了</div><div class="line"></div><div class="line">8.查看</div><div class="line">ps aux|grep redis</div></pre></td></tr></table></figure>
-<hr>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/14/Redis/CentOS中搭建redis集群/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/07/Mybatis逆向工程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/07/Mybatis逆向工程/" itemprop="url">Mybatis逆向工程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T20:39:06+08:00">
-                2017-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/框架/" itemprop="url" rel="index">
-                    <span itemprop="name">框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>&ensp;&ensp;逆向工程的字面意思就是反向生成工程。<br>使用逆向工程时，需要注意的是表之间的关系无法映射出来！也就是说Mybatis的逆向工程生成的都是单表操作。</p>
-<ol>
-<li><p>Mybatis逆向工程开发文档<br><a href="http://www.mybatis.org/generator/configreference/xmlconfig.html" target="_blank" rel="external">http://www.mybatis.org/generator/configreference/xmlconfig.html</a></p>
-</li>
-<li><p>使用逆向工程生成代码有好几种方式，这里就介绍一种最简单的，Java程序生成（解释在配置中)<br>&ensp;&ensp;2.1 准备逆向工程配置文件genreatorConfig.xml,名字无所谓,只要在java程序中作为file传入就好:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;!DOCTYPE generatorConfiguration</div><div class="line">  PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</div><div class="line">  &quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</div><div class="line">&lt;generatorConfiguration&gt;</div><div class="line">    &lt;!--数据库驱动,最好不要有中文字符,不然会找不到--&gt;</div><div class="line">    &lt;classPathEntry location=&quot;F:/cache/mysql-connector-java-5.1.28-bin.jar&quot; /&gt;</div><div class="line"></div><div class="line"></div><div class="line">    &lt;context id=&quot;DB2Tables&quot;    targetRuntime=&quot;MyBatis3&quot;&gt;</div><div class="line"></div><div class="line">        &lt;commentGenerator&gt;</div><div class="line">            &lt;property name=&quot;suppressDate&quot; value=&quot;true&quot;/&gt;</div><div class="line">            &lt;property name=&quot;suppressAllComments&quot; value=&quot;true&quot;/&gt;</div><div class="line">        &lt;/commentGenerator&gt;</div><div class="line">        &lt;!--数据库链接地址账号密码--&gt;</div><div class="line">        &lt;jdbcConnection driverClass=&quot;com.mysql.jdbc.Driver&quot; connectionURL=&quot;jdbc:mysql://localhost/test&quot; userId=&quot;root&quot; password=&quot;&quot;&gt;</div><div class="line">        &lt;/jdbcConnection&gt;</div><div class="line">        &lt;javaTypeResolver&gt;</div><div class="line">            &lt;property name=&quot;forceBigDecimals&quot; value=&quot;false&quot;/&gt;</div><div class="line">        &lt;/javaTypeResolver&gt;</div><div class="line">        &lt;!--生成Model类存放位置--&gt;</div><div class="line">        &lt;javaModelGenerator targetPackage=&quot;com.leige.domain&quot; targetProject=&quot;src&quot;&gt;</div><div class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</div><div class="line">            &lt;property name=&quot;trimStrings&quot; value=&quot;true&quot;/&gt;</div><div class="line">        &lt;/javaModelGenerator&gt;</div><div class="line">        &lt;!--生成映射文件存放位置--&gt;</div><div class="line">        &lt;sqlMapGenerator targetPackage=&quot;com.leige.domain&quot; targetProject=&quot;src&quot;&gt;</div><div class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</div><div class="line">        &lt;/sqlMapGenerator&gt;</div><div class="line">        &lt;!--生成DaoMapper类存放位置--&gt;</div><div class="line">        &lt;javaClientGenerator type=&quot;XMLMAPPER&quot; targetPackage=&quot;com.leige.dao&quot; targetProject=&quot;src&quot;&gt;</div><div class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</div><div class="line">        &lt;/javaClientGenerator&gt;</div><div class="line">        &lt;!--生成对应表及类名,需要记住的一点是逆向工程无法生成关联关系,只能生成单表操作--&gt;</div><div class="line">        &lt;table tableName=&quot;student&quot; </div><div class="line">            domainObjectName=&quot;Student&quot; </div><div class="line">          &gt;&lt;/table&gt;</div><div class="line">           &lt;table tableName=&quot;teacher&quot; </div><div class="line">            domainObjectName=&quot;Teacher&quot; </div><div class="line">          &gt;&lt;/table&gt;</div><div class="line">    &lt;/context&gt;</div><div class="line">&lt;/generatorConfiguration&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/07/Mybatis逆向工程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1840,7 +1871,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

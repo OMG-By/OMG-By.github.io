@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/</loc>
+    <lastmod>2018-04-20T06:46:50.955Z</lastmod>
+    <data>
+        <display>
+        <title>输入映射和输出映射</title>
+        <pubTime>2018-04-20T05:10:35.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/20/Mybatis/SqlMapConfig/</loc>
+    <lastmod>2018-04-20T05:09:00.417Z</lastmod>
+    <data>
+        <display>
+        <title>SqlMapConfig</title>
+        <pubTime>2018-04-20T03:29:14.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/04/20/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
     <lastmod>2018-04-20T01:46:07.759Z</lastmod>
     <data>
