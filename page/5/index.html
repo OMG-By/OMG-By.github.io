@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/31/ACM/51nod1089最长回文子串V2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/05/ACM/51nod1174区间中最大的数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -328,7 +328,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/31/ACM/51nod1089最长回文子串V2/" itemprop="url">51nod1079中国剩余定理</a></h1>
+                <a class="post-title-link" href="/2016/04/05/ACM/51nod1174区间中最大的数/" itemprop="url">51nod1174区间中最大的数</a></h1>
         
 
         <div class="post-meta">
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T20:14:16+08:00">
-                2016-03-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-05T20:14:16+08:00">
+                2016-04-05
               </time>
             
 
@@ -402,10 +402,11 @@
       
         
           
-            <p>1089 最长回文子串 V2（Manacher算法）<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>回文串是指aba、abba、cccbccc、aaaa这种左右对称的字符串。<br>输入一个字符串Str，输出Str里最长回文子串的长度。</p>
-<p>Input<br>输入Str（Str的长度 &lt;= 100000)<br>Output<br>输出最长回文子串的长度L。<br>Input示例<br>daabaac<br>Output示例<br>5</p>
-<p>看到这道题才特意去看了下Manacher算法；<br>参考博客：<a href="http://blog.csdn.net/pi9nc/article/details/9251455" target="_blank" rel="external">http://blog.csdn.net/pi9nc/article/details/9251455</a><br>　　　　　<a href="http://blog.sina.com.cn/s/blog_70811e1a01014esn.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_70811e1a01014esn.html</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">int</span> p[<span class="number">200003</span>];</div><div class="line"><span class="keyword">char</span> s[<span class="number">100001</span>];</div><div class="line"><span class="keyword">char</span> str[<span class="number">200003</span>];</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pk</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> mx=<span class="number">0</span>,id=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;len;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(mx&gt;i)</div><div class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(str[i+p[i]+<span class="number">1</span>]==str[i-p[i]<span class="number">-1</span>])</div><div class="line">            p[i]++;</div><div class="line">        <span class="keyword">if</span>(p[i]+i&gt;mx)&#123;</div><div class="line">            id=i;</div><div class="line">            mx=p[i]+id;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> len,ans=<span class="number">0</span>,i,l=<span class="number">2</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</div><div class="line">    len=<span class="built_in">strlen</span>(s);</div><div class="line">    str[<span class="number">0</span>]=<span class="string">'$'</span>;</div><div class="line">    str[<span class="number">1</span>]=<span class="string">'#'</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">        str[l++]=s[i];</div><div class="line">        str[l++]=<span class="string">'#'</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//str[len]='\n';</span></div><div class="line">    pk(l);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;l;i++)</div><div class="line">        ans=max(ans,p[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <p>1174 区间中最大的数<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出一个有N个数的序列，编号0 - N - 1。进行Q次查询，查询编号i至j的所有数中，最大的数是多少。<br>例如: 1 7 6 3 1。i = 1, j = 3，对应的数为7 6 3，最大的数为7。（该问题也被称为RMQ问题）<br>Input<br>第1行：1个数N，表示序列的长度。(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行1个数，对应序列中的元素。(0 &lt;= S[i] &lt;= 10^9)<br>第N + 2行：1个数Q，表示查询的数量。(2 &lt;= Q &lt;= 10000)<br>第N + 3 - N + Q + 2行：每行2个数，对应查询的起始编号i和结束编号j。(0 &lt;= i &lt;= j &lt;= N - 1)<br>Output<br>共Q行，对应每一个查询区间的最大值。<br>Input示例<br>5<br>1<br>7<br>6<br>3<br>1<br>3<br>0 1<br>1 3<br>3 4<br>Output示例<br>7<br>7<br>3</p>
+<p>自己写的O（n）的也能水过，特地去看了一下RMQ算法~</p>
+<p>然后就变成O（logn)了</p>
+<p>参考博客<a href="http://blog.csdn.net/liang5630/article/details/7917702" target="_blank" rel="external">http://blog.csdn.net/liang5630/article/details/7917702</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> dp[<span class="number">10010</span>][<span class="number">30</span>],num[<span class="number">10010</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">RMQ_init</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,j;</div><div class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</div><div class="line">        dp[i][<span class="number">0</span>]=num[i];</div><div class="line">    <span class="keyword">for</span>(j=<span class="number">1</span>;(<span class="number">1</span>&lt;&lt;j)&lt;=n;j++)&#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>;i+(<span class="number">1</span>&lt;&lt;j<span class="number">-1</span>)&lt;n;i++)</div><div class="line">        dp[i][j]=max(dp[i][j<span class="number">-1</span>],dp[i+(<span class="number">1</span>&lt;&lt;j<span class="number">-1</span>)][j<span class="number">-1</span>]);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">RMQ</span><span class="params">(<span class="keyword">int</span> L,<span class="keyword">int</span> R)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>((<span class="number">1</span>&lt;&lt;(k+<span class="number">1</span>))&lt;=R-L+<span class="number">1</span>) ++k;</div><div class="line">    <span class="keyword">return</span> max(dp[L][k],dp[R-(<span class="number">1</span>&lt;&lt;k)+<span class="number">1</span>][k]);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m,i,j;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;num[i]);</div><div class="line">        RMQ_init(n);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;m);</div><div class="line">        <span class="keyword">int</span> L,R;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=m;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;L,&amp;R);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,RMQ(L+<span class="number">1</span>,R+<span class="number">1</span>));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
           
         
       
@@ -550,6 +551,150 @@
 <p>Input<br>第1行：1个数N，N为序列的长度(2 &lt;= N &lt;= 50000)<br>第2 - N + 1行：每行1个数，对应序列的元素(-10^9 &lt;= S[i] &lt;= 10^9)<br>Output<br>输出最长递增子序列的长度。<br>Input示例<br>8<br>5<br>1<br>6<br>8<br>2<br>4<br>5<br>10<br>Output示例<br>5<br>刚开始我想到的也是动态规划，然后自己写。提交发现超时了=.=<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">   <span class="comment">// freopen("C://Users//Administrator//Desktop//duipai2//1.txt","r",stdin);</span></div><div class="line"><span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> n,i,j,ans=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> dp[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> str[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">50005</span>;i++)</div><div class="line">        dp[i]=<span class="number">1</span>;</div><div class="line">   <span class="comment">// memset(dp,1,sizeof(dp));</span></div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lld"</span>,&amp;str[i]);</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;i;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(str[j]&lt;str[i]&amp;&amp;dp[j]&gt;=dp[i])</div><div class="line">                dp[i]=dp[j]+<span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">   <span class="comment">// for(i=1;i&lt;=n;i++)</span></div><div class="line">   <span class="comment">//     printf("%d  ",dp[i]);</span></div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">         ans=max(ans,dp[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>然后参考了网上大神的代码也是动态规划=.=但是优化了，所以AC了~~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdlib.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdio.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"algorithm"</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1e5</span>;</div><div class="line"><span class="keyword">int</span> dp[maxn];<span class="comment">//dp[i]表示递增数量i的最小值</span></div><div class="line"><span class="keyword">int</span> a[maxn];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,len=<span class="number">1</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</div><div class="line">    dp[len]=a[<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(a[i]&gt;dp[len])</div><div class="line">          dp[++len]=a[i];</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">int</span> pos=lower_bound(dp+<span class="number">1</span>,dp+len,a[i])-dp;</div><div class="line">            <span class="comment">//在dp[]找第一个&gt;=a[i]下标</span></div><div class="line">            dp[pos]=a[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> <span class="comment">//   for(int i=1;i&lt;=n;i++)</span></div><div class="line">      <span class="comment">//printf("%d  ",dp[i]);</span></div><div class="line">    <span class="comment">//printf("\n");</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,len);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
 
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/31/ACM/51nod1089最长回文子串V2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/31/ACM/51nod1089最长回文子串V2/" itemprop="url">51nod1079中国剩余定理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T20:14:16+08:00">
+                2016-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1089 最长回文子串 V2（Manacher算法）<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>回文串是指aba、abba、cccbccc、aaaa这种左右对称的字符串。<br>输入一个字符串Str，输出Str里最长回文子串的长度。</p>
+<p>Input<br>输入Str（Str的长度 &lt;= 100000)<br>Output<br>输出最长回文子串的长度L。<br>Input示例<br>daabaac<br>Output示例<br>5</p>
+<p>看到这道题才特意去看了下Manacher算法；<br>参考博客：<a href="http://blog.csdn.net/pi9nc/article/details/9251455" target="_blank" rel="external">http://blog.csdn.net/pi9nc/article/details/9251455</a><br>　　　　　<a href="http://blog.sina.com.cn/s/blog_70811e1a01014esn.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_70811e1a01014esn.html</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">int</span> p[<span class="number">200003</span>];</div><div class="line"><span class="keyword">char</span> s[<span class="number">100001</span>];</div><div class="line"><span class="keyword">char</span> str[<span class="number">200003</span>];</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pk</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> mx=<span class="number">0</span>,id=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;len;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(mx&gt;i)</div><div class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(str[i+p[i]+<span class="number">1</span>]==str[i-p[i]<span class="number">-1</span>])</div><div class="line">            p[i]++;</div><div class="line">        <span class="keyword">if</span>(p[i]+i&gt;mx)&#123;</div><div class="line">            id=i;</div><div class="line">            mx=p[i]+id;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> len,ans=<span class="number">0</span>,i,l=<span class="number">2</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</div><div class="line">    len=<span class="built_in">strlen</span>(s);</div><div class="line">    str[<span class="number">0</span>]=<span class="string">'$'</span>;</div><div class="line">    str[<span class="number">1</span>]=<span class="string">'#'</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">        str[l++]=s[i];</div><div class="line">        str[l++]=<span class="string">'#'</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//str[len]='\n';</span></div><div class="line">    pk(l);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;l;i++)</div><div class="line">        ans=max(ans,p[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           
         
       
@@ -1599,153 +1744,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/17/ACM/51nod贪心算法入门-活动安排问题2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/17/ACM/51nod贪心算法入门-活动安排问题2/" itemprop="url">51nod贪心算法入门-----活动安排问题2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-17T22:22:10+08:00">
-                2016-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>题目大意就是给几个活动，问要几个教室能够弄完。</p>
-<p>这个题目的想法就是把活动的开始——结束的时间看做是数轴上的一段线段，教室的个数就是在某点的时间厚度，求最大的时间厚度就是所需要的教室个数。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/17/ACM/51nod贪心算法入门-活动安排问题2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1800,7 +1798,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1822,7 +1820,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

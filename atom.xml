@@ -42,20 +42,51 @@
   </entry>
   
   <entry>
+    <title>phpStudy升级MySQL</title>
+    <link href="http://yoursite.com/2018/04/20/%E9%81%87%E5%88%B0%E8%BF%87%E7%9A%84%E5%9D%91/phpStudy%E5%8D%87%E7%BA%A7MySQL/"/>
+    <id>http://yoursite.com/2018/04/20/遇到过的坑/phpStudy升级MySQL/</id>
+    <published>2018-04-20T08:35:38.000Z</published>
+    <updated>2018-04-20T15:31:52.638Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天在导入别人给我的sql文件的时候，怎么也导不进去。后来才知道我用的phpStudy的SQL版本太低了。于是需要升级一下。</p><p>首先从官网下载MySql安装包<a href="https://dev.mysql.com/downloads/file/?id=467269" title="https://dev.mysql.com/downloads/file/?id=467269" target="_blank" rel="external">https://dev.mysql.com/downloads/file/?id=467269</a></p><p>步骤：<br>1.最好先备份一份原来phpStudy的MYSQL文件夹<br>2.把下载的 MySQL 压缩文件解压至 phpStudy 下的 MySQL目录，复制 my-default.ini ，重命名为 my.ini。<br>3.打开 my.ini，找到 #basedir 处编辑：  </p><pre><code>basedir = I:\phpStudy\MySQL  datadir = I:\phpStudy\MySQL\data  </code></pre>注：有任何错误都是因为以上路径配置错误导致的<a id="more"></a>4.把 MySQL 安装路径添加至系统环境变量  PATH=…….;I:\phpStudy\MySQL\bin5.在 cmd 下进入 MySQL 的 bin 目录（我的是 I:\phpStudy\MySQL\bin），执行：  初始化数据库：  <pre><code>mysqld --initialize</code></pre>  <p>安装服务：  </p><pre><code>mysqld -install</code></pre> <p>启动服务：  </p><pre><code>net start MySQL</code></pre><p>6.打开 my.ini，找到 [mysqld]，在下面添加：<br>skip-grant-tables(此参数用于忘记mysql密码)<br>此时使用 root 账号，密码处按回车即可登录。</p><p>7.修改密码：  </p><pre><code>mysql>update mysql.user set authentication_string=password('新密码') where user='root' and Host ='localhost';</code></pre>  8.刷新权限：  <pre><code>FLUSH PRIVILEGES;</code></pre>  9.注释掉 my.ini 中刚才添加的skip-grant-tables重新登录。10.更新用户信息：  <pre><code>mysql> ALTER USER USER() IDENTIFIED BY '新密码';</code></pre>11.查看 mySQL 版本：  <pre><code>mysql> select version();  +-----------+  | version() |  +-----------+  | 5.7.17 |  +-----------+  </code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天在导入别人给我的sql文件的时候，怎么也导不进去。后来才知道我用的phpStudy的SQL版本太低了。于是需要升级一下。&lt;/p&gt;
+&lt;p&gt;首先从官网下载MySql安装包&lt;a href=&quot;https://dev.mysql.com/downloads/file/?id=467269&quot; title=&quot;https://dev.mysql.com/downloads/file/?id=467269&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://dev.mysql.com/downloads/file/?id=467269&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;步骤：&lt;br&gt;1.最好先备份一份原来phpStudy的MYSQL文件夹&lt;br&gt;2.把下载的 MySQL 压缩文件解压至 phpStudy 下的 MySQL目录，复制 my-default.ini ，重命名为 my.ini。&lt;br&gt;3.打开 my.ini，找到 #basedir 处编辑：  &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;basedir = I:\phpStudy\MySQL  
+datadir = I:\phpStudy\MySQL\data  
+&lt;/code&gt;&lt;/pre&gt;
+注：有任何错误都是因为以上路径配置错误导致的
+    
+    </summary>
+    
+    
+      <category term="坑" scheme="http://yoursite.com/tags/%E5%9D%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>输入映射和输出映射</title>
     <link href="http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/"/>
     <id>http://yoursite.com/2018/04/20/Mybatis/输入映射和输出映射/</id>
     <published>2018-04-20T05:10:35.000Z</published>
-    <updated>2018-04-20T06:46:50.955Z</updated>
+    <updated>2018-04-20T06:49:44.150Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="输入映射"><a href="#输入映射" class="headerlink" title="输入映射"></a>输入映射</h2><p>Mybatis映射文件通过<font color="red">parameterType</font>指定输入参数的类型，类型可以是  </p><ul><li>简单类型</li><li>hashmap</li><li>pojo的包装类型</li></ul><p>在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。<br>如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  </p><p>即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。</p><hr><h2 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h2><p>输入映射主要有两种方式： </p><ul><li><font color="red">resultType</font></li><li><font color="red">resultMap</font></li></ul><h3 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h3><ul><li>使用<font color="red">resultType</font>进行输出映射时，只有查询出来的列名和pojo中的属性名一致，才能映射成功。<ul><li>列名与pojo的属性名<b>只要有一个不一致</b>就不会创建pojo对象，此时会报错。</li><li>列名与pojo的属性名<b>只要有一个一致</b>就会创建一个pojo对象并返回。</li></ul></li></ul><h3 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h3><p>如果查询出来的列名和pojo的属性名不一致，可以通过定义一个resultMap对列名和属性名之间进行映射。<br>1.定义resultMap</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=&quot;user&quot; id=&quot;userResultMap&quot;&gt;</div><div class="line">        &lt;!-- id表示查询结果集中唯一标识 </div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">        --&gt;</div><div class="line">        &lt;id column=&quot;id_&quot; property=&quot;id&quot;/&gt;</div><div class="line">        &lt;!-- </div><div class="line">        result：对普通名映射定义</div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">         --&gt;</div><div class="line">        &lt;result column=&quot;username_&quot; property=&quot;username&quot;/&gt;</div><div class="line"></div><div class="line">     &lt;/resultMap&gt;</div></pre></td></tr></table></figure><p>2.使用resultMap作为statement的输出映射类型</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 使用resultMap进行输出映射</div><div class="line">        resultMap：指定定义的resultMap的id，如果这个resultMap在其它的mapper文件，前边需要加namespace</div><div class="line">        --&gt;</div><div class="line">    &lt;select id=&quot;findUserByIdResultMap&quot; parameterType=&quot;int&quot; resultMap=&quot;userResultMap&quot;&gt;</div><div class="line">        SELECT id id_,username username_ FROM USER WHERE id=#&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure><h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>使用resultMap多表查询时，可能会导致重复字段赋值错误。<br>解决方法：在查询时定义别名。resultMap中根据别名列来映射</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="输入映射"><a href="#输入映射" class="headerlink" title="输入映射"></a>输入映射</h2><p>Mybatis映射文件通过<font color="red">parameterType</font>指定输入参数的类型，类型可以是  </p><ul><li>简单类型</li><li>hashmap</li><li>pojo的包装类型</li></ul><p>在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。<br>如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  </p><p>即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。</p><h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h2><p>输入映射主要有两种方式： </p><ul><li><font color="red">resultType</font></li><li><font color="red">resultMap</font></li></ul><h3 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h3><ul><li>使用<font color="red">resultType</font>进行输出映射时，只有查询出来的列名和pojo中的属性名一致，才能映射成功。<ul><li>列名与pojo的属性名<b>只要有一个不一致</b>就不会创建pojo对象，此时会报错。</li><li>列名与pojo的属性名<b>只要有一个一致</b>就会创建一个pojo对象并返回。</li></ul></li></ul><h3 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h3><p>如果查询出来的列名和pojo的属性名不一致，可以通过定义一个resultMap对列名和属性名之间进行映射。<br>1.定义resultMap</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=&quot;user&quot; id=&quot;userResultMap&quot;&gt;</div><div class="line">        &lt;!-- id表示查询结果集中唯一标识 </div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">        --&gt;</div><div class="line">        &lt;id column=&quot;id_&quot; property=&quot;id&quot;/&gt;</div><div class="line">        &lt;!-- </div><div class="line">        result：对普通名映射定义</div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">         --&gt;</div><div class="line">        &lt;result column=&quot;username_&quot; property=&quot;username&quot;/&gt;</div><div class="line"></div><div class="line">     &lt;/resultMap&gt;</div></pre></td></tr></table></figure><p>2.使用resultMap作为statement的输出映射类型</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 使用resultMap进行输出映射</div><div class="line">        resultMap：指定定义的resultMap的id，如果这个resultMap在其它的mapper文件，前边需要加namespace</div><div class="line">        --&gt;</div><div class="line">    &lt;select id=&quot;findUserByIdResultMap&quot; parameterType=&quot;int&quot; resultMap=&quot;userResultMap&quot;&gt;</div><div class="line">        SELECT id id_,username username_ FROM USER WHERE id=#&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure><h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>使用resultMap多表查询时，可能会导致重复字段赋值错误。<br>解决方法：在查询时定义别名。resultMap中根据别名列来映射</p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;h2 id=&quot;输入映射&quot;&gt;&lt;a href=&quot;#输入映射&quot; class=&quot;headerlink&quot; title=&quot;输入映射&quot;&gt;&lt;/a&gt;输入映射&lt;/h2&gt;&lt;p&gt;Mybatis映射文件通过&lt;font color=&quot;red&quot;&gt;parameterType&lt;/font&gt;指定输入参数的类型，类
-      
+      &lt;h2 id=&quot;输入映射&quot;&gt;&lt;a href=&quot;#输入映射&quot; class=&quot;headerlink&quot; title=&quot;输入映射&quot;&gt;&lt;/a&gt;输入映射&lt;/h2&gt;&lt;p&gt;Mybatis映射文件通过&lt;font color=&quot;red&quot;&gt;parameterType&lt;/font&gt;指定输入参数的类型，类型可以是  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简单类型&lt;/li&gt;
+&lt;li&gt;hashmap&lt;/li&gt;
+&lt;li&gt;pojo的包装类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。&lt;br&gt;如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  &lt;/p&gt;
+&lt;p&gt;即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。&lt;/p&gt;
+&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;
     
     </summary>
     
@@ -496,75 +527,6 @@
     
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>servlet的9大内置对象</title>
-    <link href="http://yoursite.com/2017/10/28/servlet%E7%9A%849%E5%A4%A7%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1/"/>
-    <id>http://yoursite.com/2017/10/28/servlet的9大内置对象/</id>
-    <published>2017-10-28T14:41:31.000Z</published>
-    <updated>2017-10-28T15:20:07.065Z</updated>
-    
-    <content type="html"><![CDATA[<table><thead><tr><th style="text-align:center">隐式对象</th><th style="text-align:center">说明</th></tr></thead><tbody><tr><td style="text-align:center">request</td><td style="text-align:center">转译后的HttpServletRquest/ServletRequest对象</td></tr><tr><td style="text-align:center">response</td><td style="text-align:center">转译后对应HttpServletRespons/ServletResponse对象</td></tr><tr><td style="text-align:center">session</td><td style="text-align:center">转译后对应HttpSession对象</td></tr><tr><td style="text-align:center">application</td><td style="text-align:center">转译后对应ServletContext对象</td></tr><tr><td style="text-align:center">out</td><td style="text-align:center">转译后对应JspWriter对象，其内部关联一个PringWriter对象</td></tr><tr><td style="text-align:center">page</td><td style="text-align:center">转译后对应this</td></tr><tr><td style="text-align:center">config</td><td style="text-align:center">转译后对应ServletConfig对象</td></tr><tr><td style="text-align:center">exception</td><td style="text-align:center">转译后对应Throwable对象，代表由其他JSP页面抛出的异常对象，只会出现于JSP错误页面(isErrorPage设置为true的JSP页面)</td></tr><tr><td style="text-align:center">pageContext</td><td style="text-align:center">转译后对应PageContext对象，它提供了JSP页面资源的封装，并可设置页面范围属性</td></tr></tbody></table><a id="more"></a><h2 id="JSP隐含变量"><a href="#JSP隐含变量" class="headerlink" title="JSP隐含变量"></a>JSP隐含变量</h2><p>1.out 来源于Java.io.Writer类，它用于发送输出流到客户端。<br>2.request 来源于javax.servlet.http.HttpServletRequest接口。它被关联到每一个HTTP请求。<br>3.response 来源于javax.servlet.http.HttpServletResponse。response对象用于把取得的数据返回到客户端。<br>4.pageContext 提供访问JSP页面的命名空间。它也提供用来访问其他的JSP隐含对象。<br>5.session 来源于javax.servlet.http.HttpSession。它用于存储客户端请求的信息，因此它是有状态交互式的。<br>6.application 来源于javax.servlet.ServletContext。<br>7.config 来源于ServletConfig，它包含了当前JSP/Servlet所在的WEB应用的配置信息。<br>8.page 来源于当前被访问JSP页面的实例化。它实际使用的是JSP转换成的Servlet。<br>9.exception 用于捕获JSP抛出的异常。它只有在JSP页面属性isErrorPage=true时才可用。</p><h3 id="一、request对象："><a href="#一、request对象：" class="headerlink" title="一、request对象："></a>一、request对象：</h3><p>&ensp;&ensp;该对象封装了用户提交的信息，通过调用该对象相应的方法可以获取封装的信息， 即使用该对象可以获取用户提交信息。 客户端的请求参数都被封装到这个对象里面</p><h3 id="二、response对象："><a href="#二、response对象：" class="headerlink" title="二、response对象："></a>二、response对象：</h3><p>&ensp;&ensp;对客户的请求做出动态的响应，向客户发送数据。</p><h3 id="三、session对象："><a href="#三、session对象：" class="headerlink" title="三、session对象："></a>三、session对象：</h3><p>&ensp;&ensp;1.什么是session：session对象是一个JSP内置对象，它在第一个JSP页面被装载时自动创建，完成会话期管理。<br>从一个客户打开浏览器并连接到服务器开始，到客户关闭浏览器离开这个服务器结束，被称为一个会话。当一个客户访问一个服务器时，可能会在这个服务器的几个页面之间反复连接，反复刷新一个页面，服务器应当通过某种办法知道这是同一个客户，这就需要session对象。</p><p>&ensp;&ensp;2．session对象的ID：当一个客户首次访问服务器上的一个JSP页面时，JSP引擎产生一个session对象，同时分配一个String类型的ID号，JSP引擎同时将这个ID号发送到客户端，存放在Cookie中，这样session对象和客户之间就建立了一一对应的关系。当客户再访问连接该服务器的其他页面时，不再分配给客户新的session对象，直到客户关闭浏览器后，服务器端该客户的session对象才取消，并且和客户的会话对应关系消失。当客户重新打开浏览器再连接到该服务器时，服务器为该客户再创建一个新的session对象。</p><h3 id="四、aplication对象："><a href="#四、aplication对象：" class="headerlink" title="四、aplication对象："></a>四、aplication对象：</h3><p>&ensp;&ensp;1．什么是application:<br>服务器启动后就产生了这个application对象，当客户在所访问的网站的各个页面之间浏览时，这个application对象都是同一个，直到服务器关闭。但是与session不同的是，所有客户的application对象都是同一个，即所有客户共享这个内置的application对象。</p><p>&ensp;&ensp;2．application对象常用方法:<br>(1)public void setAttribute(String key,Object obj): 将参数Object指定的对象obj添加到application对象中，并为添加的对象指定一个索引关键字。<br>(2)public Object getAttribute(String key): 获取application对象中含有关键字的对象。 </p><h3 id="五、out对象："><a href="#五、out对象：" class="headerlink" title="五、out对象："></a>五、out对象：</h3><p>&ensp;&ensp;out 对象是一个输出流，用来向客户端输出数据。out对象用于各种数据的输出。</p><h3 id="六、page-java-lang-Object："><a href="#六、page-java-lang-Object：" class="headerlink" title="六、page java.lang.Object："></a>六、page java.lang.Object：</h3><p>&ensp;&ensp;对应this关键字。JSP网页本身<br>page对象是当前页面转换后的Servlet类的实例。从转换后的Servlet类的代码中，可以看到这种关系：<br>Object page = this;<br>在JSP页面中，很少使用page对象。</p><h3 id="七、config："><a href="#七、config：" class="headerlink" title="七、config："></a>七、config：</h3><p>&ensp;&ensp;javax.servlet. ServletConfig 的实例，该实例代表该JSP 的配置信息。常用的方法有getInitPararneter(String paramNarne) 及getInitPararneternarnes() 等方法。事实上， JSP 页面通常无须配置，也就不存在配置信息。因此，该对象更多地在Servlet 中有效。</p><h3 id="八、exception-java-lang-Throwable-的实例："><a href="#八、exception-java-lang-Throwable-的实例：" class="headerlink" title="八、exception java.lang.Throwable 的实例："></a>八、exception java.lang.Throwable 的实例：</h3><p>&ensp;&ensp;该实例代表其他页面中的异常和错误。只有当页面是错误处理页面，即编译指令page 的isErrorPage 属性为true 时，该对象才可以使用。常用的方法有getMessageO和printStackTraceO等。</p><h3 id="九、pageContext："><a href="#九、pageContext：" class="headerlink" title="九、pageContext："></a>九、pageContext：</h3><p>&ensp;&ensp;out 对象是一个输出流，用来向客户端输出数据。out对象用于各种数据的输出。</p><hr><p>//使用pageContext 设置属性，该属性默认在page 范围内<br>pageContext. setAttribute (“page” , “hello”) ; </p><p>  //使用request 设置属性，该属性默认在request 范围内<br>request. setAttribute (“request” , “hello”); </p><p>  //使用pageContext将属性设置在request 范围中<br>pageContext.setAttribute(“request2” , “hello” , pageContext.REQUEST_SCOPE); </p><p>  // 使用session将属性设置在session 范围中<br>session.setAttribute(“session” , “hello”l; </p><p>  //使用pageContext将属性设置在session范围中<br>pageContext.setAttribute(“session2” , “hello” , pageContext.SESSION_SCOPE); </p><p>  //使用application将属性设置在application范围中<br>application. setAttribute (“app” , “hello”) ; </p><p>  //使用pageContext 将属性设置在application 范围中<br>pageContext.setAttribute(“app2” , “hello” , pageContext.APPL 工CATION_SCOPE) ;</p><hr><h2 id="四个作用域："><a href="#四个作用域：" class="headerlink" title="四个作用域："></a>四个作用域：</h2><h3 id="application："><a href="#application：" class="headerlink" title="application："></a>application：</h3><p>全局作用范围，整个应用程序共享，就是在部署文件中的同一个webApp共享，生命周期为：应用程序启动到停止。</p><h3 id="session："><a href="#session：" class="headerlink" title="session："></a>session：</h3><p>会话作用域，当用户首次访问时，产生一个新的会话，以后服务器就可以记住这个会话状态。生命周期：会话超时，或者服务器端强制使会话失效。</p><h3 id="request"><a href="#request" class="headerlink" title="request:"></a>request:</h3><p>请求作用域，就是客户端的一次请求。</p><h3 id="page："><a href="#page：" class="headerlink" title="page："></a>page：</h3><p>一个JSP页面。</p><p>以上作用范围使越来越小， request和page的生命周期都是短暂的，他们之间的区别就是：一个request可以包含多个page页(include，forward以及filter)。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;隐式对象&lt;/th&gt;
-&lt;th style=&quot;text-align:center&quot;&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;request&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后的HttpServletRquest/ServletRequest对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;response&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应HttpServletRespons/ServletResponse对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;session&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应HttpSession对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;application&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应ServletContext对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;out&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应JspWriter对象，其内部关联一个PringWriter对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;page&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应this&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;config&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应ServletConfig对象&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;exception&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应Throwable对象，代表由其他JSP页面抛出的异常对象，只会出现于JSP错误页面(isErrorPage设置为true的JSP页面)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;pageContext&lt;/td&gt;
-&lt;td style=&quot;text-align:center&quot;&gt;转译后对应PageContext对象，它提供了JSP页面资源的封装，并可设置页面范围属性&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://yoursite.com/categories/JAVA/"/>
-    
-    
-      <category term="JAVA" scheme="http://yoursite.com/tags/JAVA/"/>
-    
-      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
     
   </entry>
   
