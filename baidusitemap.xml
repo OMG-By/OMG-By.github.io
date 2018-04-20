@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/04/20/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2018-04-20T01:46:07.759Z</lastmod>
+    <data>
+        <display>
+        <title>Mybatis--原始dao和mapper代理方法</title>
+        <pubTime>2018-04-20T01:16:36.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/04/19/Mybatis/Mybatis%E5%85%A5%E9%97%A8%E7%A8%8B%E5%BA%8F2/</loc>
-    <lastmod>2018-04-19T15:03:33.026Z</lastmod>
+    <lastmod>2018-04-20T01:03:06.068Z</lastmod>
     <data>
         <display>
         <title>Mybatis入门程序2</title>
@@ -25,7 +45,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/04/19/Mybatis/Mybatis%E5%85%A5%E9%97%A8%E7%A8%8B%E5%BA%8F/</loc>
-    <lastmod>2018-04-19T14:57:09.539Z</lastmod>
+    <lastmod>2018-04-20T00:52:04.067Z</lastmod>
     <data>
         <display>
         <title>Mybatis入门程序</title>
@@ -448,9 +468,9 @@
         <title>51nod1242 斐波那契数列 矩阵快速幂</title>
         <pubTime>2016-04-08T12:14:16.000Z</pubTime>
         
-        <tag>快速幂</tag>
-         
         <tag>51nod</tag>
+         
+        <tag>快速幂</tag>
          
          
            
@@ -744,9 +764,9 @@
         <title>51nod1046快速幂取余</title>
         <pubTime>2016-03-26T12:14:16.000Z</pubTime>
         
-        <tag>快速幂</tag>
-         
         <tag>51nod</tag>
+         
+        <tag>快速幂</tag>
          
          
            
