@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/04/21/Mybatis/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</loc>
+    <lastmod>2018-04-21T13:33:29.280Z</lastmod>
+    <data>
+        <display>
+        <title>缓存机制</title>
+        <pubTime>2018-04-21T12:57:22.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/21/Mybatis/%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/</loc>
+    <lastmod>2018-04-21T13:27:14.903Z</lastmod>
+    <data>
+        <display>
+        <title>延迟加载</title>
+        <pubTime>2018-04-21T11:00:48.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/</loc>
     <lastmod>2018-04-21T04:02:36.352Z</lastmod>
     <data>
@@ -244,7 +284,7 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/11/07/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/2017/11/07/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     <lastmod>2018-02-02T14:34:33.707Z</lastmod>
     <data>
         <display>
@@ -548,9 +588,9 @@
         <title>51nod1242 斐波那契数列 矩阵快速幂</title>
         <pubTime>2016-04-08T12:14:16.000Z</pubTime>
         
-        <tag>51nod</tag>
-         
         <tag>快速幂</tag>
+         
+        <tag>51nod</tag>
          
          
            
@@ -844,9 +884,9 @@
         <title>51nod1046快速幂取余</title>
         <pubTime>2016-03-26T12:14:16.000Z</pubTime>
         
-        <tag>51nod</tag>
-         
         <tag>快速幂</tag>
+         
+        <tag>51nod</tag>
          
          
            
