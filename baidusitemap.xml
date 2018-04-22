@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/</loc>
+    <lastmod>2018-04-22T15:03:40.967Z</lastmod>
+    <data>
+        <display>
+        <title>Hibernate框架搭建</title>
+        <pubTime>2018-02-03T12:14:16.000Z</pubTime>
+        
+        <tag>hibernate</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/04/23/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     <lastmod>2018-04-22T09:37:22.571Z</lastmod>
     <data>
@@ -270,26 +290,6 @@
         <display>
         <title>Hibernate主键生成策略</title>
         <pubTime>2018-02-04T02:20:07.000Z</pubTime>
-        
-        <tag>hibernate</tag>
-         
-         
-           
-             
-              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/</loc>
-    <lastmod>2018-02-04T02:24:40.084Z</lastmod>
-    <data>
-        <display>
-        <title>Hibernate</title>
-        <pubTime>2018-02-03T12:14:16.000Z</pubTime>
         
         <tag>hibernate</tag>
          
