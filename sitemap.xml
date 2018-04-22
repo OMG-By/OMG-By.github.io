@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/04/23/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
+    
+    <lastmod>2018-04-22T09:37:22.571Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/04/21/Mybatis/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</loc>
     
-    <lastmod>2018-04-21T13:33:29.280Z</lastmod>
+    <lastmod>2018-04-22T09:29:11.536Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2018/04/21/Mybatis/%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/</loc>
     
-    <lastmod>2018-04-21T13:27:14.903Z</lastmod>
+    <lastmod>2018-04-21T13:36:00.622Z</lastmod>
     
   </url>
   
@@ -96,13 +103,6 @@
     <loc>http://yoursite.com/2018/02/03/kuangjia/Hibernate/Hibernate_01/</loc>
     
     <lastmod>2018-02-04T02:24:40.084Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/11/07/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
-    
-    <lastmod>2018-02-02T14:34:33.707Z</lastmod>
     
   </url>
   
