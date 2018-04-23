@@ -4,11 +4,31 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</loc>
-    <lastmod>2018-04-23T13:12:14.946Z</lastmod>
+    <loc>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</loc>
+    <lastmod>2018-04-23T14:42:03.443Z</lastmod>
     <data>
         <display>
-        <title>Hibernate_持久化类.md</title>
+        <title>Hibernate_一级缓存</title>
+        <pubTime>2018-02-04T12:14:16.000Z</pubTime>
+        
+        <tag>hibernate</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</loc>
+    <lastmod>2018-04-23T13:26:07.165Z</lastmod>
+    <data>
+        <display>
+        <title>Hibernate_持久化类</title>
         <pubTime>2018-02-04T12:14:16.000Z</pubTime>
         
         <tag>hibernate</tag>

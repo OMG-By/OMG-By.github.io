@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="51nod," />
+  <meta name="keywords" content="hibernate," />
 
 
 
@@ -95,18 +95,22 @@
 
 
 
-<meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/** *中国剩余定理 */#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstdio&amp;gt;#include&amp;lt;map&amp;gt;#include&amp;l">
-<meta name="keywords" content="51nod">
+<meta name="description" content="Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据">
+<meta name="keywords" content="hibernate">
 <meta property="og:type" content="article">
-<meta property="og:title" content="51nod1079中国剩余定理">
-<meta property="og:url" content="http://yoursite.com/2016/03/20/ACM/51nod1079/index.html">
+<meta property="og:title" content="Hibernate_一级缓存">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/** *中国剩余定理 */#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstdio&amp;gt;#include&amp;lt;map&amp;gt;#include&amp;l">
+<meta property="og:description" content="Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-30T15:29:35.856Z">
+<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png">
+<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png">
+<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png">
+<meta property="og:updated_time" content="2018-04-23T14:42:03.443Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="51nod1079中国剩余定理">
-<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960/** *中国剩余定理 */#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstdio&amp;gt;#include&amp;lt;map&amp;gt;#include&amp;l">
+<meta name="twitter:title" content="Hibernate_一级缓存">
+<meta name="twitter:description" content="Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据">
+<meta name="twitter:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png">
 
 
 
@@ -136,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/03/20/ACM/51nod1079/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/"/>
 
 
 
 
 
-  <title>51nod1079中国剩余定理 | OMG_By</title>
+  <title>Hibernate_一级缓存 | OMG_By</title>
   
 
 
@@ -313,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/20/ACM/51nod1079/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -330,7 +334,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">51nod1079中国剩余定理</h1>
+          <h1 class="post-title" itemprop="name headline">Hibernate_一级缓存</h1>
         
 
         <div class="post-meta">
@@ -342,8 +346,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T20:14:16+08:00">
-                2016-03-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:14:16+08:00">
+                2018-02-04
               </time>
             
 
@@ -365,8 +369,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
                   </a>
                 </span>
 
@@ -407,7 +411,20 @@
       
 
       
-        <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> *中国剩余定理</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;map&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stack&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdlib&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cctype&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span>  LL __int64</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> *gcd(a,b)=d;则存在x,y,使d=ax+by</span></div><div class="line"><span class="comment"> *extended_euclid(a,b)=ax+by</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function">LL <span class="title">extended_euclid</span><span class="params">(LL a,LL b,LL &amp;x,LL &amp;y)</span></span>&#123;<span class="comment">//扩张欧几里的算法</span></div><div class="line">    <span class="keyword">int</span> d;</div><div class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)&#123;</div><div class="line">        x=<span class="number">1</span>; y=<span class="number">0</span>;</div><div class="line">        <span class="keyword">return</span> a;</div><div class="line">    &#125;</div><div class="line">    d=extended_euclid(b,a%b,y,x);</div><div class="line">    y=y-a/b*x;</div><div class="line">    <span class="keyword">return</span> d;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> *x=b[i](modw[i]) o&lt;i&lt;len</span></div><div class="line"><span class="comment"> *w[i]&gt;0,且w[]中任意两个数互质</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function">LL <span class="title">chinese_remainder</span><span class="params">(<span class="keyword">int</span> b[],<span class="keyword">int</span> w[],<span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">    LL res,i,d,x,y,n,m;</div><div class="line">    res=<span class="number">0</span>; n=<span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++) n*=w[i];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">        m=n/w[i];</div><div class="line">        extended_euclid(w[i],m,x,y);</div><div class="line">        res=(res+y*m*b[i])%n;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (n+res%n)%n;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">	<span class="keyword">int</span> len,b[<span class="number">12</span>],w[<span class="number">12</span>];</div><div class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span>&gt;&gt;len)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">            <span class="built_in">cin</span>&gt;&gt;w[i]&gt;&gt;b[i];</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">cout</span>&lt;&lt;chinese_remainder(b,w,len)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
+
       
     </div>
     
@@ -424,7 +441,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/51nod/" rel="tag"># 51nod</a>
+            <a href="/tags/hibernate/" rel="tag"># hibernate</a>
           
         </div>
       
@@ -437,8 +454,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/17/ACM/51nod贪心算法入门-活动安排问题2/" rel="next" title="51nod贪心算法入门-----活动安排问题2">
-                <i class="fa fa-chevron-left"></i> 51nod贪心算法入门-----活动安排问题2
+              <a href="/2018/02/04/kuangjia/Hibernate/Hibernate主键生成策略/" rel="next" title="Hibernate主键生成策略">
+                <i class="fa fa-chevron-left"></i> Hibernate主键生成策略
               </a>
             
           </div>
@@ -447,8 +464,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/20/ACM/51nod贪心算法入门-独木舟问题/" rel="prev" title="51nod贪心算法入门-----独木舟问题">
-                51nod贪心算法入门-----独木舟问题 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/" rel="prev" title="Hibernate_持久化类">
+                Hibernate_持久化类 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -501,8 +518,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -615,6 +641,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#特点"><span class="nav-number">1.</span> <span class="nav-text">特点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
