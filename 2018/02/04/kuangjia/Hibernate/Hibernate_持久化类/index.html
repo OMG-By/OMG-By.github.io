@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="Mybatis," />
+  <meta name="keywords" content="hibernate," />
 
 
 
@@ -95,21 +95,20 @@
 
 
 
-<meta name="description" content="resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。 延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。">
-<meta name="keywords" content="Mybatis">
+<meta name="description" content="Hibernate持久化类在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。   编写规则 必须提供一个无参数的public构造方法。 所有属性用private修饰，对外提供public的get/set方法。 在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。 PO类中的属性尽量使用基本类型的包装">
+<meta name="keywords" content="hibernate">
 <meta property="og:type" content="article">
-<meta property="og:title" content="延迟加载">
-<meta property="og:url" content="http://yoursite.com/2018/04/21/Mybatis/延迟加载/index.html">
+<meta property="og:title" content="Hibernate_持久化类.md">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。 延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。">
+<meta property="og:description" content="Hibernate持久化类在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。   编写规则 必须提供一个无参数的public构造方法。 所有属性用private修饰，对外提供public的get/set方法。 在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。 PO类中的属性尽量使用基本类型的包装">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png">
-<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E4%B8%8D%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png">
-<meta property="og:updated_time" content="2018-04-21T13:36:00.622Z">
+<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png">
+<meta property="og:updated_time" content="2018-04-23T13:12:14.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="延迟加载">
-<meta name="twitter:description" content="resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。 延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。">
-<meta name="twitter:image" content="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png">
+<meta name="twitter:title" content="Hibernate_持久化类.md">
+<meta name="twitter:description" content="Hibernate持久化类在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。   编写规则 必须提供一个无参数的public构造方法。 所有属性用private修饰，对外提供public的get/set方法。 在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。 PO类中的属性尽量使用基本类型的包装">
+<meta name="twitter:image" content="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png">
 
 
 
@@ -139,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/21/Mybatis/延迟加载/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/"/>
 
 
 
 
 
-  <title>延迟加载 | OMG_By</title>
+  <title>Hibernate_持久化类.md | OMG_By</title>
   
 
 
@@ -316,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/21/Mybatis/延迟加载/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -333,7 +332,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">延迟加载</h1>
+          <h1 class="post-title" itemprop="name headline">Hibernate_持久化类.md</h1>
         
 
         <div class="post-meta">
@@ -345,8 +344,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T19:00:48+08:00">
-                2018-04-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:14:16+08:00">
+                2018-02-04
               </time>
             
 
@@ -410,33 +409,29 @@
       
 
       
-        <p>resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。</p>
-<p>延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。<br><a id="more"></a><br>开启延迟加载需要在SqlMapConfig.xml的setting中设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;settings&gt;</div><div class="line">    &lt;!-- 打开延迟加载 的开关 --&gt;</div><div class="line">    &lt;setting name=&quot;lazyLoadingEnabled&quot; value=&quot;true&quot;/&gt;</div><div class="line">    &lt;!-- 将积极加载改为消极加载即按需要加载 --&gt;</div><div class="line">    &lt;setting name=&quot;aggressiveLazyLoading&quot; value=&quot;false&quot;/&gt;</div><div class="line">&lt;/settings&gt;</div></pre></td></tr></table></figure></p>
-<p>书写需要的两个satatement </p>
+        <h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
+<h3 id="编写规则"><a href="#编写规则" class="headerlink" title="编写规则"></a>编写规则</h3><ol>
+<li>必须提供一个无参数的public构造方法。</li>
+<li>所有属性用private修饰，对外提供public的get/set方法。</li>
+<li>在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。</li>
+<li>PO类中的属性尽量使用基本类型的包装类。</li>
+<li>PO类不能使用final修饰符。<a id="more"></a></li>
+</ol>
 <ul>
-<li>查询用户</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;select id=&quot;findUserLazy&quot; resultMap=&quot;findUserAndCarLazyMap&quot;&gt;</div><div class="line">        SELECT *</div><div class="line">        FROM user</div><div class="line">        WHERE id = #&#123;id&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure>
-<ul>
-<li><p>查询拥有的Car  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;select id=&quot;findCarByUserId&quot; parameterType=&quot;int&quot; resultType=&quot;pojo.Car&quot;&gt;</div><div class="line">        SELECT *</div><div class="line">        FROM car</div><div class="line">        WHERE user_id = #&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure>
+<li><p>为什么PO类必须提供一个标识属性OID，让它与数据库中的主键对应呢？<br>OID指的是数据库中表的主键对应的属性。Hibernate框架是通过OID来区分不同的PO对象，如果在内存中有两个相同的OID对象，那么Hibernate认为它们是一个对象。</p>
 </li>
-<li><p>书写resultMap  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id=&quot;findUserAndCarLazyMap&quot; type=&quot;pojo.User&quot;&gt;</div><div class="line">        &lt;id property=&quot;id&quot; column=&quot;id&quot;&gt;&lt;/id&gt;</div><div class="line">        &lt;result property=&quot;name&quot; column=&quot;name&quot;&gt;&lt;/result&gt;</div><div class="line">        &lt;result property=&quot;password&quot; column=&quot;password&quot;&gt;&lt;/result&gt;</div><div class="line">        &lt;!--</div><div class="line">            多了select和column</div><div class="line">            select:会去寻找相应的方法，如果不在本mapper中则需要在前面添加其namespace（我这里是放在本mapper中的）</div><div class="line">            column:根据哪一列去进行查询。</div><div class="line">        --&gt;</div><div class="line">        &lt;association property=&quot;car&quot;</div><div class="line">                     select=&quot;findCarByUserId&quot; </div><div class="line">                     column=&quot;id&quot;</div><div class="line">                     javaType=&quot;pojo.Car&quot;&gt;</div><div class="line"></div><div class="line">        &lt;/association&gt;</div><div class="line">    &lt;/resultMap&gt;</div></pre></td></tr></table></figure>
+<li><p>为什么PO类中的属性要尽量使用基本类型的包装类？<br>使用基本数据类型是没有办法去描述不存在的概念的。如果使用包装类型，它就是一个对象，对于对象它的默认值是null。如果它为null就代表这不存在。</p>
 </li>
-<li><p>在相应的Mapper接口中书写方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public User findUserLazy(int id);</div></pre></td></tr></table></figure>
-</li>
-<li><p>测试代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void testFindUserLazyLoding()&#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line"></div><div class="line">        User user = userMapper.findUserLazy(2);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        //System.out.println(user.getCar().toString());</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<li><p>为什么PO类不能使用final修饰符？<br>因为Hibernate会使用代理模式在延迟关联的情况下提高性能。如果把实体类定义成final类之后，java不允许对final类进行扩展；所以Hibernate就无法再使用代理了。</p>
 </li>
 </ul>
-<p>PS:这里不知道是我用的IDEA的问题还是怎么的，在输出的时候竟然也执行了第二条sql语句。。。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png" alt="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png"></p>
-<center>延迟加载debug</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E4%B8%8D%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png" alt="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E4%B8%8D%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png"><br><center>不延迟加载debug</center>
-
-<hr>
-<p>更新：后来发现出现上面第一图的情况是由于在System.out.println(user);会执行第二条SQL。。  需要配置一下设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;setting     name=&quot;lazyLoadTriggerMethods&quot; value=&quot; &quot; /&gt;</div></pre></td></tr></table></figure></p>
-<p>lazyLoadTriggerMethods默认情况下仅仅支持自动将equals,clone,hashCode,toString这几个方法定义为延迟加载的加载触发方法。</p>
+<h2 id="持久化对象的三种状态"><a href="#持久化对象的三种状态" class="headerlink" title="持久化对象的三种状态"></a>持久化对象的三种状态</h2><ul>
+<li>瞬时态：也叫做临时态或自由态，他一般指的我们new出来的对象，此时它<font color="red">不存在OID，与Hibernate Session无关联，在数据库中也无记录。</font></li>
+<li>持久态：在Hibernate Session管理范围内，他具有持久化标识OID。它的特点是在事务未提交前一直是持久态，当它发生改变时，Hibernate会检测到。<font color="red">有OID且由Session管理，在数据库中可能有，也可能没有。</font></li>
+<li>托管态：也叫游离态或离线态。它是指<font color="red">持久态对象失去了Session的关联。</font>对于托管态对象，发生改变时Hibernate不会检测。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class HibernateTest &#123;</div><div class="line"></div><div class="line">    // 测试持久化对象的三种状态</div><div class="line">    @Test</div><div class="line">    public void test2() &#123;</div><div class="line">        // 1.得到session</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        session.beginTransaction();</div><div class="line"></div><div class="line">        Customer c = new Customer(); // 瞬时态(无OID，与session无关联)</div><div class="line">        c.setName(&quot;张三&quot;);</div><div class="line">        c.setSex(&quot;男&quot;);</div><div class="line"></div><div class="line">        session.save(c); // 建立c与session的关联关系，它就是持久态的了(有OID)</div><div class="line"></div><div class="line">        // 2.事务提交，并关闭session</div><div class="line">        session.getTransaction().commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">        System.out.println(c.getId()); // 断开了与session的关联，它就是脱管态的了(有OID)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
 
       
     </div>
@@ -454,7 +449,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Mybatis/" rel="tag"># Mybatis</a>
+            <a href="/tags/hibernate/" rel="tag"># hibernate</a>
           
         </div>
       
@@ -467,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/21/Mybatis/动态sql/" rel="next" title="动态sql">
-                <i class="fa fa-chevron-left"></i> 动态sql
+              <a href="/2018/02/04/kuangjia/Hibernate/Hibernate主键生成策略/" rel="next" title="Hibernate主键生成策略">
+                <i class="fa fa-chevron-left"></i> Hibernate主键生成策略
               </a>
             
           </div>
@@ -477,8 +472,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/21/Mybatis/缓存机制/" rel="prev" title="缓存机制">
-                缓存机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/17/Mybatis/原生JDBC的问题总结/" rel="prev" title="原生JDBC的问题总结">
+                原生JDBC的问题总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -531,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -645,6 +649,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate持久化类"><span class="nav-number">1.</span> <span class="nav-text">Hibernate持久化类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编写规则"><span class="nav-number">1.1.</span> <span class="nav-text">编写规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化对象的三种状态"><span class="nav-number">2.</span> <span class="nav-text">持久化对象的三种状态</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
