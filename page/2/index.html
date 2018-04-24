@@ -751,6 +751,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/kuangjia/Hibernate/Hibernate_对象的三种关系/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/05/kuangjia/Hibernate/Hibernate_对象的三种关系/" itemprop="url">Hibernate关系映射</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T20:14:16+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Hibernate关系映射"><a href="#Hibernate关系映射" class="headerlink" title="Hibernate关系映射"></a>Hibernate关系映射</h2><h3 id="一对多关系映射"><a href="#一对多关系映射" class="headerlink" title="一对多关系映射"></a>一对多关系映射</h3><p>数据库：在多的一方添加外键来描述关联关系。<br>实体对象：在一的一方，增加一个集合用来存放多的一方。在多的一方添加一个一的一方的属性。<br>映射文件配置：<br>User.hbm.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;!--</div><div class="line">           set代表用的什么集合</div><div class="line">           name代表多的一方的集合的属性名</div><div class="line">       --&gt;</div><div class="line">       &lt;set name=&quot;carSet&quot;&gt;</div><div class="line">           &lt;!--</div><div class="line">               key：多的一方的外键名称</div><div class="line">           --&gt;</div><div class="line">           &lt;key column=&quot;user_id&quot;&gt;&lt;/key&gt;</div><div class="line">           &lt;one-to-many class=&quot;pojo.Car&quot;&gt;&lt;/one-to-many&gt;</div><div class="line">       &lt;/set&gt;</div></pre></td></tr></table></figure></p>
+<p>Car.hbm.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!--</div><div class="line">            name：一的一方的属性名</div><div class="line">            class：一的一方的类全路径</div><div class="line">            colum：表中的外键外键名称</div><div class="line">        --&gt;</div><div class="line">        &lt;many-to-one name=&quot;user&quot; class=&quot;pojo.User&quot; column=&quot;user_id&quot;&gt;&lt;/many-to-one&gt;</div></pre></td></tr></table></figure></p>
+<p>编写测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_HiernateYinshe()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = new User();</div><div class="line">        user.setName(&quot;cl&quot;);</div><div class="line">        user.setPassword(&quot;123456&quot;);</div><div class="line"></div><div class="line">        Car car1 = new Car();</div><div class="line">        car1.setCar_name(&quot;byd&quot;);</div><div class="line">        car1.setColor(&quot;red&quot;);</div><div class="line">        Car car2 = new Car();</div><div class="line">        car2.setCar_name(&quot;baoma&quot;);</div><div class="line">        car2.setColor(&quot;blue&quot;);</div><div class="line"></div><div class="line">        //建立关系</div><div class="line">        user.getCarSet().add(car1);</div><div class="line">        user.getCarSet().add(car2);</div><div class="line">        car1.setUser(user);</div><div class="line">        car2.setUser(user);</div><div class="line"></div><div class="line">        session.save(user);</div><div class="line">//        以下两句在测试只保存一方时注释</div><div class="line">        session.save(car1);</div><div class="line">        session.save(car2);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>通过观察控制台，会发现控制台输出了三条insert语句和两条update语句。<br>既然两个对象以及进行了双向关联，那我们只保存一方是否可以呢？<br>将上面的测试代码中保存Car的两条语句注释。会报一下错误：<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E7%9E%AC%E6%97%B6%E5%AF%B9%E8%B1%A1%E5%BC%82%E5%B8%B8.png" alt="http://ocx5m3vc3.bkt.clouddn.com/%E7%9E%AC%E6%97%B6%E5%AF%B9%E8%B1%A1%E5%BC%82%E5%B8%B8.png"><br>这样保存是不行的，无论是从哪一方保存都会报错：瞬时对象异常。一个持久化对象关联了一个瞬时态对象。<br>如果我们只想保存一个方向，那么我们可以使用Hibernate的级联操作。</p>
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3><p>数据库：通过一张中间表来描述其对应关系。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1639,184 +1785,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/SQL优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/02/SQL优化/" itemprop="url">SQL优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T20:14:16+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
-                    <span itemprop="name">学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>避免查询的模糊匹配</li>
-<li>索引问题</li>
-</ol>
-<ul>
-<li>避免对索引字段进行计算操作</li>
-<li>避免在索引字段上使用not,&lt;&gt;,!=</li>
-<li>避免在索引列上使用IS NULL和IS NOT NULL</li>
-<li>避免在索引列上出现数据类型转换</li>
-<li>避免在索引字段上使用函数</li>
-<li>避免建立索引的列中使用空值</li>
-</ul>
-<ol>
-<li><p>复杂操作<br>&ensp;&ensp;部分UPDATE、SELETE语句写的很复杂（经常嵌套多级子查询）—可以考虑适当拆成几步，先生成一些临时数据表，再进行关联操作。</p>
-</li>
-<li><p>在可以使用UNION ALL的语句里，使用了UNION</p>
-</li>
-<li>在WHERE语句中，尽量避免对索引字段进行计算操作</li>
-<li>对WHERE语句的法则</li>
-</ol>
-<ul>
-<li>避免在WHERE子句中使用in，not  in，or 或者having。</li>
-<li>不要以字符格式声明数字，要以数字格式声明字符值。（日期同样）否则会使索引无效，产生全表扫描。</li>
-</ul>
-<ol>
-<li><p>对SELECT语句的法则<br>&ensp;&ensp;尽量避免使用SELECT * FROM 这种方式</p>
-</li>
-<li><p>排序<br>&ensp;&ensp;避免使用耗费资源的操作，带有DISTINCT,UNION,MINUS,INTERSECT,ORDER BY的SQL语句会启动SQL引擎 执行，耗费资源的排序(SORT)功能. DISTINCT需要一次排序操作, 而其他的至少需要执行两次排序</p>
-</li>
-<li><p>慎重使用临时表可以极大的提高系统性能</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1866,7 +1839,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
