@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/虚函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/20/Java虚拟机/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -328,7 +328,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/虚函数/" itemprop="url">虚函数</a></h1>
+                <a class="post-title-link" href="/2017/10/20/Java虚拟机/" itemprop="url">Java内存区域</a></h1>
         
 
         <div class="post-meta">
@@ -340,7 +340,153 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:46:12+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:22:31+08:00">
+                2017-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h1><h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p><img src="http://ocx5m3vc3.bkt.clouddn.com/JVM_1.jpg" alt=""><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/20/Java虚拟机/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/static/" itemprop="url">static</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:59:26+08:00">
                 2017-10-18
               </time>
             
@@ -401,12 +547,14 @@
 
       
         
-          <p>引入原因：为了方便使用多态特性，我们常常需要在基类中定于虚函数。</p>
-<p>关于多态，简而言之就是用父类型别的指针指向其子类的实例，然后通过父类的指针调用实际子类的成员函数。这种技术可以让父类的指针有“多种形态”，这是一种泛型技术。所谓泛型技术，说白了就是试图使用不变的代码来实现可变的算法。比如：模板技术，RTTI技术，虚函数技术，要么是试图做到在编译时决议，要么试图做到运行时决议。</p>
-<p><strong>虚函数表</strong><br>
+          <h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用:"></a>static的作用:</h1><h2 id="不考虑类"><a href="#不考虑类" class="headerlink" title="不考虑类"></a>不考虑类</h2><h3 id="第一个作用：隐藏"><a href="#第一个作用：隐藏" class="headerlink" title="第一个作用：隐藏"></a>第一个作用：隐藏</h3><p>&ensp;&ensp;当我们同时编译多个文件时，所有未加static前缀的<strong>全局变量</strong>和<strong>函数</strong>都具有全局可见性。</p>
+<p>&ensp;&ensp;如果加了static，就会对其他源文件隐藏，利用这一特性可以在不同的文件中定义同名函数和同名变量，而不必担心命名冲突。</p>
+<hr>
+<ul>
+<li>static可以用作函数和变量的前缀，对于函数来讲，static的作用仅限于隐藏，而对于变量，static还有下面两个作用
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/18/虚函数/#more" rel="contents">
+            <a class="btn" href="/2017/10/18/static/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -562,6 +710,154 @@
 </ul>
 
           
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/虚函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/虚函数/" itemprop="url">虚函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:46:12+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-基础知识/" itemprop="url" rel="index">
+                    <span itemprop="name">C++基础知识</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>引入原因：为了方便使用多态特性，我们常常需要在基类中定于虚函数。</p>
+<p>关于多态，简而言之就是用父类型别的指针指向其子类的实例，然后通过父类的指针调用实际子类的成员函数。这种技术可以让父类的指针有“多种形态”，这是一种泛型技术。所谓泛型技术，说白了就是试图使用不变的代码来实现可变的算法。比如：模板技术，RTTI技术，虚函数技术，要么是试图做到在编译时决议，要么试图做到运行时决议。</p>
+<p><strong>虚函数表</strong><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/18/虚函数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1472,302 +1768,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/16/ACM/51nod 1021 石头归并/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/16/ACM/51nod 1021 石头归并/" itemprop="url">51nod 1021 石头归并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-16T20:14:16+08:00">
-                2016-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1021 石子归并<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 20 难度：3级算法题<br> 收藏<br> 关注<br>N堆石子摆成一条线。现要将石子有次序地合并成一堆。规定每次只能选相邻的2堆石子合并成新的一堆，并将新的一堆石子数记为该次合并的代价。计算将N堆石子合并成一堆的最小代价。</p>
-<p>例如： 1 2 3 4，有不少合并方法<br>1 2 3 4 =&gt; 3 3 4(3) =&gt; 6 4(9) =&gt; 10(19)<br>1 2 3 4 =&gt; 1 5 4(5) =&gt; 1 9(14) =&gt; 10(24)<br>1 2 3 4 =&gt; 1 2 7(7) =&gt; 3 7(10) =&gt; 10(20)</p>
-<p>括号里面为总代价可以看出，第一种方法的代价最低，现在给出n堆石子的数量，计算最小合并代价。</p>
-<p>Input<br>第1行：N（2 &lt;= N &lt;= 100)<br>第2 - N + 1：N堆石子的数量（1 &lt;= A[i] &lt;= 10000)<br>Output<br>输出最小合并代价<br>Input示例<br>4<br>1<br>2<br>3<br>4<br>Output示例<br>19<br>这道题初一看很容易往贪心方向想，后来看了提示才知道是dp，可是并不知道怎么dp。。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;</div><div class="line"><span class="keyword">int</span> sum[<span class="number">1005</span>];</div><div class="line"><span class="keyword">int</span> vis[<span class="number">1005</span>];</div><div class="line"><span class="keyword">int</span> dp[<span class="number">1005</span>][<span class="number">1005</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        <span class="keyword">int</span> i,len,temp;</div><div class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));</div><div class="line">        <span class="built_in">memset</span>(sum,<span class="number">0</span>,<span class="keyword">sizeof</span>(sum));</div><div class="line">        <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;vis[i]);</div><div class="line">            sum[i]=sum[i<span class="number">-1</span>]+vis[i];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(len=<span class="number">1</span>;len&lt;n;len++)&#123;</div><div class="line">            <span class="keyword">for</span>(i=<span class="number">1</span>;i+len&lt;=n;i++)&#123;</div><div class="line">                dp[i][i + len] = INF;</div><div class="line">                temp=sum[i+len]-sum[i<span class="number">-1</span>];</div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k=i;k&lt;i+len;k++)</div><div class="line">                    dp[i][i+len]=min(dp[i][i+len],dp[i][k]+dp[k+<span class="number">1</span>][i+len]+temp);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[<span class="number">1</span>][n]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/09/ACM/51nod1417 天堂里的游戏/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/09/ACM/51nod1417 天堂里的游戏/" itemprop="url">51nod1417 天堂里的游戏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T20:14:16+08:00">
-                2016-05-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1417 天堂里的游戏<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 10 难度：2级算法题<br> 收藏<br> 关注<br>多年后，每当Noder看到吉普赛人，就会想起那个遥远的下午。</p>
-<p>Noder躺在草地上漫无目的的张望，二楼的咖啡馆在日光下闪着亮，像是要进化成一颗巨大的咖啡豆。天气稍有些冷，但草还算暖和。不远的地方坐着一个吉普赛姑娘，手里拿着塔罗牌，带着耳机，边上是她的狗。狗看起来有点凶，姑娘却漂亮。Noder开始计算各种搭讪方式的成功概率，然而狗的存在……。</p>
-<p>奇怪的事情发生了，姑娘自己走了过来，把耳机戴在Noder的耳朵上，里面播放着：“……Knock-knock-knockin’ on heaven’s door ……”。姑娘冲他诡异的一笑，Noder只觉得自己眼前一阵眩晕，然后就站在了天堂的门口。</p>
-<p>正当Noder惊魂未定的时候，走来一个美女，要求和他一起玩个数学游戏。美女提议：“让我们各自亮出硬币的一面，或正或反。如果我们都是正面，那么我给你A元，如果我们都是反面，我给你B元（A + B为偶数）。剩下的情况你给我（A + B） / 2元就可以了。</p>
-<p>Noder知道这个游戏他多半要输，可他并不在乎，他只想让自己输的慢一点。</p>
-<p>那么你来帮美女计算一下，她选择出正面的概率应该是多少（以最简分数形式输出）？</p>
-<p>当Noder输光了钱后从草地上醒来，吉普赛姑娘已经不见了，只留下了这样一张塔罗牌，上面印有那个美女的照片。<br><img src="http://img.51nod.com/upload/000FBECA/08D271A9F742E9BE0000000000000008.jpeg?_=5474275" alt=""></p>
-<p>关于样例的解释：</p>
-<p>美女采取了(3/8,5/8)这个方案，不论Noder采用什么方案，都是不能改变局面的。如果全部出正面，每次的期望收益是 (3+3+3-2-2-2-2-2)/8=-1/8元；如果全部出反面，每次的期望收益也是(-2-2-2+1+1+1+1+1)/8=-1/8元。而任何策略无非只是上面两种策略的线性组合，所以期望还是-1/8元。</p>
-<p>Input<br>第1行：一个数T，表示后面用作输入测试的数的数量（1 &lt;= T &lt;= 20)。<br>第2 - T + 1行：每行2个数A, B中间用空格分隔。(1 &lt;= A, B &lt;= 10^9，且A + B为偶数)。<br>Output<br>输出共T行，对应美女选择正面的概率，以最简分数形式输出，具体请参看输出样例。<br>Input示例<br>2<br>3 1<br>1 3<br>Output示例<br>3/8<br>5/8<br>PS: 给的提示标签是博弈论，结果是个数学问题；<br> 不管是正是反，女的赢的几率都是一样的，所以左边的式子设正面为x，右边的式子设反面为x，写出期望，然后两边相等，就可以列方程了，然后最大公约数用辗转相乘法弄一下就出来了<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</div><div class="line"><span class="function">LL <span class="title">gcd</span><span class="params">(LL a,LL b)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> b==<span class="number">0</span> ? a : gcd(b,a%b);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> t;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t))&#123;</div><div class="line">        <span class="keyword">while</span>(t--)&#123;</div><div class="line">            LL a,b;</div><div class="line">            LL x,y;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%I64d%I64d"</span>,&amp;a,&amp;b);</div><div class="line">            x=a+<span class="number">3</span>*b;</div><div class="line">            y=<span class="number">4</span>*(a+b);</div><div class="line">            LL t=gcd(x,y);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%I64d/%I64d\n"</span>,x/t,y/t);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1822,7 +1822,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

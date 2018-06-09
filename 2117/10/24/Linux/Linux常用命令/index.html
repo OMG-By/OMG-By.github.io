@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="cd命令&amp;ensp;&amp;ensp;跟Windows中一样，进入相应的目录下。&amp;ensp;&amp;ensp;命令格式： cd [目录] ls命令&amp;ensp;&amp;ensp;查看当前目录下的目录、文件等及其相应权限。&amp;ensp;&amp;ensp;命令格式： ls [选项] 目录 pwd命令&amp;ensp;&amp;ensp;查看当前工作目录的完整路径。&amp;ensp;&amp;ensp;pwd [选项] mkdir命令&amp;ensp;&amp;ensp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-30T13:00:59.133Z">
+<meta property="og:updated_time" content="2018-06-09T10:03:26.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用命令（简）">
 <meta name="twitter:description" content="cd命令&amp;ensp;&amp;ensp;跟Windows中一样，进入相应的目录下。&amp;ensp;&amp;ensp;命令格式： cd [目录] ls命令&amp;ensp;&amp;ensp;查看当前目录下的目录、文件等及其相应权限。&amp;ensp;&amp;ensp;命令格式： ls [选项] 目录 pwd命令&amp;ensp;&amp;ensp;查看当前工作目录的完整路径。&amp;ensp;&amp;ensp;pwd [选项] mkdir命令&amp;ensp;&amp;ensp;">
@@ -427,6 +427,10 @@
 <h3 id="locate命令"><a href="#locate命令" class="headerlink" title="locate命令"></a>locate命令</h3><p>&ensp;&ensp;通过系统自动生成是数据库表来查询文件，支持匹配符。但是由于有些系统的数据库表不是实时更新的，所以查到的数据可能不是最新的。<br>&ensp;&ensp;locate[选择参数][样式]</p>
 <h3 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h3><p>&ensp;&ensp;用于在文件树中查找文件，并作出相应的处理。<br>&ensp;&ensp;find pathname -options [-print -exec -ok …] </p>
 <h3 id="tar命令"><a href="#tar命令" class="headerlink" title="tar命令"></a>tar命令</h3><p>&ensp;&ensp;用来压缩和解压文件。tar本身不具有压缩功能，他是调用压缩功能实现的。<br>&ensp;&ensp;tar [必要参数][选择参数][文件]</p>
+<h3 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h3><p>&ensp;&ensp;列出文件系统的整体磁盘使用量</p>
+<h3 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h3><p>&ensp;&ensp;评估文件系统的磁盘使用量（常用于评估目录所占容量）</p>
+<h3 id="ln命令"><a href="#ln命令" class="headerlink" title="ln命令"></a>ln命令</h3><p>&ensp;&ensp;连接文件<br>&ensp;&ensp;ls [-sf] 源文件 目标文件<br>&ensp;&ensp; -s 如果不加任何参数就进行连接，那就是hard link，至于-s就是symbolic link<br>&ensp;&ensp;-f 如果目标文件存在时，就主动将目标文件删除后再创建。</p>
+<h3 id="fdisk命令"><a href="#fdisk命令" class="headerlink" title="fdisk命令"></a>fdisk命令</h3><p>&ensp;&ensp;磁盘分区</p>
 <p><br><br><br><br><center> <strong>长期不定时更新中。。。。。。。。。</strong></center></p>
 
       
@@ -458,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/23/Mybatis/Mybatis逆向工程/" rel="next" title="Mybatis逆向工程">
-                <i class="fa fa-chevron-left"></i> Mybatis逆向工程
+              <a href="/2018/05/18/初识Redis/" rel="next" title="初识Redis">
+                <i class="fa fa-chevron-left"></i> 初识Redis
               </a>
             
           </div>
@@ -547,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -651,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#cd命令"><span class="nav-number">1.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ls命令"><span class="nav-number">2.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pwd命令"><span class="nav-number">3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir命令"><span class="nav-number">4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rm命令"><span class="nav-number">5.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rmdir命令"><span class="nav-number">6.</span> <span class="nav-text">rmdir命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mv命令"><span class="nav-number">7.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp命令"><span class="nav-number">8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#touch命令"><span class="nav-number">9.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cat命令"><span class="nav-number">10.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nl命令"><span class="nav-number">11.</span> <span class="nav-text">nl命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#more命令"><span class="nav-number">12.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less命令"><span class="nav-number">13.</span> <span class="nav-text">less命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head命令"><span class="nav-number">14.</span> <span class="nav-text">head命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail命令"><span class="nav-number">15.</span> <span class="nav-text">tail命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#which命令"><span class="nav-number">16.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whereis命令"><span class="nav-number">17.</span> <span class="nav-text">whereis命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locate命令"><span class="nav-number">18.</span> <span class="nav-text">locate命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find命令"><span class="nav-number">19.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar命令"><span class="nav-number">20.</span> <span class="nav-text">tar命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#cd命令"><span class="nav-number">1.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ls命令"><span class="nav-number">2.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pwd命令"><span class="nav-number">3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir命令"><span class="nav-number">4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rm命令"><span class="nav-number">5.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rmdir命令"><span class="nav-number">6.</span> <span class="nav-text">rmdir命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mv命令"><span class="nav-number">7.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp命令"><span class="nav-number">8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#touch命令"><span class="nav-number">9.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cat命令"><span class="nav-number">10.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nl命令"><span class="nav-number">11.</span> <span class="nav-text">nl命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#more命令"><span class="nav-number">12.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less命令"><span class="nav-number">13.</span> <span class="nav-text">less命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head命令"><span class="nav-number">14.</span> <span class="nav-text">head命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail命令"><span class="nav-number">15.</span> <span class="nav-text">tail命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#which命令"><span class="nav-number">16.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whereis命令"><span class="nav-number">17.</span> <span class="nav-text">whereis命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locate命令"><span class="nav-number">18.</span> <span class="nav-text">locate命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find命令"><span class="nav-number">19.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar命令"><span class="nav-number">20.</span> <span class="nav-text">tar命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#df命令"><span class="nav-number">21.</span> <span class="nav-text">df命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du命令"><span class="nav-number">22.</span> <span class="nav-text">du命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ln命令"><span class="nav-number">23.</span> <span class="nav-text">ln命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fdisk命令"><span class="nav-number">24.</span> <span class="nav-text">fdisk命令</span></a></li></ol></div>
             
 
           </div>
