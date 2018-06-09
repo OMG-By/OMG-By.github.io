@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2117/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2018-06-09T10:03:26.233Z</lastmod>
+    <lastmod>2018-06-09T10:23:59.482Z</lastmod>
     <data>
         <display>
         <title>Linux常用命令（简）</title>
@@ -23,41 +23,6 @@
     </url>
 
     
-  <url>
-    <loc>http://yoursite.com/2018/05/18/Redis/%E5%88%9D%E8%AF%86Redis/</loc>
-    <lastmod>2018-05-18T14:31:35.839Z</lastmod>
-    <data>
-        <display>
-        <title>初识Redis</title>
-        <pubTime>2018-05-18T14:21:59.000Z</pubTime>
-        
-        <tag>Redis</tag>
-         
-         
-           
-             
-              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://yoursite.com/2018/05/18/%E5%88%9D%E8%AF%86Redis/</loc>
-    <lastmod>2018-05-18T14:21:59.421Z</lastmod>
-    <data>
-        <display>
-        <title>初识Redis</title>
-        <pubTime>2018-05-18T14:21:59.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://yoursite.com/2018/02/05/kuangjia/Hibernate/Hibernate_%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E5%85%B3%E7%B3%BB/</loc>
