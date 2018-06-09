@@ -3,6 +3,30 @@
   
     
     <entry>
+      <title><![CDATA[Redis设计与实现-数据结构篇（2）--链表]]></title>
+      <url>/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%882%EF%BC%89-%E9%93%BE%E8%A1%A8/</url>
+      <content type="html"><![CDATA[<h2 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h2><p>每个链表节点都使用一个listNode结构来表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct listNode&#123;</div><div class="line">	//前置节点</div><div class="line">	struct listNode *prev;</div><div class="line">	//后置节点</div><div class="line">	struct listNode *next;</div><div class="line">	//节点的值</div><div class="line">	void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure></p>
+<p>虽然使用多个listNode结构就可以组成链表，但是使用list来持有链表的话，操作起来会更方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list&#123;</div><div class="line">	//表头节点</div><div class="line">	listNode *head;</div><div class="line">	//表尾节点</div><div class="line">	listNode *tail;</div><div class="line">	//链表所包含的节点数量</div><div class="line">	unsigned long len;</div><div class="line">	//节点值复制函数</div><div class="line">	void *(*dup)(void *ptr);</div><div class="line">	//节点值释放函数</div><div class="line">	void *(*free)(void *ptr);</div><div class="line">	//节点值对比函数</div><div class="line">	void *(match)(void *ptr,void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/list.png" alt=""></p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>双端：获取某个节点的前置和后置节点的复杂度都是O(1)</li>
+<li>无环：两端都指向NULL</li>
+<li>获取表头节点和表尾节点的复杂度为O(1)</li>
+<li>O(1)获取链表长度</li>
+<li>链表可以用来保存各种不同类型的值。</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[名言]]></title>
       <url>/2018/06/09/%E5%90%8D%E8%A8%80/</url>
       <content type="html"><![CDATA[<ul>
@@ -20,8 +44,8 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Redis深入理解-数据结构篇（1）--简单动态字符串SDS]]></title>
-      <url>/2018/06/09/Redis/Redis%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%881%EF%BC%89--%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2SDS/</url>
+      <title><![CDATA[Redis设计与实现-数据结构篇（1）--简单动态字符串SDS]]></title>
+      <url>/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%881%EF%BC%89--%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2SDS/</url>
       <content type="html"><![CDATA[<h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><p>Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。<br>在早期的版本中记录了其长度、剩余空间、以及字符数组；<br>最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/SDS.png" alt=""><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">struct sdshdr&#123;</div><div class="line">	//buf中已用空间长度</div><div class="line">	int len;</div><div class="line">	//buf中剩余可用空间长度</div><div class="line">	int free;</div><div class="line">	//数据空间</div><div class="line">	char buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <h2 id="SDS与C字符串区别"><a href="#SDS与C字符串区别" class="headerlink" title="SDS与C字符串区别"></a>SDS与C字符串区别</h2><h3 id="获取字符串长度"><a href="#获取字符串长度" class="headerlink" title="获取字符串长度"></a>获取字符串长度</h3><p>&ensp;&ensp;SDS字符串保存了自身的长度，当需要获取长度的时候可以O(1)获得。（3.2中的剩余空间需要用alloc-len算出）</p>
 <h3 id="杜绝缓存区溢出"><a href="#杜绝缓存区溢出" class="headerlink" title="杜绝缓存区溢出"></a>杜绝缓存区溢出</h3><p>&ensp;&ensp;SDS在进行字符串拼接的时候，会自行检查内存空间是否满足要求，如果不满足，将自动进行分配；而且在进行分配空间的时候，会实行预先分配的策略。</p>
@@ -31,7 +55,7 @@
 <li>惰性释放<br>当字符串进行缩短操作的时候，并不立即将空间释放出来，而是将这部分空间通过free进行标识。<br>当然，Redis中提供了专门的API，需要的时候，会真正的释放这部分空闲内存。</li>
 </ol>
 <h3 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h3><p>&ensp;&ensp;由于在Redis中，不是根据空字符而是通过len来判断字符串结束的。所以，即便是中间出现了空字符，对于SDS来说，读取该字符串还是可以的。</p>
-]]></content>
+<h3 id="兼容部分C语言函数"><a href="#兼容部分C语言函数" class="headerlink" title="兼容部分C语言函数"></a>兼容部分C语言函数</h3>]]></content>
       
         <categories>
             
@@ -735,6 +759,39 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[Hibernate_一级缓存]]></title>
+      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
+      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hibernate </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hibernate_持久化类]]></title>
       <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</url>
       <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
@@ -760,39 +817,6 @@ skip-grant-tables
 </li>
 </ul>
 <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 框架 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hibernate </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Hibernate_一级缓存]]></title>
-      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
-      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
-<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
-<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
-<ul>
-<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
 ]]></content>
       
         <categories>
@@ -1970,6 +1994,30 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[软件]]></title>
+      <url>/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</url>
+      <content type="html"><![CDATA[<p>各种杂七杂八的软件：</p>
+<ul>
+<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="external">Windows FX</a></li>
+<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="external">Myeclipse</a></li>
+<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="external">Kali系统</a></li>
+<li><a href="http://pan.baidu.com/s/1dFni0Jv" target="_blank" rel="external">JDK压缩包</a></li>
+<li><a href="http://pan.baidu.com/s/1i49KJlj" target="_blank" rel="external">zookeeper</a></li>
+<li><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="external">tomcat</a></li>
+<li></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软件 </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[虚函数]]></title>
       <url>/2017/10/18/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p>引入原因：为了方便使用多态特性，我们常常需要在基类中定于虚函数。</p>
@@ -2027,30 +2075,6 @@ skip-grant-tables
             <tag> C++ </tag>
             
         </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[软件]]></title>
-      <url>/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</url>
-      <content type="html"><![CDATA[<p>各种杂七杂八的软件：</p>
-<ul>
-<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="external">Windows FX</a></li>
-<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="external">Myeclipse</a></li>
-<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="external">Kali系统</a></li>
-<li><a href="http://pan.baidu.com/s/1dFni0Jv" target="_blank" rel="external">JDK压缩包</a></li>
-<li><a href="http://pan.baidu.com/s/1i49KJlj" target="_blank" rel="external">zookeeper</a></li>
-<li><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="external">tomcat</a></li>
-<li></li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软件 </category>
-            
-        </categories>
-        
         
     </entry>
     
@@ -2313,28 +2337,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1240莫比乌斯函数]]></title>
-      <url>/2016/04/10/ACM/51nod1240%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0/</url>
-      <content type="html"><![CDATA[<p>莫比乌斯函数，由德国数学家和天文学家莫比乌斯提出。梅滕斯(Mertens)首先使用μ(n)（miu(n)）作为莫比乌斯函数的记号。（据说，高斯(Gauss)比莫比乌斯早三十年就曾考虑过这个函数）。</p>
-<p>具体定义如下：<br>如果一个数包含平方因子，那么miu(n) = 0。例如：miu(4), miu(12), miu(18) = 0。<br>如果一个数不包含平方因子，并且有k个不同的质因子，那么miu(n) = (-1)^k。例如：miu(2), miu(3), miu(30) = -1,miu(1), miu(6), miu(10) = 1。<br>给出一个数n, 计算miu(n)。<br>Input<br>输入包括一个数n，(2 &lt;= n &lt;= 10^9)<br>Output<br>输出miu(n)。<br>Input示例<br>5<br>Output示例<br>-1<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="keyword">int</span> num;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">miu</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,cnt;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i*i&lt;=n;i++)&#123;</div><div class="line">        cnt=<span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(n%i==<span class="number">0</span>)&#123;</div><div class="line">            num++;</div><div class="line">            <span class="keyword">while</span>(n%i==<span class="number">0</span>)&#123;</div><div class="line">                n=n/i;</div><div class="line">                cnt++;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span>(cnt&gt;=<span class="number">2</span>)</div><div class="line">                <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (num%<span class="number">2</span>==<span class="number">0</span>)?<span class="number">-1</span>:<span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        num=<span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"1\n"</span>);</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">           <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,miu(n));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-]]></content>
-      
-        <categories>
-            
-            <category> acm </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 51nod </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[51nod1212无向图最小生成树]]></title>
       <url>/2016/04/10/ACM/51nod1212%E6%97%A0%E5%90%91%E5%9B%BE%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</url>
       <content type="html"><![CDATA[<p>1212 无向图最小生成树<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br> 收藏<br> 关注<br>N个点M条边的无向连通图，每条边有一个权值，求该图的最小生成树。</p>
@@ -2406,6 +2408,28 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[51nod1240莫比乌斯函数]]></title>
+      <url>/2016/04/10/ACM/51nod1240%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0/</url>
+      <content type="html"><![CDATA[<p>莫比乌斯函数，由德国数学家和天文学家莫比乌斯提出。梅滕斯(Mertens)首先使用μ(n)（miu(n)）作为莫比乌斯函数的记号。（据说，高斯(Gauss)比莫比乌斯早三十年就曾考虑过这个函数）。</p>
+<p>具体定义如下：<br>如果一个数包含平方因子，那么miu(n) = 0。例如：miu(4), miu(12), miu(18) = 0。<br>如果一个数不包含平方因子，并且有k个不同的质因子，那么miu(n) = (-1)^k。例如：miu(2), miu(3), miu(30) = -1,miu(1), miu(6), miu(10) = 1。<br>给出一个数n, 计算miu(n)。<br>Input<br>输入包括一个数n，(2 &lt;= n &lt;= 10^9)<br>Output<br>输出miu(n)。<br>Input示例<br>5<br>Output示例<br>-1<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="keyword">int</span> num;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">miu</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,cnt;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i*i&lt;=n;i++)&#123;</div><div class="line">        cnt=<span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(n%i==<span class="number">0</span>)&#123;</div><div class="line">            num++;</div><div class="line">            <span class="keyword">while</span>(n%i==<span class="number">0</span>)&#123;</div><div class="line">                n=n/i;</div><div class="line">                cnt++;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span>(cnt&gt;=<span class="number">2</span>)</div><div class="line">                <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (num%<span class="number">2</span>==<span class="number">0</span>)?<span class="number">-1</span>:<span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</div><div class="line">        num=<span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"1\n"</span>);</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">           <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,miu(n));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> acm </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 51nod </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[51nod1242 斐波那契数列 矩阵快速幂]]></title>
       <url>/2016/04/08/ACM/51nod1242%20%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97%20%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/</url>
       <content type="html"><![CDATA[<p>斐波那契数列的定义如下：</p>
@@ -2423,9 +2447,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 快速幂 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 快速幂 </tag>
             
         </tags>
         
@@ -2456,12 +2480,12 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1079中国剩余定理]]></title>
-      <url>/2016/03/31/ACM/51nod1089%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2V2/</url>
-      <content type="html"><![CDATA[<p>1089 最长回文子串 V2（Manacher算法）<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>回文串是指aba、abba、cccbccc、aaaa这种左右对称的字符串。<br>输入一个字符串Str，输出Str里最长回文子串的长度。</p>
-<p>Input<br>输入Str（Str的长度 &lt;= 100000)<br>Output<br>输出最长回文子串的长度L。<br>Input示例<br>daabaac<br>Output示例<br>5</p>
-<p>看到这道题才特意去看了下Manacher算法；<br>参考博客：<a href="http://blog.csdn.net/pi9nc/article/details/9251455" target="_blank" rel="external">http://blog.csdn.net/pi9nc/article/details/9251455</a><br>　　　　　<a href="http://blog.sina.com.cn/s/blog_70811e1a01014esn.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_70811e1a01014esn.html</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">int</span> p[<span class="number">200003</span>];</div><div class="line"><span class="keyword">char</span> s[<span class="number">100001</span>];</div><div class="line"><span class="keyword">char</span> str[<span class="number">200003</span>];</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pk</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> mx=<span class="number">0</span>,id=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;len;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(mx&gt;i)</div><div class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(str[i+p[i]+<span class="number">1</span>]==str[i-p[i]<span class="number">-1</span>])</div><div class="line">            p[i]++;</div><div class="line">        <span class="keyword">if</span>(p[i]+i&gt;mx)&#123;</div><div class="line">            id=i;</div><div class="line">            mx=p[i]+id;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> len,ans=<span class="number">0</span>,i,l=<span class="number">2</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</div><div class="line">    len=<span class="built_in">strlen</span>(s);</div><div class="line">    str[<span class="number">0</span>]=<span class="string">'$'</span>;</div><div class="line">    str[<span class="number">1</span>]=<span class="string">'#'</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">        str[l++]=s[i];</div><div class="line">        str[l++]=<span class="string">'#'</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//str[len]='\n';</span></div><div class="line">    pk(l);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;l;i++)</div><div class="line">        ans=max(ans,p[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+      <title><![CDATA[51nod1134 最长递增子序列]]></title>
+      <url>/2016/03/31/ACM/51nod1134%20%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/</url>
+      <content type="html"><![CDATA[<p>给出长度为N的数组，找出这个数组的最长递增子序列。(递增子序列是指，子序列的元素是递增的）<br>例如：5 1 6 8 2 4 5 10，最长递增子序列是1 2 4 5 10。</p>
+<p>Input<br>第1行：1个数N，N为序列的长度(2 &lt;= N &lt;= 50000)<br>第2 - N + 1行：每行1个数，对应序列的元素(-10^9 &lt;= S[i] &lt;= 10^9)<br>Output<br>输出最长递增子序列的长度。<br>Input示例<br>8<br>5<br>1<br>6<br>8<br>2<br>4<br>5<br>10<br>Output示例<br>5<br>刚开始我想到的也是动态规划，然后自己写。提交发现超时了=.=<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">   <span class="comment">// freopen("C://Users//Administrator//Desktop//duipai2//1.txt","r",stdin);</span></div><div class="line"><span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> n,i,j,ans=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> dp[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> str[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">50005</span>;i++)</div><div class="line">        dp[i]=<span class="number">1</span>;</div><div class="line">   <span class="comment">// memset(dp,1,sizeof(dp));</span></div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lld"</span>,&amp;str[i]);</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;i;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(str[j]&lt;str[i]&amp;&amp;dp[j]&gt;=dp[i])</div><div class="line">                dp[i]=dp[j]+<span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">   <span class="comment">// for(i=1;i&lt;=n;i++)</span></div><div class="line">   <span class="comment">//     printf("%d  ",dp[i]);</span></div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">         ans=max(ans,dp[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后参考了网上大神的代码也是动态规划=.=但是优化了，所以AC了~~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdlib.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdio.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"algorithm"</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1e5</span>;</div><div class="line"><span class="keyword">int</span> dp[maxn];<span class="comment">//dp[i]表示递增数量i的最小值</span></div><div class="line"><span class="keyword">int</span> a[maxn];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,len=<span class="number">1</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</div><div class="line">    dp[len]=a[<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(a[i]&gt;dp[len])</div><div class="line">          dp[++len]=a[i];</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">int</span> pos=lower_bound(dp+<span class="number">1</span>,dp+len,a[i])-dp;</div><div class="line">            <span class="comment">//在dp[]找第一个&gt;=a[i]下标</span></div><div class="line">            dp[pos]=a[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> <span class="comment">//   for(int i=1;i&lt;=n;i++)</span></div><div class="line">      <span class="comment">//printf("%d  ",dp[i]);</span></div><div class="line">    <span class="comment">//printf("\n");</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,len);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+]]></content>
       
         <categories>
             
@@ -2479,12 +2503,12 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1134 最长递增子序列]]></title>
-      <url>/2016/03/31/ACM/51nod1134%20%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/</url>
-      <content type="html"><![CDATA[<p>给出长度为N的数组，找出这个数组的最长递增子序列。(递增子序列是指，子序列的元素是递增的）<br>例如：5 1 6 8 2 4 5 10，最长递增子序列是1 2 4 5 10。</p>
-<p>Input<br>第1行：1个数N，N为序列的长度(2 &lt;= N &lt;= 50000)<br>第2 - N + 1行：每行1个数，对应序列的元素(-10^9 &lt;= S[i] &lt;= 10^9)<br>Output<br>输出最长递增子序列的长度。<br>Input示例<br>8<br>5<br>1<br>6<br>8<br>2<br>4<br>5<br>10<br>Output示例<br>5<br>刚开始我想到的也是动态规划，然后自己写。提交发现超时了=.=<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">   <span class="comment">// freopen("C://Users//Administrator//Desktop//duipai2//1.txt","r",stdin);</span></div><div class="line"><span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></div><div class="line">    <span class="keyword">int</span> n,i,j,ans=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> dp[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> str[<span class="number">50005</span>];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">50005</span>;i++)</div><div class="line">        dp[i]=<span class="number">1</span>;</div><div class="line">   <span class="comment">// memset(dp,1,sizeof(dp));</span></div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lld"</span>,&amp;str[i]);</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;i;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(str[j]&lt;str[i]&amp;&amp;dp[j]&gt;=dp[i])</div><div class="line">                dp[i]=dp[j]+<span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">   <span class="comment">// for(i=1;i&lt;=n;i++)</span></div><div class="line">   <span class="comment">//     printf("%d  ",dp[i]);</span></div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">         ans=max(ans,dp[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后参考了网上大神的代码也是动态规划=.=但是优化了，所以AC了~~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdlib.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdio.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"algorithm"</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1e5</span>;</div><div class="line"><span class="keyword">int</span> dp[maxn];<span class="comment">//dp[i]表示递增数量i的最小值</span></div><div class="line"><span class="keyword">int</span> a[maxn];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,len=<span class="number">1</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</div><div class="line">    dp[len]=a[<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(a[i]&gt;dp[len])</div><div class="line">          dp[++len]=a[i];</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">int</span> pos=lower_bound(dp+<span class="number">1</span>,dp+len,a[i])-dp;</div><div class="line">            <span class="comment">//在dp[]找第一个&gt;=a[i]下标</span></div><div class="line">            dp[pos]=a[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> <span class="comment">//   for(int i=1;i&lt;=n;i++)</span></div><div class="line">      <span class="comment">//printf("%d  ",dp[i]);</span></div><div class="line">    <span class="comment">//printf("\n");</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,len);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-]]></content>
+      <title><![CDATA[51nod1079中国剩余定理]]></title>
+      <url>/2016/03/31/ACM/51nod1089%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2V2/</url>
+      <content type="html"><![CDATA[<p>1089 最长回文子串 V2（Manacher算法）<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>回文串是指aba、abba、cccbccc、aaaa这种左右对称的字符串。<br>输入一个字符串Str，输出Str里最长回文子串的长度。</p>
+<p>Input<br>输入Str（Str的长度 &lt;= 100000)<br>Output<br>输出最长回文子串的长度L。<br>Input示例<br>daabaac<br>Output示例<br>5</p>
+<p>看到这道题才特意去看了下Manacher算法；<br>参考博客：<a href="http://blog.csdn.net/pi9nc/article/details/9251455" target="_blank" rel="external">http://blog.csdn.net/pi9nc/article/details/9251455</a><br>　　　　　<a href="http://blog.sina.com.cn/s/blog_70811e1a01014esn.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_70811e1a01014esn.html</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">int</span> p[<span class="number">200003</span>];</div><div class="line"><span class="keyword">char</span> s[<span class="number">100001</span>];</div><div class="line"><span class="keyword">char</span> str[<span class="number">200003</span>];</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pk</span><span class="params">(<span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> mx=<span class="number">0</span>,id=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;len;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(mx&gt;i)</div><div class="line">            p[i]=min(p[<span class="number">2</span>*id-i],mx-i);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span>(str[i+p[i]+<span class="number">1</span>]==str[i-p[i]<span class="number">-1</span>])</div><div class="line">            p[i]++;</div><div class="line">        <span class="keyword">if</span>(p[i]+i&gt;mx)&#123;</div><div class="line">            id=i;</div><div class="line">            mx=p[i]+id;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> len,ans=<span class="number">0</span>,i,l=<span class="number">2</span>;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</div><div class="line">    len=<span class="built_in">strlen</span>(s);</div><div class="line">    str[<span class="number">0</span>]=<span class="string">'$'</span>;</div><div class="line">    str[<span class="number">1</span>]=<span class="string">'#'</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">        str[l++]=s[i];</div><div class="line">        str[l++]=<span class="string">'#'</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//str[len]='\n';</span></div><div class="line">    pk(l);</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;l;i++)</div><div class="line">        ans=max(ans,p[i]);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
       
         <categories>
             
@@ -2562,9 +2586,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 快速幂 </tag>
-            
             <tag> 51nod </tag>
+            
+            <tag> 快速幂 </tag>
             
         </tags>
         

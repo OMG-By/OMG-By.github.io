@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-09T12:09:15.884Z</updated>
+  <updated>2018-06-09T13:24:33.759Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis设计与实现-数据结构篇（2）--链表</title>
+    <link href="http://yoursite.com/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%882%EF%BC%89-%E9%93%BE%E8%A1%A8/"/>
+    <id>http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（2）-链表/</id>
+    <published>2018-06-09T13:09:46.000Z</published>
+    <updated>2018-06-09T13:24:33.759Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h2><p>每个链表节点都使用一个listNode结构来表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct listNode&#123;</div><div class="line">//前置节点</div><div class="line">struct listNode *prev;</div><div class="line">//后置节点</div><div class="line">struct listNode *next;</div><div class="line">//节点的值</div><div class="line">void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure></p><p>虽然使用多个listNode结构就可以组成链表，但是使用list来持有链表的话，操作起来会更方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list&#123;</div><div class="line">//表头节点</div><div class="line">listNode *head;</div><div class="line">//表尾节点</div><div class="line">listNode *tail;</div><div class="line">//链表所包含的节点数量</div><div class="line">unsigned long len;</div><div class="line">//节点值复制函数</div><div class="line">void *(*dup)(void *ptr);</div><div class="line">//节点值释放函数</div><div class="line">void *(*free)(void *ptr);</div><div class="line">//节点值对比函数</div><div class="line">void *(match)(void *ptr,void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p><p><img src="http://ocx5m3vc3.bkt.clouddn.com/list.png" alt=""></p><h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul><li>双端：获取某个节点的前置和后置节点的复杂度都是O(1)</li><li>无环：两端都指向NULL</li><li>获取表头节点和表尾节点的复杂度为O(1)</li><li>O(1)获取链表长度</li><li>链表可以用来保存各种不同类型的值。</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;链表和链表节点的实现&quot;&gt;&lt;a href=&quot;#链表和链表节点的实现&quot; class=&quot;headerlink&quot; title=&quot;链表和链表节点的实现&quot;&gt;&lt;/a&gt;链表和链表节点的实现&lt;/h2&gt;&lt;p&gt;每个链表节点都使用一个listNode结构来表示&lt;br&gt;&lt;figure cl
+      
+    
+    </summary>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>名言</title>
@@ -43,13 +66,13 @@
   </entry>
   
   <entry>
-    <title>Redis深入理解-数据结构篇（1）--简单动态字符串SDS</title>
-    <link href="http://yoursite.com/2018/06/09/Redis/Redis%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%881%EF%BC%89--%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2SDS/"/>
-    <id>http://yoursite.com/2018/06/09/Redis/Redis深入理解-数据结构篇（1）--简单动态字符串SDS/</id>
+    <title>Redis设计与实现-数据结构篇（1）--简单动态字符串SDS</title>
+    <link href="http://yoursite.com/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%881%EF%BC%89--%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2SDS/"/>
+    <id>http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（1）--简单动态字符串SDS/</id>
     <published>2018-06-09T11:34:13.000Z</published>
-    <updated>2018-06-09T12:50:22.613Z</updated>
+    <updated>2018-06-09T13:08:27.986Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><p>Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。<br>在早期的版本中记录了其长度、剩余空间、以及字符数组；<br>最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/SDS.png" alt=""><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">struct sdshdr&#123;</div><div class="line">//buf中已用空间长度</div><div class="line">int len;</div><div class="line">//buf中剩余可用空间长度</div><div class="line">int free;</div><div class="line">//数据空间</div><div class="line">char buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p><h2 id="SDS与C字符串区别"><a href="#SDS与C字符串区别" class="headerlink" title="SDS与C字符串区别"></a>SDS与C字符串区别</h2><h3 id="获取字符串长度"><a href="#获取字符串长度" class="headerlink" title="获取字符串长度"></a>获取字符串长度</h3><p>&ensp;&ensp;SDS字符串保存了自身的长度，当需要获取长度的时候可以O(1)获得。（3.2中的剩余空间需要用alloc-len算出）</p><h3 id="杜绝缓存区溢出"><a href="#杜绝缓存区溢出" class="headerlink" title="杜绝缓存区溢出"></a>杜绝缓存区溢出</h3><p>&ensp;&ensp;SDS在进行字符串拼接的时候，会自行检查内存空间是否满足要求，如果不满足，将自动进行分配；而且在进行分配空间的时候，会实行预先分配的策略。</p><h3 id="减少修改字符串时带来的内存重分配次数"><a href="#减少修改字符串时带来的内存重分配次数" class="headerlink" title="减少修改字符串时带来的内存重分配次数"></a>减少修改字符串时带来的内存重分配次数</h3><p>&ensp;&ensp;C语言字符串在进行字符串的扩充和收缩的时候，都会面临着内存空间的重新分配问题。<br>&ensp;&ensp;Redis在内存空间分配的问题上进行了优化，只要分为两个过程。  </p><ol><li>内存预分配<br>如果修改之后SDS的长度小于1MB，那么程序将会分配和当前字符串len相同的空间给该字符串对象。<br>如果修改之后的SDS的长度大于等于1MB的话，程序将分配1MB剩余空间给该字符串对象。</li><li>惰性释放<br>当字符串进行缩短操作的时候，并不立即将空间释放出来，而是将这部分空间通过free进行标识。<br>当然，Redis中提供了专门的API，需要的时候，会真正的释放这部分空闲内存。</li></ol><h3 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h3><p>&ensp;&ensp;由于在Redis中，不是根据空字符而是通过len来判断字符串结束的。所以，即便是中间出现了空字符，对于SDS来说，读取该字符串还是可以的。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><p>Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。<br>在早期的版本中记录了其长度、剩余空间、以及字符数组；<br>最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/SDS.png" alt=""><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">struct sdshdr&#123;</div><div class="line">//buf中已用空间长度</div><div class="line">int len;</div><div class="line">//buf中剩余可用空间长度</div><div class="line">int free;</div><div class="line">//数据空间</div><div class="line">char buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p><h2 id="SDS与C字符串区别"><a href="#SDS与C字符串区别" class="headerlink" title="SDS与C字符串区别"></a>SDS与C字符串区别</h2><h3 id="获取字符串长度"><a href="#获取字符串长度" class="headerlink" title="获取字符串长度"></a>获取字符串长度</h3><p>&ensp;&ensp;SDS字符串保存了自身的长度，当需要获取长度的时候可以O(1)获得。（3.2中的剩余空间需要用alloc-len算出）</p><h3 id="杜绝缓存区溢出"><a href="#杜绝缓存区溢出" class="headerlink" title="杜绝缓存区溢出"></a>杜绝缓存区溢出</h3><p>&ensp;&ensp;SDS在进行字符串拼接的时候，会自行检查内存空间是否满足要求，如果不满足，将自动进行分配；而且在进行分配空间的时候，会实行预先分配的策略。</p><h3 id="减少修改字符串时带来的内存重分配次数"><a href="#减少修改字符串时带来的内存重分配次数" class="headerlink" title="减少修改字符串时带来的内存重分配次数"></a>减少修改字符串时带来的内存重分配次数</h3><p>&ensp;&ensp;C语言字符串在进行字符串的扩充和收缩的时候，都会面临着内存空间的重新分配问题。<br>&ensp;&ensp;Redis在内存空间分配的问题上进行了优化，只要分为两个过程。  </p><ol><li>内存预分配<br>如果修改之后SDS的长度小于1MB，那么程序将会分配和当前字符串len相同的空间给该字符串对象。<br>如果修改之后的SDS的长度大于等于1MB的话，程序将分配1MB剩余空间给该字符串对象。</li><li>惰性释放<br>当字符串进行缩短操作的时候，并不立即将空间释放出来，而是将这部分空间通过free进行标识。<br>当然，Redis中提供了专门的API，需要的时候，会真正的释放这部分空闲内存。</li></ol><h3 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h3><p>&ensp;&ensp;由于在Redis中，不是根据空字符而是通过len来判断字符串结束的。所以，即便是中间出现了空字符，对于SDS来说，读取该字符串还是可以的。</p><h3 id="兼容部分C语言函数"><a href="#兼容部分C语言函数" class="headerlink" title="兼容部分C语言函数"></a>兼容部分C语言函数</h3>]]></content>
     
     <summary type="html">
     
@@ -398,6 +421,28 @@ datadir = I:\phpStudy\MySQL\data
   </entry>
   
   <entry>
+    <title>Hibernate_一级缓存</title>
+    <link href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/"/>
+    <id>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/</id>
+    <published>2018-02-04T12:14:16.000Z</published>
+    <updated>2018-04-23T14:42:03.443Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul><li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li><li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li><li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p><ul><li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。&lt;font color=&quot;red&quot;&gt;Hibernate的一级缓存的作用就是减少对数据库的访问次数。&lt;/font&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hibernate_持久化类</title>
     <link href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/"/>
     <id>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/</id>
@@ -415,28 +460,6 @@ datadir = I:\phpStudy\MySQL\data
 &lt;li&gt;在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。&lt;/li&gt;
 &lt;li&gt;PO类中的属性尽量使用基本类型的包装类。&lt;/li&gt;
 &lt;li&gt;PO类不能使用final修饰符。
-    
-    </summary>
-    
-      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hibernate_一级缓存</title>
-    <link href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/</id>
-    <published>2018-02-04T12:14:16.000Z</published>
-    <updated>2018-04-23T14:42:03.443Z</updated>
-    
-    <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul><li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li><li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li><li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p><ul><li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。&lt;font color=&quot;red&quot;&gt;Hibernate的一级缓存的作用就是减少对数据库的访问次数。&lt;/font&gt;&lt;br&gt;
     
     </summary>
     
@@ -497,29 +520,6 @@ datadir = I:\phpStudy\MySQL\data
     
     
       <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS中搭建redis</title>
-    <link href="http://yoursite.com/2017/11/14/Redis/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/"/>
-    <id>http://yoursite.com/2017/11/14/Redis/CentOS中搭建redis集群/</id>
-    <published>2017-11-14T05:10:24.000Z</published>
-    <updated>2018-03-28T13:25:04.556Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="单机版"><a href="#单机版" class="headerlink" title="单机版"></a>单机版</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">首先安装环境：</div><div class="line">yum install gcc-c++</div><div class="line"></div><div class="line">安装步骤：</div><div class="line">1. 将Redis源码包上传到服务器</div><div class="line"></div><div class="line">2. 解压缩</div><div class="line">tar zxf redis-3.0.0.tar.gz</div><div class="line"></div><div class="line">3. 进入redis-3.0.0目录下编译</div><div class="line">make</div><div class="line"></div><div class="line">4. 安装</div><div class="line">make install PREFIX=/root/redis</div><div class="line"></div><div class="line">5.复制配置文件</div><div class="line">cp redis.conf ~/redis-3.0.0/redis.conf </div><div class="line"></div><div class="line">6.修改配置文件</div><div class="line">vim redis.conf</div><div class="line">修改    daemonize yes</div><div class="line"></div><div class="line">7.启动</div><div class="line">./redis-server redis.conf</div><div class="line">这样redis在后端启动了</div><div class="line"></div><div class="line">8.查看</div><div class="line">ps aux|grep redis</div></pre></td></tr></table></figure><hr><a id="more"></a><h3 id="集群版"><a href="#集群版" class="headerlink" title="集群版"></a>集群版</h3><p>Redis集群中至少应该有3个节点，每个节点有一个备用机。<br>所以Redis集群至少需要6台服务器。<br>我们采用伪分布式。用一台服务器搭建6个Redis实例。需要修改Redis的端口号7001-7006</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">1.复制一个单机版的bin目录到一个实例中</div><div class="line">cp -r redis/bin/ redis-cluster/redis01/</div><div class="line"></div><div class="line">2.删除快照</div><div class="line">rm -rf dump.rdb</div><div class="line"></div><div class="line">3.修改配置文件</div><div class="line">vim redis.conf</div><div class="line">修改端口:port 7001</div><div class="line">打开可以使用集群 cluster-enabled yes</div><div class="line"></div><div class="line">4.将这个实例复制几份</div><div class="line">cp -r redis01/ redis02</div><div class="line">cp -r redis01/ redis03</div><div class="line">cp -r redis01/ redis04</div><div class="line">cp -r redis01/ redis05</div><div class="line">cp -r redis01/ redis06</div><div class="line"></div><div class="line">5.分别修改其中配置文件中的端口</div><div class="line"></div><div class="line">6.启动（可以用批处理）</div><div class="line"></div><div class="line">--------------------------------</div><div class="line">搭建集群</div><div class="line"></div><div class="line">使用ruby脚本搭建集群。需要ruby的运行环境</div><div class="line">yum install ruby</div><div class="line">yum install rubygems</div><div class="line"></div><div class="line">将redis-3.0.0.gem上传到服务器</div><div class="line">gem install redis-3.0.0.gem</div><div class="line"></div><div class="line">进入redis-3.0.0/src目录下</div><div class="line">cp redis-trip.rb /redis-cluster/</div><div class="line"></div><div class="line">到redis-cluster目录下执行脚本</div><div class="line">./redis-trib.rb create --replicas 1 192.168.25.153:7001 192.168.25.153:7002 192.168.25.153:7003 192.168.25.153:7004 192.168.25.153:7005 192.168.25.153:7006</div></pre></td></tr></table></figure><p><a href="http://pan.baidu.com/s/1i4Vzydv" target="_blank" rel="external">redis-3.0.0.gem</a><br><a href="http://pan.baidu.com/s/1bp532sn" target="_blank" rel="external">redis-3.0.0.tar.gz</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;单机版&quot;&gt;&lt;a href=&quot;#单机版&quot; class=&quot;headerlink&quot; title=&quot;单机版&quot;&gt;&lt;/a&gt;单机版&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;首先安装环境：&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;yum install gcc-c++&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;安装步骤：&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;1. 将Redis源码包上传到服务器&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2. 解压缩&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tar zxf redis-3.0.0.tar.gz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3. 进入redis-3.0.0目录下编译&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;make&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4. 安装&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;make install PREFIX=/root/redis&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5.复制配置文件&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cp redis.conf ~/redis-3.0.0/redis.conf &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6.修改配置文件&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;vim redis.conf&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;修改    daemonize yes&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7.启动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;./redis-server redis.conf&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;这样redis在后端启动了&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8.查看&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ps aux|grep redis&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;hr&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
-    
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
     
   </entry>
   

@@ -309,6 +309,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（2）-链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/09/Redis/Redis设计与实现-数据结构篇（2）-链表/" itemprop="url">Redis设计与实现-数据结构篇（2）--链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T21:09:46+08:00">
+                2018-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h2><p>每个链表节点都使用一个listNode结构来表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct listNode&#123;</div><div class="line">	//前置节点</div><div class="line">	struct listNode *prev;</div><div class="line">	//后置节点</div><div class="line">	struct listNode *next;</div><div class="line">	//节点的值</div><div class="line">	void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure></p>
+<p>虽然使用多个listNode结构就可以组成链表，但是使用list来持有链表的话，操作起来会更方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list&#123;</div><div class="line">	//表头节点</div><div class="line">	listNode *head;</div><div class="line">	//表尾节点</div><div class="line">	listNode *tail;</div><div class="line">	//链表所包含的节点数量</div><div class="line">	unsigned long len;</div><div class="line">	//节点值复制函数</div><div class="line">	void *(*dup)(void *ptr);</div><div class="line">	//节点值释放函数</div><div class="line">	void *(*free)(void *ptr);</div><div class="line">	//节点值对比函数</div><div class="line">	void *(match)(void *ptr,void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/list.png" alt=""></p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>双端：获取某个节点的前置和后置节点的复杂度都是O(1)</li>
+<li>无环：两端都指向NULL</li>
+<li>获取表头节点和表尾节点的复杂度为O(1)</li>
+<li>O(1)获取链表长度</li>
+<li>链表可以用来保存各种不同类型的值。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/09/名言/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -431,7 +560,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/09/Redis/Redis深入理解-数据结构篇（1）--简单动态字符串SDS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（1）--简单动态字符串SDS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -450,7 +579,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/09/Redis/Redis深入理解-数据结构篇（1）--简单动态字符串SDS/" itemprop="url">Redis深入理解-数据结构篇（1）--简单动态字符串SDS</a></h1>
+                <a class="post-title-link" href="/2018/06/09/Redis/Redis设计与实现-数据结构篇（1）--简单动态字符串SDS/" itemprop="url">Redis设计与实现-数据结构篇（1）--简单动态字符串SDS</a></h1>
         
 
         <div class="post-meta">
@@ -526,7 +655,7 @@
           <h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><p>Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。<br>在早期的版本中记录了其长度、剩余空间、以及字符数组；<br>最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/SDS.png" alt=""><br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/09/Redis/Redis深入理解-数据结构篇（1）--简单动态字符串SDS/#more" rel="contents">
+            <a class="btn" href="/2018/06/09/Redis/Redis设计与实现-数据结构篇（1）--简单动态字符串SDS/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1623,157 +1752,6 @@ datadir = I:\phpStudy\MySQL\data
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Mybatis/Mybatis-原始dao和mapper代理方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/20/Mybatis/Mybatis-原始dao和mapper代理方法/" itemprop="url">Mybatis--原始dao和mapper代理方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T09:16:36+08:00">
-                2018-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/框架/" itemprop="url" rel="index">
-                    <span itemprop="name">框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ul>
-<li><p>SqlSessionFactoryBuilder<br>通过<font color="red">SqlSessionFactoryBuilder</font>创建会话工厂<font color="red">SqlSessionFactory</font>。将<font color="red">SqlSessionFactoryBuilder</font>当成一个工具类使用即可，不需要使用单例管理<font color="red">SqlSessionFactoryBuilder</font>。在创建<font color="red">SqlSessionFactory</font>时候，只需要new一次<font color="red">SqlSessionFactoryBuilder</font>即可。</p>
-</li>
-<li><p>SqlSessionFactory<br>通过<font color="red">SqlSessionFactory</font>创建<font color="red">SqlSession</font>；由于<font color="red">SqlSessionFactory</font>是线程安全的，应该在应用执行期间都存在，所以在应用运行期间不要重复创建多次，建议使用单例模式。</p>
-</li>
-<li><p>SqlSession<br><font color="red">SqlSession</font>是应用程序和持久层之间执行交互操作的一个单线程对象。<font color="red">SqlSession</font>中提供了许多操作数据库的方法。<br><font color="red">SqlSession</font>是线程不安全的。<br>使用完<font color="red">SqlSession</font>要确保在finally块中关闭它。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/20/Mybatis/Mybatis-原始dao和mapper代理方法/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1828,7 +1806,7 @@ datadir = I:\phpStudy\MySQL\data
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
