@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-10T12:25:07.755Z</updated>
+  <updated>2018-07-21T15:27:47.365Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>python获取本机IP</title>
+    <link href="http://yoursite.com/2018/07/21/python/CentOS%E5%AE%89%E8%A3%85JDK/"/>
+    <id>http://yoursite.com/2018/07/21/python/CentOS安装JDK/</id>
+    <published>2018-07-21T08:28:05.000Z</published>
+    <updated>2018-07-21T15:27:47.365Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> socket</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span><span class="params">()</span>:</span></div><div class="line">  <span class="keyword">try</span>:</div><div class="line">      s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</div><div class="line">      s.connect((<span class="string">'8.8.8.8'</span>, <span class="number">80</span>))</div><div class="line">      ip = s.getsockname()[<span class="number">0</span>]</div><div class="line">  <span class="keyword">finally</span>:</div><div class="line">      s.close()</div><div class="line">  <span class="keyword">return</span> ip</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/d
+      
+    
+    </summary>
+    
+      <category term="python" scheme="http://yoursite.com/categories/python/"/>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Redis设计与实现-数据结构篇（4）--跳跃表</title>
     <link href="http://yoursite.com/2018/06/10/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%884%EF%BC%89-%E8%B7%B3%E8%B7%83%E9%93%BE%E8%A1%A8/"/>
     <id>http://yoursite.com/2018/06/10/Redis/Redis设计与实现-数据结构篇（4）-跳跃链表/</id>
     <published>2018-06-10T11:41:38.000Z</published>
-    <updated>2018-06-10T12:25:07.755Z</updated>
+    <updated>2018-06-10T12:35:53.034Z</updated>
     
     <content type="html"><![CDATA[<p>跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。</p><h2 id="跳跃表的实现"><a href="#跳跃表的实现" class="headerlink" title="跳跃表的实现"></a>跳跃表的实现</h2><p>Redis跳跃表由zskiplistNode和zskiplist两个结构定义。其中zskiplistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向表头节点和表尾节点的指针等等。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/skiplist.png" alt=""><br><a id="more"></a><br>位于图片最左边的是zskiplist结构，该结构包含以下属性：</p><ul><li>header：指向跳跃表的表头节点。</li><li>tail：指向跳跃表的表尾节点。</li><li>level：记录目前跳跃表内，层数最大的那个节点的层数（表头节点的层数不计算在内）。</li><li>length：记录跳跃表的长度，即是跳跃表目前包含节点的数量（表头节点不计算在内）。<br>位于图片右侧的是zskiplistNode结构，该结构包含以下属性：</li><li>层（level）</li><li>后退指针（backward）</li><li>分值（score）</li><li>成员对象（obj）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">typedef struct zskiplistNode&#123;</div><div class="line">//后退指针</div><div class="line">struct zskiplistNode *backward;</div><div class="line">//分值</div><div class="line">double score;</div><div class="line">//成员对象</div><div class="line">robj *obj;</div><div class="line">//层</div><div class="line">struct zskiplistLevel&#123;</div><div class="line">//前进指针</div><div class="line">struct zskiplistNode *forward;</div><div class="line">//跨度</div><div class="line">unsigned int span;</div><div class="line">&#125;level[];</div><div class="line">&#125;zskiplistNode；</div></pre></td></tr></table></figure></li></ul>]]></content>
     
@@ -31,6 +56,8 @@
 &lt;h2 id=&quot;跳跃表的实现&quot;&gt;&lt;a href=&quot;#跳跃表的实现&quot; class=&quot;headerlink&quot; title=&quot;跳跃表的实现&quot;&gt;&lt;/a&gt;跳跃表的实现&lt;/h2&gt;&lt;p&gt;Redis跳跃表由zskiplistNode和zskiplist两个结构定义。其中zskiplistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向表头节点和表尾节点的指针等等。&lt;br&gt;&lt;img src=&quot;http://ocx5m3vc3.bkt.clouddn.com/skiplist.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;
     
     </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
     
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
@@ -42,7 +69,7 @@
     <link href="http://yoursite.com/2018/06/10/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%883%EF%BC%89-%E5%AD%97%E5%85%B8/"/>
     <id>http://yoursite.com/2018/06/10/Redis/Redis设计与实现-数据结构篇（3）-字典/</id>
     <published>2018-06-10T10:58:15.000Z</published>
-    <updated>2018-06-10T11:36:54.339Z</updated>
+    <updated>2018-06-10T12:35:47.856Z</updated>
     
     <content type="html"><![CDATA[<h2 id="字典的实现"><a href="#字典的实现" class="headerlink" title="字典的实现"></a>字典的实现</h2><p>Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p><h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct dictht&#123;</div><div class="line">//哈希表数组</div><div class="line">dictEntry **table;</div><div class="line">//哈希表大小</div><div class="line">unsigned long size;</div><div class="line">//哈希表大小掩码，用于计算索引值</div><div class="line">//总是等size-1</div><div class="line">unsigned long sizemask;</div><div class="line">//该哈希表已有节点的数量</div><div class="line">unsigned long used;</div><div class="line">&#125;dictht;</div></pre></td></tr></table></figure><p><img src="http://ocx5m3vc3.bkt.clouddn.com/dictht.png" alt=""><br><a id="more"></a><br>table是一个数组，数组中的每个元素都是一个指向dictEntry结构的指针，每个dictEntry结构保存这一个键值对。</p><h3 id="哈希表节点"><a href="#哈希表节点" class="headerlink" title="哈希表节点"></a>哈希表节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">typedef struct dictEntry&#123;</div><div class="line">//键</div><div class="line">void *key;</div><div class="line">//值</div><div class="line">union&#123;</div><div class="line">void *val;</div><div class="line">uint64_t u64;</div><div class="line">int64_ts64;</div><div class="line">&#125;v;</div><div class="line">//指向下个哈希表节点，形成链表</div><div class="line">struct dictEntry *next;</div><div class="line">&#125;dictEntry;</div></pre></td></tr></table></figure><p><img src="http://ocx5m3vc3.bkt.clouddn.com/dictEntry.png" alt=""></p><h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct dict&#123;</div><div class="line">//类型特定函数</div><div class="line">dictType *type;</div><div class="line">//私有数据</div><div class="line">void *privdata;</div><div class="line">//哈希表</div><div class="line">dictht ht[2];</div><div class="line">//rehash索引</div><div class="line">//当rehash不在进行时，值为-1</div><div class="line">int trehashidx;</div><div class="line">&#125;dict;</div></pre></td></tr></table></figure><p>ht是一个包含两个项的数组，数组中的每个项都是一个dictht哈希表，一般情况下，字典只使用ht[0]哈希表，ht[1]哈希表只会在ht[0]哈希表进行rehash时使用。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/dict.png" alt=""></p><h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><p>当要将一个新的键值对添加到字典里面时，程序需要先根据键值对的键计算出哈希值和索引值，然后根据索引值，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p><h2 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h2><p>随着操作的不断执行，哈希表保存的键值对会逐渐增多或者减少，为了让哈希表的负债因子维持在一个合理的范围内，程序需要对哈希表大小进行相应的扩展或者收缩。<br>步骤：<br>1）为字典的ht[1]哈希表分配空间，这个哈希表的空间大小取决于要执行的操作，以及ht[0]当前包含的键值对数量（也即是ht[0].used属性的值）：<br>2）将保存在ht[0]中的所有键值对rehash到ht[1]上面，rehash值的是重新计算键的哈希值和索引值，然后将键值对放置到ht[1]哈希表的指定位置上。<br>3）当ht[0]包含的所有键值对都迁移到了ht[1]之后（ht[0]变为空表），释放ht[0],将ht[1]设置为ht[0],并在ht[1]新创建一个空白哈希表，为下一次rehash做准备。  </p><h3 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h3><p>1）为ht[1]分配空间，让字典同时持有ht[0]和ht[1]两个哈希表。<br>2）在字典中维持一个索引计数器变量rehashidx，并将它的值设置为0，表示rehash工作正式开始。<br>3）在rehash期间，每次对字典执行添加、删除、查找或者更新操作时，程序除了执行指定操作外，还会顺带将ht[0]哈希表再rehashidx索引上的所有键值对rehash到ht[1]，将rehashidx值增加1。<br>4）随着字典操作的不断执行，最终在某个时间点上，ht[0]的所有键值对都会被rehash到ht[1]，这时将rehashidx设置为-1，表示rehash操作完成。</p>]]></content>
     
@@ -54,6 +81,8 @@
     
     </summary>
     
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
     
@@ -64,7 +93,7 @@
     <link href="http://yoursite.com/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%882%EF%BC%89-%E9%93%BE%E8%A1%A8/"/>
     <id>http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（2）-链表/</id>
     <published>2018-06-09T13:09:46.000Z</published>
-    <updated>2018-06-09T13:24:33.759Z</updated>
+    <updated>2018-06-10T12:35:44.107Z</updated>
     
     <content type="html"><![CDATA[<h2 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h2><p>每个链表节点都使用一个listNode结构来表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct listNode&#123;</div><div class="line">//前置节点</div><div class="line">struct listNode *prev;</div><div class="line">//后置节点</div><div class="line">struct listNode *next;</div><div class="line">//节点的值</div><div class="line">void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure></p><p>虽然使用多个listNode结构就可以组成链表，但是使用list来持有链表的话，操作起来会更方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list&#123;</div><div class="line">//表头节点</div><div class="line">listNode *head;</div><div class="line">//表尾节点</div><div class="line">listNode *tail;</div><div class="line">//链表所包含的节点数量</div><div class="line">unsigned long len;</div><div class="line">//节点值复制函数</div><div class="line">void *(*dup)(void *ptr);</div><div class="line">//节点值释放函数</div><div class="line">void *(*free)(void *ptr);</div><div class="line">//节点值对比函数</div><div class="line">void *(match)(void *ptr,void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p><p><img src="http://ocx5m3vc3.bkt.clouddn.com/list.png" alt=""></p><h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul><li>双端：获取某个节点的前置和后置节点的复杂度都是O(1)</li><li>无环：两端都指向NULL</li><li>获取表头节点和表尾节点的复杂度为O(1)</li><li>O(1)获取链表长度</li><li>链表可以用来保存各种不同类型的值。</li></ul>]]></content>
     
@@ -76,6 +105,8 @@
       
     
     </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
     
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
@@ -454,34 +485,6 @@ datadir = I:\phpStudy\MySQL\data
     
       &lt;h2 id=&quot;Hibernate关系映射&quot;&gt;&lt;a href=&quot;#Hibernate关系映射&quot; class=&quot;headerlink&quot; title=&quot;Hibernate关系映射&quot;&gt;&lt;/a&gt;Hibernate关系映射&lt;/h2&gt;&lt;h3 id=&quot;一对多关系映射&quot;&gt;&lt;a href=&quot;#一对多关系映射&quot; class=&quot;headerlink&quot; title=&quot;一对多关系映射&quot;&gt;&lt;/a&gt;一对多关系映射&lt;/h3&gt;&lt;p&gt;数据库：在多的一方添加外键来描述关联关系。&lt;br&gt;实体对象：在一的一方，增加一个集合用来存放多的一方。在多的一方添加一个一的一方的属性。&lt;br&gt;映射文件配置：&lt;br&gt;User.hbm.xml&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           set代表用的什么集合&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           name代表多的一方的集合的属性名&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       &amp;lt;set name=&amp;quot;carSet&amp;quot;&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               key：多的一方的外键名称&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;key column=&amp;quot;user_id&amp;quot;&amp;gt;&amp;lt;/key&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;one-to-many class=&amp;quot;pojo.Car&amp;quot;&amp;gt;&amp;lt;/one-to-many&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       &amp;lt;/set&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Car.hbm.xml&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name：一的一方的属性名&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            class：一的一方的类全路径&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            colum：表中的外键外键名称&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;lt;many-to-one name=&amp;quot;user&amp;quot; class=&amp;quot;pojo.User&amp;quot; column=&amp;quot;user_id&amp;quot;&amp;gt;&amp;lt;/many-to-one&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hibernate_持久化类</title>
-    <link href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/"/>
-    <id>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_持久化类/</id>
-    <published>2018-02-04T12:14:16.000Z</published>
-    <updated>2018-04-23T13:26:07.165Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p><h3 id="编写规则"><a href="#编写规则" class="headerlink" title="编写规则"></a>编写规则</h3><ol><li>必须提供一个无参数的public构造方法。</li><li>所有属性用private修饰，对外提供public的get/set方法。</li><li>在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。</li><li>PO类中的属性尽量使用基本类型的包装类。</li><li>PO类不能使用final修饰符。<a id="more"></a></li></ol><ul><li><p>为什么PO类必须提供一个标识属性OID，让它与数据库中的主键对应呢？<br>OID指的是数据库中表的主键对应的属性。Hibernate框架是通过OID来区分不同的PO对象，如果在内存中有两个相同的OID对象，那么Hibernate认为它们是一个对象。</p></li><li><p>为什么PO类中的属性要尽量使用基本类型的包装类？<br>使用基本数据类型是没有办法去描述不存在的概念的。如果使用包装类型，它就是一个对象，对于对象它的默认值是null。如果它为null就代表这不存在。</p></li><li><p>为什么PO类不能使用final修饰符？<br>因为Hibernate会使用代理模式在延迟关联的情况下提高性能。如果把实体类定义成final类之后，java不允许对final类进行扩展；所以Hibernate就无法再使用代理了。</p></li></ul><h2 id="持久化对象的三种状态"><a href="#持久化对象的三种状态" class="headerlink" title="持久化对象的三种状态"></a>持久化对象的三种状态</h2><ul><li>瞬时态：也叫做临时态或自由态，他一般指的我们new出来的对象，此时它<font color="red">不存在OID，与Hibernate Session无关联，在数据库中也无记录。</font></li><li>持久态：在Hibernate Session管理范围内，他具有持久化标识OID。它的特点是在事务未提交前一直是持久态，当它发生改变时，Hibernate会检测到。<font color="red">有OID且由Session管理，在数据库中可能有，也可能没有。</font></li><li>托管态：也叫游离态或离线态。它是指<font color="red">持久态对象失去了Session的关联。</font>对于托管态对象，发生改变时Hibernate不会检测。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class HibernateTest &#123;</div><div class="line"></div><div class="line">    // 测试持久化对象的三种状态</div><div class="line">    @Test</div><div class="line">    public void test2() &#123;</div><div class="line">        // 1.得到session</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        session.beginTransaction();</div><div class="line"></div><div class="line">        Customer c = new Customer(); // 瞬时态(无OID，与session无关联)</div><div class="line">        c.setName(&quot;张三&quot;);</div><div class="line">        c.setSex(&quot;男&quot;);</div><div class="line"></div><div class="line">        session.save(c); // 建立c与session的关联关系，它就是持久态的了(有OID)</div><div class="line"></div><div class="line">        // 2.事务提交，并关闭session</div><div class="line">        session.getTransaction().commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">        System.out.println(c.getId()); // 断开了与session的关联，它就是脱管态的了(有OID)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li></ul><p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Hibernate持久化类&quot;&gt;&lt;a href=&quot;#Hibernate持久化类&quot; class=&quot;headerlink&quot; title=&quot;Hibernate持久化类&quot;&gt;&lt;/a&gt;Hibernate持久化类&lt;/h2&gt;&lt;p&gt;在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  &lt;/p&gt;
-&lt;h3 id=&quot;编写规则&quot;&gt;&lt;a href=&quot;#编写规则&quot; class=&quot;headerlink&quot; title=&quot;编写规则&quot;&gt;&lt;/a&gt;编写规则&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;必须提供一个无参数的public构造方法。&lt;/li&gt;
-&lt;li&gt;所有属性用private修饰，对外提供public的get/set方法。&lt;/li&gt;
-&lt;li&gt;在PO类必须提供一个标识属性，与数据库中的主键对应。我们管这属性叫OID。&lt;/li&gt;
-&lt;li&gt;PO类中的属性尽量使用基本类型的包装类。&lt;/li&gt;
-&lt;li&gt;PO类不能使用final修饰符。
     
     </summary>
     
