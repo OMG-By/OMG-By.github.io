@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-21T15:27:47.365Z</updated>
+  <updated>2018-08-10T16:59:20.573Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,9 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Mysql事务</title>
+    <link href="http://yoursite.com/2018/08/11/mysql/mysql%E4%BA%8B%E5%8A%A1/"/>
+    <id>http://yoursite.com/2018/08/11/mysql/mysql事务/</id>
+    <published>2018-08-10T16:11:15.000Z</published>
+    <updated>2018-08-10T16:59:20.573Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、事务的基本要素（ACID）"><a href="#一、事务的基本要素（ACID）" class="headerlink" title="一、事务的基本要素（ACID）"></a>一、事务的基本要素（ACID）</h3><ul><li>原子性（Atomicity):事务开始后所有的操作，要么全部做完，要么全部不做，不可能在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。</li><li>一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏。</li><li>隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同事务之间彼此没有任何干扰。</li><li>持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<a id="more"></a><h3 id="二、事务的并发问题"><a href="#二、事务的并发问题" class="headerlink" title="二、事务的并发问题"></a>二、事务的并发问题</h3></li><li>脏读：事务A读取了事务B未提交的数据。</li><li>不可重复读：事务A多次读取同一数据，事务B在事务A多次读取过程中，对数据进行了更新，导致事务A读取同一事务时结果不一致。</li><li>幻读：事务A在更新过程中，事务B对同数据库进行了操作并提交，事务A提交不成功。</li></ul><h3 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h3><h4 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h4><center>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt=""><br><br>#### 读已提交 ####<br><center>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。<br><br>#### 可重复读 ###<br><center>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。<br><br>#### 串行化 ###<br><center>在事务进行操作时对数据进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</center>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;一、事务的基本要素（ACID）&quot;&gt;&lt;a href=&quot;#一、事务的基本要素（ACID）&quot; class=&quot;headerlink&quot; title=&quot;一、事务的基本要素（ACID）&quot;&gt;&lt;/a&gt;一、事务的基本要素（ACID）&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;原子性（Atomicity):事务开始后所有的操作，要么全部做完，要么全部不做，不可能在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。&lt;/li&gt;
+&lt;li&gt;一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏。&lt;/li&gt;
+&lt;li&gt;隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同事务之间彼此没有任何干扰。&lt;/li&gt;
+&lt;li&gt;持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://yoursite.com/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
     <title>python获取本机IP</title>
-    <link href="http://yoursite.com/2018/07/21/python/CentOS%E5%AE%89%E8%A3%85JDK/"/>
-    <id>http://yoursite.com/2018/07/21/python/CentOS安装JDK/</id>
+    <link href="http://yoursite.com/2018/07/21/python/%E8%8E%B7%E5%8F%96%E6%9C%AC%E6%9C%BAIP/"/>
+    <id>http://yoursite.com/2018/07/21/python/获取本机IP/</id>
     <published>2018-07-21T08:28:05.000Z</published>
     <updated>2018-07-21T15:27:47.365Z</updated>
     
@@ -485,28 +511,6 @@ datadir = I:\phpStudy\MySQL\data
     
       &lt;h2 id=&quot;Hibernate关系映射&quot;&gt;&lt;a href=&quot;#Hibernate关系映射&quot; class=&quot;headerlink&quot; title=&quot;Hibernate关系映射&quot;&gt;&lt;/a&gt;Hibernate关系映射&lt;/h2&gt;&lt;h3 id=&quot;一对多关系映射&quot;&gt;&lt;a href=&quot;#一对多关系映射&quot; class=&quot;headerlink&quot; title=&quot;一对多关系映射&quot;&gt;&lt;/a&gt;一对多关系映射&lt;/h3&gt;&lt;p&gt;数据库：在多的一方添加外键来描述关联关系。&lt;br&gt;实体对象：在一的一方，增加一个集合用来存放多的一方。在多的一方添加一个一的一方的属性。&lt;br&gt;映射文件配置：&lt;br&gt;User.hbm.xml&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           set代表用的什么集合&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           name代表多的一方的集合的属性名&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       &amp;lt;set name=&amp;quot;carSet&amp;quot;&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;               key：多的一方的外键名称&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;key column=&amp;quot;user_id&amp;quot;&amp;gt;&amp;lt;/key&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;           &amp;lt;one-to-many class=&amp;quot;pojo.Car&amp;quot;&amp;gt;&amp;lt;/one-to-many&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;       &amp;lt;/set&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Car.hbm.xml&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;lt;!--&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            name：一的一方的属性名&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            class：一的一方的类全路径&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            colum：表中的外键外键名称&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        --&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;lt;many-to-one name=&amp;quot;user&amp;quot; class=&amp;quot;pojo.User&amp;quot; column=&amp;quot;user_id&amp;quot;&amp;gt;&amp;lt;/many-to-one&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="hibernate" scheme="http://yoursite.com/tags/hibernate/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hibernate_一级缓存</title>
-    <link href="http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/2018/02/04/kuangjia/Hibernate/Hibernate_一级缓存/</id>
-    <published>2018-02-04T12:14:16.000Z</published>
-    <updated>2018-04-23T14:42:03.443Z</updated>
-    
-    <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul><li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li><li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li><li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p><ul><li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。&lt;font color=&quot;red&quot;&gt;Hibernate的一级缓存的作用就是减少对数据库的访问次数。&lt;/font&gt;&lt;br&gt;
     
     </summary>
     
