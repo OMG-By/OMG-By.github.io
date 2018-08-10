@@ -104,7 +104,7 @@
 <meta property="og:description" content="跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。 跳跃表的实现Redis跳跃表由zskiplistNode和zskiplist两个结构定义。其中zskiplistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向表头节点和表尾节点的指针等等。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/skiplist.png">
-<meta property="og:updated_time" content="2018-06-10T12:35:53.034Z">
+<meta property="og:updated_time" content="2018-08-10T17:13:04.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis设计与实现-数据结构篇（4）--跳跃表">
 <meta name="twitter:description" content="跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。 跳跃表的实现Redis跳跃表由zskiplistNode和zskiplist两个结构定义。其中zskiplistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向表头节点和表尾节点的指针等等。">
@@ -416,10 +416,13 @@
 <li>tail：指向跳跃表的表尾节点。</li>
 <li>level：记录目前跳跃表内，层数最大的那个节点的层数（表头节点的层数不计算在内）。</li>
 <li>length：记录跳跃表的长度，即是跳跃表目前包含节点的数量（表头节点不计算在内）。<br>位于图片右侧的是zskiplistNode结构，该结构包含以下属性：</li>
-<li>层（level）</li>
-<li>后退指针（backward）</li>
+<li>层（level）：每次创建一个新的跳跃表节点的时候，程序都根据幂次定律随机生成一个介于1~32之间的值作为level数组的大小，这就是层的高度。</li>
+<li>前进指针（forward):每层都有一个指向表尾方向的前进指针。</li>
+<li>后退指针（backward）：用于从表尾向表头方向访问节点。</li>
+<li>跨度（span）：用于记录两个节点之间的距离。</li>
 <li>分值（score）</li>
-<li>成员对象（obj）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">typedef struct zskiplistNode&#123;</div><div class="line">	//后退指针</div><div class="line">	struct zskiplistNode *backward;</div><div class="line">	//分值</div><div class="line">	double score;</div><div class="line">	//成员对象</div><div class="line">	robj *obj;</div><div class="line">	//层</div><div class="line">	struct zskiplistLevel&#123;</div><div class="line">		//前进指针</div><div class="line">		struct zskiplistNode *forward;</div><div class="line">		//跨度</div><div class="line">		unsigned int span;</div><div class="line">	&#125;level[];</div><div class="line">&#125;zskiplistNode；</div></pre></td></tr></table></figure></li>
+<li>成员对象（obj）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">typedef struct zskiplistNode&#123;</div><div class="line">	//后退指针</div><div class="line">	struct zskiplistNode *backward;</div><div class="line">	//分值</div><div class="line">	double score;</div><div class="line">	//成员对象</div><div class="line">	robj *obj;</div><div class="line">	//层</div><div class="line">	struct zskiplistLevel&#123;</div><div class="line">		//前进指针</div><div class="line">		struct zskiplistNode *forward;</div><div class="line">		//跨度</div><div class="line">		unsigned int span;</div><div class="line">	&#125;level[];</div><div class="line">&#125;zskiplistNode；</div></pre></td></tr></table></figure>
+</li>
 </ul>
 
       
@@ -461,8 +464,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/21/python/获取本机IP/" rel="prev" title="python获取本机IP">
-                python获取本机IP <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/11/Redis/Redis设计与实现-数据结构篇（5）-整数集合/" rel="prev" title="Redis设计与实现-数据结构篇（5）-整数集合">
+                Redis设计与实现-数据结构篇（5）-整数集合 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -544,7 +547,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
