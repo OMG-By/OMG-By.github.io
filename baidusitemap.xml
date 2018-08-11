@@ -4,6 +4,86 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/MySQL%E4%B9%8B%E5%A4%87%E4%BB%BD/</loc>
+    <lastmod>2018-08-11T08:58:37.373Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL之备份</title>
+        <pubTime>2018-08-11T08:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2018-08-11T08:00:30.550Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL之权限管理</title>
+        <pubTime>2018-08-11T07:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
+    <lastmod>2018-08-11T07:30:59.064Z</lastmod>
+    <data>
+        <display>
+        <title>information_schema</title>
+        <pubTime>2018-08-11T04:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/mysql%E4%BA%8B%E5%8A%A1/</loc>
+    <lastmod>2018-08-11T07:10:49.210Z</lastmod>
+    <data>
+        <display>
+        <title>Mysql事务</title>
+        <pubTime>2018-08-10T16:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/06/11/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%885%EF%BC%89-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/</loc>
     <lastmod>2018-08-10T17:27:19.167Z</lastmod>
     <data>
@@ -17,26 +97,6 @@
            
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/08/11/mysql/mysql%E4%BA%8B%E5%8A%A1/</loc>
-    <lastmod>2018-08-10T17:16:10.103Z</lastmod>
-    <data>
-        <display>
-        <title>Mysql事务</title>
-        <pubTime>2018-08-10T16:11:15.000Z</pubTime>
-        
-        <tag>mysql</tag>
-         
-         
-           
-             
-              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
           
         </display>
     </data>
