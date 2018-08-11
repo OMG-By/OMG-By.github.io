@@ -309,6 +309,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/07/CentOS安装JDK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/07/CentOS安装JDK/" itemprop="url">CentOS安装JDK、MySQL、tomcat、zookeeper</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T16:28:05+08:00">
+                2017-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>&ensp;&ensp;最近跟着视频做项目的时候发觉如果本机又是服务端又是客户端总感觉哪里有点那么不爽–<br>&ensp;&ensp;于是本来打算在我本机上的虚拟机试试看结果感觉效果不是很好，然后就珍惜自己最后一年的学生身份去晚上买了一个云服务器= =</p>
+<ul>
+<li><a href="https://www.mtyun.com/activity-school?site=mos&amp;campaign=20170706sales" target="_blank" rel="external">云帆校园扶持计划-美团云</a></li>
+</ul>
+<hr>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">1.查看是否安装JDK</div><div class="line">	rpm -qa|grep java</div><div class="line"></div><div class="line">2.卸载已经安装的两个openJDK</div><div class="line">	rpm -e--nodeps [要卸载的软件]</div><div class="line"></div><div class="line">3.上传JDK到Linux</div><div class="line">//安装JDK运行需要的插件 yum install glibc.i686</div><div class="line">4.解压JDK到/usr/local/目录下</div><div class="line">	tar –xvf jdk-7u71-linux-i586.tar.gz –C /usr/local</div><div class="line"></div><div class="line">5.配置JDK环境变量，将下面的配置拷贝进去</div><div class="line">	vim /etc/profile</div><div class="line"></div><div class="line">	#set java environment</div><div class="line">	JAVA_HOME=/usr/local/jdk1.7.0_71</div><div class="line">	CLASSPATH=.:$JAVA_HOME/lib.tools.jar</div><div class="line">	PATH=$JAVA_HOME/bin:$PATH</div><div class="line">	export JAVA_HOME CLASSPATH PATH </div><div class="line"></div><div class="line">6.重新加载/etc/profile配置文件</div><div class="line">	source /etc/profile</div><div class="line"></div><div class="line">测试是否安装成功</div><div class="line">	java -version</div></pre></td></tr></table></figure>
+<hr>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/07/CentOS安装JDK/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/SQL优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1403,155 +1555,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/Linux/Linux常用命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/24/Linux/Linux常用命令/" itemprop="url">Linux常用命令（简）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T19:31:09+08:00">
-                2017-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="external">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
-<h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/ls/" title="ls详细介绍" target="_blank" rel="external">ls命令</a></h3><p>&ensp;&ensp;查看当前目录下的目录、文件等及其相应权限。<br>&ensp;&ensp;命令格式： ls [选项] 目录</p>
-<h3 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h3><p>&ensp;&ensp;查看当前工作目录的完整路径。<br>&ensp;&ensp;pwd [选项]</p>
-<h3 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h3><p>&ensp;&ensp;创建一个指定的名称的目录，要求创建目录的用户具有权限且该目录名不存在。<br>&ensp;&ensp;mkdir [选项]目录<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/24/Linux/Linux常用命令/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/Linux/Linux命令（特殊功能）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1693,7 +1696,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/21/kuangjia/Struts/ActionContext/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/Linux/Linux常用命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -1712,7 +1715,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/21/kuangjia/Struts/ActionContext/" itemprop="url">ActionContext</a></h1>
+                <a class="post-title-link" href="/2017/10/24/Linux/Linux常用命令/" itemprop="url">Linux常用命令（简）</a></h1>
         
 
         <div class="post-meta">
@@ -1724,8 +1727,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T20:14:16+08:00">
-                2017-10-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T19:31:09+08:00">
+                2017-10-24
               </time>
             
 
@@ -1747,8 +1750,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/框架/" itemprop="url" rel="index">
-                    <span itemprop="name">框架</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -1785,13 +1788,13 @@
 
       
         
-          <h3 id="ActionContext"><a href="#ActionContext" class="headerlink" title="ActionContext"></a><center>ActionContext</center></h3><p>&ensp;&ensp;ActionContext是Action的上下文，Struct2自动在其中保存了一些在Action执行过程中所需的对象，比如session、parameters、locale等。Struts2会根据每个执行HTTp请求的线程来创建对应的ActionContext，即一个线程只有一个唯一的ActionContext。因此，使用者可以使用静态方法ActionContext.getContext&#40;&#41;来获取当前线程的ActionContext，也正是由于这个原因，使用者不用去操心让Action是线程安全的。</p>
-<p>&ensp;&ensp;无论如何，ActionContext都是用来存放数据的。Struts2本身会在其中放入不少数据，而使用者也可以放入自己想要的数据。ActionContext本身的数据结构是映射结构，即一个Map，用key来映射value。所以使用者完全可以像使用Map一样来使用它，或者直接使用Action.getContextMap&#40;&#41;方法来对Map进行操作。</p>
-<p>&ensp;&ensp;Struts2本身在其中放入的数据有Actionlnvocation、application&#40;即ServletContext&#41;、conversionErrors、Locale、action的name、request的参数、HTTP的Session以及值栈等。完整的列表请参考它的Javadoc。</p>
-<p>&ensp;&ensp;由于ActionContext的线程唯一和静态方法就能获得的特性，使得在非Action类中可以直接获得它，而不需要等待Action传入或注入。<font color="#DC143C">需要注意的是，它仅在由于request而创建的线程中有效&#40;因为request时才创建对应的ActionContext&#41;，而在服务器启动的线程中&#40;比如fliter的init方法&#41;无效。</font>由于在非Action类中访问其的方便性，ActionContext也可以用来在非Action类中向JSP传递数据&#40;因为JSP也能很方便的访问它&#41;。<br>
+          <h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="external">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
+<h3 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/ls/" title="ls详细介绍" target="_blank" rel="external">ls命令</a></h3><p>&ensp;&ensp;查看当前目录下的目录、文件等及其相应权限。<br>&ensp;&ensp;命令格式： ls [选项] 目录</p>
+<h3 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h3><p>&ensp;&ensp;查看当前工作目录的完整路径。<br>&ensp;&ensp;pwd [选项]</p>
+<h3 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h3><p>&ensp;&ensp;创建一个指定的名称的目录，要求创建目录的用户具有权限且该目录名不存在。<br>&ensp;&ensp;mkdir [选项]目录<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/21/kuangjia/Struts/ActionContext/#more" rel="contents">
+            <a class="btn" href="/2017/10/24/Linux/Linux常用命令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1883,7 +1886,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
