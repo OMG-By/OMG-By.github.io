@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png">
 <meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png">
 <meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png">
-<meta property="og:updated_time" content="2018-08-11T07:10:49.210Z">
+<meta property="og:updated_time" content="2018-08-11T16:37:58.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql事务">
 <meta name="twitter:description" content="一、事务的基本要素（ACID） 原子性（Atomicity):事务开始后所有的操作，要么全部做完，要么全部不做，不可能在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。 一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏。 隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同事务之间彼此没有任何干扰。 持久性（">
@@ -421,7 +421,11 @@
 <li>不可重复读：事务A多次读取同一数据，事务B在事务A多次读取过程中，对数据进行了更新，导致事务A读取同一事务时结果不一致。</li>
 <li>幻读：事务A在更新过程中，事务B对同数据库进行了操作并提交，事务A提交不成功。</li>
 </ul>
-<h2 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h2><h3 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h3><center>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt=""><br><br>### 读已提交 ###<br><center>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。<br><br>### 可重复读 ###<br><center>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。<br><br>### 串行化 ###<br><center>在事务进行操作时对表进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</center>
+<h2 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h2><h3 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h3><p>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt="">  </p>
+<h3 id="读已提交"><a href="#读已提交" class="headerlink" title="读已提交"></a>读已提交</h3><p>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。</p>
+<h3 id="可重复读"><a href="#可重复读" class="headerlink" title="可重复读"></a>可重复读</h3><p>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。 </p>
+<h3 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h3><p>在事务进行操作时对表进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</p>
+
       
     </div>
     
@@ -648,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、事务的基本要素（ACID）"><span class="nav-number">1.</span> <span class="nav-text">一、事务的基本要素（ACID）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、事务的并发问题"><span class="nav-number">2.</span> <span class="nav-text">二、事务的并发问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Mysql事务隔离级别"><span class="nav-number">3.</span> <span class="nav-text">三、Mysql事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读未提交"><span class="nav-number">3.1.</span> <span class="nav-text">读未提交</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、事务的基本要素（ACID）"><span class="nav-number">1.</span> <span class="nav-text">一、事务的基本要素（ACID）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、事务的并发问题"><span class="nav-number">2.</span> <span class="nav-text">二、事务的并发问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Mysql事务隔离级别"><span class="nav-number">3.</span> <span class="nav-text">三、Mysql事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读未提交"><span class="nav-number">3.1.</span> <span class="nav-text">读未提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读已提交"><span class="nav-number">3.2.</span> <span class="nav-text">读已提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可重复读"><span class="nav-number">3.3.</span> <span class="nav-text">可重复读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#串行化"><span class="nav-number">3.4.</span> <span class="nav-text">串行化</span></a></li></ol></li></ol></div>
             
 
           </div>

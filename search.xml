@@ -193,7 +193,11 @@
 <li>不可重复读：事务A多次读取同一数据，事务B在事务A多次读取过程中，对数据进行了更新，导致事务A读取同一事务时结果不一致。</li>
 <li>幻读：事务A在更新过程中，事务B对同数据库进行了操作并提交，事务A提交不成功。</li>
 </ul>
-<h2 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h2><h3 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h3><center>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt=""><br><br>### 读已提交 ###<br><center>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。<br><br>### 可重复读 ###<br><center>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。<br><br>### 串行化 ###<br><center>在事务进行操作时对表进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</center>]]></content>
+<h2 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h2><h3 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h3><p>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt="">  </p>
+<h3 id="读已提交"><a href="#读已提交" class="headerlink" title="读已提交"></a>读已提交</h3><p>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。</p>
+<h3 id="可重复读"><a href="#可重复读" class="headerlink" title="可重复读"></a>可重复读</h3><p>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。 </p>
+<h3 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h3><p>在事务进行操作时对表进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</p>
+]]></content>
       
         <categories>
             
@@ -234,7 +238,7 @@
       <title><![CDATA[Redis设计与实现-数据结构篇（6）-压缩列表]]></title>
       <url>/2018/06/12/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%886%EF%BC%89--%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8/</url>
       <content type="html"><![CDATA[<p>压缩列表是列表键和哈希键的底层实现之一。当一个列表键只包含少量列表项，并且每个列表项要么就是小整数类型，要么就是长度比较短的字符串，那么Redis会使用压缩列表来做列表键的底层实现。</p>
-<p>###压缩列表的构成###<br>压缩列表是Redis为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的顺序性数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或者一个整数值。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/ziplist.png" alt="">  </p>
+<h3 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h3><p>压缩列表是Redis为了节约内存而开发的，是由一系列特殊编码的连续内存块组成的顺序性数据结构。一个压缩列表可以包含任意多个节点，每个节点可以保存一个字节数组或者一个整数值。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/ziplist.png" alt="">  </p>
 <ul>
 <li>zlbytes：4字节，记录整个压缩列表占用内存的字节数</li>
 <li>zltail：4字节，记录压缩列表尾部节点距离起始地址的偏移量</li>
@@ -243,7 +247,7 @@
 <li>zlend：1字节，特殊值0xFF，标记压缩列表的结束</li>
 </ul>
 <a id="more"></a>
-<p>###压缩列表节点的构成###<br>每个压缩列表节点可以保存一个字节数组或者一个整数值。其中，字节数组可以是以下的类型：  </p>
+<h3 id="压缩列表节点的构成"><a href="#压缩列表节点的构成" class="headerlink" title="压缩列表节点的构成"></a>压缩列表节点的构成</h3><p>每个压缩列表节点可以保存一个字节数组或者一个整数值。其中，字节数组可以是以下的类型：  </p>
 <ul>
 <li>长度小于等于63字节的字节数组</li>
 <li>长度小于等于16381字节的字节数组</li>
