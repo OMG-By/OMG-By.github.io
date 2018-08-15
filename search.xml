@@ -195,7 +195,8 @@
 </ul>
 <h2 id="三、Mysql事务隔离级别"><a href="#三、Mysql事务隔离级别" class="headerlink" title="三、Mysql事务隔离级别"></a>三、Mysql事务隔离级别</h2><h3 id="读未提交"><a href="#读未提交" class="headerlink" title="读未提交"></a>读未提交</h3><p>事务1对A进行操作还没提交，事务2就对A进行了读取，之后事务1对A进行再次操作或回滚，导致事务A读取的数据不对。（脏读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4.png" alt="">  </p>
 <h3 id="读已提交"><a href="#读已提交" class="headerlink" title="读已提交"></a>读已提交</h3><p>事务2多次读取同一数据，事务1在事务2读取过程中对数据进行了修改，导致事务1读取的数据不一致。（解决了脏读，不可重复读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E8%AF%BB%E5%B7%B2%E6%8F%90%E4%BA%A42.png" alt=""><br>读已提交是大多数数据库的默认隔离级别。</p>
-<h3 id="可重复读"><a href="#可重复读" class="headerlink" title="可重复读"></a>可重复读</h3><p>事务与事务之间相互隔离，数据之间不相互影响。事务2对数据A进行修改，在提交之前，事务1对数据A进行了修改并提交，导致数据的改变，所以事务2提交事务失败。（解决了不可重复读，导致了幻读）<br><img src="http://ocx5m3vc3.bkt.clouddn.com/%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB.png" alt=""><br>可重复读是mysql的默认隔离级别。 </p>
+<h3 id="可重复读"><a href="#可重复读" class="headerlink" title="可重复读"></a>可重复读</h3><p>事务与事务之间相互隔离，数据之间不相互影响。整个事务过程中多次执行同一个查询，查询得到的结果是不一样的，幻读针对的多笔记录。（解决了不可重复读，导致了幻读）</p>
+<p>可重复读是mysql的默认隔离级别。 </p>
 <h3 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h3><p>在事务进行操作时对表进行加锁操作，拒绝其他事务进行操作。保证了数据的安全性，但是效率大大降低。</p>
 ]]></content>
       
