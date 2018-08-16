@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-16T16:15:56.291Z</updated>
+  <updated>2018-08-16T16:19:53.493Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,17 +21,17 @@
     <link href="http://yoursite.com/2018/08/16/mysql/mysqldump/"/>
     <id>http://yoursite.com/2018/08/16/mysql/mysqldump/</id>
     <published>2018-08-16T15:49:08.000Z</published>
-    <updated>2018-08-16T16:15:56.291Z</updated>
+    <updated>2018-08-16T16:19:53.493Z</updated>
     
-    <content type="html"><![CDATA[<p>mysqldump常用于MySQL数据库逻辑备份</p><h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>1、mysqldump -uroot -p [–all-databases] [database name] &gt; [dump file]<br>上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。<br>2、如果加上–opt参数  </p><ul><li>建表语句中包含drop table if exists tableName  </li><li>inert之前包含一个锁表语句lock tables tableName write,insert之后包含unlock tables<br>3、mysqldump –host=host1 –opt sourceDb|mysql –host=host2 -C targetDb<br>使用以上命令可以将host1上的sourceDb复制到host2的targetDb，前提是目标主机的targetDb已经创建。<br>4、使用–no-data将只备份表结构。<br>5、mysql [database name] &lt; [backup file name]从备份文件恢复到数据库  </li></ul><h3 id="mysqldump全量备份-mysqlbinlog二进制日志增量备份"><a href="#mysqldump全量备份-mysqlbinlog二进制日志增量备份" class="headerlink" title="mysqldump全量备份+mysqlbinlog二进制日志增量备份"></a>mysqldump全量备份+mysqlbinlog二进制日志增量备份</h3><p>从mysqldump备份文件恢复数据会丢失掉从备份点开始的更新数据，所以还需要结合mysqlbinlog二进制日志增量备份。确保已启动二进制文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">log-bin = mysql-bin</div></pre></td></tr></table></figure></p><p>mysqldump命令必须带上–flush-logs选项生成新的二进制文件<br>mysqldump –single-transaction –flush-logs –master-data &gt; backup.sql<br>那么在恢复时先导入mysqldump的全量备份后，再导入mysqlbinlog二进制日志的增量备份。<br>此外，mysqlbinlog还可以指定–start-data、–stop-date、–start-position和–stop-position参数，用于精确恢复数据到某个时刻之前或者跳过中间某个出问题时间段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">5.9.3.1. 指定恢复时间</div><div class="line">对于MySQL 4.1.4，可以在mysqlbinlog语句中通过--start-date和--stop-date选项指定DATETIME格式的起止时间。举例说明，假设在今天上午10:00(今天是2005年4月20日)，执行SQL语句来删除一个大表。要想恢复表和数据，你可以恢复前晚上的备份，并输入：</div><div class="line">mysqlbinlog --stop-date=&quot;2005-04-20 9:59:59&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd</div><div class="line">该命令将恢复截止到在--stop-date选项中以DATETIME格式给出的日期和时间的所有数据。如果你没有检测到几个小时后输入的错误的SQL语句，可能你想要恢复后面发生的活动。根据这些，你可以用起使日期和时间再次运行mysqlbinlog：</div><div class="line"></div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 10:01:00&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd \</div><div class="line">在该行中，从上午10:01登录的SQL语句将运行。组合执行前夜的转储文件和mysqlbinlog的两行可以将所有数据恢复到上午10:00前一秒钟。你应检查日志以确保时间确切。下一节介绍如何实现。</div><div class="line"></div><div class="line">5.9.3.2. 指定恢复位置</div><div class="line">也可以不指定日期和时间，而使用mysqlbinlog的选项--start-position和--stop-position来指定日志位置。它们的作用与起止日选项相同，不同的是给出了从日志起的位置号。使用日志位置是更准确的恢复方法，特别是当由于破坏性SQL语句同时发生许多事务的时候。要想确定位置号，可以运行mysqlbinlog寻找执行了不期望的事务的时间范围，但应将结果重新指向文本文件以便进行检查。操作方法为：</div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 9:55:00&quot; --stop-date=&quot;2005-04-20 10:05:00&quot; \</div><div class="line">      /var/log/mysql/bin.123456 &gt; /tmp/mysql_restore.sql</div><div class="line">该命令将在/tmp目录创建小的文本文件，将显示执行了错误的SQL语句时的SQL语句。你可以用文本编辑器打开该文件，寻找你不要想重复的语句。如果二进制日志中的位置号用于停止和继续恢复操作，应进行注释。用log_pos加一个数字来标记位置。使用位置号恢复了以前的备份文件后，你应从命令行输入下面内容：</div><div class="line"></div><div class="line">mysqlbinlog --stop-position=&quot;368312&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd </div><div class="line"> </div><div class="line">mysqlbinlog --start-position=&quot;368315&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd \ </div><div class="line">上面的第1行将恢复到停止位置为止的所有事务。下一行将恢复从给定的起始位置直到二进制日志结束的所有事务。因为mysqlbinlog的输出包括每个SQL语句记录之前的SET TIMESTAMP语句，恢复的数据和相关MySQL日志将反应事务执行的原时间。</div></pre></td></tr></table></figure></p>]]></content>
+    <content type="html"><![CDATA[<p>mysqldump常用于MySQL数据库逻辑备份</p><h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>1、mysqldump -uroot -p [–all-databases] [database name] &gt; [dump file]<br>上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。<br>2、如果加上–opt参数  </p><ul><li>建表语句中包含drop table if exists tableName  </li><li>inert之前包含一个锁表语句lock tables tableName write,insert之后包含unlock tables<br>3、mysqldump –host=host1 –opt sourceDb|mysql –host=host2 -C targetDb<br>使用以上命令可以将host1上的sourceDb复制到host2的targetDb，前提是目标主机的targetDb已经创建。<br>4、使用–no-data将只备份表结构。<br>5、mysql [database name] &lt; [backup file name]从备份文件恢复到数据库  <a id="more"></a><h3 id="mysqldump全量备份-mysqlbinlog二进制日志增量备份"><a href="#mysqldump全量备份-mysqlbinlog二进制日志增量备份" class="headerlink" title="mysqldump全量备份+mysqlbinlog二进制日志增量备份"></a>mysqldump全量备份+mysqlbinlog二进制日志增量备份</h3>从mysqldump备份文件恢复数据会丢失掉从备份点开始的更新数据，所以还需要结合mysqlbinlog二进制日志增量备份。确保已启动二进制文件。  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">log-bin = mysql-bin</div></pre></td></tr></table></figure></li></ul><p>mysqldump命令必须带上–flush-logs选项生成新的二进制文件<br>mysqldump –single-transaction –flush-logs –master-data &gt; backup.sql<br>那么在恢复时先导入mysqldump的全量备份后，再导入mysqlbinlog二进制日志的增量备份。<br>此外，mysqlbinlog还可以指定–start-data、–stop-date、–start-position和–stop-position参数，用于精确恢复数据到某个时刻之前或者跳过中间某个出问题时间段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">5.9.3.1. 指定恢复时间</div><div class="line">对于MySQL 4.1.4，可以在mysqlbinlog语句中通过--start-date和--stop-date选项指定DATETIME格式的起止时间。举例说明，假设在今天上午10:00(今天是2005年4月20日)，执行SQL语句来删除一个大表。要想恢复表和数据，你可以恢复前晚上的备份，并输入：</div><div class="line">mysqlbinlog --stop-date=&quot;2005-04-20 9:59:59&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd</div><div class="line">该命令将恢复截止到在--stop-date选项中以DATETIME格式给出的日期和时间的所有数据。如果你没有检测到几个小时后输入的错误的SQL语句，可能你想要恢复后面发生的活动。根据这些，你可以用起使日期和时间再次运行mysqlbinlog：</div><div class="line"></div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 10:01:00&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd \</div><div class="line">在该行中，从上午10:01登录的SQL语句将运行。组合执行前夜的转储文件和mysqlbinlog的两行可以将所有数据恢复到上午10:00前一秒钟。你应检查日志以确保时间确切。下一节介绍如何实现。</div><div class="line"></div><div class="line">5.9.3.2. 指定恢复位置</div><div class="line">也可以不指定日期和时间，而使用mysqlbinlog的选项--start-position和--stop-position来指定日志位置。它们的作用与起止日选项相同，不同的是给出了从日志起的位置号。使用日志位置是更准确的恢复方法，特别是当由于破坏性SQL语句同时发生许多事务的时候。要想确定位置号，可以运行mysqlbinlog寻找执行了不期望的事务的时间范围，但应将结果重新指向文本文件以便进行检查。操作方法为：</div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 9:55:00&quot; --stop-date=&quot;2005-04-20 10:05:00&quot; \</div><div class="line">      /var/log/mysql/bin.123456 &gt; /tmp/mysql_restore.sql</div><div class="line">该命令将在/tmp目录创建小的文本文件，将显示执行了错误的SQL语句时的SQL语句。你可以用文本编辑器打开该文件，寻找你不要想重复的语句。如果二进制日志中的位置号用于停止和继续恢复操作，应进行注释。用log_pos加一个数字来标记位置。使用位置号恢复了以前的备份文件后，你应从命令行输入下面内容：</div><div class="line"></div><div class="line">mysqlbinlog --stop-position=&quot;368312&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd </div><div class="line"> </div><div class="line">mysqlbinlog --start-position=&quot;368315&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd \ </div><div class="line">上面的第1行将恢复到停止位置为止的所有事务。下一行将恢复从给定的起始位置直到二进制日志结束的所有事务。因为mysqlbinlog的输出包括每个SQL语句记录之前的SET TIMESTAMP语句，恢复的数据和相关MySQL日志将反应事务执行的原时间。</div></pre></td></tr></table></figure></p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;p&gt;mysqldump常用于MySQL数据库逻辑备份&lt;/p&gt;
-&lt;h3 id=&quot;用法&quot;&gt;&lt;a href=&quot;#用法&quot; class=&quot;headerlink&quot; title=&quot;用法&quot;&gt;&lt;/a&gt;用法&lt;/h3&gt;&lt;p&gt;1、mysqldump -uroot -p [–all-databases]
-      
+      &lt;p&gt;mysqldump常用于MySQL数据库逻辑备份&lt;/p&gt;
+&lt;h3 id=&quot;用法&quot;&gt;&lt;a href=&quot;#用法&quot; class=&quot;headerlink&quot; title=&quot;用法&quot;&gt;&lt;/a&gt;用法&lt;/h3&gt;&lt;p&gt;1、mysqldump -uroot -p [–all-databases] [database name] &amp;gt; [dump file]&lt;br&gt;上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。&lt;br&gt;2、如果加上–opt参数  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;建表语句中包含drop table if exists tableName  &lt;/li&gt;
+&lt;li&gt;inert之前包含一个锁表语句lock tables tableName write,insert之后包含unlock tables&lt;br&gt;3、mysqldump –host=host1 –opt sourceDb|mysql –host=host2 -C targetDb&lt;br&gt;使用以上命令可以将host1上的sourceDb复制到host2的targetDb，前提是目标主机的targetDb已经创建。&lt;br&gt;4、使用–no-data将只备份表结构。&lt;br&gt;5、mysql [database name] &amp;lt; [backup file name]从备份文件恢复到数据库
     
     </summary>
     
@@ -39,20 +39,6 @@
     
     
       <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysqldump</title>
-    <link href="http://yoursite.com/2018/08/16/mysqldump/"/>
-    <id>http://yoursite.com/2018/08/16/mysqldump/</id>
-    <published>2018-08-16T15:49:08.000Z</published>
-    <updated>2018-08-16T15:49:08.276Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
     
   </entry>
   
@@ -559,6 +545,35 @@ datadir = I:\phpStudy\MySQL\data
     
     
       <category term="坑" scheme="http://yoursite.com/tags/%E5%9D%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>输入映射和输出映射</title>
+    <link href="http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/"/>
+    <id>http://yoursite.com/2018/04/20/Mybatis/输入映射和输出映射/</id>
+    <published>2018-04-20T05:10:35.000Z</published>
+    <updated>2018-04-21T04:02:36.352Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="输入映射"><a href="#输入映射" class="headerlink" title="输入映射"></a>输入映射</h2><p>Mybatis映射文件通过<font color="red">parameterType</font>指定输入参数的类型，类型可以是  </p><ul><li>简单类型</li><li>hashmap</li><li>pojo的包装类型</li></ul><p>在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。<br>如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  </p><p>即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。<br><a id="more"></a></p><h2 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h2><p>输入映射主要有两种方式： </p><ul><li><font color="red">resultType</font></li><li><font color="red">resultMap</font></li></ul><h3 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h3><ul><li>使用<font color="red">resultType</font>进行输出映射时，只有查询出来的列名和pojo中的属性名一致，才能映射成功。<ul><li>列名与pojo的属性名<b>只要有一个不一致</b>就不会创建pojo对象，此时会报错。</li><li>列名与pojo的属性名<b>只要有一个一致</b>就会创建一个pojo对象并返回。</li></ul></li></ul><h3 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h3><p>如果查询出来的列名和pojo的属性名不一致，可以通过定义一个resultMap对列名和属性名之间进行映射。<br>1.定义resultMap</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap type=&quot;user&quot; id=&quot;userResultMap&quot;&gt;</div><div class="line">        &lt;!-- id表示查询结果集中唯一标识 </div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">        --&gt;</div><div class="line">        &lt;id column=&quot;id_&quot; property=&quot;id&quot;/&gt;</div><div class="line">        &lt;!-- </div><div class="line">        result：对普通名映射定义</div><div class="line">        column：查询出来的列名</div><div class="line">        property：type指定的pojo类型中的属性名</div><div class="line">        最终resultMap对column和property作一个映射关系 （对应关系）</div><div class="line">         --&gt;</div><div class="line">        &lt;result column=&quot;username_&quot; property=&quot;username&quot;/&gt;</div><div class="line">        &lt;!--</div><div class="line">        一对一映射</div><div class="line">        association：用于映射关联查询单个对象的信息</div><div class="line">        property：要将关联查询的用户信息映射到Orders中哪个属性</div><div class="line">        javaType：映射到user的哪个属性</div><div class="line">       --&gt;</div><div class="line">       &lt;!--</div><div class="line">       一对多映射</div><div class="line">       collection：对关联查询到多条记录映射到集合对象中</div><div class="line">       property：将关联查询到多条记录映射到com.iot.mybatis.po.Orders哪个属性</div><div class="line">       ofType：指定映射到list集合属性中pojo的类型</div><div class="line">       --&gt;</div><div class="line">     &lt;/resultMap&gt;</div></pre></td></tr></table></figure><p>2.使用resultMap作为statement的输出映射类型</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 使用resultMap进行输出映射</div><div class="line">        resultMap：指定定义的resultMap的id，如果这个resultMap在其它的mapper文件，前边需要加namespace</div><div class="line">        --&gt;</div><div class="line">    &lt;select id=&quot;findUserByIdResultMap&quot; parameterType=&quot;int&quot; resultMap=&quot;userResultMap&quot;&gt;</div><div class="line">        SELECT id id_,username username_ FROM USER WHERE id=#&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure><h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>使用resultMap多表查询时，可能会导致重复字段赋值错误。<br>解决方法：在查询时定义别名。resultMap中根据别名列来映射</p><hr><p>resultType和resultMap区别：</p><ul><li>resultType：使用resultType实现较为简单，如果pojo中没有包括查询出来的列名，需要增加列名对应的属性，即可完成映射。如果没有查询结果的特殊要求建议使用resultType。</li><li>resultMap：需要单独定义resultMap，实现有点麻烦，如果对查询结果有特殊的要求，使用resultMap可以完成将关联查询映射pojo的属性中。</li><li>resultMap可以实现延迟加载，resultType无法实现延迟加载。</li></ul><hr><p>association：</p><ul><li>作用：将关联查询信息映射到一个pojo对象中。  </li><li>场合：为了方便查询关联信息可以使用association将关联订单信息映射为用户对象的pojo属性中，比如：查询订单及关联用户信息。</li></ul><p>collection：  </p><ul><li>作用：将关联查询信息映射到一个list集合中。</li><li>场合：为了方便查询遍历关联信息可以使用collection将关联信息映射到list集合中，比如：查询用户权限范围模块及模块下的菜单，可使用collection将模块映射到模块list中，将菜单列表映射到模块对象的菜单list属性中，这样的作的目的也是方便对查询结果集进行遍历查询。如果使用resultType无法将查询结果映射到list集合中。</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;输入映射&quot;&gt;&lt;a href=&quot;#输入映射&quot; class=&quot;headerlink&quot; title=&quot;输入映射&quot;&gt;&lt;/a&gt;输入映射&lt;/h2&gt;&lt;p&gt;Mybatis映射文件通过&lt;font color=&quot;red&quot;&gt;parameterType&lt;/font&gt;指定输入参数的类型，类型可以是  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简单类型&lt;/li&gt;
+&lt;li&gt;hashmap&lt;/li&gt;
+&lt;li&gt;pojo的包装类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在xml映射文件中sql语句会根据OGNL自动获取传入类型中的属性值。&lt;br&gt;如果传入类型中没有相应的属性值，就会报找不到对应属性的错。  &lt;/p&gt;
+&lt;p&gt;即使传入类型的具体对象中的相应属性为null，也并不会报错。因为Mybatis使用的是动态sql，如果没有设置某个值，条件就不会拼接在sql中去。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Mybatis" scheme="http://yoursite.com/tags/Mybatis/"/>
     
   </entry>
   

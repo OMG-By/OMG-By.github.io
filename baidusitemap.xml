@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/08/16/mysql/mysqldump/</loc>
-    <lastmod>2018-08-16T16:15:56.291Z</lastmod>
+    <lastmod>2018-08-16T16:19:53.493Z</lastmod>
     <data>
         <display>
         <title>mysqldump和mysqlbinlog</title>
@@ -18,21 +18,6 @@
              
               <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/08/16/mysqldump/</loc>
-    <lastmod>2018-08-16T15:49:08.276Z</lastmod>
-    <data>
-        <display>
-        <title>mysqldump</title>
-        <pubTime>2018-08-16T15:49:08.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>

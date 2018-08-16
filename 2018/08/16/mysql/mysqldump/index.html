@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="mysqldump常用于MySQL数据库逻辑备份 用法1、mysqldump -uroot -p [–all-databases] [database name] &amp;gt; [dump file]上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。2、如果加上–opt参数    建表语句中包含drop table">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-16T16:15:56.291Z">
+<meta property="og:updated_time" content="2018-08-16T16:19:53.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysqldump和mysqlbinlog">
 <meta name="twitter:description" content="mysqldump常用于MySQL数据库逻辑备份 用法1、mysqldump -uroot -p [–all-databases] [database name] &amp;gt; [dump file]上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。2、如果加上–opt参数    建表语句中包含drop table">
@@ -411,9 +411,10 @@
 <h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>1、mysqldump -uroot -p [–all-databases] [database name] &gt; [dump file]<br>上述命令会将制定数据库备份到某dump文件（转储文件）中，生成的dump文件中包含建表语句（生成数据库结构）和插入数据的insert语句。<br>2、如果加上–opt参数  </p>
 <ul>
 <li>建表语句中包含drop table if exists tableName  </li>
-<li>inert之前包含一个锁表语句lock tables tableName write,insert之后包含unlock tables<br>3、mysqldump –host=host1 –opt sourceDb|mysql –host=host2 -C targetDb<br>使用以上命令可以将host1上的sourceDb复制到host2的targetDb，前提是目标主机的targetDb已经创建。<br>4、使用–no-data将只备份表结构。<br>5、mysql [database name] &lt; [backup file name]从备份文件恢复到数据库  </li>
+<li>inert之前包含一个锁表语句lock tables tableName write,insert之后包含unlock tables<br>3、mysqldump –host=host1 –opt sourceDb|mysql –host=host2 -C targetDb<br>使用以上命令可以将host1上的sourceDb复制到host2的targetDb，前提是目标主机的targetDb已经创建。<br>4、使用–no-data将只备份表结构。<br>5、mysql [database name] &lt; [backup file name]从备份文件恢复到数据库  <a id="more"></a>
+<h3 id="mysqldump全量备份-mysqlbinlog二进制日志增量备份"><a href="#mysqldump全量备份-mysqlbinlog二进制日志增量备份" class="headerlink" title="mysqldump全量备份+mysqlbinlog二进制日志增量备份"></a>mysqldump全量备份+mysqlbinlog二进制日志增量备份</h3>从mysqldump备份文件恢复数据会丢失掉从备份点开始的更新数据，所以还需要结合mysqlbinlog二进制日志增量备份。确保已启动二进制文件。  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">log-bin = mysql-bin</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="mysqldump全量备份-mysqlbinlog二进制日志增量备份"><a href="#mysqldump全量备份-mysqlbinlog二进制日志增量备份" class="headerlink" title="mysqldump全量备份+mysqlbinlog二进制日志增量备份"></a>mysqldump全量备份+mysqlbinlog二进制日志增量备份</h3><p>从mysqldump备份文件恢复数据会丢失掉从备份点开始的更新数据，所以还需要结合mysqlbinlog二进制日志增量备份。确保已启动二进制文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">log-bin = mysql-bin</div></pre></td></tr></table></figure></p>
 <p>mysqldump命令必须带上–flush-logs选项生成新的二进制文件<br>mysqldump –single-transaction –flush-logs –master-data &gt; backup.sql<br>那么在恢复时先导入mysqldump的全量备份后，再导入mysqlbinlog二进制日志的增量备份。<br>此外，mysqlbinlog还可以指定–start-data、–stop-date、–start-position和–stop-position参数，用于精确恢复数据到某个时刻之前或者跳过中间某个出问题时间段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">5.9.3.1. 指定恢复时间</div><div class="line">对于MySQL 4.1.4，可以在mysqlbinlog语句中通过--start-date和--stop-date选项指定DATETIME格式的起止时间。举例说明，假设在今天上午10:00(今天是2005年4月20日)，执行SQL语句来删除一个大表。要想恢复表和数据，你可以恢复前晚上的备份，并输入：</div><div class="line">mysqlbinlog --stop-date=&quot;2005-04-20 9:59:59&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd</div><div class="line">该命令将恢复截止到在--stop-date选项中以DATETIME格式给出的日期和时间的所有数据。如果你没有检测到几个小时后输入的错误的SQL语句，可能你想要恢复后面发生的活动。根据这些，你可以用起使日期和时间再次运行mysqlbinlog：</div><div class="line"></div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 10:01:00&quot; /var/log/mysql/bin.123456 \</div><div class="line">     | mysql -u root -pmypwd \</div><div class="line">在该行中，从上午10:01登录的SQL语句将运行。组合执行前夜的转储文件和mysqlbinlog的两行可以将所有数据恢复到上午10:00前一秒钟。你应检查日志以确保时间确切。下一节介绍如何实现。</div><div class="line"></div><div class="line">5.9.3.2. 指定恢复位置</div><div class="line">也可以不指定日期和时间，而使用mysqlbinlog的选项--start-position和--stop-position来指定日志位置。它们的作用与起止日选项相同，不同的是给出了从日志起的位置号。使用日志位置是更准确的恢复方法，特别是当由于破坏性SQL语句同时发生许多事务的时候。要想确定位置号，可以运行mysqlbinlog寻找执行了不期望的事务的时间范围，但应将结果重新指向文本文件以便进行检查。操作方法为：</div><div class="line">mysqlbinlog --start-date=&quot;2005-04-20 9:55:00&quot; --stop-date=&quot;2005-04-20 10:05:00&quot; \</div><div class="line">      /var/log/mysql/bin.123456 &gt; /tmp/mysql_restore.sql</div><div class="line">该命令将在/tmp目录创建小的文本文件，将显示执行了错误的SQL语句时的SQL语句。你可以用文本编辑器打开该文件，寻找你不要想重复的语句。如果二进制日志中的位置号用于停止和继续恢复操作，应进行注释。用log_pos加一个数字来标记位置。使用位置号恢复了以前的备份文件后，你应从命令行输入下面内容：</div><div class="line"></div><div class="line">mysqlbinlog --stop-position=&quot;368312&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd </div><div class="line"> </div><div class="line">mysqlbinlog --start-position=&quot;368315&quot; /var/log/mysql/bin.123456 \</div><div class="line">    | mysql -u root -pmypwd \ </div><div class="line">上面的第1行将恢复到停止位置为止的所有事务。下一行将恢复从给定的起始位置直到二进制日志结束的所有事务。因为mysqlbinlog的输出包括每个SQL语句记录之前的SET TIMESTAMP语句，恢复的数据和相关MySQL日志将反应事务执行的原时间。</div></pre></td></tr></table></figure></p>
 
       
@@ -445,8 +446,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/16/mysqldump/" rel="next" title="mysqldump">
-                <i class="fa fa-chevron-left"></i> mysqldump
+              <a href="/2018/08/16/mysql/MySQL主从复制/" rel="next" title="MySQL主从复制">
+                <i class="fa fa-chevron-left"></i> MySQL主从复制
               </a>
             
           </div>
@@ -534,7 +535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
