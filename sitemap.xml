@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</loc>
+    
+    <lastmod>2018-08-16T02:44:54.189Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
     
     <lastmod>2018-08-16T02:20:18.367Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://yoursite.com/2018/08/11/mysql/MySQL%E4%B9%8B%E5%A4%87%E4%BB%BD/</loc>
     
     <lastmod>2018-08-11T08:58:37.373Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2018/08/11/mysql/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</loc>
-    
-    <lastmod>2018-08-11T08:00:30.550Z</lastmod>
     
   </url>
   

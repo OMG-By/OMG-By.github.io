@@ -112,11 +112,19 @@
 </table>
 <a id="more"></a>
 <h2 id="二、MySQL权限实战"><a href="#二、MySQL权限实战" class="headerlink" title="二、MySQL权限实战"></a>二、MySQL权限实战</h2><ol>
-<li><p>GRANT命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; grant all privileges on *.* to jack@&apos;localhost&apos; identified by &quot;jack&quot; with grant option;</div><div class="line">Query OK, 0 rows affected (0.01 sec)</div></pre></td></tr></table></figure>
+<li>GRANT命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; grant all privileges on *.* to jack@&apos;localhost&apos; identified by &quot;jack&quot; with grant option;</div><div class="line">Query OK, 0 rows affected (0.01 sec)</div></pre></td></tr></table></figure>
 </li>
-<li><p>刷新权限：flush privileges;</p>
-</li>
+</ol>
+<ul>
+<li>grant:授予权限操作。</li>
+<li>all:具体权限。(all代表所有权限，还可以为select、update、delete等单项权限选择)</li>
+<li>on <em>.</em>:权限操作的数据库和表。(第一个<em>代表数据库，第二个</em>代表具体的表。<em>.</em>代表所有的库和表，可以指定具体库和表）</li>
+<li>to user@ip:被授予权限的用户和ip。</li>
+<li>identified by “passwd”:被授予用户的密码。</li>
+<li>with grant option:是否拥有授予其他用户权限的权限。</li>
+</ul>
+<ol>
+<li>刷新权限：flush privileges;</li>
 <li><p>查看权限：show grants;</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">查看当前用户的权限：</div><div class="line">mysql&gt; show grants;</div><div class="line">+---------------------------------------------------------------------+</div><div class="line">| Grants for root@localhost                                           |</div><div class="line">+---------------------------------------------------------------------+</div><div class="line">| GRANT ALL PRIVILEGES ON *.* TO &apos;root&apos;@&apos;localhost&apos; WITH GRANT OPTION |</div><div class="line">| GRANT PROXY ON &apos;&apos;@&apos;&apos; TO &apos;root&apos;@&apos;localhost&apos; WITH GRANT OPTION        |</div><div class="line">+---------------------------------------------------------------------+</div><div class="line">2 rows in set (0.00 sec)</div><div class="line"></div><div class="line">查看某个用户的权限：</div><div class="line">mysql&gt; show grants for &apos;jack&apos;@&apos;%&apos;;</div><div class="line">+-----------------------------------------------------------------------------------------------------+</div><div class="line">| Grants for jack@%                                                                                   |</div><div class="line">+-----------------------------------------------------------------------------------------------------+</div><div class="line">| GRANT USAGE ON *.* TO &apos;jack&apos;@&apos;%&apos; IDENTIFIED BY PASSWORD &apos;*9BCDC990E611B8D852EFAF1E3919AB6AC8C8A9F0&apos; |</div><div class="line">+-----------------------------------------------------------------------------------------------------+</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
 </li>
