@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://yoursite.com/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/</loc>
-    <lastmod>2018-09-23T15:01:36.394Z</lastmod>
+    <lastmod>2018-09-23T15:03:05.042Z</lastmod>
     <data>
         <display>
-        <title>MySQL之备份</title>
+        <title>reset master和reset slave</title>
         <pubTime>2018-09-23T08:11:15.000Z</pubTime>
         
         <tag>mysql</tag>

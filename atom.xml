@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-23T15:01:36.394Z</updated>
+  <updated>2018-09-23T15:03:05.042Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>MySQL之备份</title>
+    <title>reset master和reset slave</title>
     <link href="http://yoursite.com/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/"/>
     <id>http://yoursite.com/2018/09/23/mysql/reset master和rester slave/</id>
     <published>2018-09-23T08:11:15.000Z</published>
-    <updated>2018-09-23T15:01:36.394Z</updated>
+    <updated>2018-09-23T15:03:05.042Z</updated>
     
     <content type="html"><![CDATA[<h3 id="reset-master"><a href="#reset-master" class="headerlink" title="reset master"></a>reset master</h3><p>删除index file中记录的所有binlog文件，将日志索引文件清空，创建一个新的日志文件，这个命令通常用于第一次搭建主从关系的主库。  </p><h4 id="reset-master和purge-binary-log的区别"><a href="#reset-master和purge-binary-log的区别" class="headerlink" title="reset master和purge binary log的区别"></a>reset master和purge binary log的区别</h4><ol><li>reset master 删除日志索引文件中记录的所有binlog文件，出纳金一个新的日志文件，起始值从000001开始，purge binary log 命令不会修改记录binlog顺序的数值</li><li>reset master 不能用于有任何slave正在运行的主从关系的主库。因为在slave运行时刻reset master命令不被支持。从库此时会报错。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In MySQL 5.6.5 and later, RESET MASTER also clears the values of the gtid_purged system variable (known as gtid_lost in MySQL 5.6.8 and earlier) as well as the global value of the gtid_executed (gtid_done, prior to MySQL 5.6.9) system variable (but not its session value); that is, executing this statement sets each of these values to an empty string (&apos;&apos;)</div></pre></td></tr></table></figure></li></ol><h3 id="reset-slave"><a href="#reset-slave" class="headerlink" title="reset slave"></a>reset slave</h3><p>reset slave 将使slave忘记主从复制关系的位置信息。该语句用于干净的启动，它删除master.info文件和relay-log.info文件以及所有的relay log文件并重新启用一个新的relay-log文件。</p><h3 id="reset-slave-all"><a href="#reset-slave-all" class="headerlink" title="reset slave all"></a>reset slave all</h3><p>在 5.6 版本中 reset slave 并不会清理存储于内存中的复制信息比如  master host, master port, master user, or master password,也就是说如果没有使用change master 命令做重新定向，执行start slave 还是会指向旧的master 上面。<br>当从库执行reset slave之后,将mysqld shutdown 复制参数将被重置。<br>在5.6.3 版本以及以后 使用使用 RESET SLAVE ALL 来完全的清理复制连接参数信息。(Bug #11809016)<br>RESET SLAVE ALL does not clear the IGNORE_SERVER_IDS list set by CHANGE MASTER TO. This issue is fixed in MySQL 5.7. (Bug #18816897)<br>In MySQL 5.6.7 and later, RESET SLAVE causes an implicit commit of an ongoing transaction. See Section 13.3.3, “Statements That Cause an Implicit Commit”.</p>]]></content>
     

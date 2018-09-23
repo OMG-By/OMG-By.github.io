@@ -3,7 +3,7 @@
   
     
     <entry>
-      <title><![CDATA[MySQL之备份]]></title>
+      <title><![CDATA[reset master和reset slave]]></title>
       <url>/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/</url>
       <content type="html"><![CDATA[<h3 id="reset-master"><a href="#reset-master" class="headerlink" title="reset master"></a>reset master</h3><p>删除index file中记录的所有binlog文件，将日志索引文件清空，创建一个新的日志文件，这个命令通常用于第一次搭建主从关系的主库。  </p>
 <h4 id="reset-master和purge-binary-log的区别"><a href="#reset-master和purge-binary-log的区别" class="headerlink" title="reset master和purge binary log的区别"></a>reset master和purge binary log的区别</h4><ol>
