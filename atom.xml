@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-23T15:03:05.042Z</updated>
+  <updated>2018-10-20T15:45:50.396Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis原理----线程IO模型</title>
+    <link href="http://yoursite.com/2018/10/20/Redis/Redis%E5%8E%9F%E7%90%86----%E7%BA%BF%E7%A8%8BIO%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://yoursite.com/2018/10/20/Redis/Redis原理----线程IO模型/</id>
+    <published>2018-10-20T11:34:13.000Z</published>
+    <updated>2018-10-20T15:45:50.396Z</updated>
+    
+    <content type="html"><![CDATA[<p><b>Redis是一个单线程程序</b></p><h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>当我们调用套接字的读写方法，默认他们是阻塞的，比如read方法要传递一个参数n，表示最多读取这门多字节后返回，如果一个字节都没有，那么线程就会卡在那里，直到新的数据到来或者连接关闭，read方法才可以返回，线程才能够继续处理。而write方法一般来说不会阻塞，除非内核为套接字分配的写缓冲区已经写满了，write方法才会阻塞，直到缓冲区有空闲空间。<img src="https://i.imgur.com/0sE9kXD.png" alt=""><br>非阻塞IO在套接字对象上提供了一个选项Non_Blocking,当这个选项打开时，读写方法不会阻塞。能读多少取决于内核为套接字分配的读缓冲区的空闲空间字节数，能写多少取决于内核为套接字分配的写缓冲区的空闲空间字节数。读方法和写方法都会通过返回值来告知程序实际读写了多少字节。</p><h2 id="事件轮询（多路复用）"><a href="#事件轮询（多路复用）" class="headerlink" title="事件轮询（多路复用）"></a>事件轮询（多路复用）</h2><p>非阻塞IO有个问题，就是线程要读数据，但是读了一部分就返回了，线程如何知道什么时候应该继续读，也就是当数据到来时，线程如何得到通知。写也是一样。<img src="https://i.imgur.com/bxF8jbN.png" alt=""><br>事件轮询API就是用来解决这个问题的，最简单的时间轮询API是select函数，它是操作系统提供给用户程序的API。输入时读写描述符列表read_fds &amp; write_fds，输出是与之对应的可读可写时间。同时还提供了一个timeout参数，如果没有任何事件的到来，那么最多等待timeout时间，线程处于阻塞状态。一旦期间有事件到来，就可以立即返回。线程就可以继续挨个处理相应的事件。处理完了继续过来轮询。于是线程就进入了一个死循环。我们把这个死循环称为事件轮询，一个循环为一个周期。<br><b>事件轮询API就是Java语言中的NIO技术</b></p><h2 id="指令队列"><a href="#指令队列" class="headerlink" title="指令队列"></a>指令队列</h2><p>Redis会将每个客户端套接字都关联一个指令队列。客户端的指令通过队列来排队进行顺序处理，先到先服务。</p><h2 id="响应队列"><a href="#响应队列" class="headerlink" title="响应队列"></a>响应队列</h2><p>Redis同样会为每个客户端套接字关联一个响应队列。<br>Redis服务器通过响应队列来将指令的返回结果回复给客户端。如果队列为空，那么以为这连接暂时处于空闲状态，不需要去获取写事件，也就是可以将当前的客户端描述符从write_fds里面移除。等到队列有数据了，再将描述符放进去。避免select系统调用立即返回写事件，结果发现没什么数据可以写。<b>出现这种情况的线程会飙高CPU</b></p><h2 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h2><p>服务器处理要响应的IO事件外，还要处理其他事情。比如定时任务。<br>如果线程阻塞在select系统调用上，定时任务将无法得到准时调度。那么Redis是如何解决这个问题的呢？  </p><p>Redis的定时任务会记录在一个最小堆的数据结构中。这个堆中，最快要执行的任务排在堆的最上方。在每个循环周期，Redis都会将最小堆里面已经到点的任务立即进行处理。处理完毕后，将最快要执行的任务还需要的时间记录下来，这个时间就是select系统调用的timeout参数。因为Redis知道未来timeout时间内，没有其他定时任务需要处理，所以可以安心睡眠timeout时间。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;b&gt;Redis是一个单线程程序&lt;/b&gt;&lt;/p&gt;
+&lt;h2 id=&quot;非阻塞IO&quot;&gt;&lt;a href=&quot;#非阻塞IO&quot; class=&quot;headerlink&quot; title=&quot;非阻塞IO&quot;&gt;&lt;/a&gt;非阻塞IO&lt;/h2&gt;&lt;p&gt;当我们调用套接字的读写方法，默认他们是阻塞的，比如read方
+      
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>reset master和reset slave</title>
@@ -542,29 +568,6 @@
     <summary type="html">
     
       &lt;p&gt;Mybatis提供查询缓存，用于减轻数据压力，提高数据库性能。&lt;br&gt;Mybatis提供一级缓存和二级缓存。&lt;br&gt;&lt;img src=&quot;http://ocx5m3vc3.bkt.clouddn.com/mybatis_%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98.png&quot; alt=&quot;http://ocx5m3vc3.bkt.clouddn.com/mybatis_%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98.png&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="框架" scheme="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Mybatis" scheme="http://yoursite.com/tags/Mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>延迟加载</title>
-    <link href="http://yoursite.com/2018/04/21/Mybatis/%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/"/>
-    <id>http://yoursite.com/2018/04/21/Mybatis/延迟加载/</id>
-    <published>2018-04-21T11:00:48.000Z</published>
-    <updated>2018-04-21T13:36:00.622Z</updated>
-    
-    <content type="html"><![CDATA[<p>resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。</p><p>延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。<br><a id="more"></a><br>开启延迟加载需要在SqlMapConfig.xml的setting中设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;settings&gt;</div><div class="line">    &lt;!-- 打开延迟加载 的开关 --&gt;</div><div class="line">    &lt;setting name=&quot;lazyLoadingEnabled&quot; value=&quot;true&quot;/&gt;</div><div class="line">    &lt;!-- 将积极加载改为消极加载即按需要加载 --&gt;</div><div class="line">    &lt;setting name=&quot;aggressiveLazyLoading&quot; value=&quot;false&quot;/&gt;</div><div class="line">&lt;/settings&gt;</div></pre></td></tr></table></figure></p><p>书写需要的两个satatement </p><ul><li>查询用户</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;select id=&quot;findUserLazy&quot; resultMap=&quot;findUserAndCarLazyMap&quot;&gt;</div><div class="line">        SELECT *</div><div class="line">        FROM user</div><div class="line">        WHERE id = #&#123;id&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure><ul><li><p>查询拥有的Car  </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;select id=&quot;findCarByUserId&quot; parameterType=&quot;int&quot; resultType=&quot;pojo.Car&quot;&gt;</div><div class="line">        SELECT *</div><div class="line">        FROM car</div><div class="line">        WHERE user_id = #&#123;value&#125;</div><div class="line">    &lt;/select&gt;</div></pre></td></tr></table></figure></li><li><p>书写resultMap  </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id=&quot;findUserAndCarLazyMap&quot; type=&quot;pojo.User&quot;&gt;</div><div class="line">        &lt;id property=&quot;id&quot; column=&quot;id&quot;&gt;&lt;/id&gt;</div><div class="line">        &lt;result property=&quot;name&quot; column=&quot;name&quot;&gt;&lt;/result&gt;</div><div class="line">        &lt;result property=&quot;password&quot; column=&quot;password&quot;&gt;&lt;/result&gt;</div><div class="line">        &lt;!--</div><div class="line">            多了select和column</div><div class="line">            select:会去寻找相应的方法，如果不在本mapper中则需要在前面添加其namespace（我这里是放在本mapper中的）</div><div class="line">            column:根据哪一列去进行查询。</div><div class="line">        --&gt;</div><div class="line">        &lt;association property=&quot;car&quot;</div><div class="line">                     select=&quot;findCarByUserId&quot; </div><div class="line">                     column=&quot;id&quot;</div><div class="line">                     javaType=&quot;pojo.Car&quot;&gt;</div><div class="line"></div><div class="line">        &lt;/association&gt;</div><div class="line">    &lt;/resultMap&gt;</div></pre></td></tr></table></figure></li><li><p>在相应的Mapper接口中书写方法</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public User findUserLazy(int id);</div></pre></td></tr></table></figure></li><li><p>测试代码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void testFindUserLazyLoding()&#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line"></div><div class="line">        User user = userMapper.findUserLazy(2);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        //System.out.println(user.getCar().toString());</div><div class="line">    &#125;</div></pre></td></tr></table></figure></li></ul><p>PS:这里不知道是我用的IDEA的问题还是怎么的，在输出的时候竟然也执行了第二条sql语句。。。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png" alt="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png"></p><center>延迟加载debug</center><br><img src="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E4%B8%8D%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png" alt="http://ocx5m3vc3.bkt.clouddn.com/mybatis%E4%B8%8D%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BDdebug.png"><br><center>不延迟加载debug</center><hr><p>更新：后来发现出现上面第一图的情况是由于在System.out.println(user);会执行第二条SQL。。  需要配置一下设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;setting     name=&quot;lazyLoadTriggerMethods&quot; value=&quot; &quot; /&gt;</div></pre></td></tr></table></figure></p><p>lazyLoadTriggerMethods默认情况下仅仅支持自动将equals,clone,hashCode,toString这几个方法定义为延迟加载的加载触发方法。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;resultMap可以实现高级映射（使用association、collection实现一对一以及一对多映射），association、collection具备延迟加载功能。&lt;/p&gt;
-&lt;p&gt;延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能。&lt;br&gt;
     
     </summary>
     
