@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。 RESPRESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-21T14:57:24.703Z">
+<meta property="og:updated_time" content="2018-10-21T15:19:00.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis原理----通信协议">
 <meta name="twitter:description" content="Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。 RESPRESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种">
@@ -418,11 +418,12 @@
 <li>数组以<font color="red">*</font>符号开头，后跟数组的长度</li>
 </ul>
 <p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">+hello world\r\n</div></pre></td></tr></table></figure></p>
-<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$11\r\n  </div><div class="line">hello world\r\n</div><div class="line">```  </div><div class="line"></div><div class="line">整数</div></pre></td></tr></table></figure></p>
-<p>:1024\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">错误</div></pre></td></tr></table></figure></p>
-<p>-WRONGTYPE Operation ….<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">数组[1,2,3]</div></pre></td></tr></table></figure></p>
-<p>*3\r\n<br>:1\r\n<br>:2\r\n<br>:3\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line">## 客户端-&gt;服务器 ##</div><div class="line">客户端向服务器发送的指令只有一种格式，多行字符串数组。比如一个简单的set指令set k v会被序列化成以下字符串。</div></pre></td></tr></table></figure></p>
-<p>*3\r\n<br>$3\r\n<br>set\r\n<br>$1\r\n<br>k\r\n<br>$1\r\n<br>v\r\n<br>```</p>
+<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$11\r\n  </div><div class="line">hello world\r\n</div></pre></td></tr></table></figure></p>
+<p>整数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:1024\r\n</div></pre></td></tr></table></figure></p>
+<p>错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-WRONGTYPE Operation ....</div></pre></td></tr></table></figure></p>
+<p>数组[1,2,3]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">*3\r\n  </div><div class="line">:1\r\n</div><div class="line">:2\r\n  </div><div class="line">:3\r\n</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h2 id="客户端-gt-服务器"><a href="#客户端-gt-服务器" class="headerlink" title="客户端-&gt;服务器"></a>客户端-&gt;服务器</h2><p>客户端向服务器发送的指令只有一种格式，多行字符串数组。比如一个简单的set指令set k v会被序列化成以下字符串。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">*3\r\n  </div><div class="line">$3\r\n  </div><div class="line">set\r\n</div><div class="line">$1\r\n</div><div class="line">k\r\n</div><div class="line">$1\r\n</div><div class="line">v\r\n</div></pre></td></tr></table></figure></p>
 <h2 id="服务器-gt-客户端"><a href="#服务器-gt-客户端" class="headerlink" title="服务器-&gt;客户端"></a>服务器-&gt;客户端</h2><p>服务器向客户端恢复的响应要支持多种数据结构，所以消息响应在结构上要复杂不少。不过在复杂的响应消息也是以上的5种基本类型的组合。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Redis协议里有大量冗余的回车换行符，但是这并不影响它成为互联网技术领域非常受欢迎的一个文本歇息。有很多开源项目目前使用RESP作为它的通讯协议。在技术领域性能并不是一切，还有简单性、易理解性和易实现性，这些都是需要进行适当权衡的。</p>
 
@@ -648,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RESP"><span class="nav-number">1.</span> <span class="nav-text">RESP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器-gt-客户端"><span class="nav-number">2.</span> <span class="nav-text">服务器->客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RESP"><span class="nav-number">1.</span> <span class="nav-text">RESP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端-gt-服务器"><span class="nav-number">2.</span> <span class="nav-text">客户端->服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器-gt-客户端"><span class="nav-number">3.</span> <span class="nav-text">服务器->客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
             
 
           </div>
