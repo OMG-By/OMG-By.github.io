@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。 RESPRESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-21T13:46:21.838Z">
+<meta property="og:updated_time" content="2018-10-21T14:57:24.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis原理----通信协议">
 <meta name="twitter:description" content="Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。 RESPRESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种">
@@ -417,10 +417,10 @@
 <li>错误消息以<font color="red">-</font>符号开头</li>
 <li>数组以<font color="red">*</font>符号开头，后跟数组的长度</li>
 </ul>
-<p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+hello world\r\n</div><div class="line">```  </div><div class="line">多行字符串</div></pre></td></tr></table></figure></p>
-<p>$11\r\n<br>hello world\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">整数</div></pre></td></tr></table></figure></p>
-<p>:1024\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">错误</div></pre></td></tr></table></figure></p>
-<p>-WRONGTYPE Operation ….<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">数组[1,2,3]</div></pre></td></tr></table></figure></p>
+<p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">+hello world\r\n</div></pre></td></tr></table></figure></p>
+<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$11\r\n  </div><div class="line">hello world\r\n</div><div class="line">```  </div><div class="line"></div><div class="line">整数</div></pre></td></tr></table></figure></p>
+<p>:1024\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">错误</div></pre></td></tr></table></figure></p>
+<p>-WRONGTYPE Operation ….<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">数组[1,2,3]</div></pre></td></tr></table></figure></p>
 <p>*3\r\n<br>:1\r\n<br>:2\r\n<br>:3\r\n<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line">## 客户端-&gt;服务器 ##</div><div class="line">客户端向服务器发送的指令只有一种格式，多行字符串数组。比如一个简单的set指令set k v会被序列化成以下字符串。</div></pre></td></tr></table></figure></p>
 <p>*3\r\n<br>$3\r\n<br>set\r\n<br>$1\r\n<br>k\r\n<br>$1\r\n<br>v\r\n<br>```</p>
 <h2 id="服务器-gt-客户端"><a href="#服务器-gt-客户端" class="headerlink" title="服务器-&gt;客户端"></a>服务器-&gt;客户端</h2><p>服务器向客户端恢复的响应要支持多种数据结构，所以消息响应在结构上要复杂不少。不过在复杂的响应消息也是以上的5种基本类型的组合。</p>
