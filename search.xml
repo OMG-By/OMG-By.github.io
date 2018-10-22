@@ -3,6 +3,311 @@
   
     
     <entry>
+      <title><![CDATA[Redis原理----持久化]]></title>
+      <url>/2018/10/22/Redis/Redis%E5%8E%9F%E7%90%86----%E6%8C%81%E4%B9%85%E5%8C%96/</url>
+      <content type="html"><![CDATA[<p>Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。  </p>
+<p>Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF日志在长期的运行过程中会变得非常大，数据库重启时需要加载AOF日志进行指令重放，这个时间会变得无比漫长。所以需要定期进行AOF重写，给AOF文件瘦身。</p>
+<h2 id="快照原理"><a href="#快照原理" class="headerlink" title="快照原理"></a>快照原理</h2><p>我们知道Redis是单线程程序，这个线程要同时负责多个客户端套接字的并发读写操作和内存数据结构的逻辑读写。  </p>
+<p>在服务线上请求的同时，Redis还需要进行内存快照，内存快照要求Redis必须进行文件IO操作，可文件IO操作是不能使用多路复用API。  </p>
+<p>这意味着单线程同时在服务线上的请求和吉林文件IO操作，文件IO操作会严重拖垮服务器请求的性能。还有个<b>重要的问题就是为了不阻塞线上的业务，就需要边持久化边响应客户端请求</b>。持久化的同时，内存数据结构还在变化，比如一个大型的hash字典正在持久化，结果一个请求过来把它给删除了，还没持久化，这该怎么办？  </p>
+<font color="red">Redis使用操作系统的多进程COW（copy On Write）机制来实现快照持久化。</font>
+
+<a id="more"></a>
+<h2 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h2><p>Redis在持久化时会调用glibc的函数fork产生一个子进程，快照持久化完全交给子进程来处理，父进程继续处理客户端请求。子进程刚刚产生时，它和父进程共享内存里面的代码段和数据段。这时你可以将父子进程想象成一个连体婴儿，共享身体。这时liunx操作系统的机制，为了节约内存资源，所以尽可能让他们共享。在进程分离的一瞬间，内存的增长几乎没有明显变化。  </p>
+<p>子进程做数据持久化，它不会修改现有的内存数据结构，它只是对数据结构进行遍历读取，然后序列化写到磁盘中。但是父进程不一样，它必须持续服务客户端请求，然后对内存数据结构进行不间断修改。  </p>
+<p>这个时候就会使用操作系统的COW机制进行数据段页的分离。数据段是由很多操作系统的页面组合而成，当父进程对其中一个页面的数据进行修改时，会将被共享的页面复制一份分离出来，然后对这个复制的页面进行修改。这时子进程像一粒的页面是没有变化的，还是进程产生时那一瞬间的数据。  </p>
+<p>随着父进程修改操作的持续进行，越来越多的共享页面被分离出来，内存就会持续增长。但是也不会超过原有数据内存的2倍大小。另外一个Redis实例里冷数据占的比例往往是比较高的，所以很少会出现所有的页面都会被分离，被分离的往往只有其中一部分。每个页面的大小只有4k，一个Redis实例里面一般会有成千上万的页面。  </p>
+<p>子进程因为数据没有变化，它能看到的内存里的数据在进程产生的一瞬间就凝固了，再也不会改变，这也是为什么Redis的持久化交【快照】的原因。接下来子进程就可以非常安心的遍历数据进行序列化写磁盘了。</p>
+<h2 id="AOF原理"><a href="#AOF原理" class="headerlink" title="AOF原理"></a>AOF原理</h2><p>AOF日志存储的Redis服务器的顺序指令序列，AOF日志只记录对内存进行修改的指令记录。  </p>
+<p>假设AOF日志记录了自Redis实例创建以来所有的修改性指令序列，那么就可以通过对一个空的Redis实例顺序执行所有的指令，也就是重放来恢复Redis当前实例的内存数据结构的状态。  </p>
+<p>Redis会在收到客户端修改指令后，进行参数校验进行逻辑处理后，如果没有问题，就立即将该指令存储到AOF日志中，也就是先执行指令才将日志存盘。这点不同于leveldb、hbase等存储引擎，他们都是先存储日志再做逻辑处理。  </p>
+<p>Redis在长期运行的过程中，AOF的日志会变得越来越多。如果实例宕机重启，重放整个AOF日志会非常耗时，导致 长时间Redis无法对外提供服务，所以需要对AOF进行日志瘦身。</p>
+<h2 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h2><p>Redis提供了bgrewriteaof指令用于对AOF日志进行瘦身。其原理就是开辟一个子进程对内存进行遍历转换成一系列Redis的操作指令，序列化到一个新的AOF日志文件中。序列化完毕后再将操作期间发生的增量AOF日志追加到这个新的AOF日志文件中，追加完毕后就立即替换旧的日志文件。</p>
+<h2 id="fsync"><a href="#fsync" class="headerlink" title="fsync"></a>fsync</h2><p>AOF日志是以文件的形式存在的，当程序对AOF日志文件进行写操作时，实际上就是内容写到了内核为文件描述符分配的一个内存缓存中，然后内核会异步将脏数据刷回到磁盘。  </p>
+<p>这意味着如果机器突然宕机，AOF日志内容可能还没来得及完全刷到磁盘，这个时候就会出现日志丢失。  </p>
+<p>Linux的glibc提供了fsync(int fd)函数可以将指定文件的内容强制从内核缓存刷到磁盘。只要Redis进程实时调用fsync函数就可以保证aof日志不丢失。但是fsync是一个磁盘IO操作，这意味着他很慢。如果Reids执行一条指令就要fsync一次，那么Redis的高性能地位就不保了。  </p>
+<p>所以在生产环境的服务器中，Redis通常是每隔1s左右执行一次fsync操作，这是在数据安全性和性能之间做了一个折中，在保持高性能的同时，尽可能使得数据少丢失。  </p>
+<p>Redis提供了另外两种策略：永不fsync（让操作系统来决定何时同步磁盘），用一个指令就fsync一次（非常慢，基本不会在生产中使用）</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Redis </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Redis源码阅读目录]]></title>
+      <url>/2018/10/21/Redis/Redis%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</url>
+      <content type="html"><![CDATA[<table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>adlist.c 、 adlist.h</td>
+<td style="text-align:center">双端链表数据结构的实现。</td>
+</tr>
+<tr>
+<td>ae.c 、 ae.h 、 ae_epoll.c 、 ae_evport.c 、 ae_kqueue.c 、 ae_select.c</td>
+<td style="text-align:center">事件处理器，以及各个具体实现。</td>
+</tr>
+<tr>
+<td>anet.c 、 anet.h</td>
+<td style="text-align:center">Redis 的异步网络框架，内容主要为对 socket 库的包装。</td>
+</tr>
+<tr>
+<td>aof.c</td>
+<td style="text-align:center">AOF 功能的实现。</td>
+</tr>
+<tr>
+<td>asciilogo.h</td>
+<td style="text-align:center">保存了 Redis 的 ASCII LOGO 。</td>
+</tr>
+<tr>
+<td>bio.c 、 bio.h</td>
+<td style="text-align:center">Redis 的后台 I/O 程序，用于将 I/O 操作放到子线程里面执行， 减少 I/O 操作对主线程的阻塞。</td>
+</tr>
+<tr>
+<td>bitops.c</td>
+<td style="text-align:center">二进制位操作命令的实现文件。</td>
+</tr>
+<tr>
+<td>blocked.c</td>
+<td style="text-align:center">用于实现 BLPOP 命令和 WAIT 命令的阻塞效果。</td>
+</tr>
+<tr>
+<td>cluster.c 、 cluster.h</td>
+<td style="text-align:center">Redis 的集群实现。</td>
+</tr>
+<tr>
+<td>config.c 、 config.h</td>
+<td style="text-align:center">Redis 的配置管理实现，负责读取并分析配置文件， 然后根据这些配置修改 Redis 服务器的各个选项。</td>
+</tr>
+<tr>
+<td>crc16.c 、 crc64.c 、 crc64.h</td>
+<td style="text-align:center">计算 CRC 校验和。</td>
+</tr>
+<tr>
+<td>db.c</td>
+<td style="text-align:center">数据库实现。</td>
+</tr>
+<tr>
+<td>debug.c</td>
+<td style="text-align:center">调试实现。</td>
+</tr>
+<tr>
+<td>dict.c 、 dict.h</td>
+<td style="text-align:center">字典数据结构的实现。</td>
+</tr>
+<tr>
+<td>endianconv.c 、 endianconv.h</td>
+<td style="text-align:center">二进制的大端、小端转换函数。</td>
+</tr>
+<tr>
+<td>fmacros.h</td>
+<td style="text-align:center">一些移植性方面的宏。</td>
+</tr>
+<tr>
+<td>help.h</td>
+<td style="text-align:center">utils/generate-command-help.rb 程序自动生成的命令帮助信息。</td>
+</tr>
+<tr>
+<td>hyperloglog.c</td>
+<td style="text-align:center">HyperLogLog 数据结构的实现。</td>
+</tr>
+<tr>
+<td>intset.c 、 intset.h</td>
+<td style="text-align:center">整数集合数据结构的实现，用于优化 SET 类型。</td>
+</tr>
+<tr>
+<td>lzf_c.c 、 lzf_d.c 、 lzf.h 、 lzfP.h</td>
+<td style="text-align:center">Redis 对字符串和 RDB 文件进行压缩时使用的 LZF 压缩算法的实现。</td>
+</tr>
+<tr>
+<td>Makefile 、 Makefile.dep</td>
+<td style="text-align:center">构建文件。</td>
+</tr>
+<tr>
+<td>memtest.c</td>
+<td style="text-align:center">内存测试。</td>
+</tr>
+<tr>
+<td>mkreleasehdr.sh</td>
+<td style="text-align:center">用于生成释出信息的脚本。</td>
+</tr>
+<tr>
+<td>multi.c</td>
+<td style="text-align:center">Redis 的事务实现。</td>
+</tr>
+<tr>
+<td>networking.c</td>
+<td style="text-align:center">Redis 的客户端网络操作库， 用于实现命令请求接收、发送命令回复等工作， 文件中的函数大多为 write 、 read 、 close 等函数的包装， 以及各种协议的分析和构建函数。</td>
+</tr>
+<tr>
+<td>notify.c</td>
+<td style="text-align:center">Redis 的数据库通知实现。</td>
+</tr>
+<tr>
+<td>object.c</td>
+<td style="text-align:center">Redis 的对象系统实现。</td>
+</tr>
+<tr>
+<td>pqsort.c 、 pqsort.h</td>
+<td style="text-align:center">快速排序（QuickSort）算法的实现。</td>
+</tr>
+<tr>
+<td>pubsub.c</td>
+<td style="text-align:center">发布与订阅功能的实现。</td>
+</tr>
+<tr>
+<td>rand.c 、 rand.h</td>
+<td style="text-align:center">伪随机数生成器。</td>
+</tr>
+<tr>
+<td>rdb.c 、 rdb.h</td>
+<td style="text-align:center">RDB 持久化功能的实现。</td>
+</tr>
+<tr>
+<td>redisassert.h</td>
+<td style="text-align:center">Redis 自建的断言系统。</td>
+</tr>
+<tr>
+<td>redis-benchmark.c</td>
+<td style="text-align:center">Redis 的性能测试程序。</td>
+</tr>
+<tr>
+<td>redis.c</td>
+<td style="text-align:center">负责服务器的启动、维护和关闭等事项。</td>
+</tr>
+<tr>
+<td>redis-check-aof.c 、 redis-check-dump.c</td>
+<td style="text-align:center">RDB 文件和 AOF 文件的合法性检查程序。</td>
+</tr>
+<tr>
+<td>redis-cli.c</td>
+<td style="text-align:center">Redis 客户端的实现。</td>
+</tr>
+<tr>
+<td>redis.h</td>
+<td style="text-align:center">Redis 的主要头文件，记录了 Redis 中的大部分数据结构， 包括服务器状态和客户端状态。</td>
+</tr>
+<tr>
+<td>redis-trib.rb</td>
+<td style="text-align:center">Redis 集群的管理程序。</td>
+</tr>
+<tr>
+<td>release.c 、 release.h</td>
+<td style="text-align:center">记录和生成 Redis 的释出版本信息。</td>
+</tr>
+<tr>
+<td>replication.c</td>
+<td style="text-align:center">复制功能的实现。</td>
+</tr>
+<tr>
+<td>rio.c 、 rio.h</td>
+<td style="text-align:center">Redis 对文件 I/O 函数的包装， 在普通 I/O 函数的基础上增加了显式缓存、以及计算校验和等功能。</td>
+</tr>
+<tr>
+<td>scripting.c</td>
+<td style="text-align:center">脚本功能的实现。</td>
+</tr>
+<tr>
+<td>sds.c 、 sds.h</td>
+<td style="text-align:center">SDS 数据结构的实现，SDS 为 Redis 的默认字符串表示。</td>
+</tr>
+<tr>
+<td>sentinel.c</td>
+<td style="text-align:center">Redis Sentinel 的实现。</td>
+</tr>
+<tr>
+<td>setproctitle.c</td>
+<td style="text-align:center">进程环境设置函数。</td>
+</tr>
+<tr>
+<td>sha1.c 、 sha1.h</td>
+<td style="text-align:center">SHA1 校验和计算函数。</td>
+</tr>
+<tr>
+<td>slowlog.c 、 slowlog.h</td>
+<td style="text-align:center">慢查询功能的实现。</td>
+</tr>
+<tr>
+<td>solarisfixes.h</td>
+<td style="text-align:center">针对 Solaris 系统的补丁。</td>
+</tr>
+<tr>
+<td>sort.c</td>
+<td style="text-align:center">SORT 命令的实现。</td>
+</tr>
+<tr>
+<td>syncio.c</td>
+<td style="text-align:center">同步 I/O 操作。</td>
+</tr>
+<tr>
+<td>testhelp.h</td>
+<td style="text-align:center">测试辅助宏。</td>
+</tr>
+<tr>
+<td>t_hash.c 、 t_list.c 、 t_set.c、 t_string.c 、 t_zset.c</td>
+<td style="text-align:center">定义了 Redis 的各种数据类型，以及这些数据类型的命令。</td>
+</tr>
+<tr>
+<td>util.c 、 util.h</td>
+<td style="text-align:center">各种辅助函数。</td>
+</tr>
+<tr>
+<td>valgrind.sup</td>
+<td style="text-align:center">valgrind 的suppression文件。</td>
+</tr>
+<tr>
+<td>version.h</td>
+<td style="text-align:center">记录了 Redis 的版本号。</td>
+</tr>
+<tr>
+<td>ziplist.c 、 ziplist.h</td>
+<td style="text-align:center">ZIPLIST 数据结构的实现，用于优化 LIST 类型。</td>
+</tr>
+<tr>
+<td>zipmap.c 、 zipmap.h</td>
+<td style="text-align:center">ZIPMAP 数据结构的实现，在 Redis 2.6 以前用与优化 HASH 类型， Redis 2.6 开始已经废弃。</td>
+</tr>
+<tr>
+<td>zmalloc.c 、 zmalloc.h</td>
+<td style="text-align:center">内存管理程序。</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      
+        <categories>
+            
+            <category> Redis </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Redis原理----通信协议]]></title>
       <url>/2018/10/21/Redis/Redis%E5%8E%9F%E7%90%86----%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</url>
       <content type="html"><![CDATA[<p>Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。</p>
@@ -1466,6 +1771,39 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[Hibernate_一级缓存]]></title>
+      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
+      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hibernate </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hibernate_持久化类]]></title>
       <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</url>
       <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
@@ -1491,39 +1829,6 @@ skip-grant-tables
 </li>
 </ul>
 <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 框架 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hibernate </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Hibernate_一级缓存]]></title>
-      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
-      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
-<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
-<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction transaction = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line">        System.out.println(user);</div><div class="line"></div><div class="line">        User user1 = session.get(User.class,1);</div><div class="line">        System.out.println(user1);</div><div class="line"></div><div class="line">        System.out.println(user == user1);</div><div class="line">        transaction.commit();</div><div class="line">        session.close();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
-<ul>
-<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">    public void test_Cacha_2()&#123;</div><div class="line">        Session session = HibernateUtils.openSession();</div><div class="line">        Transaction tx = session.beginTransaction();</div><div class="line"></div><div class="line">        User user = session.get(User.class,1);</div><div class="line"></div><div class="line">        //先改变姓名后改回去再提交</div><div class="line">        user.setName(&quot;haha&quot;);</div><div class="line">        //后一个测试时会将此处注释</div><div class="line">        user.setName(&quot;xixi&quot;);</div><div class="line"></div><div class="line">        tx.commit();</div><div class="line">        session.close();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
 ]]></content>
       
         <categories>
@@ -3091,9 +3396,11 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1264线段相交]]></title>
-      <url>/2016/04/10/ACM/51nod1264%E7%BA%BF%E6%AE%B5%E7%9B%B8%E4%BA%A4/</url>
-      <content type="html"><![CDATA[<p>1264 线段相交<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出平面上两条线段的两个端点，判断这两条线段是否相交（有一个公共点或有部分重合认为相交）。 如果相交，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - T + 1行：每行8个数，x1,y1,x2,y2,x3,y3,x4,y4。(-10^8 &lt;= xi, yi &lt;= 10^8)<br>(直线1的两个端点为x1,y1 | x2, y2,直线2的两个端点为x3,y3 | x4, y4)<br>Output<br>输出共T行，如果相交输出”Yes”，否则输出”No”。<br>Input示例<br>2<br>1 2 2 1 0 0 2 2<br>-1 1 1 1 0 0 1 -1<br>Output示例<br>Yes<br>No<br>做这到题首先要了解叉乘的概念~~<a href="http://blog.csdn.net/hustspy1990/article/details/11082745" target="_blank" rel="external">http://blog.csdn.net/hustspy1990/article/details/11082745</a><br>然后还要知道两条线段相交的必要条件 <a href="http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4" target="_blank" rel="external">http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*  (a-c)×(d-c)*(d-c)×(b-c)&gt;=0&amp;&amp;(c-a)×(b-a)*(b-a)×(d-a)&gt;= 0就可以判断ab,cd相交*/</span></div><div class="line"><span class="comment">/*  p1×p2 = x1y2 - x2y1 = - p2×p1-----（叉乘公式）*/</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">double</span> x,y;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//struct point a,b,c,d;</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">mp</span><span class="params">(point a,point b,point c,point d)</span></span>&#123;</div><div class="line">    <span class="keyword">double</span> C=(a.x-c.x)*(d.y-c.y)-(d.x-c.x)*(a.y-c.y);</div><div class="line">    <span class="keyword">double</span> D=(d.x-c.x)*(b.y-c.y)-(b.x-c.x)*(d.y-c.y);</div><div class="line">    <span class="keyword">if</span>(C*D&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(point a , point b , point c , point d)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(!mp(a,b,c,d)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">if</span>(!mp(c,d,a,b)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> T;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</div><div class="line">    <span class="keyword">while</span>(T--)&#123;</div><div class="line">        point a,b,c,d;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf%lf%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;b.x,&amp;b.y,&amp;c.x,&amp;c.y,&amp;d.x,&amp;d.y);</div><div class="line">        <span class="keyword">if</span>(check(a,b,c,d))</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</div><div class="line">        <span class="keyword">else</span></div><div class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+      <title><![CDATA[51nod1212无向图最小生成树]]></title>
+      <url>/2016/04/10/ACM/51nod1212%E6%97%A0%E5%90%91%E5%9B%BE%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</url>
+      <content type="html"><![CDATA[<p>1212 无向图最小生成树<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br> 收藏<br> 关注<br>N个点M条边的无向连通图，每条边有一个权值，求该图的最小生成树。</p>
+<p>Input<br>第1行：2个数N,M中间用空格分隔，N为点的数量，M为边的数量。（2 &lt;= N &lt;= 1000, 1 &lt;= M &lt;= 50000)<br>第2 - M + 1行：每行3个数S E W，分别表示M条边的2个顶点及权值。(1 &lt;= S, E &lt;= N，1 &lt;= W &lt;= 10000)<br>Output<br>输出最小生成树的所有边的权值之和。<br>Input示例<br>9 14<br>1 2 4<br>2 3 8<br>3 4 7<br>4 5 9<br>5 6 10<br>6 7 2<br>7 8 1<br>8 9 7<br>2 8 11<br>3 9 2<br>7 9 6<br>3 6 4<br>4 6 14<br>1 8 8<br>Output示例<br>37<br>prim算法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> inf 0x3f3f3f3f</span></div><div class="line"><span class="keyword">int</span> G[<span class="number">1001</span>][<span class="number">1001</span>];</div><div class="line"><span class="keyword">int</span> vis[<span class="number">1001</span>],lowc[<span class="number">1001</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">prim</span><span class="params">(<span class="keyword">int</span> G[][<span class="number">1001</span>],<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,j,p,minc,res=<span class="number">0</span>;</div><div class="line">    <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));<span class="comment">//全部初值为0表示没有访问过；</span></div><div class="line">    vis[<span class="number">1</span>]=<span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)</div><div class="line">        lowc[i]=G[<span class="number">1</span>][i];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)&#123;</div><div class="line">        minc=inf;</div><div class="line">        p=<span class="number">-1</span>;</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=n;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(vis[j]==<span class="number">0</span>&amp;&amp;lowc[j]&lt;minc)</div><div class="line">                &#123;minc=lowc[j];p=j;&#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(inf==minc) <span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//原图不连通</span></div><div class="line">        res+=minc;</div><div class="line">        vis[p]=<span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=n;j++)&#123;<span class="comment">//更新lowc[]</span></div><div class="line">            <span class="keyword">if</span>(vis[j]==<span class="number">0</span>&amp;&amp;lowc[j]&gt;G[p][j])</div><div class="line">                lowc[j]=G[p][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m;</div><div class="line">    <span class="keyword">int</span> x,y,w;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;n,&amp;m))&#123;</div><div class="line">        <span class="built_in">memset</span>(G,inf,<span class="keyword">sizeof</span>(G));</div><div class="line">        <span class="keyword">while</span>(m--)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;x,&amp;y,&amp;w);</div><div class="line">            G[x][y]=G[y][x]=w;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,prim(G,n));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> kruskal算法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> _min_(a,b) ((a)&lt;(b)?(a):(b))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_N 1005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_E 50005</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">int</span> u;</div><div class="line">    <span class="keyword">int</span> v;</div><div class="line">    <span class="keyword">int</span> cost;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">edge es[MAX_E];</div><div class="line"></div><div class="line"><span class="keyword">int</span> N,M;</div><div class="line"><span class="keyword">int</span> W[MAX_N][MAX_N];</div><div class="line"><span class="keyword">int</span> mincost[MAX_N];</div><div class="line"><span class="keyword">bool</span> used[MAX_N];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(edge e1, edge e2)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> e1.cost &lt; e2.cost;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// union-find set</span></div><div class="line"><span class="keyword">int</span> par[MAX_N];</div><div class="line"><span class="keyword">int</span> rank[MAX_N];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_inion_find</span><span class="params">(<span class="keyword">int</span> n)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">        par[i]=i;</div><div class="line">        rank[i]=<span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">if</span>(par[x]==x)&#123;</div><div class="line">        <span class="keyword">return</span> x;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="keyword">return</span> par[x]=find(par[x]);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">unite</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">     x=find(x);</div><div class="line">     y=find(y);</div><div class="line">     <span class="keyword">if</span>(x==y)&#123;</div><div class="line">         <span class="keyword">return</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">if</span>(rank[x]&lt;rank[y])&#123;</div><div class="line">         par[x]=y;</div><div class="line">     &#125;<span class="keyword">else</span>&#123;</div><div class="line">          par[y]=x;</div><div class="line">          <span class="keyword">if</span>(rank[x]==rank[y])&#123;</div><div class="line">              rank[x]++;</div><div class="line">          &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">same</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">     <span class="keyword">return</span> find(x)==find(y);</div><div class="line">&#125;</div><div class="line"><span class="comment">// end of union-find set</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAX_N;i++)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;MAX_N;j++)&#123;</div><div class="line">            W[i][j]=INF;</div><div class="line">        &#125;</div><div class="line">        mincost[i]=INF;</div><div class="line">        used[i]=<span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">kruskal</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)&#123;</div><div class="line">        edge e=es[i];</div><div class="line">        <span class="keyword">if</span>(!same(e.u, e.v))&#123;</div><div class="line">            unite(e.u, e.v);</div><div class="line">            res += e.cost;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="comment">//freopen("18_kruskal.txt","r",stdin);</span></div><div class="line">    init();</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;N,&amp;M);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)&#123;</div><div class="line">        <span class="keyword">int</span> u,v,cost;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>,&amp;u,&amp;v,&amp;cost);</div><div class="line">        es[i].u = u<span class="number">-1</span>;</div><div class="line">        es[i].v = v<span class="number">-1</span>;</div><div class="line">        es[i].cost = cost;</div><div class="line">    &#125;</div><div class="line">    sort(es,es+M,cmp);</div><div class="line"></div><div class="line">    init_inion_find(N);</div><div class="line"></div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res = kruskal();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,res);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -3112,11 +3419,9 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1212无向图最小生成树]]></title>
-      <url>/2016/04/10/ACM/51nod1212%E6%97%A0%E5%90%91%E5%9B%BE%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</url>
-      <content type="html"><![CDATA[<p>1212 无向图最小生成树<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br> 收藏<br> 关注<br>N个点M条边的无向连通图，每条边有一个权值，求该图的最小生成树。</p>
-<p>Input<br>第1行：2个数N,M中间用空格分隔，N为点的数量，M为边的数量。（2 &lt;= N &lt;= 1000, 1 &lt;= M &lt;= 50000)<br>第2 - M + 1行：每行3个数S E W，分别表示M条边的2个顶点及权值。(1 &lt;= S, E &lt;= N，1 &lt;= W &lt;= 10000)<br>Output<br>输出最小生成树的所有边的权值之和。<br>Input示例<br>9 14<br>1 2 4<br>2 3 8<br>3 4 7<br>4 5 9<br>5 6 10<br>6 7 2<br>7 8 1<br>8 9 7<br>2 8 11<br>3 9 2<br>7 9 6<br>3 6 4<br>4 6 14<br>1 8 8<br>Output示例<br>37<br>prim算法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> inf 0x3f3f3f3f</span></div><div class="line"><span class="keyword">int</span> G[<span class="number">1001</span>][<span class="number">1001</span>];</div><div class="line"><span class="keyword">int</span> vis[<span class="number">1001</span>],lowc[<span class="number">1001</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">prim</span><span class="params">(<span class="keyword">int</span> G[][<span class="number">1001</span>],<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i,j,p,minc,res=<span class="number">0</span>;</div><div class="line">    <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));<span class="comment">//全部初值为0表示没有访问过；</span></div><div class="line">    vis[<span class="number">1</span>]=<span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)</div><div class="line">        lowc[i]=G[<span class="number">1</span>][i];</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)&#123;</div><div class="line">        minc=inf;</div><div class="line">        p=<span class="number">-1</span>;</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=n;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(vis[j]==<span class="number">0</span>&amp;&amp;lowc[j]&lt;minc)</div><div class="line">                &#123;minc=lowc[j];p=j;&#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(inf==minc) <span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//原图不连通</span></div><div class="line">        res+=minc;</div><div class="line">        vis[p]=<span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=n;j++)&#123;<span class="comment">//更新lowc[]</span></div><div class="line">            <span class="keyword">if</span>(vis[j]==<span class="number">0</span>&amp;&amp;lowc[j]&gt;G[p][j])</div><div class="line">                lowc[j]=G[p][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> n,m;</div><div class="line">    <span class="keyword">int</span> x,y,w;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;n,&amp;m))&#123;</div><div class="line">        <span class="built_in">memset</span>(G,inf,<span class="keyword">sizeof</span>(G));</div><div class="line">        <span class="keyword">while</span>(m--)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;x,&amp;y,&amp;w);</div><div class="line">            G[x][y]=G[y][x]=w;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,prim(G,n));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p> kruskal算法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> _min_(a,b) ((a)&lt;(b)?(a):(b))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_N 1005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_E 50005</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">int</span> u;</div><div class="line">    <span class="keyword">int</span> v;</div><div class="line">    <span class="keyword">int</span> cost;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">edge es[MAX_E];</div><div class="line"></div><div class="line"><span class="keyword">int</span> N,M;</div><div class="line"><span class="keyword">int</span> W[MAX_N][MAX_N];</div><div class="line"><span class="keyword">int</span> mincost[MAX_N];</div><div class="line"><span class="keyword">bool</span> used[MAX_N];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(edge e1, edge e2)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> e1.cost &lt; e2.cost;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// union-find set</span></div><div class="line"><span class="keyword">int</span> par[MAX_N];</div><div class="line"><span class="keyword">int</span> rank[MAX_N];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_inion_find</span><span class="params">(<span class="keyword">int</span> n)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">        par[i]=i;</div><div class="line">        rank[i]=<span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">if</span>(par[x]==x)&#123;</div><div class="line">        <span class="keyword">return</span> x;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="keyword">return</span> par[x]=find(par[x]);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">unite</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">     x=find(x);</div><div class="line">     y=find(y);</div><div class="line">     <span class="keyword">if</span>(x==y)&#123;</div><div class="line">         <span class="keyword">return</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">if</span>(rank[x]&lt;rank[y])&#123;</div><div class="line">         par[x]=y;</div><div class="line">     &#125;<span class="keyword">else</span>&#123;</div><div class="line">          par[y]=x;</div><div class="line">          <span class="keyword">if</span>(rank[x]==rank[y])&#123;</div><div class="line">              rank[x]++;</div><div class="line">          &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">same</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">     <span class="keyword">return</span> find(x)==find(y);</div><div class="line">&#125;</div><div class="line"><span class="comment">// end of union-find set</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAX_N;i++)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;MAX_N;j++)&#123;</div><div class="line">            W[i][j]=INF;</div><div class="line">        &#125;</div><div class="line">        mincost[i]=INF;</div><div class="line">        used[i]=<span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">kruskal</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)&#123;</div><div class="line">        edge e=es[i];</div><div class="line">        <span class="keyword">if</span>(!same(e.u, e.v))&#123;</div><div class="line">            unite(e.u, e.v);</div><div class="line">            res += e.cost;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="comment">//freopen("18_kruskal.txt","r",stdin);</span></div><div class="line">    init();</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;N,&amp;M);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)&#123;</div><div class="line">        <span class="keyword">int</span> u,v,cost;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>,&amp;u,&amp;v,&amp;cost);</div><div class="line">        es[i].u = u<span class="number">-1</span>;</div><div class="line">        es[i].v = v<span class="number">-1</span>;</div><div class="line">        es[i].cost = cost;</div><div class="line">    &#125;</div><div class="line">    sort(es,es+M,cmp);</div><div class="line"></div><div class="line">    init_inion_find(N);</div><div class="line"></div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res = kruskal();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,res);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+      <title><![CDATA[51nod1264线段相交]]></title>
+      <url>/2016/04/10/ACM/51nod1264%E7%BA%BF%E6%AE%B5%E7%9B%B8%E4%BA%A4/</url>
+      <content type="html"><![CDATA[<p>1264 线段相交<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出平面上两条线段的两个端点，判断这两条线段是否相交（有一个公共点或有部分重合认为相交）。 如果相交，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - T + 1行：每行8个数，x1,y1,x2,y2,x3,y3,x4,y4。(-10^8 &lt;= xi, yi &lt;= 10^8)<br>(直线1的两个端点为x1,y1 | x2, y2,直线2的两个端点为x3,y3 | x4, y4)<br>Output<br>输出共T行，如果相交输出”Yes”，否则输出”No”。<br>Input示例<br>2<br>1 2 2 1 0 0 2 2<br>-1 1 1 1 0 0 1 -1<br>Output示例<br>Yes<br>No<br>做这到题首先要了解叉乘的概念~~<a href="http://blog.csdn.net/hustspy1990/article/details/11082745" target="_blank" rel="external">http://blog.csdn.net/hustspy1990/article/details/11082745</a><br>然后还要知道两条线段相交的必要条件 <a href="http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4" target="_blank" rel="external">http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*  (a-c)×(d-c)*(d-c)×(b-c)&gt;=0&amp;&amp;(c-a)×(b-a)*(b-a)×(d-a)&gt;= 0就可以判断ab,cd相交*/</span></div><div class="line"><span class="comment">/*  p1×p2 = x1y2 - x2y1 = - p2×p1-----（叉乘公式）*/</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span></span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">double</span> x,y;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//struct point a,b,c,d;</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">mp</span><span class="params">(point a,point b,point c,point d)</span></span>&#123;</div><div class="line">    <span class="keyword">double</span> C=(a.x-c.x)*(d.y-c.y)-(d.x-c.x)*(a.y-c.y);</div><div class="line">    <span class="keyword">double</span> D=(d.x-c.x)*(b.y-c.y)-(b.x-c.x)*(d.y-c.y);</div><div class="line">    <span class="keyword">if</span>(C*D&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(point a , point b , point c , point d)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(!mp(a,b,c,d)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">if</span>(!mp(c,d,a,b)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> T;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</div><div class="line">    <span class="keyword">while</span>(T--)&#123;</div><div class="line">        point a,b,c,d;</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf%lf%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;b.x,&amp;b.y,&amp;c.x,&amp;c.y,&amp;d.x,&amp;d.y);</div><div class="line">        <span class="keyword">if</span>(check(a,b,c,d))</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</div><div class="line">        <span class="keyword">else</span></div><div class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -3518,27 +3823,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[cd命令]]></title>
-      <url>/1900/01/01/Linux/cd/</url>
-      <content type="html"><![CDATA[<p>&ensp;&ensp;cd命令可以说是Linux中最基本的命令语句，其他命令要进行操作，都是建立在使用cd命令上的。</p>
-<h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>cd [目录名]</p>
-<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;切换当前目录到dirName<br><a id="more"></a></p>
-<h3 id="常用范例"><a href="#常用范例" class="headerlink" title="常用范例"></a>常用范例</h3><hr>
-<h4 id="例1：进入系统根目录"><a href="#例1：进入系统根目录" class="headerlink" title="例1：进入系统根目录"></a>例1：进入系统根目录</h4><p>cd /</p>
-<hr>
-<h4 id="例2：使用-cd-命令进入当前用户主目录"><a href="#例2：使用-cd-命令进入当前用户主目录" class="headerlink" title="例2：使用 cd 命令进入当前用户主目录"></a>例2：使用 cd 命令进入当前用户主目录</h4><p>&ensp;&ensp;“当前用户主目录”和“系统根目录”是两个不同的概念。进入当前用户主目录有两个方法。<br>1.cd<br>2.cd ~</p>
-<hr>
-<h4 id="例3：跳转到指定目录"><a href="#例3：跳转到指定目录" class="headerlink" title="例3：跳转到指定目录"></a>例3：跳转到指定目录</h4><p>cd /opt/soft<br>&ensp;&ensp;跳转到指定目录，从根目录开始，目录名称前加 / ,当前目录内的子目录直接写名称即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cd /opt/soft</div><div class="line">[root@localhost soft]# pwd</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]# cd jdk1.6.0_16/</div><div class="line">[root@localhost jdk1.6.0_16]# pwd</div><div class="line">/opt/soft/jdk1.6.0_16</div><div class="line">[root@localhost jdk1.6.0_16]#</div></pre></td></tr></table></figure></p>
-<hr>
-<h4 id="例4：返回进入此目录之前所在的目录"><a href="#例4：返回进入此目录之前所在的目录" class="headerlink" title="例4：返回进入此目录之前所在的目录"></a>例4：返回进入此目录之前所在的目录</h4><p>cd -<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]# pwd</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]# cd -</div><div class="line">/root</div><div class="line">[root@localhost ~]# pwd</div><div class="line">/root</div><div class="line">[root@localhost ~]# cd -</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]#</div></pre></td></tr></table></figure></p>
-<hr>
-<h4 id="例5：把上个命令的参数作为cd参数使用。"><a href="#例5：把上个命令的参数作为cd参数使用。" class="headerlink" title="例5：把上个命令的参数作为cd参数使用。"></a>例5：把上个命令的参数作为cd参数使用。</h4><p>cd !$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]# cd !$</div><div class="line">cd -</div><div class="line">/root</div><div class="line">[root@localhost ~]# cd !$</div><div class="line">cd -</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]#</div></pre></td></tr></table></figure></p>
-]]></content>
-      
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[ls命令]]></title>
       <url>/1900/01/01/Linux/ls/</url>
       <content type="html"><![CDATA[<p>&ensp;&ensp;ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印当前目录的清单，如果你是指定其他目录，那么就会显示指定目录里的文件及文件夹清单。通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限（包括目录、文件夹、文件权限），查看目录信息等等。</p>
@@ -3603,6 +3887,27 @@ skip-grant-tables
 4. 浅蓝色--&gt;链接文件
 5. 灰色--&gt;其他文件
 </code></pre>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[cd命令]]></title>
+      <url>/1900/01/01/Linux/cd/</url>
+      <content type="html"><![CDATA[<p>&ensp;&ensp;cd命令可以说是Linux中最基本的命令语句，其他命令要进行操作，都是建立在使用cd命令上的。</p>
+<h3 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h3><p>cd [目录名]</p>
+<h3 id="命令功能"><a href="#命令功能" class="headerlink" title="命令功能"></a>命令功能</h3><p>&ensp;&ensp;切换当前目录到dirName<br><a id="more"></a></p>
+<h3 id="常用范例"><a href="#常用范例" class="headerlink" title="常用范例"></a>常用范例</h3><hr>
+<h4 id="例1：进入系统根目录"><a href="#例1：进入系统根目录" class="headerlink" title="例1：进入系统根目录"></a>例1：进入系统根目录</h4><p>cd /</p>
+<hr>
+<h4 id="例2：使用-cd-命令进入当前用户主目录"><a href="#例2：使用-cd-命令进入当前用户主目录" class="headerlink" title="例2：使用 cd 命令进入当前用户主目录"></a>例2：使用 cd 命令进入当前用户主目录</h4><p>&ensp;&ensp;“当前用户主目录”和“系统根目录”是两个不同的概念。进入当前用户主目录有两个方法。<br>1.cd<br>2.cd ~</p>
+<hr>
+<h4 id="例3：跳转到指定目录"><a href="#例3：跳转到指定目录" class="headerlink" title="例3：跳转到指定目录"></a>例3：跳转到指定目录</h4><p>cd /opt/soft<br>&ensp;&ensp;跳转到指定目录，从根目录开始，目录名称前加 / ,当前目录内的子目录直接写名称即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cd /opt/soft</div><div class="line">[root@localhost soft]# pwd</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]# cd jdk1.6.0_16/</div><div class="line">[root@localhost jdk1.6.0_16]# pwd</div><div class="line">/opt/soft/jdk1.6.0_16</div><div class="line">[root@localhost jdk1.6.0_16]#</div></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="例4：返回进入此目录之前所在的目录"><a href="#例4：返回进入此目录之前所在的目录" class="headerlink" title="例4：返回进入此目录之前所在的目录"></a>例4：返回进入此目录之前所在的目录</h4><p>cd -<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]# pwd</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]# cd -</div><div class="line">/root</div><div class="line">[root@localhost ~]# pwd</div><div class="line">/root</div><div class="line">[root@localhost ~]# cd -</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]#</div></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="例5：把上个命令的参数作为cd参数使用。"><a href="#例5：把上个命令的参数作为cd参数使用。" class="headerlink" title="例5：把上个命令的参数作为cd参数使用。"></a>例5：把上个命令的参数作为cd参数使用。</h4><p>cd !$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost soft]# cd !$</div><div class="line">cd -</div><div class="line">/root</div><div class="line">[root@localhost ~]# cd !$</div><div class="line">cd -</div><div class="line">/opt/soft</div><div class="line">[root@localhost soft]#</div></pre></td></tr></table></figure></p>
+]]></content>
       
         
     </entry>

@@ -309,6 +309,540 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Redis/Redis原理----持久化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/22/Redis/Redis原理----持久化/" itemprop="url">Redis原理----持久化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-22T21:30:13+08:00">
+                2018-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。  </p>
+<p>Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF日志在长期的运行过程中会变得非常大，数据库重启时需要加载AOF日志进行指令重放，这个时间会变得无比漫长。所以需要定期进行AOF重写，给AOF文件瘦身。</p>
+<h2 id="快照原理"><a href="#快照原理" class="headerlink" title="快照原理"></a>快照原理</h2><p>我们知道Redis是单线程程序，这个线程要同时负责多个客户端套接字的并发读写操作和内存数据结构的逻辑读写。  </p>
+<p>在服务线上请求的同时，Redis还需要进行内存快照，内存快照要求Redis必须进行文件IO操作，可文件IO操作是不能使用多路复用API。  </p>
+<p>这意味着单线程同时在服务线上的请求和吉林文件IO操作，文件IO操作会严重拖垮服务器请求的性能。还有个<b>重要的问题就是为了不阻塞线上的业务，就需要边持久化边响应客户端请求</b>。持久化的同时，内存数据结构还在变化，比如一个大型的hash字典正在持久化，结果一个请求过来把它给删除了，还没持久化，这该怎么办？  </p>
+<font color="red">Redis使用操作系统的多进程COW（copy On Write）机制来实现快照持久化。</font>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/22/Redis/Redis原理----持久化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis源码阅读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/21/Redis/Redis源码阅读/" itemprop="url">Redis源码阅读目录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T21:34:13+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>adlist.c 、 adlist.h</td>
+<td style="text-align:center">双端链表数据结构的实现。</td>
+</tr>
+<tr>
+<td>ae.c 、 ae.h 、 ae_epoll.c 、 ae_evport.c 、 ae_kqueue.c 、 ae_select.c</td>
+<td style="text-align:center">事件处理器，以及各个具体实现。</td>
+</tr>
+<tr>
+<td>anet.c 、 anet.h</td>
+<td style="text-align:center">Redis 的异步网络框架，内容主要为对 socket 库的包装。</td>
+</tr>
+<tr>
+<td>aof.c</td>
+<td style="text-align:center">AOF 功能的实现。</td>
+</tr>
+<tr>
+<td>asciilogo.h</td>
+<td style="text-align:center">保存了 Redis 的 ASCII LOGO 。</td>
+</tr>
+<tr>
+<td>bio.c 、 bio.h</td>
+<td style="text-align:center">Redis 的后台 I/O 程序，用于将 I/O 操作放到子线程里面执行， 减少 I/O 操作对主线程的阻塞。</td>
+</tr>
+<tr>
+<td>bitops.c</td>
+<td style="text-align:center">二进制位操作命令的实现文件。</td>
+</tr>
+<tr>
+<td>blocked.c</td>
+<td style="text-align:center">用于实现 BLPOP 命令和 WAIT 命令的阻塞效果。</td>
+</tr>
+<tr>
+<td>cluster.c 、 cluster.h</td>
+<td style="text-align:center">Redis 的集群实现。</td>
+</tr>
+<tr>
+<td>config.c 、 config.h</td>
+<td style="text-align:center">Redis 的配置管理实现，负责读取并分析配置文件， 然后根据这些配置修改 Redis 服务器的各个选项。</td>
+</tr>
+<tr>
+<td>crc16.c 、 crc64.c 、 crc64.h</td>
+<td style="text-align:center">计算 CRC 校验和。</td>
+</tr>
+<tr>
+<td>db.c</td>
+<td style="text-align:center">数据库实现。</td>
+</tr>
+<tr>
+<td>debug.c</td>
+<td style="text-align:center">调试实现。</td>
+</tr>
+<tr>
+<td>dict.c 、 dict.h</td>
+<td style="text-align:center">字典数据结构的实现。</td>
+</tr>
+<tr>
+<td>endianconv.c 、 endianconv.h</td>
+<td style="text-align:center">二进制的大端、小端转换函数。</td>
+</tr>
+<tr>
+<td>fmacros.h</td>
+<td style="text-align:center">一些移植性方面的宏。</td>
+</tr>
+<tr>
+<td>help.h</td>
+<td style="text-align:center">utils/generate-command-help.rb 程序自动生成的命令帮助信息。</td>
+</tr>
+<tr>
+<td>hyperloglog.c</td>
+<td style="text-align:center">HyperLogLog 数据结构的实现。</td>
+</tr>
+<tr>
+<td>intset.c 、 intset.h</td>
+<td style="text-align:center">整数集合数据结构的实现，用于优化 SET 类型。</td>
+</tr>
+<tr>
+<td>lzf_c.c 、 lzf_d.c 、 lzf.h 、 lzfP.h</td>
+<td style="text-align:center">Redis 对字符串和 RDB 文件进行压缩时使用的 LZF 压缩算法的实现。</td>
+</tr>
+<tr>
+<td>Makefile 、 Makefile.dep</td>
+<td style="text-align:center">构建文件。</td>
+</tr>
+<tr>
+<td>memtest.c</td>
+<td style="text-align:center">内存测试。</td>
+</tr>
+<tr>
+<td>mkreleasehdr.sh</td>
+<td style="text-align:center">用于生成释出信息的脚本。</td>
+</tr>
+<tr>
+<td>multi.c</td>
+<td style="text-align:center">Redis 的事务实现。</td>
+</tr>
+<tr>
+<td>networking.c</td>
+<td style="text-align:center">Redis 的客户端网络操作库， 用于实现命令请求接收、发送命令回复等工作， 文件中的函数大多为 write 、 read 、 close 等函数的包装， 以及各种协议的分析和构建函数。</td>
+</tr>
+<tr>
+<td>notify.c</td>
+<td style="text-align:center">Redis 的数据库通知实现。</td>
+</tr>
+<tr>
+<td>object.c</td>
+<td style="text-align:center">Redis 的对象系统实现。</td>
+</tr>
+<tr>
+<td>pqsort.c 、 pqsort.h</td>
+<td style="text-align:center">快速排序（QuickSort）算法的实现。</td>
+</tr>
+<tr>
+<td>pubsub.c</td>
+<td style="text-align:center">发布与订阅功能的实现。</td>
+</tr>
+<tr>
+<td>rand.c 、 rand.h</td>
+<td style="text-align:center">伪随机数生成器。</td>
+</tr>
+<tr>
+<td>rdb.c 、 rdb.h</td>
+<td style="text-align:center">RDB 持久化功能的实现。</td>
+</tr>
+<tr>
+<td>redisassert.h</td>
+<td style="text-align:center">Redis 自建的断言系统。</td>
+</tr>
+<tr>
+<td>redis-benchmark.c</td>
+<td style="text-align:center">Redis 的性能测试程序。</td>
+</tr>
+<tr>
+<td>redis.c</td>
+<td style="text-align:center">负责服务器的启动、维护和关闭等事项。</td>
+</tr>
+<tr>
+<td>redis-check-aof.c 、 redis-check-dump.c</td>
+<td style="text-align:center">RDB 文件和 AOF 文件的合法性检查程序。</td>
+</tr>
+<tr>
+<td>redis-cli.c</td>
+<td style="text-align:center">Redis 客户端的实现。</td>
+</tr>
+<tr>
+<td>redis.h</td>
+<td style="text-align:center">Redis 的主要头文件，记录了 Redis 中的大部分数据结构， 包括服务器状态和客户端状态。</td>
+</tr>
+<tr>
+<td>redis-trib.rb</td>
+<td style="text-align:center">Redis 集群的管理程序。</td>
+</tr>
+<tr>
+<td>release.c 、 release.h</td>
+<td style="text-align:center">记录和生成 Redis 的释出版本信息。</td>
+</tr>
+<tr>
+<td>replication.c</td>
+<td style="text-align:center">复制功能的实现。</td>
+</tr>
+<tr>
+<td>rio.c 、 rio.h</td>
+<td style="text-align:center">Redis 对文件 I/O 函数的包装， 在普通 I/O 函数的基础上增加了显式缓存、以及计算校验和等功能。</td>
+</tr>
+<tr>
+<td>scripting.c</td>
+<td style="text-align:center">脚本功能的实现。</td>
+</tr>
+<tr>
+<td>sds.c 、 sds.h</td>
+<td style="text-align:center">SDS 数据结构的实现，SDS 为 Redis 的默认字符串表示。</td>
+</tr>
+<tr>
+<td>sentinel.c</td>
+<td style="text-align:center">Redis Sentinel 的实现。</td>
+</tr>
+<tr>
+<td>setproctitle.c</td>
+<td style="text-align:center">进程环境设置函数。</td>
+</tr>
+<tr>
+<td>sha1.c 、 sha1.h</td>
+<td style="text-align:center">SHA1 校验和计算函数。</td>
+</tr>
+<tr>
+<td>slowlog.c 、 slowlog.h</td>
+<td style="text-align:center">慢查询功能的实现。</td>
+</tr>
+<tr>
+<td>solarisfixes.h</td>
+<td style="text-align:center">针对 Solaris 系统的补丁。</td>
+</tr>
+<tr>
+<td>sort.c</td>
+<td style="text-align:center">SORT 命令的实现。</td>
+</tr>
+<tr>
+<td>syncio.c</td>
+<td style="text-align:center">同步 I/O 操作。</td>
+</tr>
+<tr>
+<td>testhelp.h</td>
+<td style="text-align:center">测试辅助宏。</td>
+</tr>
+<tr>
+<td>t_hash.c 、 t_list.c 、 t_set.c、 t_string.c 、 t_zset.c</td>
+<td style="text-align:center">定义了 Redis 的各种数据类型，以及这些数据类型的命令。</td>
+</tr>
+<tr>
+<td>util.c 、 util.h</td>
+<td style="text-align:center">各种辅助函数。</td>
+</tr>
+<tr>
+<td>valgrind.sup</td>
+<td style="text-align:center">valgrind 的suppression文件。</td>
+</tr>
+<tr>
+<td>version.h</td>
+<td style="text-align:center">记录了 Redis 的版本号。</td>
+</tr>
+<tr>
+<td>ziplist.c 、 ziplist.h</td>
+<td style="text-align:center">ZIPLIST 数据结构的实现，用于优化 LIST 类型。</td>
+</tr>
+<tr>
+<td>zipmap.c 、 zipmap.h</td>
+<td style="text-align:center">ZIPMAP 数据结构的实现，在 Redis 2.6 以前用与优化 HASH 类型， Redis 2.6 开始已经废弃。</td>
+</tr>
+<tr>
+<td>zmalloc.c 、 zmalloc.h</td>
+<td style="text-align:center">内存管理程序。</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis原理----通信协议/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1506,345 +2040,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/11/mysql/Mysql之权限管理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/mysql/Mysql之权限管理/" itemprop="url">MySQL之权限管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T15:11:15+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、MySQL权限简介"><a href="#一、MySQL权限简介" class="headerlink" title="一、MySQL权限简介"></a>一、MySQL权限简介</h2><p>关于mysql的权限简单的理解就是mysql允许你做你权利以内的事情，不可以越界。</p>
-<h3 id="mysql权限控制的实现"><a href="#mysql权限控制的实现" class="headerlink" title="mysql权限控制的实现"></a>mysql权限控制的实现</h3><p>第一阶段：服务器首先会检查你是否允许连接。因为创建用户的时候会加上主机限制，可以限制成本地、IP、网段、任何地方等。只允许你从配置的指定地方登陆。<br>第二阶段：Mysql会检查你发出的每个请求，看你是否有足够的权限实施它。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">权限</th>
-<th style="text-align:center">权限级别</th>
-<th style="text-align:center">权限说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">CREATE</td>
-<td style="text-align:center">数据库、表或索引</td>
-<td style="text-align:center">创建</td>
-</tr>
-<tr>
-<td style="text-align:center">DROP</td>
-<td style="text-align:center">数据库或表</td>
-<td style="text-align:center">删除</td>
-</tr>
-<tr>
-<td style="text-align:center">GRANT OPTION</td>
-<td style="text-align:center">数据库、表或保存的程序</td>
-<td style="text-align:center">赋予权限</td>
-</tr>
-<tr>
-<td style="text-align:center">REFERENCES</td>
-<td style="text-align:center">数据库或表</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">ALTER</td>
-<td style="text-align:center">表</td>
-<td style="text-align:center">修改表</td>
-</tr>
-<tr>
-<td style="text-align:center">DELETE</td>
-<td style="text-align:center">表</td>
-<td style="text-align:center">删除数据</td>
-</tr>
-<tr>
-<td style="text-align:center">INDEX</td>
-<td style="text-align:center">表</td>
-<td style="text-align:center">索引权限</td>
-</tr>
-</tbody>
-</table>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/11/mysql/Mysql之权限管理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/11/mysql/information_schema/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/mysql/information_schema/" itemprop="url">information_schema</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T12:11:15+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>information_schema数据库是mysql系统自带的数据库，它提供了数据库元数据的访问方式。可以说information_schema就是MySQL实例的一个百科全书，记录了数据库当中大部分我们需要了解的信息，比如字符集、权限相关、数据库实体对象信息、外键等。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/11/mysql/information_schema/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1899,7 +2094,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
