@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。   Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-22T15:54:27.664Z">
+<meta property="og:updated_time" content="2018-10-23T15:25:24.296Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis原理----持久化">
 <meta name="twitter:description" content="Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。   Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF">
@@ -430,6 +430,12 @@
 <p>Linux的glibc提供了fsync(int fd)函数可以将指定文件的内容强制从内核缓存刷到磁盘。只要Redis进程实时调用fsync函数就可以保证aof日志不丢失。但是fsync是一个磁盘IO操作，这意味着他很慢。如果Reids执行一条指令就要fsync一次，那么Redis的高性能地位就不保了。  </p>
 <p>所以在生产环境的服务器中，Redis通常是每隔1s左右执行一次fsync操作，这是在数据安全性和性能之间做了一个折中，在保持高性能的同时，尽可能使得数据少丢失。  </p>
 <p>Redis提供了另外两种策略：永不fsync（让操作系统来决定何时同步磁盘），用一个指令就fsync一次（非常慢，基本不会在生产中使用）</p>
+<h2 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h2><p>快照是通过开启子进程的方式进行的，它是一个比较耗资源的操作。<br>1、遍历整个内存，大块写磁盘会加重系统负载。<br>2、AOF的fsync是一个比较耗时的IO操作，它会降低Redis性能，同时也会增加系统IO负担。  </p>
+<p>所以通常Redis的主节点是不会进行持久化操作，持久化操作主要在从节点进行。从节点是备份节点，没有来自客户端请求的压力，它的操作系统资源比较充沛。  </p>
+<p>但是如果出现网络分区，从节点长期连不上主节点，就会出现数据不一致的问题，特别是网络分区出现的情况下又不小心主节点宕机了，那么数据就会丢失，所以在生产环境要做好实例监控工作，保证网络畅通或者能快速修复。另外还应该再增加一个从节点以降低网络分区的概率，只要有一个从节点数据同步正常，数据也就不会轻易丢失。</p>
+<h2 id="Redis4-0混合持久化"><a href="#Redis4-0混合持久化" class="headerlink" title="Redis4.0混合持久化"></a>Redis4.0混合持久化</h2><p>重启Redis时，我们很少使用rdb来恢复内存状态，因为会丢失大量数据。我们通常使用AOF日志重做，但是重放AOF日志性能相对RDB来说要慢很多，这样在Redis实例很大的情况下，启动需要花费很长的时间。  </p>
+<p>Redis4.0为了解决这个问题，带来了一个新的持久化选项–混合持久化。将RDB文件的内容和增量的AOF日志文件存在一起。这里的AOF日志不在是全量的日志，而是自持久化开始到持久化结束的这段时间发生的增量AOF日志，通常这部分AOF日志很小。  </p>
+<p>于是在Redis重启的时候，可以先加载rdb的内容，然后再重放增量AOF日志就可以完全替代之前的AOF全量文件重放，重启效率大幅度提升。</p>
 
       
     </div>
@@ -469,6 +475,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/24/Redis/Redis原理----管道/" rel="prev" title="Redis原理----管道">
+                Redis原理----管道 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -549,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -653,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快照原理"><span class="nav-number">1.</span> <span class="nav-text">快照原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF原理"><span class="nav-number">3.</span> <span class="nav-text">AOF原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF重写"><span class="nav-number">4.</span> <span class="nav-text">AOF重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fsync"><span class="nav-number">5.</span> <span class="nav-text">fsync</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快照原理"><span class="nav-number">1.</span> <span class="nav-text">快照原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF原理"><span class="nav-number">3.</span> <span class="nav-text">AOF原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF重写"><span class="nav-number">4.</span> <span class="nav-text">AOF重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fsync"><span class="nav-number">5.</span> <span class="nav-text">fsync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维"><span class="nav-number">6.</span> <span class="nav-text">运维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis4-0混合持久化"><span class="nav-number">7.</span> <span class="nav-text">Redis4.0混合持久化</span></a></li></ol></div>
             
 
           </div>
