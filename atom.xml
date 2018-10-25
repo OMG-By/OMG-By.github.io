@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-10-24T16:22:04.176Z</updated>
+  <updated>2018-10-25T16:17:05.251Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis原理----事务</title>
+    <link href="http://yoursite.com/2018/10/25/Redis/Redis%E5%8E%9F%E7%90%86----%E4%BA%8B%E5%8A%A1/"/>
+    <id>http://yoursite.com/2018/10/25/Redis/Redis原理----事务/</id>
+    <published>2018-10-25T13:34:13.000Z</published>
+    <updated>2018-10-25T16:17:05.251Z</updated>
+    
+    <content type="html"><![CDATA[<p>为了确保连续多个操作的原子性，一个成熟的数据库通常都会有事务支持，Redis也不例外。Redis的事务使用非常简单，不同于关系数据库，我们无需理解那么多复杂的事务模型了，就可以直接使用。不过也正是因为这种简单性，它的事务模型很不严格，这要求我们不能像使用关系数据库的事务一样使用Redis。</p><h2 id="Redis事务的基本使用"><a href="#Redis事务的基本使用" class="headerlink" title="Redis事务的基本使用"></a>Redis事务的基本使用</h2><p>每个事务的操作都有begin、commit、和rollback、begin指示事务的开始，commit指示事务的提交，rollback指示事务的回滚。</p><p>Redis与其差不多，对应的分别是multi/exec/discard。multi指示事务的开始，exec指示事务的执行，discard指示事务的丢弃。  </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;multi  </div><div class="line">OK  </div><div class="line">&gt;incr books  </div><div class="line">QUEUED  </div><div class="line">&gt;incr books  </div><div class="line">QUEUED  </div><div class="line">&gt;exec  </div><div class="line">(integer) 1</div><div class="line">(integer）2</div><div class="line">```  </div><div class="line"></div><div class="line">上面的指令演示了一个完整的事务过程，所有的指令在exec之前不执行，而是&lt;font color=&quot;red&quot;&gt;缓存在服务器的一个事务队列中&lt;/font&gt;，服务器一旦受到exec指令，就开始执行整个事务队列，执行完毕后一次性返回所有指令的运行结果。因为Redis的单线程特性，它不用担心自己在执行队列的时候被其他指令打搅，可以保证他们得到的[原子性]执行。  </div><div class="line">![](https://i.imgur.com/l8Awrjs.jpg)  </div><div class="line">上图显示了以上事务过程完整的交互结果。QUEUED是一个简单字符串，同OK是一个形式，它表示指令已经被服务器缓存到队列里了。</div><div class="line">&lt;!--more--&gt;</div><div class="line">## 原子性 ##</div><div class="line">事务的原子性是指要么事务全部成功，要么全部失败，那么Redis事务的执行时原子性的么？  </div><div class="line"></div><div class="line">下面我们来看一个特别的例子。</div></pre></td></tr></table></figure><blockquote><p>multi<br>OK<br>set books iamstring<br>QUEUED<br>incr books<br>QUEUED<br>set poorman iamdesperate<br>QUEUED<br>exec<br>1) OK<br>2) (error)ERR value is not an integer or out of range<br>3) OK<br>get books<br>“iamstring”<br>get poorman<br>“iamdesperate”  </p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">上面的例子是事务执行到中间遇到失败了，因为我们不能对一个字符串进行数学运算，事务在遇到指令执行失败后，后面的指令还继续执行，所以poorman的值能继续得到设置。  </div><div class="line"></div><div class="line">到这里，应该明白Redis的事务根本不能算[原子性]，而仅仅是满足了事务的[隔离性]，隔离性中的串行化--当前执行的事务有着不被其他事务打断的权利。</div><div class="line"></div><div class="line">## discard(丢弃) ##</div><div class="line">Redis为事务提供了一个discard指令，用于丢弃事务缓存队列中的所有指令，在exec执行之前。</div><div class="line"></div><div class="line">## 优化 ##</div><div class="line">上面Redis事务在发送每个指令到事务缓存队列时都要经过一次网络读写，当一个事务内部的指令较多时，需要的网络IO时间也会线性增长。所以通常Redis的客户端在执行事务时都会结合pipeline一起使用，这样可以将多次IO操作压缩为单次IO操作。</div><div class="line"></div><div class="line">## Watch ##</div><div class="line">考虑到一个业务场景，Redis存储了我们的账户余额数据，它是一个整数。现在有两个并发的客户端要对账户余额进行修改操作，这个修改不是简单的incrby指令，而是要对余额乘以一个倍数。Redis可没有提供multiplyby这样的指令。我们需要先取出余额然后在内存里乘以倍数，再将结果写回到Redis。  </div><div class="line"></div><div class="line">这就会出现并发问题，因为有多个客户端会并发进行操作。我们可以通过Redis的分布式锁来避免冲突，这是一个很好的解决方案。&lt;b&gt;分布式锁是一种悲观锁，那是不是可以使用悲观锁的方式来解决冲突呢？&lt;/b&gt;  </div><div class="line"></div><div class="line">Redis提供了watch的机制，它就是一种悲观锁。有了watch我们又多了一种可以用来解决并发修改的方法。watch的使用方式如下：</div><div class="line">```  </div><div class="line">while True:  </div><div class="line">do_watch()  </div><div class="line">commands()  </div><div class="line">multi()  </div><div class="line">send_commands()  </div><div class="line">try:  </div><div class="line">exec()  </div><div class="line">break  </div><div class="line">except WatchError:  </div><div class="line">continue  </div><div class="line">```  </div><div class="line">watch会在事务开始之前盯住一个或多个关键变量，当事务执行时，也就是服务受到exec指令要顺序执行缓存的事务队列时，Redis会检查关键变量只watch之后，是否被修改了（包括当前事务所在客户端）。如果关键变量被人动过了，exec指令就会返回null回复告知客户端事务执行失败，这个时候客户端一般会想着重试。</div></pre></td></tr></table></figure><blockquote><p>watch books<br>OK<br>incr books  #被修改了<br>(integer) 1<br>multi<br>OK<br>incr books<br>QUEUED<br>exec  #事务执行失败<br>(nil)<br>```   </p></blockquote><p>当服务器给exec指令返回一个null回复时，客户端知道了事务执行是失败的，通常客户端(redis-py)都会抛出一个WatchError这种错误，不过也有些语言(jedis)不会抛出异常，而是通过在exec方法里返回一个null，这样客户端需要检查一下返回结果是否为null来确定事务是否执行失败。</p><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>Redis禁止在multi和exec之间执行watch指令，而必须在multi之前做好盯住关键变量，否则会出错。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;为了确保连续多个操作的原子性，一个成熟的数据库通常都会有事务支持，Redis也不例外。Redis的事务使用非常简单，不同于关系数据库，我们无需理解那么多复杂的事务模型了，就可以直接使用。不过也正是因为这种简单性，它的事务模型很不严格，这要求我们不能像使用关系数据库的事务一样
+      
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis原理----管道</title>
@@ -565,31 +590,6 @@
       &lt;h2 id=&quot;字典的实现&quot;&gt;&lt;a href=&quot;#字典的实现&quot; class=&quot;headerlink&quot; title=&quot;字典的实现&quot;&gt;&lt;/a&gt;字典的实现&lt;/h2&gt;&lt;p&gt;Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。&lt;/p&gt;
 &lt;h3 id=&quot;哈希表&quot;&gt;&lt;a href=&quot;#哈希表&quot; class=&quot;headerlink&quot; title=&quot;哈希表&quot;&gt;&lt;/a&gt;哈希表&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;typedef struct dictht&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表数组&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	dictEntry **table;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表大小&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long size;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表大小掩码，用于计算索引值&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//总是等size-1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long sizemask;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//该哈希表已有节点的数量&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long used;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;dictht;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;img src=&quot;http://ocx5m3vc3.bkt.clouddn.com/dictht.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis设计与实现-数据结构篇（2）--链表</title>
-    <link href="http://yoursite.com/2018/06/09/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%882%EF%BC%89-%E9%93%BE%E8%A1%A8/"/>
-    <id>http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（2）-链表/</id>
-    <published>2018-06-09T13:09:46.000Z</published>
-    <updated>2018-06-10T12:35:44.107Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h2><p>每个链表节点都使用一个listNode结构来表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef struct listNode&#123;</div><div class="line">//前置节点</div><div class="line">struct listNode *prev;</div><div class="line">//后置节点</div><div class="line">struct listNode *next;</div><div class="line">//节点的值</div><div class="line">void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure></p><p>虽然使用多个listNode结构就可以组成链表，但是使用list来持有链表的话，操作起来会更方便。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list&#123;</div><div class="line">//表头节点</div><div class="line">listNode *head;</div><div class="line">//表尾节点</div><div class="line">listNode *tail;</div><div class="line">//链表所包含的节点数量</div><div class="line">unsigned long len;</div><div class="line">//节点值复制函数</div><div class="line">void *(*dup)(void *ptr);</div><div class="line">//节点值释放函数</div><div class="line">void *(*free)(void *ptr);</div><div class="line">//节点值对比函数</div><div class="line">void *(match)(void *ptr,void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p><p><img src="http://ocx5m3vc3.bkt.clouddn.com/list.png" alt=""></p><h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul><li>双端：获取某个节点的前置和后置节点的复杂度都是O(1)</li><li>无环：两端都指向NULL</li><li>获取表头节点和表尾节点的复杂度为O(1)</li><li>O(1)获取链表长度</li><li>链表可以用来保存各种不同类型的值。</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;链表和链表节点的实现&quot;&gt;&lt;a href=&quot;#链表和链表节点的实现&quot; class=&quot;headerlink&quot; title=&quot;链表和链表节点的实现&quot;&gt;&lt;/a&gt;链表和链表节点的实现&lt;/h2&gt;&lt;p&gt;每个链表节点都使用一个listNode结构来表示&lt;br&gt;&lt;figure cl
-      
     
     </summary>
     

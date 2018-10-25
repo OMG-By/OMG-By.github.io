@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/10/25/Redis/Redis%E5%8E%9F%E7%90%86----%E4%BA%8B%E5%8A%A1/</loc>
+    <lastmod>2018-10-25T16:17:05.251Z</lastmod>
+    <data>
+        <display>
+        <title>Redis原理----事务</title>
+        <pubTime>2018-10-25T13:34:13.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/10/24/Redis/Redis%E5%8E%9F%E7%90%86----%E7%AE%A1%E9%81%93/</loc>
     <lastmod>2018-10-24T16:22:04.176Z</lastmod>
     <data>
