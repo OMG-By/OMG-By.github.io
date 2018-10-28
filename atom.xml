@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-10-25T16:25:55.715Z</updated>
+  <updated>2018-10-28T15:41:44.268Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis原理----主从复制</title>
+    <link href="http://yoursite.com/2018/10/26/Redis/Redis%E5%8E%9F%E7%90%86----%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"/>
+    <id>http://yoursite.com/2018/10/26/Redis/Redis原理----主从复制/</id>
+    <published>2018-10-26T13:34:13.000Z</published>
+    <updated>2018-10-28T15:41:44.268Z</updated>
+    
+    <content type="html"><![CDATA[<p>很多企业都没有使用到Redis的集群，但是至少都做了主从。有了主从，当master挂掉的时候，运维让从库过来接管，服务就可以继续，否则master需要经过数据恢复和重启的过程，这就可能会拖很长时间，影响线上业务的持续服务。  </p><p>在了解Redis主从复制之前，让我们先来理解一下现代分布式系统的理论基石–CAP原理。</p><h2 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h2><p>CAP原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打CAP的论文发表之后，分布式存储中间件犹如雨后春笋一个一个涌现出来。  </p><ul><li>C-Consistent 一致性</li><li>A-Availability 可用性</li><li>P-Partition tolerance 分区容忍性</li></ul><p>分布式系统的节点往往都是分布在不同的机器上进行网络隔离开的，这意味着必然会有网络断开的风险，这个网络断开的场景的专业词汇叫着「网络分区」。</p><a id="more"></a><p>在网络分区发生时，两个分布式节点之间无法进行通信，我们对一个节点进行的修改操作将无法同步到另外一个节点，所以数据的「一致性」将无法满足，因为两个分布式节点的数据不再保持一致。除非我们牺牲「可用性」，也就是暂停分布式节点服务，在网络分区发生时，不再提供修改数据的功能，直到网络状况完全恢复正常再继续对外提供服务。<br><img src="https://i.imgur.com/owNDznt.jpg" alt=""><br>一句话概括CAP原理就是–<b>网络分区发生时，一致性和可用性两难全。</b>  </p><p>Redis的主从数据是异步同步的，所以分布式的Redis系统并不满足[一致性]要求。当客户端在Redis的主节点修改了数据后，立即返回，即使在主从网络断开的情况下，主从节点依旧可以正常对外提供服务，所以Redis满足[可用性]。  </p><p>Redis保证[最终一致性]，从节点会努力追赶主节点，最终从节点的状态会和主节点的状态保持一致。如果网络断开，主从节点的数据将会出现大量不一致，一旦网络恢复，从节点会采用多种策略努力追赶上落后的数据，继续经历保持和主节点一致。  </p><h2 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h2><p>Redis同步支持主从同步和从从同步，从从同步功能是Redis后续版本增加的功能，为了减轻主库的同步负担。<br><img src="https://i.imgur.com/1IiirbA.jpg" alt="">  </p><h2 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h2><p>Redis同步的是指令流，主节点会将那些对自己状态产生修改性影响的指令记录在本地的内存buffer中，然后异步将buffer中的指令同步到从节点，从节点一边执行同步的指令流来达到和主节点一样的状态，一边向主节点反馈自己同步的偏移量。  </p><p>因为内存的buffer（复制积压缓冲区）是有限的，所以Redis主库不能将所有的指令都记录在内存buffer中。Redis的复制内存buffer是一个定长的环形数组，如果数组内容满了，就会从头开始覆盖前面的内容。<br><img src="https://i.imgur.com/I9g0mo3.jpg" alt=""><br>如果因为网络状况不好，从节点在短时间内无法和主节点进行同步，那么在网络状况恢复时，Redis的主节点中那些没有同步的指令在buffer中有可能已经被后续的指令覆盖掉了，从节点将无法直接通过指令流来进行同步，这个时候就需要用到更加复杂的同步机制–快照同步。  </p><h2 id="快照同步"><a href="#快照同步" class="headerlink" title="快照同步"></a>快照同步</h2><p>快照同步是一个非常耗费资源的操作，它首先需要在主库上进行一次bgsave将当前内存中的数据全部快照到磁盘文件中，然后再将快照文件的传送给从节点。从节点在接收完毕后，立即执行一次全量加载，加载之前会将内存中的数据清空。加载完毕后通知主节点继续进行增量同步。  </p><p>在整个快照同步执行的过程中，主节点的复制buffer还在不停的往前移动，如果快照同步的时间过长或者复制buffer太小，都会导致同步期间的增量指令在复制buffer中被覆盖，这样就会导致快照同步完成后无法进行增量复制，然后会再次发起快照同步，如果极有可能陷入无限的死循环，从而影响主节点的正常服务。<br><img src="https://i.imgur.com/aw8EZAS.jpg" alt=""><br><b>请务必设置一个合适复制buffer大小参数，避免这种情况的发生。</b>  </p><h2 id="无盘复制"><a href="#无盘复制" class="headerlink" title="无盘复制"></a>无盘复制</h2><p>主节点在进行快照同步时，会进行很重的文件IO操作，特别是对于非SSD磁盘存储时，快照会对系统的负载产生较大影响。特别是当系统正在进行AOF的fsync操作时如果发生快照，fsync将会被推迟执行，这就会严重影响主节点的服务效率。  </p><p>所以从Redis2.8.18版开始支持无盘复制。所谓无盘复制就是指主服务器直接通过套接字将快照内容发送到从节点，生成快照是一个遍历的过程，主节点会一边遍历内容，一边将序列化的内容发送给从节点，从节点还是跟之前一样，先将接收到的内容存储到磁盘文件中，再进行一次性加载。  </p><h2 id="Wait指令"><a href="#Wait指令" class="headerlink" title="Wait指令"></a>Wait指令</h2><p>Redis的复制是异步进行的，wait指令可以让异步复制变身同步复制，确保系统的强一致性（不严格）。wait指令时Redis3.0版本以后出现的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;set key value  </div><div class="line">OK  </div><div class="line">&gt;wait 1 0  </div><div class="line">(interge) 1</div></pre></td></tr></table></figure></p><p>wait提供两个参数，第一个参数是从库的数量N，第二个参数是时间t，以毫秒为单位。它表示等待wait指令之前的所有写操作同步到N个从库（也就是确保N个从库的同步没有滞后），最多等待时间t。如果时间t=0，代表无限等待知道N个从库同步完成达到一致。  </p><p>假设此时出现了网络分区，wait指令第二个参数时间t=0，主从同步无法继续进行，wait指令会永远阻塞，Redis服务器将丧失可用性。  </p><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>主从复制是Redis分布式的基础，Redis的高可用离开了朱重构复制将无法进行。  </p><p>如果你将Redis只用作缓存，跟memcache一样对待，也就唔需要从库做备份，挂掉了重新启动一下就行了。但是只要你使用了Redis的持久化功能，就必须认真对待主从复制，它是系统数据安全的基础保障。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很多企业都没有使用到Redis的集群，但是至少都做了主从。有了主从，当master挂掉的时候，运维让从库过来接管，服务就可以继续，否则master需要经过数据恢复和重启的过程，这就可能会拖很长时间，影响线上业务的持续服务。  &lt;/p&gt;
+&lt;p&gt;在了解Redis主从复制之前，让我们先来理解一下现代分布式系统的理论基石–CAP原理。&lt;/p&gt;
+&lt;h2 id=&quot;CAP原理&quot;&gt;&lt;a href=&quot;#CAP原理&quot; class=&quot;headerlink&quot; title=&quot;CAP原理&quot;&gt;&lt;/a&gt;CAP原理&lt;/h2&gt;&lt;p&gt;CAP原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打CAP的论文发表之后，分布式存储中间件犹如雨后春笋一个一个涌现出来。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C-Consistent 一致性&lt;/li&gt;
+&lt;li&gt;A-Availability 可用性&lt;/li&gt;
+&lt;li&gt;P-Partition tolerance 分区容忍性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;分布式系统的节点往往都是分布在不同的机器上进行网络隔离开的，这意味着必然会有网络断开的风险，这个网络断开的场景的专业词汇叫着「网络分区」。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis原理----事务</title>
@@ -567,30 +597,6 @@
     
       &lt;p&gt;跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。&lt;/p&gt;
 &lt;h2 id=&quot;跳跃表的实现&quot;&gt;&lt;a href=&quot;#跳跃表的实现&quot; class=&quot;headerlink&quot; title=&quot;跳跃表的实现&quot;&gt;&lt;/a&gt;跳跃表的实现&lt;/h2&gt;&lt;p&gt;Redis跳跃表由zskiplistNode和zskiplist两个结构定义。其中zskiplistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向表头节点和表尾节点的指针等等。&lt;br&gt;&lt;img src=&quot;http://ocx5m3vc3.bkt.clouddn.com/skiplist.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis设计与实现-数据结构篇（3）--字典</title>
-    <link href="http://yoursite.com/2018/06/10/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%883%EF%BC%89-%E5%AD%97%E5%85%B8/"/>
-    <id>http://yoursite.com/2018/06/10/Redis/Redis设计与实现-数据结构篇（3）-字典/</id>
-    <published>2018-06-10T10:58:15.000Z</published>
-    <updated>2018-06-10T12:35:47.856Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="字典的实现"><a href="#字典的实现" class="headerlink" title="字典的实现"></a>字典的实现</h2><p>Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p><h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct dictht&#123;</div><div class="line">//哈希表数组</div><div class="line">dictEntry **table;</div><div class="line">//哈希表大小</div><div class="line">unsigned long size;</div><div class="line">//哈希表大小掩码，用于计算索引值</div><div class="line">//总是等size-1</div><div class="line">unsigned long sizemask;</div><div class="line">//该哈希表已有节点的数量</div><div class="line">unsigned long used;</div><div class="line">&#125;dictht;</div></pre></td></tr></table></figure><p><img src="http://ocx5m3vc3.bkt.clouddn.com/dictht.png" alt=""><br><a id="more"></a><br>table是一个数组，数组中的每个元素都是一个指向dictEntry结构的指针，每个dictEntry结构保存这一个键值对。</p><h3 id="哈希表节点"><a href="#哈希表节点" class="headerlink" title="哈希表节点"></a>哈希表节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">typedef struct dictEntry&#123;</div><div class="line">//键</div><div class="line">void *key;</div><div class="line">//值</div><div class="line">union&#123;</div><div class="line">void *val;</div><div class="line">uint64_t u64;</div><div class="line">int64_ts64;</div><div class="line">&#125;v;</div><div class="line">//指向下个哈希表节点，形成链表</div><div class="line">struct dictEntry *next;</div><div class="line">&#125;dictEntry;</div></pre></td></tr></table></figure><p><img src="http://ocx5m3vc3.bkt.clouddn.com/dictEntry.png" alt=""></p><h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct dict&#123;</div><div class="line">//类型特定函数</div><div class="line">dictType *type;</div><div class="line">//私有数据</div><div class="line">void *privdata;</div><div class="line">//哈希表</div><div class="line">dictht ht[2];</div><div class="line">//rehash索引</div><div class="line">//当rehash不在进行时，值为-1</div><div class="line">int trehashidx;</div><div class="line">&#125;dict;</div></pre></td></tr></table></figure><p>ht是一个包含两个项的数组，数组中的每个项都是一个dictht哈希表，一般情况下，字典只使用ht[0]哈希表，ht[1]哈希表只会在ht[0]哈希表进行rehash时使用。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/dict.png" alt=""></p><h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><p>当要将一个新的键值对添加到字典里面时，程序需要先根据键值对的键计算出哈希值和索引值，然后根据索引值，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p><h2 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h2><p>随着操作的不断执行，哈希表保存的键值对会逐渐增多或者减少，为了让哈希表的负债因子维持在一个合理的范围内，程序需要对哈希表大小进行相应的扩展或者收缩。<br>步骤：<br>1）为字典的ht[1]哈希表分配空间，这个哈希表的空间大小取决于要执行的操作，以及ht[0]当前包含的键值对数量（也即是ht[0].used属性的值）：<br>2）将保存在ht[0]中的所有键值对rehash到ht[1]上面，rehash值的是重新计算键的哈希值和索引值，然后将键值对放置到ht[1]哈希表的指定位置上。<br>3）当ht[0]包含的所有键值对都迁移到了ht[1]之后（ht[0]变为空表），释放ht[0],将ht[1]设置为ht[0],并在ht[1]新创建一个空白哈希表，为下一次rehash做准备。  </p><h3 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h3><p>1）为ht[1]分配空间，让字典同时持有ht[0]和ht[1]两个哈希表。<br>2）在字典中维持一个索引计数器变量rehashidx，并将它的值设置为0，表示rehash工作正式开始。<br>3）在rehash期间，每次对字典执行添加、删除、查找或者更新操作时，程序除了执行指定操作外，还会顺带将ht[0]哈希表再rehashidx索引上的所有键值对rehash到ht[1]，将rehashidx值增加1。<br>4）随着字典操作的不断执行，最终在某个时间点上，ht[0]的所有键值对都会被rehash到ht[1]，这时将rehashidx设置为-1，表示rehash操作完成。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;字典的实现&quot;&gt;&lt;a href=&quot;#字典的实现&quot; class=&quot;headerlink&quot; title=&quot;字典的实现&quot;&gt;&lt;/a&gt;字典的实现&lt;/h2&gt;&lt;p&gt;Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。&lt;/p&gt;
-&lt;h3 id=&quot;哈希表&quot;&gt;&lt;a href=&quot;#哈希表&quot; class=&quot;headerlink&quot; title=&quot;哈希表&quot;&gt;&lt;/a&gt;哈希表&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;typedef struct dictht&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表数组&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	dictEntry **table;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表大小&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long size;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//哈希表大小掩码，用于计算索引值&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//总是等size-1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long sizemask;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	//该哈希表已有节点的数量&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	unsigned long used;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;dictht;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;img src=&quot;http://ocx5m3vc3.bkt.clouddn.com/dictht.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;
     
     </summary>
     
