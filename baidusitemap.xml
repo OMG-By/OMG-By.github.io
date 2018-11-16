@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/11/10/Redis/Redis%E5%AF%B9%E8%B1%A1/</loc>
+    <lastmod>2018-11-09T16:28:38.983Z</lastmod>
+    <data>
+        <display>
+        <title>Redis对象结构</title>
+        <pubTime>2018-11-10T13:34:13.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/</loc>
+    <lastmod>2018-10-30T12:11:26.822Z</lastmod>
+    <data>
+        <display>
+        <title>reset master和reset slave</title>
+        <pubTime>2018-09-23T08:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/10/26/Redis/Redis%E5%8E%9F%E7%90%86----%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</loc>
     <lastmod>2018-10-28T15:41:44.268Z</lastmod>
     <data>
@@ -137,26 +177,6 @@
            
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/</loc>
-    <lastmod>2018-09-23T15:03:05.042Z</lastmod>
-    <data>
-        <display>
-        <title>reset master和reset slave</title>
-        <pubTime>2018-09-23T08:11:15.000Z</pubTime>
-        
-        <tag>mysql</tag>
-         
-         
-           
-             
-              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
           
         </display>
     </data>
