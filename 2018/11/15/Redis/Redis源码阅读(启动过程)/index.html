@@ -105,7 +105,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/IXG8CwE.png">
 <meta property="og:image" content="https://i.imgur.com/J2YEVoo.png">
-<meta property="og:updated_time" content="2018-11-23T07:11:46.140Z">
+<meta property="og:updated_time" content="2018-11-23T07:16:35.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis源码阅读(启动过程)">
 <meta name="twitter:description" content="Redis的启动函数main()在redis.c文件中。  初始化配置在启动时会使用initServerConfig()函数进行初始化服务器配置工作，redisServer(redis.h)作为保存服务器配置的结构。 redisServer包含以下的一些Redis服务器的信息：    一般服务器状态。 一些服务器统计信息。 各种链表结构，如保存客户端的链表等。 配置文件及启动参数中的配置。 主从复">
@@ -420,7 +420,7 @@
 <li>主从复制的状态。</li>
 <li>持久化文件的参数和状态。</li>
 </ul>
-<p><img src="https://i.imgur.com/IXG8CwE.png" alt=""></p>
+<p><img src="https://i.imgur.com/IXG8CwE.png" alt=""><br><a id="more"></a></p>
 <h3 id="初始化服务器数据结构"><a href="#初始化服务器数据结构" class="headerlink" title="初始化服务器数据结构"></a>初始化服务器数据结构</h3><p>在initServer中会进行初始化服务器所需要的一些数据结构信息</p>
 <ul>
 <li>共享对象</li>

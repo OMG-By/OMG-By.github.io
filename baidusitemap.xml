@@ -4,28 +4,8 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/11/15/Redis/Redis%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB(%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B)/</loc>
-    <lastmod>2018-11-23T07:11:46.140Z</lastmod>
-    <data>
-        <display>
-        <title>Redis源码阅读(启动过程)</title>
-        <pubTime>2018-11-15T06:12:13.000Z</pubTime>
-        
-        <tag>Redis</tag>
-         
-         
-           
-             
-              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2018/11/10/Redis/Redis%E5%AF%B9%E8%B1%A1/</loc>
-    <lastmod>2018-11-23T07:11:15.422Z</lastmod>
+    <lastmod>2018-11-23T07:17:48.419Z</lastmod>
     <data>
         <display>
         <title>Redis对象结构</title>
@@ -45,7 +25,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/11/23/mysql/sql%E8%AF%AD%E5%8F%A5%E7%BB%83%E4%B9%A0/</loc>
-    <lastmod>2018-11-23T07:10:44.985Z</lastmod>
+    <lastmod>2018-11-23T07:17:28.956Z</lastmod>
     <data>
         <display>
         <title>sql语句练习</title>
@@ -57,6 +37,26 @@
            
              
               <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/11/15/Redis/Redis%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB(%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B)/</loc>
+    <lastmod>2018-11-23T07:16:35.910Z</lastmod>
+    <data>
+        <display>
+        <title>Redis源码阅读(启动过程)</title>
+        <pubTime>2018-11-15T06:12:13.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
           
         </display>
     </data>
