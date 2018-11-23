@@ -137,7 +137,7 @@
 
 
 
-  <title>OMG_By</title>
+  <title>归档 | OMG_By</title>
   
 
 
@@ -156,8 +156,7 @@
     
   
 
-  <div class="container sidebar-position-right 
-  page-home">
+  <div class="container sidebar-position-right page-archive">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -294,1746 +293,410 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
-    
+
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
+
+      <span class="archive-page-counter">
+        
+        
+         
+          
+        很好! 目前共计 87 篇日志。 继续努力。
+      </span>
+
       
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/Redis/Redis对象/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/10/Redis/Redis对象/" itemprop="url">Redis对象结构</a></h1>
         
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T21:34:13+08:00">
-                2018-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
         
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">typedef struct redisObject &#123;</div><div class="line"></div><div class="line">    // 类型</div><div class="line">    unsigned type:4;</div><div class="line"></div><div class="line">    // 编码</div><div class="line">    unsigned encoding:4;</div><div class="line"></div><div class="line">    // 对象最后一次被访问的时间</div><div class="line">    unsigned lru:REDIS_LRU_BITS; /* lru time (relative to server.lruclock) */</div><div class="line"></div><div class="line">    // 引用计数</div><div class="line">    int refcount;</div><div class="line"></div><div class="line">    // 指向实际值的指针</div><div class="line">    void *ptr;</div><div class="line"></div><div class="line">&#125; robj;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">typedef struct redisDb &#123;</div><div class="line"></div><div class="line">    // 数据库键空间，保存着数据库中的所有键值对</div><div class="line">    dict *dict;                 /* The keyspace for this DB */</div><div class="line"></div><div class="line">    // 键的过期时间，字典的键为键，字典的值为过期事件 UNIX 时间戳</div><div class="line">    dict *expires;              /* Timeout of keys with a timeout set */</div><div class="line"></div><div class="line">    // 正处于阻塞状态的键</div><div class="line">    dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP) */</div><div class="line"></div><div class="line">    // 可以解除阻塞的键</div><div class="line">    dict *ready_keys;           /* Blocked keys that received a PUSH */</div><div class="line"></div><div class="line">    // 正在被 WATCH 命令监视的键</div><div class="line">    dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */</div><div class="line"></div><div class="line">    struct evictionPoolEntry *eviction_pool;    /* Eviction pool of keys */</div><div class="line"></div><div class="line">    // 数据库号码</div><div class="line">    int id;                     /* Database ID */</div><div class="line"></div><div class="line">    // 数据库的键的平均 TTL ，统计信息</div><div class="line">    long long avg_ttl;          /* Average TTL, just for stats */</div><div class="line"></div><div class="line">&#125; redisDb;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line">typedef struct redisClient &#123;</div><div class="line"></div><div class="line">    // 套接字描述符</div><div class="line">    int fd;</div><div class="line"></div><div class="line">    // 当前正在使用的数据库</div><div class="line">    redisDb *db;</div><div class="line"></div><div class="line">    // 当前正在使用的数据库的 id （号码）</div><div class="line">    int dictid;</div><div class="line"></div><div class="line">    // 客户端的名字</div><div class="line">    robj *name;             /* As set by CLIENT SETNAME */</div><div class="line"></div><div class="line">    // 查询缓冲区</div><div class="line">    sds querybuf;</div><div class="line"></div><div class="line">    // 查询缓冲区长度峰值</div><div class="line">    size_t querybuf_peak;   /* Recent (100ms or more) peak of querybuf size */</div><div class="line"></div><div class="line">    // 参数数量</div><div class="line">    int argc;</div><div class="line"></div><div class="line">    // 参数对象数组</div><div class="line">    robj **argv;</div><div class="line"></div><div class="line">    // 记录被客户端执行的命令</div><div class="line">    struct redisCommand *cmd, *lastcmd;</div><div class="line"></div><div class="line">    // 请求的类型：内联命令还是多条命令</div><div class="line">    int reqtype;</div><div class="line"></div><div class="line">    // 剩余未读取的命令内容数量</div><div class="line">    int multibulklen;       /* number of multi bulk arguments left to read */</div><div class="line"></div><div class="line">    // 命令内容的长度</div><div class="line">    long bulklen;           /* length of bulk argument in multi bulk request */</div><div class="line"></div><div class="line">    // 回复链表</div><div class="line">    list *reply;</div><div class="line"></div><div class="line">    // 回复链表中对象的总大小</div><div class="line">    unsigned long reply_bytes; /* Tot bytes of objects in reply list */</div><div class="line"></div><div class="line">    // 已发送字节，处理 short write 用</div><div class="line">    int sentlen;            /* Amount of bytes already sent in the current</div><div class="line">                               buffer or object being sent. */</div><div class="line"></div><div class="line">    // 创建客户端的时间</div><div class="line">    time_t ctime;           /* Client creation time */</div><div class="line"></div><div class="line">    // 客户端最后一次和服务器互动的时间</div><div class="line">    time_t lastinteraction; /* time of the last interaction, used for timeout */</div><div class="line"></div><div class="line">    // 客户端的输出缓冲区超过软性限制的时间</div><div class="line">    time_t obuf_soft_limit_reached_time;</div><div class="line"></div><div class="line">    // 客户端状态标志</div><div class="line">    int flags;              /* REDIS_SLAVE | REDIS_MONITOR | REDIS_MULTI ... */</div><div class="line"></div><div class="line">    // 当 server.requirepass 不为 NULL 时</div><div class="line">    // 代表认证的状态</div><div class="line">    // 0 代表未认证， 1 代表已认证</div><div class="line">    int authenticated;      /* when requirepass is non-NULL */</div><div class="line"></div><div class="line">    // 复制状态</div><div class="line">    int replstate;          /* replication state if this is a slave */</div><div class="line">    // 用于保存主服务器传来的 RDB 文件的文件描述符</div><div class="line">    int repldbfd;           /* replication DB file descriptor */</div><div class="line"></div><div class="line">    // 读取主服务器传来的 RDB 文件的偏移量</div><div class="line">    off_t repldboff;        /* replication DB file offset */</div><div class="line">    // 主服务器传来的 RDB 文件的大小</div><div class="line">    off_t repldbsize;       /* replication DB file size */</div><div class="line">    </div><div class="line">    sds replpreamble;       /* replication DB preamble. */</div><div class="line"></div><div class="line">    // 主服务器的复制偏移量</div><div class="line">    long long reploff;      /* replication offset if this is our master */</div><div class="line">    // 从服务器最后一次发送 REPLCONF ACK 时的偏移量</div><div class="line">    long long repl_ack_off; /* replication ack offset, if this is a slave */</div><div class="line">    // 从服务器最后一次发送 REPLCONF ACK 的时间</div><div class="line">    long long repl_ack_time;/* replication ack time, if this is a slave */</div><div class="line">    // 主服务器的 master run ID</div><div class="line">    // 保存在客户端，用于执行部分重同步</div><div class="line">    char replrunid[REDIS_RUN_ID_SIZE+1]; /* master run id if this is a master */</div><div class="line">    // 从服务器的监听端口号</div><div class="line">    int slave_listening_port; /* As configured with: SLAVECONF listening-port */</div><div class="line"></div><div class="line">    // 事务状态</div><div class="line">    multiState mstate;      /* MULTI/EXEC state */</div><div class="line"></div><div class="line">    // 阻塞类型</div><div class="line">    int btype;              /* Type of blocking op if REDIS_BLOCKED. */</div><div class="line">    // 阻塞状态</div><div class="line">    blockingState bpop;     /* blocking state */</div><div class="line"></div><div class="line">    // 最后被写入的全局复制偏移量</div><div class="line">    long long woff;         /* Last write global replication offset. */</div><div class="line"></div><div class="line">    // 被监视的键</div><div class="line">    list *watched_keys;     /* Keys WATCHED for MULTI/EXEC CAS */</div><div class="line"></div><div class="line">    // 这个字典记录了客户端所有订阅的频道</div><div class="line">    // 键为频道名字，值为 NULL</div><div class="line">    // 也即是，一个频道的集合</div><div class="line">    dict *pubsub_channels;  /* channels a client is interested in (SUBSCRIBE) */</div><div class="line"></div><div class="line">    // 链表，包含多个 pubsubPattern 结构</div><div class="line">    // 记录了所有订阅频道的客户端的信息</div><div class="line">    // 新 pubsubPattern 结构总是被添加到表尾</div><div class="line">    list *pubsub_patterns;  /* patterns a client is interested in (SUBSCRIBE) */</div><div class="line">    sds peerid;             /* Cached peer ID. */</div><div class="line"></div><div class="line">    /* Response buffer */</div><div class="line">    // 回复偏移量</div><div class="line">    int bufpos;</div><div class="line">    // 回复缓冲区</div><div class="line">    char buf[REDIS_REPLY_CHUNK_BYTES];</div><div class="line"></div><div class="line">&#125; redisClient;</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/26/Redis/Redis原理----主从复制/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/26/Redis/Redis原理----主从复制/" itemprop="url">Redis原理----主从复制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T21:34:13+08:00">
-                2018-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>很多企业都没有使用到Redis的集群，但是至少都做了主从。有了主从，当master挂掉的时候，运维让从库过来接管，服务就可以继续，否则master需要经过数据恢复和重启的过程，这就可能会拖很长时间，影响线上业务的持续服务。  </p>
-<p>在了解Redis主从复制之前，让我们先来理解一下现代分布式系统的理论基石–CAP原理。</p>
-<h2 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h2><p>CAP原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打CAP的论文发表之后，分布式存储中间件犹如雨后春笋一个一个涌现出来。  </p>
-<ul>
-<li>C-Consistent 一致性</li>
-<li>A-Availability 可用性</li>
-<li>P-Partition tolerance 分区容忍性</li>
-</ul>
-<p>分布式系统的节点往往都是分布在不同的机器上进行网络隔离开的，这意味着必然会有网络断开的风险，这个网络断开的场景的专业词汇叫着「网络分区」。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/26/Redis/Redis原理----主从复制/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2018">2018</h1>
           </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
+        
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Redis/Redis原理----事务/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/25/Redis/Redis原理----事务/" itemprop="url">Redis原理----事务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2018/11/10/Redis/Redis对象/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">Redis对象结构</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T21:34:13+08:00">
-                2018-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>为了确保连续多个操作的原子性，一个成熟的数据库通常都会有事务支持，Redis也不例外。Redis的事务使用非常简单，不同于关系数据库，我们无需理解那么多复杂的事务模型了，就可以直接使用。不过也正是因为这种简单性，它的事务模型很不严格，这要求我们不能像使用关系数据库的事务一样使用Redis。</p>
-<h2 id="Redis事务的基本使用"><a href="#Redis事务的基本使用" class="headerlink" title="Redis事务的基本使用"></a>Redis事务的基本使用</h2><p>每个事务的操作都有begin、commit、和rollback、begin指示事务的开始，commit指示事务的提交，rollback指示事务的回滚。</p>
-<p>Redis与其差不多，对应的分别是multi/exec/discard。multi指示事务的开始，exec指示事务的执行，discard指示事务的丢弃。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;multi  </div><div class="line">OK  </div><div class="line">&gt;incr books  </div><div class="line">QUEUED  </div><div class="line">&gt;incr books  </div><div class="line">QUEUED  </div><div class="line">&gt;exec  </div><div class="line">(integer) 1</div><div class="line">(integer）2</div></pre></td></tr></table></figure>
-<p>上面的指令演示了一个完整的事务过程，所有的指令在exec之前不执行，而是<font color="red">缓存在服务器的一个事务队列中</font>，服务器一旦受到exec指令，就开始执行整个事务队列，执行完毕后一次性返回所有指令的运行结果。因为Redis的单线程特性，它不用担心自己在执行队列的时候被其他指令打搅，可以保证他们得到的[原子性]执行。<br><img src="https://i.imgur.com/l8Awrjs.jpg" alt=""><br>上图显示了以上事务过程完整的交互结果。QUEUED是一个简单字符串，同OK是一个形式，它表示指令已经被服务器缓存到队列里了。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/25/Redis/Redis原理----事务/#more" rel="contents">
-              阅读全文 &raquo;
             </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
+      </h2>
 
-    
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-11-10T21:34:13+08:00"
+              content="2018-11-10" >
+          11-10
+        </time>
+      </div>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/24/Redis/Redis原理----管道/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/24/Redis/Redis原理----管道/" itemprop="url">Redis原理----管道</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2018/10/26/Redis/Redis原理----主从复制/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">Redis原理----主从复制</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T21:34:13+08:00">
-                2018-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>大多数人一直对Redis管道有一个误解，他们以为这是Redis服务器提供的一种特别的技术，有了这种技术就可以加速Redis的存取效率。但是实际上Redis管道（Pipeline）本身并不是Redis服务器直接提供的技术，这个技术本质上是由客户端提供的，跟服务器没有什么直接的关系。</p>
-<h2 id="Redis的消息交互"><a href="#Redis的消息交互" class="headerlink" title="Redis的消息交互"></a>Redis的消息交互</h2><p>当我们使用客户端对Redis进行一次操作时，如下图所示，客户端将请求传送给服务器，服务器处理完毕后，再将响应回复给客户端。这要花费一个网络数据包的来回时间。  </p>
-<p><img src="https://i.imgur.com/ulCYBhP.jpg" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/24/Redis/Redis原理----管道/#more" rel="contents">
-              阅读全文 &raquo;
             </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
+      </h2>
 
-    
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-26T21:34:13+08:00"
+              content="2018-10-26" >
+          10-26
+        </time>
+      </div>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Redis/Redis原理----持久化/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/22/Redis/Redis原理----持久化/" itemprop="url">Redis原理----持久化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2018/10/25/Redis/Redis原理----事务/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">Redis原理----事务</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-22T21:30:13+08:00">
-                2018-10-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。  </p>
-<p>Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF日志在长期的运行过程中会变得非常大，数据库重启时需要加载AOF日志进行指令重放，这个时间会变得无比漫长。所以需要定期进行AOF重写，给AOF文件瘦身。</p>
-<h2 id="快照原理"><a href="#快照原理" class="headerlink" title="快照原理"></a>快照原理</h2><p>我们知道Redis是单线程程序，这个线程要同时负责多个客户端套接字的并发读写操作和内存数据结构的逻辑读写。  </p>
-<p>在服务线上请求的同时，Redis还需要进行内存快照，内存快照要求Redis必须进行文件IO操作，可文件IO操作是不能使用多路复用API。  </p>
-<p>这意味着单线程同时在服务线上的请求和吉林文件IO操作，文件IO操作会严重拖垮服务器请求的性能。还有个<b>重要的问题就是为了不阻塞线上的业务，就需要边持久化边响应客户端请求</b>。持久化的同时，内存数据结构还在变化，比如一个大型的hash字典正在持久化，结果一个请求过来把它给删除了，还没持久化，这该怎么办？  </p>
-<font color="red">Redis使用操作系统的多进程COW（copy On Write）机制来实现快照持久化。</font>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/22/Redis/Redis原理----持久化/#more" rel="contents">
-              阅读全文 &raquo;
             </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
+      </h2>
 
-    
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-25T21:34:13+08:00"
+              content="2018-10-25" >
+          10-25
+        </time>
+      </div>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis源码阅读/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/21/Redis/Redis源码阅读/" itemprop="url">Redis源码阅读目录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2018/10/24/Redis/Redis原理----管道/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">Redis原理----管道</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T21:34:13+08:00">
-                2018-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <table>
-<thead>
-<tr>
-<th>文件</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>adlist.c 、 adlist.h</td>
-<td style="text-align:center">双端链表数据结构的实现。</td>
-</tr>
-<tr>
-<td>ae.c 、 ae.h 、 ae_epoll.c 、 ae_evport.c 、 ae_kqueue.c 、 ae_select.c</td>
-<td style="text-align:center">事件处理器，以及各个具体实现。</td>
-</tr>
-<tr>
-<td>anet.c 、 anet.h</td>
-<td style="text-align:center">Redis 的异步网络框架，内容主要为对 socket 库的包装。</td>
-</tr>
-<tr>
-<td>aof.c</td>
-<td style="text-align:center">AOF 功能的实现。</td>
-</tr>
-<tr>
-<td>asciilogo.h</td>
-<td style="text-align:center">保存了 Redis 的 ASCII LOGO 。</td>
-</tr>
-<tr>
-<td>bio.c 、 bio.h</td>
-<td style="text-align:center">Redis 的后台 I/O 程序，用于将 I/O 操作放到子线程里面执行， 减少 I/O 操作对主线程的阻塞。</td>
-</tr>
-<tr>
-<td>bitops.c</td>
-<td style="text-align:center">二进制位操作命令的实现文件。</td>
-</tr>
-<tr>
-<td>blocked.c</td>
-<td style="text-align:center">用于实现 BLPOP 命令和 WAIT 命令的阻塞效果。</td>
-</tr>
-<tr>
-<td>cluster.c 、 cluster.h</td>
-<td style="text-align:center">Redis 的集群实现。</td>
-</tr>
-<tr>
-<td>config.c 、 config.h</td>
-<td style="text-align:center">Redis 的配置管理实现，负责读取并分析配置文件， 然后根据这些配置修改 Redis 服务器的各个选项。</td>
-</tr>
-<tr>
-<td>crc16.c 、 crc64.c 、 crc64.h</td>
-<td style="text-align:center">计算 CRC 校验和。</td>
-</tr>
-<tr>
-<td>db.c</td>
-<td style="text-align:center">数据库实现。</td>
-</tr>
-<tr>
-<td>debug.c</td>
-<td style="text-align:center">调试实现。</td>
-</tr>
-<tr>
-<td>dict.c 、 dict.h</td>
-<td style="text-align:center">字典数据结构的实现。</td>
-</tr>
-<tr>
-<td>endianconv.c 、 endianconv.h</td>
-<td style="text-align:center">二进制的大端、小端转换函数。</td>
-</tr>
-<tr>
-<td>fmacros.h</td>
-<td style="text-align:center">一些移植性方面的宏。</td>
-</tr>
-<tr>
-<td>help.h</td>
-<td style="text-align:center">utils/generate-command-help.rb 程序自动生成的命令帮助信息。</td>
-</tr>
-<tr>
-<td>hyperloglog.c</td>
-<td style="text-align:center">HyperLogLog 数据结构的实现。</td>
-</tr>
-<tr>
-<td>intset.c 、 intset.h</td>
-<td style="text-align:center">整数集合数据结构的实现，用于优化 SET 类型。</td>
-</tr>
-<tr>
-<td>lzf_c.c 、 lzf_d.c 、 lzf.h 、 lzfP.h</td>
-<td style="text-align:center">Redis 对字符串和 RDB 文件进行压缩时使用的 LZF 压缩算法的实现。</td>
-</tr>
-<tr>
-<td>Makefile 、 Makefile.dep</td>
-<td style="text-align:center">构建文件。</td>
-</tr>
-<tr>
-<td>memtest.c</td>
-<td style="text-align:center">内存测试。</td>
-</tr>
-<tr>
-<td>mkreleasehdr.sh</td>
-<td style="text-align:center">用于生成释出信息的脚本。</td>
-</tr>
-<tr>
-<td>multi.c</td>
-<td style="text-align:center">Redis 的事务实现。</td>
-</tr>
-<tr>
-<td>networking.c</td>
-<td style="text-align:center">Redis 的客户端网络操作库， 用于实现命令请求接收、发送命令回复等工作， 文件中的函数大多为 write 、 read 、 close 等函数的包装， 以及各种协议的分析和构建函数。</td>
-</tr>
-<tr>
-<td>notify.c</td>
-<td style="text-align:center">Redis 的数据库通知实现。</td>
-</tr>
-<tr>
-<td>object.c</td>
-<td style="text-align:center">Redis 的对象系统实现。</td>
-</tr>
-<tr>
-<td>pqsort.c 、 pqsort.h</td>
-<td style="text-align:center">快速排序（QuickSort）算法的实现。</td>
-</tr>
-<tr>
-<td>pubsub.c</td>
-<td style="text-align:center">发布与订阅功能的实现。</td>
-</tr>
-<tr>
-<td>rand.c 、 rand.h</td>
-<td style="text-align:center">伪随机数生成器。</td>
-</tr>
-<tr>
-<td>rdb.c 、 rdb.h</td>
-<td style="text-align:center">RDB 持久化功能的实现。</td>
-</tr>
-<tr>
-<td>redisassert.h</td>
-<td style="text-align:center">Redis 自建的断言系统。</td>
-</tr>
-<tr>
-<td>redis-benchmark.c</td>
-<td style="text-align:center">Redis 的性能测试程序。</td>
-</tr>
-<tr>
-<td>redis.c</td>
-<td style="text-align:center">负责服务器的启动、维护和关闭等事项。</td>
-</tr>
-<tr>
-<td>redis-check-aof.c 、 redis-check-dump.c</td>
-<td style="text-align:center">RDB 文件和 AOF 文件的合法性检查程序。</td>
-</tr>
-<tr>
-<td>redis-cli.c</td>
-<td style="text-align:center">Redis 客户端的实现。</td>
-</tr>
-<tr>
-<td>redis.h</td>
-<td style="text-align:center">Redis 的主要头文件，记录了 Redis 中的大部分数据结构， 包括服务器状态和客户端状态。</td>
-</tr>
-<tr>
-<td>redis-trib.rb</td>
-<td style="text-align:center">Redis 集群的管理程序。</td>
-</tr>
-<tr>
-<td>release.c 、 release.h</td>
-<td style="text-align:center">记录和生成 Redis 的释出版本信息。</td>
-</tr>
-<tr>
-<td>replication.c</td>
-<td style="text-align:center">复制功能的实现。</td>
-</tr>
-<tr>
-<td>rio.c 、 rio.h</td>
-<td style="text-align:center">Redis 对文件 I/O 函数的包装， 在普通 I/O 函数的基础上增加了显式缓存、以及计算校验和等功能。</td>
-</tr>
-<tr>
-<td>scripting.c</td>
-<td style="text-align:center">脚本功能的实现。</td>
-</tr>
-<tr>
-<td>sds.c 、 sds.h</td>
-<td style="text-align:center">SDS 数据结构的实现，SDS 为 Redis 的默认字符串表示。</td>
-</tr>
-<tr>
-<td>sentinel.c</td>
-<td style="text-align:center">Redis Sentinel 的实现。</td>
-</tr>
-<tr>
-<td>setproctitle.c</td>
-<td style="text-align:center">进程环境设置函数。</td>
-</tr>
-<tr>
-<td>sha1.c 、 sha1.h</td>
-<td style="text-align:center">SHA1 校验和计算函数。</td>
-</tr>
-<tr>
-<td>slowlog.c 、 slowlog.h</td>
-<td style="text-align:center">慢查询功能的实现。</td>
-</tr>
-<tr>
-<td>solarisfixes.h</td>
-<td style="text-align:center">针对 Solaris 系统的补丁。</td>
-</tr>
-<tr>
-<td>sort.c</td>
-<td style="text-align:center">SORT 命令的实现。</td>
-</tr>
-<tr>
-<td>syncio.c</td>
-<td style="text-align:center">同步 I/O 操作。</td>
-</tr>
-<tr>
-<td>testhelp.h</td>
-<td style="text-align:center">测试辅助宏。</td>
-</tr>
-<tr>
-<td>t_hash.c 、 t_list.c 、 t_set.c、 t_string.c 、 t_zset.c</td>
-<td style="text-align:center">定义了 Redis 的各种数据类型，以及这些数据类型的命令。</td>
-</tr>
-<tr>
-<td>util.c 、 util.h</td>
-<td style="text-align:center">各种辅助函数。</td>
-</tr>
-<tr>
-<td>valgrind.sup</td>
-<td style="text-align:center">valgrind 的suppression文件。</td>
-</tr>
-<tr>
-<td>version.h</td>
-<td style="text-align:center">记录了 Redis 的版本号。</td>
-</tr>
-<tr>
-<td>ziplist.c 、 ziplist.h</td>
-<td style="text-align:center">ZIPLIST 数据结构的实现，用于优化 LIST 类型。</td>
-</tr>
-<tr>
-<td>zipmap.c 、 zipmap.h</td>
-<td style="text-align:center">ZIPMAP 数据结构的实现，在 Redis 2.6 以前用与优化 HASH 类型， Redis 2.6 开始已经废弃。</td>
-</tr>
-<tr>
-<td>zmalloc.c 、 zmalloc.h</td>
-<td style="text-align:center">内存管理程序。</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis原理----通信协议/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/21/Redis/Redis原理----通信协议/" itemprop="url">Redis原理----通信协议</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T19:34:13+08:00">
-                2018-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。</p>
-<h2 id="RESP"><a href="#RESP" class="headerlink" title="RESP"></a>RESP</h2><p>RESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种直观的文本协议，优势在于实现异常简单，解析性能极好。</p>
-<p>Redis歇息将传输的数据结构分为5种最小单元类型，单元结束时统一加上回车换行符号\r\n。  </p>
-<ul>
-<li>单行字符以<font color="red">+</font>符号开头</li>
-<li>多行字符以<font color="red">$</font>符号开头，后跟字符串长度</li>
-<li>整数值以<font color="red">：</font>符号开头，后跟整数的字符串形式</li>
-<li>错误消息以<font color="red">-</font>符号开头</li>
-<li>数组以<font color="red">*</font>符号开头，后跟数组的长度</li>
-</ul>
-<p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">+hello world\r\n</div></pre></td></tr></table></figure></p>
-<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$11\r\n  </div><div class="line">hello world\r\n</div></pre></td></tr></table></figure></p>
-<p>整数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:1024\r\n</div></pre></td></tr></table></figure></p>
-<p>错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-WRONGTYPE Operation ....</div></pre></td></tr></table></figure></p>
-<p>数组[1,2,3]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">*3\r\n  </div><div class="line">:1\r\n</div><div class="line">:2\r\n  </div><div class="line">:3\r\n</div></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/21/Redis/Redis原理----通信协议/#more" rel="contents">
-              阅读全文 &raquo;
             </a>
-          </div>
-          <!--/noindex-->
         
-      
-    </div>
-    
-    
-    
+      </h2>
 
-    
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-24T21:34:13+08:00"
+              content="2018-10-24" >
+          10-24
+        </time>
+      </div>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/Redis/Redis原理----线程IO模型/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/10/22/Redis/Redis原理----持久化/" itemprop="url">
+              
+                <span itemprop="name">Redis原理----持久化</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/20/Redis/Redis原理----线程IO模型/" itemprop="url">Redis原理----线程IO模型</a></h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-20T19:34:13+08:00">
-                2018-10-20
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-22T21:30:13+08:00"
+              content="2018-10-22" >
+          10-22
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><b>Redis是一个单线程程序</b></p>
-<h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>当我们调用套接字的读写方法，默认他们是阻塞的，比如read方法要传递一个参数n，表示最多读取这门多字节后返回，如果一个字节都没有，那么线程就会卡在那里，直到新的数据到来或者连接关闭，read方法才可以返回，线程才能够继续处理。而write方法一般来说不会阻塞，除非内核为套接字分配的写缓冲区已经写满了，write方法才会阻塞，直到缓冲区有空闲空间。<img src="https://i.imgur.com/0sE9kXD.png" alt=""><br>非阻塞IO在套接字对象上提供了一个选项Non_Blocking,当这个选项打开时，读写方法不会阻塞。能读多少取决于内核为套接字分配的读缓冲区的空闲空间字节数，能写多少取决于内核为套接字分配的写缓冲区的空闲空间字节数。读方法和写方法都会通过返回值来告知程序实际读写了多少字节。</p>
-<h2 id="事件轮询（多路复用）"><a href="#事件轮询（多路复用）" class="headerlink" title="事件轮询（多路复用）"></a>事件轮询（多路复用）</h2><p>非阻塞IO有个问题，就是线程要读数据，但是读了一部分就返回了，线程如何知道什么时候应该继续读，也就是当数据到来时，线程如何得到通知。写也是一样。<img src="https://i.imgur.com/bxF8jbN.png" alt=""><br>事件轮询API就是用来解决这个问题的，最简单的时间轮询API是select函数，它是操作系统提供给用户程序的API。输入时读写描述符列表read_fds &amp; write_fds，输出是与之对应的可读可写时间。同时还提供了一个timeout参数，如果没有任何事件的到来，那么最多等待timeout时间，线程处于阻塞状态。一旦期间有事件到来，就可以立即返回。线程就可以继续挨个处理相应的事件。处理完了继续过来轮询。于是线程就进入了一个死循环。我们把这个死循环称为事件轮询，一个循环为一个周期。<br><b>事件轮询API就是Java语言中的NIO技术</b></p>
-<h2 id="指令队列"><a href="#指令队列" class="headerlink" title="指令队列"></a>指令队列</h2><p>Redis会将每个客户端套接字都关联一个指令队列。客户端的指令通过队列来排队进行顺序处理，先到先服务。</p>
-<h2 id="响应队列"><a href="#响应队列" class="headerlink" title="响应队列"></a>响应队列</h2><p>Redis同样会为每个客户端套接字关联一个响应队列。<br>Redis服务器通过响应队列来将指令的返回结果回复给客户端。如果队列为空，那么以为这连接暂时处于空闲状态，不需要去获取写事件，也就是可以将当前的客户端描述符从write_fds里面移除。等到队列有数据了，再将描述符放进去。避免select系统调用立即返回写事件，结果发现没什么数据可以写。<b>出现这种情况的线程会飙高CPU</b></p>
-<h2 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h2><p>服务器处理要响应的IO事件外，还要处理其他事情。比如定时任务。<br>如果线程阻塞在select系统调用上，定时任务将无法得到准时调度。那么Redis是如何解决这个问题的呢？  </p>
-<p>Redis的定时任务会记录在一个最小堆的数据结构中。这个堆中，最快要执行的任务排在堆的最上方。在每个循环周期，Redis都会将最小堆里面已经到点的任务立即进行处理。处理完毕后，将最快要执行的任务还需要的时间记录下来，这个时间就是select系统调用的timeout参数。因为Redis知道未来timeout时间内，没有其他定时任务需要处理，所以可以安心睡眠timeout时间。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/23/mysql/reset master和rester slave/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/10/21/Redis/Redis源码阅读/" itemprop="url">
+              
+                <span itemprop="name">Redis源码阅读目录</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/23/mysql/reset master和rester slave/" itemprop="url">reset master和reset slave</a></h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-23T16:11:15+08:00">
-                2018-09-23
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-21T21:34:13+08:00"
+              content="2018-10-21" >
+          10-21
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="reset-master"><a href="#reset-master" class="headerlink" title="reset master"></a>reset master</h3><p>删除index file中记录的所有binlog文件，将日志索引文件清空，创建一个新的日志文件，这个命令通常用于第一次搭建主从关系的主库。  </p>
-<h4 id="reset-master和purge-binary-log的区别"><a href="#reset-master和purge-binary-log的区别" class="headerlink" title="reset master和purge binary log的区别"></a>reset master和purge binary log的区别</h4><ol>
-<li>reset master 删除日志索引文件中记录的所有binlog文件，重新建立一个新的日志文件，起始值从000001开始，purge binary log 命令不会修改记录binlog顺序的数值</li>
-<li>reset master 不能用于有任何slave正在运行的主从关系的主库。因为在slave运行时刻reset master命令不被支持。从库此时会报错。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In MySQL 5.6.5 and later, RESET MASTER also clears the values of the gtid_purged system variable (known as gtid_lost in MySQL 5.6.8 and earlier) as well as the global value of the gtid_executed (gtid_done, prior to MySQL 5.6.9) system variable (but not its session value); that is, executing this statement sets each of these values to an empty string (&apos;&apos;)</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="reset-slave"><a href="#reset-slave" class="headerlink" title="reset slave"></a>reset slave</h3><p>reset slave 将使slave忘记主从复制关系的位置信息。该语句用于干净的启动，它删除master.info文件和relay-log.info文件以及所有的relay log文件并重新启用一个新的relay-log文件。</p>
-<h3 id="reset-slave-all"><a href="#reset-slave-all" class="headerlink" title="reset slave all"></a>reset slave all</h3><p>在 5.6 版本中 reset slave 并不会清理存储于内存中的复制信息比如  master host, master port, master user, or master password,也就是说如果没有使用change master 命令做重新定向，执行start slave 还是会指向旧的master 上面。<br>当从库执行reset slave之后,将mysqld shutdown 复制参数将被重置。<br>在5.6.3 版本以及以后 使用使用 RESET SLAVE ALL 来完全的清理复制连接参数信息。(Bug #11809016)<br>RESET SLAVE ALL does not clear the IGNORE_SERVER_IDS list set by CHANGE MASTER TO. This issue is fixed in MySQL 5.7. (Bug #18816897)<br>In MySQL 5.6.7 and later, RESET SLAVE causes an implicit commit of an ongoing transaction. See Section 13.3.3, “Statements That Cause an Implicit Commit”.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-    
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/python/python装饰器/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/10/21/Redis/Redis原理----通信协议/" itemprop="url">
+              
+                <span itemprop="name">Redis原理----通信协议</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/19/python/python装饰器/" itemprop="url">python装饰器</a></h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T21:40:56+08:00">
-                2018-08-19
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-21T19:34:13+08:00"
+              content="2018-10-21" >
+          10-21
+        </time>
+      </div>
 
-            
+    </header>
+  </article>
 
-            
-          </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
       
-      
+
+        
+        
+        
+
+        
+        
+
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2018/10/20/Redis/Redis原理----线程IO模型/" itemprop="url">
+              
+                <span itemprop="name">Redis原理----线程IO模型</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-10-20T19:34:13+08:00"
+              content="2018-10-20" >
+          10-20
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
 
       
-        
-          
-            <p>python装饰器就是用于<font color="red">扩展原来函数功能的一种函数</font>，这个函数的特殊之处在于它的返回值也是一个函数。使用python装饰器的好处就是在不用更改原函数的代码前提下给函数增加新的功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">原函数</div><div class="line">def func():</div><div class="line">	print(&quot;hello&quot;)</div></pre></td></tr></table></figure></p>
-<p>要想扩展一个函数的功能，最简单的方法就是直接修改原函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def func():</div><div class="line">	print(&quot;before&quot;)</div><div class="line">	print(&quot;hello&quot;)</div><div class="line">	print(&quot;after&quot;)</div></pre></td></tr></table></figure></p>
-<p>如果不想修改原函数，还是想增强函数的功能时，可以另外定义一个函数调用原函数。（类似于设计模式中的装饰模式，有组合和代理两种方式）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def deco(func):</div><div class="line">	print(&quot;before&quot;)</div><div class="line">	func()</div><div class="line">	print(&quot;after&quot;)</div><div class="line"></div><div class="line">def func():</div><div class="line">	print(&quot;hello&quot;)</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    f = func</div><div class="line">    deco(f)#只有把func()或者f()作为参数执行，新加入功能才会生效</div><div class="line">    print(&quot;f.__name__ is&quot;,f.__name__)#f的name就是func()</div><div class="line">    print()</div><div class="line">    #func()</div></pre></td></tr></table></figure></p>
-<p>但是如果存在很多个类似于func的函数需要相同的扩展，那岂不是要执行deco函数许多次？<br>下面我们实现一个最简陋的装饰器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def deco(func):</div><div class="line">	def wrapper(*args, **kwargs):</div><div class="line">		print(&quot;before&quot;)</div><div class="line">		func(*args, **kwargs)</div><div class="line">		print(&quot;after&quot;)</div><div class="line">	return wrapper</div><div class="line"></div><div class="line">@deco</div><div class="line">def func():</div><div class="line">	print(&quot;hello&quot;)</div></pre></td></tr></table></figure></p>
-<p>这里的deco函数就是最原始的装饰器，它的参数是一个函数，然后返回值也是一个函数。其中作为参数的这个函数func()就在返回函数wrapper()的内部执行。然后在函数func()前面加上@deco。<br>所以这里装饰器就像一个注入符号：有了它，拓展了原来函数的功能既不需要侵入函数内更改代码，也不需要重复执行原函数。<br>在func函数前还可以使用多个@的方式来执行多个装饰器，多个装饰器的执行顺序就是从最后一个装饰器开始执行到第一个装饰器，在执行函数本身。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">def dec1(func):  </div><div class="line">    print(&quot;1111&quot;)  </div><div class="line">    def one():  </div><div class="line">        print(&quot;2222&quot;)  </div><div class="line">        func()  </div><div class="line">        print(&quot;3333&quot;)  </div><div class="line">    return one  </div><div class="line"></div><div class="line">def dec2(func):  </div><div class="line">    print(&quot;aaaa&quot;)  </div><div class="line">    def two():  </div><div class="line">        print(&quot;bbbb&quot;)  </div><div class="line">        func()  </div><div class="line">        print(&quot;cccc&quot;)  </div><div class="line">    return two  </div><div class="line"></div><div class="line">@dec1  </div><div class="line">@dec2  </div><div class="line">def test():  </div><div class="line">    print(&quot;test test&quot;)  </div><div class="line"></div><div class="line">test()  </div><div class="line"></div><div class="line">aaaa  </div><div class="line">1111  </div><div class="line">2222  </div><div class="line">bbbb  </div><div class="line">test test  </div><div class="line">cccc  </div><div class="line">3333</div></pre></td></tr></table></figure></p>
 
-          
         
+        
+        
+
+        
+        
+
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2018/09/23/mysql/reset master和rester slave/" itemprop="url">
+              
+                <span itemprop="name">reset master和reset slave</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-09-23T16:11:15+08:00"
+              content="2018-09-23" >
+          09-23
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
       
+
+        
+        
+        
+
+        
+        
+
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2018/08/19/python/python装饰器/" itemprop="url">
+              
+                <span itemprop="name">python装饰器</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-08-19T21:40:56+08:00"
+              content="2018-08-19" >
+          08-19
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+      
+
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
   
   
   
-  </article>
-
-
-    
-  </section>
 
   
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
+
 
 
 
