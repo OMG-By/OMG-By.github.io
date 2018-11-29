@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/11/29/mysql/MySQL%E9%97%AE%E7%AD%94/</loc>
+    <lastmod>2018-11-29T15:38:56.862Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL问答</title>
+        <pubTime>2018-11-29T11:51:25.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/11/10/Redis/Redis%E5%AF%B9%E8%B1%A1/</loc>
     <lastmod>2018-11-23T07:17:48.419Z</lastmod>
     <data>
@@ -17,26 +37,6 @@
            
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/11/23/mysql/sql%E8%AF%AD%E5%8F%A5%E7%BB%83%E4%B9%A0/</loc>
-    <lastmod>2018-11-23T07:17:28.956Z</lastmod>
-    <data>
-        <display>
-        <title>sql语句练习</title>
-        <pubTime>2018-11-23T06:12:13.000Z</pubTime>
-        
-        <tag>mysql</tag>
-         
-         
-           
-             
-              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
           
         </display>
     </data>
