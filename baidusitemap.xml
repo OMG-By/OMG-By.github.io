@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
+    <lastmod>2018-12-26T15:26:45.251Z</lastmod>
+    <data>
+        <display>
+        <title>information_schema</title>
+        <pubTime>2018-08-11T04:11:15.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/11/29/mysql/MySQL%E9%97%AE%E7%AD%94/</loc>
     <lastmod>2018-12-01T15:45:00.000Z</lastmod>
     <data>
@@ -330,26 +350,6 @@
         <display>
         <title>MySQL之权限管理</title>
         <pubTime>2018-08-11T07:11:15.000Z</pubTime>
-        
-        <tag>mysql</tag>
-         
-         
-           
-             
-              <breadCrumb title="mysql" url="http://yoursite.com/categories/mysql/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
-    <lastmod>2018-08-16T02:20:20.000Z</lastmod>
-    <data>
-        <display>
-        <title>information_schema</title>
-        <pubTime>2018-08-11T04:11:15.000Z</pubTime>
         
         <tag>mysql</tag>
          
