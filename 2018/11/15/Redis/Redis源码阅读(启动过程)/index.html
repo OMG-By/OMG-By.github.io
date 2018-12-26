@@ -5,10 +5,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
 <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
@@ -34,8 +34,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -54,7 +54,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -62,9 +62,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
@@ -82,13 +82,13 @@
 
 
 
-  <meta name="keywords" content="Redis," />
+  <meta name="keywords" content="Redis,">
 
 
 
 
 
-  <link rel="alternate" href="/atom.xml" title="OMG_By" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="OMG_By" type="application/atom+xml">
 
 
 
@@ -105,7 +105,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/IXG8CwE.png">
 <meta property="og:image" content="https://i.imgur.com/J2YEVoo.png">
-<meta property="og:updated_time" content="2018-11-23T07:16:35.910Z">
+<meta property="og:updated_time" content="2018-11-23T07:16:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis源码阅读(启动过程)">
 <meta name="twitter:description" content="Redis的启动函数main()在redis.c文件中。  初始化配置在启动时会使用initServerConfig()函数进行初始化服务器配置工作，redisServer(redis.h)作为保存服务器配置的结构。 redisServer包含以下的一些Redis服务器的信息：    一般服务器状态。 一些服务器统计信息。 各种链表结构，如保存客户端的链表等。 配置文件及启动参数中的配置。 主从复">
@@ -139,7 +139,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/15/Redis/Redis源码阅读(启动过程)/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/15/Redis/Redis源码阅读(启动过程)/">
 
 
 
@@ -157,7 +157,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -167,13 +167,13 @@
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">OMG_By</span>
         <span class="logo-line-after"><i></i></span>
@@ -203,7 +203,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -213,7 +213,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -223,7 +223,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -233,7 +233,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -243,7 +243,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -256,7 +256,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
             
             搜索
           </a>
@@ -277,9 +277,7 @@
       <i class="fa fa-times-circle"></i>
     </span>
     <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
     </div>
   </div>
   <div id="local-search-result"></div>
@@ -311,20 +309,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/15/Redis/Redis源码阅读(启动过程)/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="OMG_By">
     </span>
 
@@ -356,7 +354,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -367,7 +365,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
                   <a href="/categories/Redis/" itemprop="url" rel="index">
                     <span itemprop="name">Redis</span>
                   </a>
@@ -389,7 +387,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
 
@@ -432,7 +430,7 @@
 <li>打开AOF</li>
 </ul>
 <h3 id="恢复数据"><a href="#恢复数据" class="headerlink" title="恢复数据"></a>恢复数据</h3><p>如果开启了AOF持久化，那么加载AOF文件；否则加载RDB文件。   </p>
-<p><font color="red">如果开启AOF，但是没有AOF文件的话也不会去读取RDB文件，这样会造成数据的丢失！！！</font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">void loadDataFromDisk(void) &#123;</div><div class="line">    // 记录开始时间</div><div class="line">    long long start = ustime();</div><div class="line"></div><div class="line">    // AOF 持久化已打开？</div><div class="line">    if (server.aof_state == REDIS_AOF_ON) &#123;</div><div class="line">        // 尝试载入 AOF 文件</div><div class="line">        if (loadAppendOnlyFile(server.aof_filename) == REDIS_OK)</div><div class="line">            // 打印载入信息，并计算载入耗时长度</div><div class="line">            redisLog(REDIS_NOTICE,&quot;DB loaded from append only file: %.3f seconds&quot;,(float)(ustime()-start)/1000000);</div><div class="line">    // AOF 持久化未打开</div><div class="line">    &#125; else &#123;</div><div class="line">        // 尝试载入 RDB 文件</div><div class="line">        if (rdbLoad(server.rdb_filename) == REDIS_OK) &#123;</div><div class="line">            // 打印载入信息，并计算载入耗时长度</div><div class="line">            redisLog(REDIS_NOTICE,&quot;DB loaded from disk: %.3f seconds&quot;,</div><div class="line">                (float)(ustime()-start)/1000000);</div><div class="line">        &#125; else if (errno != ENOENT) &#123;</div><div class="line">            redisLog(REDIS_WARNING,&quot;Fatal error loading the DB: %s. Exiting.&quot;,strerror(errno));</div><div class="line">            exit(1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><font color="red">如果开启AOF，但是没有AOF文件的话也不会去读取RDB文件，这样会造成数据的丢失！！！</font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void loadDataFromDisk(void) &#123;</span><br><span class="line">    // 记录开始时间</span><br><span class="line">    long long start = ustime();</span><br><span class="line"></span><br><span class="line">    // AOF 持久化已打开？</span><br><span class="line">    if (server.aof_state == REDIS_AOF_ON) &#123;</span><br><span class="line">        // 尝试载入 AOF 文件</span><br><span class="line">        if (loadAppendOnlyFile(server.aof_filename) == REDIS_OK)</span><br><span class="line">            // 打印载入信息，并计算载入耗时长度</span><br><span class="line">            redisLog(REDIS_NOTICE,&quot;DB loaded from append only file: %.3f seconds&quot;,(float)(ustime()-start)/1000000);</span><br><span class="line">    // AOF 持久化未打开</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 尝试载入 RDB 文件</span><br><span class="line">        if (rdbLoad(server.rdb_filename) == REDIS_OK) &#123;</span><br><span class="line">            // 打印载入信息，并计算载入耗时长度</span><br><span class="line">            redisLog(REDIS_NOTICE,&quot;DB loaded from disk: %.3f seconds&quot;,</span><br><span class="line">                (float)(ustime()-start)/1000000);</span><br><span class="line">        &#125; else if (errno != ENOENT) &#123;</span><br><span class="line">            redisLog(REDIS_WARNING,&quot;Fatal error loading the DB: %s. Exiting.&quot;,strerror(errno));</span><br><span class="line">            exit(1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="运行事件处理器"><a href="#运行事件处理器" class="headerlink" title="运行事件处理器"></a>运行事件处理器</h3><p>Redis在每次进入事件循环时都会想调用函数beforeSleep()。<br>beforeSleep()会做两件事：  </p>
 <ol>
 <li>如果启用了虚拟内存系统，将会去刷新AOF到磁盘，由flushAppendOnlyFile()函数处理。  </li>
@@ -442,7 +440,7 @@
 <h3 id="处理请求并返回响应"><a href="#处理请求并返回响应" class="headerlink" title="处理请求并返回响应"></a>处理请求并返回响应</h3><p>经过上面的启动过程后，Redis已经处于主事件轮询循环中，监听端口并等待客户端连接。<br><img src="https://i.imgur.com/J2YEVoo.png" alt=""></p>
 <h4 id="处理新连接"><a href="#处理新连接" class="headerlink" title="处理新连接"></a>处理新连接</h4><p>在initServer()中，Redis注册acceptHandler()，当IO事件发生时被调用。acceptHandler()会创建一个客户端对象RedisClient。</p>
 <h4 id="从客户端读取命令"><a href="#从客户端读取命令" class="headerlink" title="从客户端读取命令"></a>从客户端读取命令</h4><p>当客户端发送命令请求时，主事件循环调用readQueryFromClient()函数，它会尽可能多的读取（最多1024个字节）到临时缓冲区。<br>然后调用processInputBuffer()函数将客户端对象作为参数传递。processInputBuffer()将客户端的原始查询解析为执行Redis命令的参数，并解析每个参数的Redis字符串对象，并将它存储在客户端对象的数组中。然后调用processCommand()客户端对象来实际执行客户端发送的命令。<br>processCommand()从客户端获取命令的参数并执行。在执行前会进行许多的检查，如果检查失败，会向客户端对象附加一个错误消息并返回。</p>
-<h4 id="执行命令并响应"><a href="#执行命令并响应" class="headerlink" title="执行命令并响应"></a>执行命令并响应</h4><p>call()函数，从客户端对象中获取具体执行命令的指针所指向的函数对象，并调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">void call(redisClient *c, struct redisCommand *cmd) &#123;</div><div class="line">    long long dirty;</div><div class="line"></div><div class="line">    dirty = server.dirty;</div><div class="line">    cmd-&gt;proc(c);</div><div class="line">    dirty = server.dirty-dirty;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="执行命令并响应"><a href="#执行命令并响应" class="headerlink" title="执行命令并响应"></a>执行命令并响应</h4><p>call()函数，从客户端对象中获取具体执行命令的指针所指向的函数对象，并调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void call(redisClient *c, struct redisCommand *cmd) &#123;</span><br><span class="line">    long long dirty;</span><br><span class="line"></span><br><span class="line">    dirty = server.dirty;</span><br><span class="line">    cmd-&gt;proc(c);</span><br><span class="line">    dirty = server.dirty-dirty;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -549,11 +547,9 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.gif"
-                alt="OMG_By" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="OMG_By">
             
               <p class="site-author-name" itemprop="name">OMG_By</p>
               <p class="site-description motion-element" itemprop="description"></p>
