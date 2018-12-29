@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/12/29/Linux/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%89%BE%E4%B8%8D%E5%88%B0%E4%BB%80%E4%B9%88%E6%96%87%E4%BB%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2018-12-29T03:42:05.854Z</lastmod>
+    <data>
+        <display>
+        <title>记一次磁盘空间不足</title>
+        <pubTime>2018-12-29T03:06:28.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://yoursite.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
     <lastmod>2018-12-28T15:13:08.862Z</lastmod>
     <data>
@@ -1227,9 +1247,9 @@
         <title>51nod1242 斐波那契数列 矩阵快速幂</title>
         <pubTime>2016-04-08T12:14:16.000Z</pubTime>
         
-        <tag>快速幂</tag>
-         
         <tag>51nod</tag>
+         
+        <tag>快速幂</tag>
          
          
            
@@ -1503,9 +1523,9 @@
         <title>51nod1046快速幂取余</title>
         <pubTime>2016-03-26T12:14:16.000Z</pubTime>
         
-        <tag>快速幂</tag>
-         
         <tag>51nod</tag>
+         
+        <tag>快速幂</tag>
          
          
            
