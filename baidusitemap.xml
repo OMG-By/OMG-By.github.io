@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/01/13/mysql/MySQL%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2019-01-13T14:38:44.182Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL基本架构</title>
+        <pubTime>2019-01-13T14:32:26.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+        <tag>MySQL45讲</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/08/11/mysql/information_schema/</loc>
     <lastmod>2019-01-09T16:08:46.801Z</lastmod>
     <data>
