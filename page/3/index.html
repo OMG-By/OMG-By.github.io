@@ -399,7 +399,9 @@
 
       
         
-          <p>information_schema数据库是mysql系统自带的数据库，它提供了数据库元数据的访问方式。可以说information_schema就是MySQL实例的一个百科全书，记录了数据库当中大部分我们需要了解的信息，比如字符集、权限相关、数据库实体对象信息、外键等。<br>
+          <h3 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h3><p>information_schema数据库是mysql系统自带的数据库，它提供了数据库元数据的访问方式。可以说information_schema就是MySQL实例的一个百科全书，记录了数据库当中大部分我们需要了解的信息，比如字符集、权限相关、数据库实体对象信息、外键等。</p>
+<p>在每个MySQL实例中都有一个独立的information_schema，information_schema数据集库下包含多个只读表（非持久表），所以在磁盘中的数据目录下没有对应的关联文件，<font color="red">也是说数据库 重启后，这些数据会丢失。</font>且不能对这些表设置触发器、insert、update、delete等数据变更操作。</p>
+<h4 id="访问information-schema需要的权限"><a href="#访问information-schema需要的权限" class="headerlink" title="访问information_schema需要的权限"></a>访问information_schema需要的权限</h4><p>所有用户都有访问information_schema下的表权限（但只能看到这些表中用户具有访问权限的对象相对应的数据行），只能访问Server层的部分数据字典表，Server层中的部分数据字典表以及InnoDB层的数据字典表需要额外授权才能访问，如果用户权限不足，则不会有数据显示；如果是某列没有访问权限，那么访问时该列会显示为NULL；访问InnoDB数据字典表需要有process权限。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/08/11/mysql/information_schema/#more" rel="contents">
@@ -409,7 +411,7 @@
           <!--/noindex-->
         
       
-    </p></div>
+    </div>
     
     
     
