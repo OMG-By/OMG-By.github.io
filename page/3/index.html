@@ -307,304 +307,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/11/mysql/information_schema/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/mysql/information_schema/" itemprop="url">information_schema</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T12:11:15+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h3><p>information_schema数据库是mysql系统自带的数据库，它提供了数据库元数据的访问方式。可以说information_schema就是MySQL实例的一个百科全书，记录了数据库当中大部分我们需要了解的信息，比如字符集、权限相关、数据库实体对象信息、外键等。</p>
-<p>在每个MySQL实例中都有一个独立的information_schema，information_schema数据集库下包含多个只读表（非持久表），所以在磁盘中的数据目录下没有对应的关联文件，<font color="red">也是说数据库 重启后，这些数据会丢失。</font>且不能对这些表设置触发器、insert、update、delete等数据变更操作。</p>
-<h4 id="访问information-schema需要的权限"><a href="#访问information-schema需要的权限" class="headerlink" title="访问information_schema需要的权限"></a>访问information_schema需要的权限</h4><p>所有用户都有访问information_schema下的表权限（但只能看到这些表中用户具有访问权限的对象相对应的数据行），只能访问Server层的部分数据字典表，Server层中的部分数据字典表以及InnoDB层的数据字典表需要额外授权才能访问，如果用户权限不足，则不会有数据显示；如果是某列没有访问权限，那么访问时该列会显示为NULL；访问InnoDB数据字典表需要有process权限。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/11/mysql/information_schema/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/11/mysql/mysql事务/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/mysql/mysql事务/" itemprop="url">Mysql事务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T00:11:15+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、事务的基本要素（ACID）"><a href="#一、事务的基本要素（ACID）" class="headerlink" title="一、事务的基本要素（ACID）"></a>一、事务的基本要素（ACID）</h2><ul>
-<li>原子性（Atomicity):事务开始后所有的操作，要么全部做完，要么全部不做，不可能在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。</li>
-<li>一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏。</li>
-<li>隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同事务之间彼此没有任何干扰。</li>
-<li>持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/11/mysql/mysql事务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/python/获取本机IP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1808,11 +1510,310 @@
 
 
     
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/23/Mybatis/Mybatis逆向工程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/23/Mybatis/Mybatis逆向工程/" itemprop="url">Mybatis逆向工程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T20:39:06+08:00">
+                2018-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>&ensp;&ensp;逆向工程的字面意思就是反向生成工程。<br>使用逆向工程时，需要注意的是表之间的关系无法映射出来！也就是说Mybatis的逆向工程生成的都是单表操作。</p>
+<ol>
+<li><p>Mybatis逆向工程开发文档<br><a href="http://www.mybatis.org/generator/configreference/xmlconfig.html" target="_blank" rel="noopener">http://www.mybatis.org/generator/configreference/xmlconfig.html</a></p>
+</li>
+<li><p>使用逆向工程生成代码有好几种方式，这里就介绍一种最简单的，Java程序生成（解释在配置中)<br>&ensp;&ensp;2.1 准备逆向工程配置文件genreatorConfig.xml,名字无所谓,只要在java程序中作为file传入就好:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE generatorConfiguration</span><br><span class="line">  PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span><br><span class="line">  &quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</span><br><span class="line">&lt;generatorConfiguration&gt;</span><br><span class="line">    &lt;!--数据库驱动,最好不要有中文字符,不然会找不到--&gt;</span><br><span class="line">    &lt;classPathEntry location=&quot;F:/cache/mysql-connector-java-5.1.28-bin.jar&quot; /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;context id=&quot;DB2Tables&quot;    targetRuntime=&quot;MyBatis3&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;commentGenerator&gt;</span><br><span class="line">            &lt;property name=&quot;suppressDate&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">            &lt;property name=&quot;suppressAllComments&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/commentGenerator&gt;</span><br><span class="line">        &lt;!--数据库链接地址账号密码--&gt;</span><br><span class="line">        &lt;jdbcConnection driverClass=&quot;com.mysql.jdbc.Driver&quot; connectionURL=&quot;jdbc:mysql://localhost/test&quot; userId=&quot;root&quot; password=&quot;&quot;&gt;</span><br><span class="line">        &lt;/jdbcConnection&gt;</span><br><span class="line">        &lt;javaTypeResolver&gt;</span><br><span class="line">            &lt;property name=&quot;forceBigDecimals&quot; value=&quot;false&quot;/&gt;</span><br><span class="line">        &lt;/javaTypeResolver&gt;</span><br><span class="line">        &lt;!--生成Model类存放位置--&gt;</span><br><span class="line">        &lt;javaModelGenerator targetPackage=&quot;com.leige.domain&quot; targetProject=&quot;src&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">            &lt;property name=&quot;trimStrings&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/javaModelGenerator&gt;</span><br><span class="line">        &lt;!--生成映射文件存放位置--&gt;</span><br><span class="line">        &lt;sqlMapGenerator targetPackage=&quot;com.leige.domain&quot; targetProject=&quot;src&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/sqlMapGenerator&gt;</span><br><span class="line">        &lt;!--生成DaoMapper类存放位置--&gt;</span><br><span class="line">        &lt;javaClientGenerator type=&quot;XMLMAPPER&quot; targetPackage=&quot;com.leige.dao&quot; targetProject=&quot;src&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;enableSubPackages&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/javaClientGenerator&gt;</span><br><span class="line">        &lt;!--生成对应表及类名,需要记住的一点是逆向工程无法生成关联关系,只能生成单表操作--&gt;</span><br><span class="line">        &lt;table tableName=&quot;student&quot; </span><br><span class="line">            domainObjectName=&quot;Student&quot; </span><br><span class="line">          &gt;&lt;/table&gt;</span><br><span class="line">           &lt;table tableName=&quot;teacher&quot; </span><br><span class="line">            domainObjectName=&quot;Teacher&quot; </span><br><span class="line">          &gt;&lt;/table&gt;</span><br><span class="line">    &lt;/context&gt;</span><br><span class="line">&lt;/generatorConfiguration&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/23/Mybatis/Mybatis逆向工程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/21/Mybatis/缓存机制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/21/Mybatis/缓存机制/" itemprop="url">缓存机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T20:57:22+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Mybatis提供查询缓存，用于减轻数据压力，提高数据库性能。<br>Mybatis提供一级缓存和二级缓存。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/mybatis_%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98.png" alt="http://ocx5m3vc3.bkt.clouddn.com/mybatis_%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98.png"><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/21/Mybatis/缓存机制/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1860,7 +1861,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
