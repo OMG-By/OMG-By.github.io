@@ -3,8 +3,54 @@
   
     
     <entry>
+      <title><![CDATA[索引]]></title>
+      <url>/2019/01/21/MySQL/%E7%B4%A2%E5%BC%95/</url>
+      <content type="html"><![CDATA[<font color="red">索引的出现其实就是为了提高数据查询的效率，就想书的目录一样。</font>
+
+<h3 id="索引的常见模型"><a href="#索引的常见模型" class="headerlink" title="索引的常见模型"></a>索引的常见模型</h3><p>索引的出现时为了提高查询效率，但是实现索引的方式有很多种，所以这里也就引入了索引模型的概念。可以用来提高读写操作的数据结构有很多，这里先介绍比较简单的数据结构：哈希表和搜索树。</p>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表是一种以K-V存储的数据结构，我们只要输入待查找的值，就可以找到其对应的值。哈希的思路很简单，把值放在数组里，用一个哈希函数把Key换算成一个确认的位置，然后把value放在数组的这个位置。遇到同一个位置上有很多value时，就用一个链表串起来。</p>
+<p>哈希链表适用于只有等值查询的场景</p>
+<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><p>二叉搜索树的特点是：每个节点的左儿子小于父节点，父节点又小于右儿子。查询的平均复杂度是O(log(N))。<br><a id="more"></a></p>
+<h3 id="InnoDB的索引模型"><a href="#InnoDB的索引模型" class="headerlink" title="InnoDB的索引模型"></a>InnoDB的索引模型</h3><p>在InnoDB中，表都是根据主键的顺序以索引的形式存放的，这种存储方式的表称为索引组织表。InnoDB使用B+树索引模型。每一个索引再InnoDB里面对应一颗B+树。</p>
+<p>假设我们有一个主键列为ID的表，表中有字段k，并且k上有索引。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(</span><br><span class="line">id int primary key, </span><br><span class="line">k int not null, </span><br><span class="line">name varchar(16),</span><br><span class="line">index (k))engine=InnoDB;</span><br></pre></td></tr></table></figure></p>
+<p>表中R1~R5的（ID、k）值分别为（100，1）、（200，2）、（300，3）、（500，5）、（600、6）<br><img src="https://m.qpic.cn/psb?/V140pON30woojR/Ei9YpCJeczWr9VO8*BgWLIHjUz30q5UyxUldf8Sp*g4!/b/dL4AAAAAAAAA&amp;bo=WgXyAwAAAAADB4w!&amp;rf=viewer_4" alt=""><br>从图中不难看出，根据叶子节点的内容，索引类型分为主键索引和非主键索引。<br>主键索引的叶子节点存的是整行数据。非主键索引的叶子节点的内容是主键的值。<br>1、如果语句是select <em> from T where ID=500，即主键查询方式，则只需要搜索ID这颗B+树；<br>2、如果语句是select </em> from T where k=5，即普通索引查询方式，则需要先搜索k索引树，得到ID值为500，再到ID索引树搜索一次。这个过程称为回表。</p>
+<h3 id="索引维护"><a href="#索引维护" class="headerlink" title="索引维护"></a>索引维护</h3><p>B+树为了维护索引的有序性，在插入新值得时候需要做必要的维护。<br>插入：</p>
+<ul>
+<li>当叶子节点未满时，将记录插入对应的叶子节点。</li>
+<li>当叶子节点已满，索引页未满时；拆分中间的节点放入索引页，小于中间节点的放在左边节点，大于等于中间节点的放右边</li>
+<li>当叶子页已满，索引页已满时；逐层拆分，直到所有节点都满足</li>
+<li>当叶子节点的兄弟页未满，索引页已满时；不急于拆分节点，而是做旋转操作，减少页的拆分。<br>删除：<br>B+树使用填充因子来控制树的删除变化，填充因子是指数据填充的百分比。</li>
+<li>当删除节点后，对应的叶子页大于填充因子时；直接删除节点，不做合并页操作。</li>
+<li>当删除节点后，对应的叶子页大于填充因子，但是该节点也是索引节点；直接删除节点，将右边节点更新到对应的索引页。</li>
+<li>当删除节点后，对应的叶子页小于填充因子时；合并页节点及其兄弟页节点。</li>
+<li>当删除节点后，对应的叶子页小于填充因子，该节点也是索引节点；合并页节点及其兄弟页节点，更新索引页。</li>
+<li>当删除节点后，该节点也是索引节点，并且删除该节点索引页也小于填充因子。逐层合并，直到满足条件。</li>
+</ul>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>如果需要查询的值已经在非主键索引中可以完全获取，那么就可以不需要再去主键索引中进行回表操作了。<br><b>由于覆盖索引可以减少树的搜索次数，显著提升查询性能，所以使用覆盖索引是一个常用的性能优化手段。</b></p>
+<h3 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h3><p>B+树这种索引结构，可以利用索引的”最左前缀”来定位记录。<br>为了直观的说明这个概念，我们用（name，age）这个联合索引来分析。<br><img src="https://m.qpic.cn/psb?/V140pON30woojR/jMYONpHYjMYo6BaqToUtBg8my7ZjOad9c32kC9kHzN4!/b/dLgAAAAAAAAA&amp;bo=VAW6AwAAAAADB8o!&amp;rf=viewer_4" alt=""><br>可以看到，索引项是按照索引里面定义出现的子弹顺序排序的。<br>当你的逻辑需求是查到所有名字是“张三”的人时，可以快速定位到ID4，然后向后遍历得到所有需要的结果。</p>
+<p>不只是索引的全部定义，只要满足最左前缀，就可以利用索引来加速检索。这个最左前缀可以是联合索引的最左N个字段，也可以是字符串索引的最左M个字符。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> MySQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> MySQL45讲 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[事务隔离]]></title>
-      <url>/2019/01/16/mysql/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/</url>
+      <url>/2019/01/16/MySQL/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/</url>
       <content type="html"><![CDATA[<p>简单来说：事务就是保证一组数据库操作，要么全部成功，要么全部是失败。在MySQL中，事务支持是在引擎层实现的。MySQL是一个支持多引擎的系统，并不是所有的引擎都支持事务。比如MySQL原生的MyISAM引擎就不支持事务。</p>
 <h3 id="隔离性和隔离级别"><a href="#隔离性和隔离级别" class="headerlink" title="隔离性和隔离级别"></a>隔离性和隔离级别</h3><p>提到事务，肯定会想到ACID（即原子性、一致性、隔离性、持久性），这里就讨论一下隔离性。<br>当数据库上有多个事务同时执行的时候，就可能出现脏读、不可重复读、幻读的问题，为了解决这些问题，就有了“隔离级别”的概念。</p>
 <ul>
@@ -61,7 +107,7 @@
     
     <entry>
       <title><![CDATA[一条更新语句的执行过程]]></title>
-      <url>/2019/01/14/mysql/%E4%B8%80%E4%B8%AA%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/</url>
+      <url>/2019/01/14/MySQL/%E4%B8%80%E4%B8%AA%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>下面我们以下面这个表和更新语句来进行分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create table T(ID int primary key, c int);</span><br><span class="line">update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure></p>
 <p>对于更新语句，查询语句的那一套流程，更新语句同样是会走一遍。</p>
 <h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>如果每一次更新操作都要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新；整个过程IO成本、查找成本都很高。为了解决这个问题，MySQL采用了WAL技术来提升更新效率。WAL的全称是write-Ahead Logging。它的关键点在于<font color="red">先写日志，再写磁盘</font>。</p>
@@ -117,7 +163,7 @@
     
     <entry>
       <title><![CDATA[一条查询语句的执行过程]]></title>
-      <url>/2019/01/13/mysql/MySQL%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/</url>
+      <url>/2019/01/13/MySQL/MySQL%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/</url>
       <content type="html"><![CDATA[<h2 id="MySQL基本架构"><a href="#MySQL基本架构" class="headerlink" title="MySQL基本架构"></a>MySQL基本架构</h2><p><img src="https://m.qpic.cn/psb?/V140pON30woojR/ussYTDB3vJmBbUYn8*kQP.aOU4fUXs6XhkExUtrBwWA!/b/dMMAAAAAAAAA&amp;bo=oAU4BAAAAAARB6k!&amp;rf=viewer_4" alt=""><br>MySQL基本架构可以分为Server层和存储引擎层两部分。</p>
 <p>Server层包括连接器、查询缓存、分析器、优化器、执行器等，覆盖MySQL大多数核心服务功能，以及<font color="red">所有的内置函数</font>（如日期、时间、数学等），所有的跨存储引擎的功能都在这一层实现，如存储过程、触发器、视图等。<br><a id="more"></a><br>下面以select * from T where ID=10；这条语句做讲解。</p>
 <h3 id="连接器"><a href="#连接器" class="headerlink" title="连接器"></a>连接器</h3><p>连接器负责和客户端建立连接、获取权限、维持和管理连接。<br>使用mysql客户端工具来跟服务端进行建立连接。在完成经典的TCP握手后，连接器就要验证用户身份。</p>
@@ -187,7 +233,7 @@
     
     <entry>
       <title><![CDATA[MySQL问答]]></title>
-      <url>/2018/11/29/mysql/MySQL%E9%97%AE%E7%AD%94/</url>
+      <url>/2018/11/29/MySQL/MySQL%E9%97%AE%E7%AD%94/</url>
       <content type="html"><![CDATA[<h2 id="导致主从不一致的原因"><a href="#导致主从不一致的原因" class="headerlink" title="导致主从不一致的原因"></a>导致主从不一致的原因</h2><ol>
 <li>人为原因（从库写入）</li>
 <li>主库异常宕机</li>
@@ -940,7 +986,7 @@ QUEUED
     
     <entry>
       <title><![CDATA[reset master和reset slave]]></title>
-      <url>/2018/09/23/mysql/reset%20master%E5%92%8Crester%20slave/</url>
+      <url>/2018/09/23/MySQL/reset%20master%E5%92%8Crester%20slave/</url>
       <content type="html"><![CDATA[<h3 id="reset-master"><a href="#reset-master" class="headerlink" title="reset master"></a>reset master</h3><p>删除index file中记录的所有binlog文件，将日志索引文件清空，创建一个新的日志文件，这个命令通常用于第一次搭建主从关系的主库。  </p>
 <h4 id="reset-master和purge-binary-log的区别"><a href="#reset-master和purge-binary-log的区别" class="headerlink" title="reset master和purge binary log的区别"></a>reset master和purge binary log的区别</h4><ol>
 <li>reset master 删除日志索引文件中记录的所有binlog文件，重新建立一个新的日志文件，起始值从000001开始，purge binary log 命令不会修改记录binlog顺序的数值</li>
@@ -993,7 +1039,7 @@ QUEUED
     
     <entry>
       <title><![CDATA[MySQL主从复制]]></title>
-      <url>/2018/08/16/mysql/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</url>
+      <url>/2018/08/16/MySQL/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</url>
       <content type="html"><![CDATA[<h3 id="什么是主从复制"><a href="#什么是主从复制" class="headerlink" title="什么是主从复制"></a>什么是主从复制</h3><p>将主数据库中的DDL和DML操作通过二进制日志文件传输到从数据库上，然后将这些日志重新执行（重做）；从而使从数据库的数据和主数据库的数据保持一致。</p>
 <h3 id="主从复制的作用"><a href="#主从复制的作用" class="headerlink" title="主从复制的作用"></a>主从复制的作用</h3><ul>
 <li>主数据库出现问题时，可以切换到从数据库</li>
@@ -1042,7 +1088,7 @@ QUEUED
     
     <entry>
       <title><![CDATA[MySQL之备份]]></title>
-      <url>/2018/08/11/mysql/MySQL%E4%B9%8B%E5%A4%87%E4%BB%BD/</url>
+      <url>/2018/08/11/MySQL/MySQL%E4%B9%8B%E5%A4%87%E4%BB%BD/</url>
       <content type="html"><![CDATA[<h2 id="备份的类型"><a href="#备份的类型" class="headerlink" title="备份的类型"></a>备份的类型</h2><h3 id="根据是否需要数据库离线"><a href="#根据是否需要数据库离线" class="headerlink" title="根据是否需要数据库离线"></a>根据是否需要数据库离线</h3><p>1、取决于业务的需求，而不是备份工具。<br>2、MyISAM不支持热备，INNODB支持热备，但是需要专门的工具。  </p>
 <ul>
 <li>冷备：需要关闭mysql服务，读写请求均不支持    状态下进行。</li>
@@ -1107,7 +1153,7 @@ QUEUED
     
     <entry>
       <title><![CDATA[MySQL之权限管理]]></title>
-      <url>/2018/08/11/mysql/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</url>
+      <url>/2018/08/11/MySQL/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</url>
       <content type="html"><![CDATA[<h2 id="一、MySQL权限简介"><a href="#一、MySQL权限简介" class="headerlink" title="一、MySQL权限简介"></a>一、MySQL权限简介</h2><p>关于mysql的权限简单的理解就是mysql允许你做你权利以内的事情，不可以越界。</p>
 <h3 id="mysql权限控制的实现"><a href="#mysql权限控制的实现" class="headerlink" title="mysql权限控制的实现"></a>mysql权限控制的实现</h3><p>第一阶段：服务器首先会检查你是否允许连接。因为创建用户的时候会加上主机限制，可以限制成本地、IP、网段、任何地方等。只允许你从配置的指定地方登陆。<br>第二阶段：Mysql会检查你发出的每个请求，看你是否有足够的权限实施它。</p>
 <table>
@@ -1213,7 +1259,7 @@ QUEUED
     
     <entry>
       <title><![CDATA[information_schema]]></title>
-      <url>/2018/08/11/mysql/information_schema/</url>
+      <url>/2018/08/11/MySQL/information_schema/</url>
       <content type="html"><![CDATA[<h3 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h3><p>information_schema数据库是mysql系统自带的数据库，它提供了数据库元数据的访问方式。可以说information_schema就是MySQL实例的一个百科全书，记录了数据库当中大部分我们需要了解的信息，比如字符集、权限相关、数据库实体对象信息、外键等。</p>
 <p>在每个MySQL实例中都有一个独立的information_schema，information_schema数据集库下包含多个只读表（非持久表），所以在磁盘中的数据目录下没有对应的关联文件，<font color="red">也是说数据库 重启后，这些数据会丢失。</font>且不能对这些表设置触发器、insert、update、delete等数据变更操作。</p>
 <h4 id="访问information-schema需要的权限"><a href="#访问information-schema需要的权限" class="headerlink" title="访问information_schema需要的权限"></a>访问information_schema需要的权限</h4><p>所有用户都有访问information_schema下的表权限（但只能看到这些表中用户具有访问权限的对象相对应的数据行），只能访问Server层的部分数据字典表，Server层中的部分数据字典表以及InnoDB层的数据字典表需要额外授权才能访问，如果用户权限不足，则不会有数据显示；如果是某列没有访问权限，那么访问时该列会显示为NULL；访问InnoDB数据字典表需要有process权限。</p>
@@ -2658,39 +2704,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[Hibernate_一级缓存]]></title>
-      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
-      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
-<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
-<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
-<ul>
-<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 框架 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hibernate </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Hibernate_持久化类]]></title>
       <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</url>
       <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
@@ -2716,6 +2729,39 @@ skip-grant-tables
 </li>
 </ul>
 <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hibernate </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hibernate_一级缓存]]></title>
+      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
+      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
 ]]></content>
       
         <categories>
@@ -2906,7 +2952,7 @@ skip-grant-tables
     
     <entry>
       <title><![CDATA[SQL优化]]></title>
-      <url>/2017/11/02/mysql/SQL%E4%BC%98%E5%8C%96/</url>
+      <url>/2017/11/02/MySQL/SQL%E4%BC%98%E5%8C%96/</url>
       <content type="html"><![CDATA[<ol>
 <li>避免查询的模糊匹配</li>
 <li>索引问题</li>
@@ -3726,26 +3772,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[Linux命令（特殊功能）]]></title>
-      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
-      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
-      
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Linux常用命令（简）]]></title>
       <url>/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="noopener">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
@@ -3779,6 +3805,26 @@ skip-grant-tables
 <h3 id="umount命令"><a href="#umount命令" class="headerlink" title="umount命令"></a>umount命令</h3><p>&ensp;&ensp;磁盘卸载</p>
 <p><br><br><br><br><center> <strong>长期不定时更新中。。。。。。。。。</strong></center></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux命令（特殊功能）]]></title>
+      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
+      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
       
         <categories>
             
@@ -4087,28 +4133,6 @@ skip-grant-tables
         <tags>
             
             <tag> SpringMVC </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[TCP与UDP的区别]]></title>
-      <url>/2017/10/17/tcp%E4%B8%8Eudp/</url>
-      <content type="html"><![CDATA[<p>1.TCP是面向连接的，在传输数据前需要建立连接；UDP是无连接的，发送数据前不需要建立连接。<br>2.TCP提供<strong>可靠</strong>的传输服务；UDP提供<strong>不可靠</strong>的传输服务。<br>3.TCP发送数据大小会受发送窗口、接收窗口及MSS（最大报文段）限制，所以会多段发送；UDP发送数据大小即为数据本身大小。<br>4.TCP拥有众多反馈机制和附加机制；UDP没有反馈机制。<br>5.TCP传输速度慢；UDP传输速度快。</p>
-<p>TCP适合文件下载等传输任务，UDP适合媒体流等看中传输速度的传输任务。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 学习 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 计算机网络 </tag>
             
         </tags>
         
