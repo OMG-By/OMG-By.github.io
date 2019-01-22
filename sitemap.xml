@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/01/22/MySQL/mysqldump%E9%81%87%E5%88%B0DDL/</loc>
+    
+    <lastmod>2019-01-22T15:18:49.766Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/01/21/MySQL/%E7%B4%A2%E5%BC%95/</loc>
     
-    <lastmod>2019-01-21T15:16:39.883Z</lastmod>
+    <lastmod>2019-01-22T02:20:42.787Z</lastmod>
     
   </url>
   
