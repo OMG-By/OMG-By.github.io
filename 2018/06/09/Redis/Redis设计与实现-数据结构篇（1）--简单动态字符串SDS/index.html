@@ -95,20 +95,21 @@
 
 
 
-<meta name="description" content="Redis中的SDS结构Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。在早期的版本中记录了其长度、剩余空间、以及字符数组；最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。">
+<meta name="description" content="Redis中的SDS结构sds结构Redis并没有使用C语言传统的字符串结构，而是实现了自己的字符串结构sdshdr。具有以下特点：  兼容传统C语言字符串类型，C语言字符串能够使用的函数，sds也能够使用 可以O(1)获取字符串长度和空闲空间 以数组的形式存储真正的字符串，保证了字符串二进制安全。 避免了缓冲区溢出的情况   12345678struct sdshdr &amp;#123;    //">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis设计与实现-数据结构篇（1）--简单动态字符串SDS">
 <meta property="og:url" content="http://yoursite.com/2018/06/09/Redis/Redis设计与实现-数据结构篇（1）--简单动态字符串SDS/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="Redis中的SDS结构Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。在早期的版本中记录了其长度、剩余空间、以及字符数组；最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。">
+<meta property="og:description" content="Redis中的SDS结构sds结构Redis并没有使用C语言传统的字符串结构，而是实现了自己的字符串结构sdshdr。具有以下特点：  兼容传统C语言字符串类型，C语言字符串能够使用的函数，sds也能够使用 可以O(1)获取字符串长度和空闲空间 以数组的形式存储真正的字符串，保证了字符串二进制安全。 避免了缓冲区溢出的情况   12345678struct sdshdr &amp;#123;    //">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ocx5m3vc3.bkt.clouddn.com/SDS.png">
-<meta property="og:updated_time" content="2018-06-09T13:08:28.000Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V71x3R.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V71vC9.jpg">
+<meta property="og:updated_time" content="2019-06-16T13:52:08.612Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis设计与实现-数据结构篇（1）--简单动态字符串SDS">
-<meta name="twitter:description" content="Redis中的SDS结构Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。在早期的版本中记录了其长度、剩余空间、以及字符数组；最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。">
-<meta name="twitter:image" content="http://ocx5m3vc3.bkt.clouddn.com/SDS.png">
+<meta name="twitter:description" content="Redis中的SDS结构sds结构Redis并没有使用C语言传统的字符串结构，而是实现了自己的字符串结构sdshdr。具有以下特点：  兼容传统C语言字符串类型，C语言字符串能够使用的函数，sds也能够使用 可以O(1)获取字符串长度和空闲空间 以数组的形式存储真正的字符串，保证了字符串二进制安全。 避免了缓冲区溢出的情况   12345678struct sdshdr &amp;#123;    //">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/16/V71x3R.md.jpg">
 
 
 
@@ -407,16 +408,111 @@
       
 
       
-        <h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><p>Redis并没有直接使用C语言中的字符串，而是自己构建了SDS这样的一种简单动态字符串，并且将它作为Redis中字符串的默认表示。<br>在早期的版本中记录了其长度、剩余空间、以及字符数组；<br>最新版本3.2.4中，已经对SDS做了一定的改动：长度、分配内存大小（除去’\0’）、标志位（低三位表示类型，其余五位未使用）、以及字符数组。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/SDS.png" alt=""><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr&#123;</span><br><span class="line">	//buf中已用空间长度</span><br><span class="line">	int len;</span><br><span class="line">	//buf中剩余可用空间长度</span><br><span class="line">	int free;</span><br><span class="line">	//数据空间</span><br><span class="line">	char buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<h2 id="SDS与C字符串区别"><a href="#SDS与C字符串区别" class="headerlink" title="SDS与C字符串区别"></a>SDS与C字符串区别</h2><h3 id="获取字符串长度"><a href="#获取字符串长度" class="headerlink" title="获取字符串长度"></a>获取字符串长度</h3><p>&ensp;&ensp;SDS字符串保存了自身的长度，当需要获取长度的时候可以O(1)获得。（3.2中的剩余空间需要用alloc-len算出）</p>
-<h3 id="杜绝缓存区溢出"><a href="#杜绝缓存区溢出" class="headerlink" title="杜绝缓存区溢出"></a>杜绝缓存区溢出</h3><p>&ensp;&ensp;SDS在进行字符串拼接的时候，会自行检查内存空间是否满足要求，如果不满足，将自动进行分配；而且在进行分配空间的时候，会实行预先分配的策略。</p>
-<h3 id="减少修改字符串时带来的内存重分配次数"><a href="#减少修改字符串时带来的内存重分配次数" class="headerlink" title="减少修改字符串时带来的内存重分配次数"></a>减少修改字符串时带来的内存重分配次数</h3><p>&ensp;&ensp;C语言字符串在进行字符串的扩充和收缩的时候，都会面临着内存空间的重新分配问题。<br>&ensp;&ensp;Redis在内存空间分配的问题上进行了优化，只要分为两个过程。  </p>
-<ol>
-<li>内存预分配<br>如果修改之后SDS的长度小于1MB，那么程序将会分配和当前字符串len相同的空间给该字符串对象。<br>如果修改之后的SDS的长度大于等于1MB的话，程序将分配1MB剩余空间给该字符串对象。</li>
-<li>惰性释放<br>当字符串进行缩短操作的时候，并不立即将空间释放出来，而是将这部分空间通过free进行标识。<br>当然，Redis中提供了专门的API，需要的时候，会真正的释放这部分空闲内存。</li>
+        <h2 id="Redis中的SDS结构"><a href="#Redis中的SDS结构" class="headerlink" title="Redis中的SDS结构"></a>Redis中的SDS结构</h2><h3 id="sds结构"><a href="#sds结构" class="headerlink" title="sds结构"></a>sds结构</h3><p>Redis并没有使用C语言传统的字符串结构，而是实现了自己的字符串结构sdshdr。具有以下特点：</p>
+<ul>
+<li>兼容传统C语言字符串类型，C语言字符串能够使用的函数，sds也能够使用</li>
+<li>可以O(1)获取字符串长度和空闲空间</li>
+<li>以数组的形式存储真正的字符串，保证了字符串二进制安全。</li>
+<li>避免了缓冲区溢出的情况</li>
+</ul>
+<p><a href="https://imgchr.com/i/V71x3R" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V71x3R.md.jpg" alt="V71x3R.md.jpg"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr &#123;</span><br><span class="line">    // buf 中已占用空间的长度</span><br><span class="line">    int len;</span><br><span class="line">    // buf 中剩余可用空间的长度</span><br><span class="line">    int free;</span><br><span class="line">    // 数据空间</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="sds字符串获取和长度获取"><a href="#sds字符串获取和长度获取" class="headerlink" title="sds字符串获取和长度获取"></a>sds字符串获取和长度获取</h3><p>在sds结构中，sds指向的buf成员是一个柔性数组，它只起到占位符的作用，并不占用空间。所以sizeof(struct sdshdr)的大小为8字节。</p>
+<p>由于sds类型的内存是通过<strong>动态内存分配</strong>的，所以它<strong>存储的内存位置在堆区</strong>，结构如下图。因此sds指针减区sizeof(struct sdshdr)的大小就得到了表头的地址，然后就可以通过”-&gt;”访问表头的成员。<br>所以我们看到在sds.c中，几乎所有的函数的参数都是sds类型，而非表头地址。就是使用了<strong>通过sds指针运算可以获得表头地址</strong>的技巧。<br><a href="https://imgchr.com/i/V71vC9" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V71vC9.jpg" alt="V71vC9.jpg"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 返回 sds 实际保存的字符串的长度</span><br><span class="line"> *</span><br><span class="line"> * T = O(1)</span><br><span class="line"> */</span><br><span class="line">static inline size_t sdslen(const sds s) &#123;</span><br><span class="line">    struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));</span><br><span class="line">    return sh-&gt;len;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * 返回 sds 可用空间的长度</span><br><span class="line"> *</span><br><span class="line"> * T = O(1)</span><br><span class="line"> */</span><br><span class="line">static inline size_t sdsavail(const sds s) &#123;</span><br><span class="line">    struct sdshdr *sh = (void*)(s-(sizeof(struct sdshdr)));</span><br><span class="line">    return sh-&gt;free;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="sds申请"><a href="#sds申请" class="headerlink" title="sds申请"></a>sds申请</h3><ol>
+<li>根据是否需要初始化，使用zmalloc和zcalloc两个不同函数。</li>
+<li>一个字符串刚开始申请的时候，其free空间为0。第一次申请的实际申请空间位sizeof(sdshds)+len+1。</li>
+<li>由于返回的是sh-&gt;buf，那么如果需要计算sh的长度或空闲空间怎么办？根据前面的sdslen函数，我们可以知道是通过减去两个int长度就得到了sh的地址。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sds sdsnewlen(const void *init, size_t initlen) &#123;</span><br><span class="line">    struct sdshdr *sh;</span><br><span class="line"></span><br><span class="line">    if (init) &#123;</span><br><span class="line">        sh = zmalloc(sizeof(struct sdshdr)+initlen+1);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        sh = zcalloc(sizeof(struct sdshdr)+initlen+1);</span><br><span class="line">    &#125;</span><br><span class="line">    if (sh == NULL) return NULL;</span><br><span class="line">    sh-&gt;len = initlen;</span><br><span class="line">    sh-&gt;free = 0;</span><br><span class="line">    if (initlen &amp;&amp; init)</span><br><span class="line">        memcpy(sh-&gt;buf, init, initlen);</span><br><span class="line">    sh-&gt;buf[initlen] = &apos;\0&apos;;</span><br><span class="line">    return (char*)sh-&gt;buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h3><p>&ensp;&ensp;由于在Redis中，不是根据空字符而是通过len来判断字符串结束的。所以，即便是中间出现了空字符，对于SDS来说，读取该字符串还是可以的。</p>
-<h3 id="兼容部分C语言函数"><a href="#兼容部分C语言函数" class="headerlink" title="兼容部分C语言函数"></a>兼容部分C语言函数</h3>
+<h3 id="sds预分配"><a href="#sds预分配" class="headerlink" title="sds预分配"></a>sds预分配</h3><ol>
+<li>如果空闲长度大于需要增加的长度，则不会申请</li>
+<li>如果新sds长度=（原sds长度+需要增加的长度）小于SDS_MAX_PREALLOC（1M）则申请新sds长度的2倍，否则每次只申请1M的空间<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/* Enlarge the free space at the end of the sds string so that the caller</span><br><span class="line"> * is sure that after calling this function can overwrite up to addlen</span><br><span class="line"> * bytes after the end of the string, plus one more byte for nul term.</span><br><span class="line"> * </span><br><span class="line"> * Note: this does not change the *length* of the sds string as returned</span><br><span class="line"> * by sdslen(), but only the free buffer space we have. */</span><br><span class="line">sds sdsMakeRoomFor(sds s, size_t addlen) &#123;</span><br><span class="line">    struct sdshdr *sh, *newsh;</span><br><span class="line">    size_t free = sdsavail(s);</span><br><span class="line">    size_t len, newlen;</span><br><span class="line"></span><br><span class="line">    if (free &gt;= addlen) return s;</span><br><span class="line">    len = sdslen(s);</span><br><span class="line">    sh = (void*) (s-(sizeof(struct sdshdr)));</span><br><span class="line">    newlen = (len+addlen);</span><br><span class="line">    if (newlen &lt; SDS_MAX_PREALLOC)</span><br><span class="line">        newlen *= 2;</span><br><span class="line">    else</span><br><span class="line">        newlen += SDS_MAX_PREALLOC;</span><br><span class="line">    newsh = zrealloc(sh, sizeof(struct sdshdr)+newlen+1);</span><br><span class="line">    if (newsh == NULL) return NULL;</span><br><span class="line"></span><br><span class="line">    newsh-&gt;free = newlen - len;</span><br><span class="line">    return newsh-&gt;buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="sds惰性删除"><a href="#sds惰性删除" class="headerlink" title="sds惰性删除"></a>sds惰性删除</h3><p>惰性空闲释放用于优化sds的字符串缩短操作。<br>当要缩短sds保存的字符串时，程序并不会立即进行内存回收操作，而是使用表头的free成员将这些字节记录，等待以后使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void sdsclear(sds s) &#123;  //重置sds的buf空间，懒惰释放</span><br><span class="line">    struct sdshdr *sh = (void*) (s-(sizeof(struct sdshdr)));</span><br><span class="line">    sh-&gt;free += sh-&gt;len;    //表头free成员+已使用空间的长度len = 新的free</span><br><span class="line">    sh-&gt;len = 0;            //已使用空间变为0</span><br><span class="line">    sh-&gt;buf[0] = &apos;\0&apos;;         //字符串置空</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>作用</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdsnew</td>
+<td>创建一个包含给定C字符串的SDS</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdsempty</td>
+<td>创建一个内容为空的SDS</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>sdsfree</td>
+<td>释放给定的SDS</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdslen</td>
+<td>返回SDS已使用空间字节数</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>sdsavail</td>
+<td>返回SDS未使用的空间字节数</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>sdsdup</td>
+<td>创建一个给定的SDS副本</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdsclear</td>
+<td>清空SDS保存的字符串内容</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>sdscat</td>
+<td>将给定的C字符串拼接到SDS末尾</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdscatsds</td>
+<td>将给定的SDS字符串拼接到SDS末尾</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdscpy</td>
+<td>将给定C字符串复制到SDS中，覆盖原有的字符串</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdsgrowzero</td>
+<td>用空字符串扩展至给定长度</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdsrange</td>
+<td>保留SDS给定区间的数据，不在区间内的数据将会被清除</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>sdstrim</td>
+<td>将SDS中出现的C字符串给清除</td>
+<td>O(M*N)</td>
+</tr>
+<tr>
+<td>sdscmp</td>
+<td>对比两个SDS是否相同</td>
+<td>O(N)</td>
+</tr>
+</tbody>
+</table>
+
       
     </div>
     
@@ -650,7 +746,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis中的SDS结构"><span class="nav-number">1.</span> <span class="nav-text">Redis中的SDS结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SDS与C字符串区别"><span class="nav-number">2.</span> <span class="nav-text">SDS与C字符串区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取字符串长度"><span class="nav-number">2.1.</span> <span class="nav-text">获取字符串长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#杜绝缓存区溢出"><span class="nav-number">2.2.</span> <span class="nav-text">杜绝缓存区溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少修改字符串时带来的内存重分配次数"><span class="nav-number">2.3.</span> <span class="nav-text">减少修改字符串时带来的内存重分配次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二进制安全"><span class="nav-number">2.4.</span> <span class="nav-text">二进制安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容部分C语言函数"><span class="nav-number">2.5.</span> <span class="nav-text">兼容部分C语言函数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis中的SDS结构"><span class="nav-number">1.</span> <span class="nav-text">Redis中的SDS结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sds结构"><span class="nav-number">1.1.</span> <span class="nav-text">sds结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sds字符串获取和长度获取"><span class="nav-number">1.2.</span> <span class="nav-text">sds字符串获取和长度获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sds申请"><span class="nav-number">1.3.</span> <span class="nav-text">sds申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sds预分配"><span class="nav-number">1.4.</span> <span class="nav-text">sds预分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sds惰性删除"><span class="nav-number">1.5.</span> <span class="nav-text">sds惰性删除</span></a></li></ol></li></ol></div>
             
 
           </div>
