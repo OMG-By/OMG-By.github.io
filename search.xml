@@ -3807,6 +3807,26 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[Linux命令（特殊功能）]]></title>
+      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
+      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux常用命令（简）]]></title>
       <url>/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="noopener">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
@@ -3840,26 +3860,6 @@ skip-grant-tables
 <h3 id="umount命令"><a href="#umount命令" class="headerlink" title="umount命令"></a>umount命令</h3><p>&ensp;&ensp;磁盘卸载</p>
 <p><br><br><br><br><center> <strong>长期不定时更新中。。。。。。。。。</strong></center></p>
 ]]></content>
-      
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Linux命令（特殊功能）]]></title>
-      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
-      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
       
         <categories>
             
@@ -4338,33 +4338,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1256乘法逆元]]></title>
-      <url>/2016/04/10/ACM/51nod1256%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83/</url>
-      <content type="html"><![CDATA[<p>1256 乘法逆元</p>
-<p>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出2个数M和N(M &lt; N)，且M与N互质，找出一个数K满足0 &lt; K &lt; N且K <em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input<br>输入2个数M, N中间用空格分隔（1 &lt;= M &lt; N &lt;= 10^9)<br>OutPut<br>输出一个数K，满足0 &lt; K &lt; N且K </em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input示例<br>2 3<br>Output示例</p>
-<p>2</p>
-<p>思路：K <em> M % N = 1等价于 K</em>M=N<em>X+1  即 K</em>M+N*(-X)=1 </p>
-<p>根据扩展欧几里德算法，求出K和（-X）；</p>
-<p>而K是应为正整数，即需要若K为负整数，则需要将之化正，即与负数取模同理，将K加上N，直至K&gt;0为止，所得的数即为最小的乘法逆元；</p>
-<p>若K为正整数，则直接输出即可<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        x=<span class="number">1</span>;</span><br><span class="line">        y=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> r=exgcd(b,a%b,x,y);</span><br><span class="line">    <span class="keyword">int</span> t=x;x=y;y=t-(a/b)*y;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m,x,y;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;m,&amp;n))&#123;</span><br><span class="line">        exgcd(m,n,x,y);</span><br><span class="line">        <span class="keyword">while</span>(x&lt;<span class="number">0</span>)</span><br><span class="line">            x+=n;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      
-        <categories>
-            
-            <category> acm </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 51nod </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[51nod1240莫比乌斯函数]]></title>
       <url>/2016/04/10/ACM/51nod1240%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p>莫比乌斯函数，由德国数学家和天文学家莫比乌斯提出。梅滕斯(Mertens)首先使用μ(n)（miu(n)）作为莫比乌斯函数的记号。（据说，高斯(Gauss)比莫比乌斯早三十年就曾考虑过这个函数）。</p>
@@ -4408,6 +4381,33 @@ skip-grant-tables
     </entry>
     
     <entry>
+      <title><![CDATA[51nod1256乘法逆元]]></title>
+      <url>/2016/04/10/ACM/51nod1256%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83/</url>
+      <content type="html"><![CDATA[<p>1256 乘法逆元</p>
+<p>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出2个数M和N(M &lt; N)，且M与N互质，找出一个数K满足0 &lt; K &lt; N且K <em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input<br>输入2个数M, N中间用空格分隔（1 &lt;= M &lt; N &lt;= 10^9)<br>OutPut<br>输出一个数K，满足0 &lt; K &lt; N且K </em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input示例<br>2 3<br>Output示例</p>
+<p>2</p>
+<p>思路：K <em> M % N = 1等价于 K</em>M=N<em>X+1  即 K</em>M+N*(-X)=1 </p>
+<p>根据扩展欧几里德算法，求出K和（-X）；</p>
+<p>而K是应为正整数，即需要若K为负整数，则需要将之化正，即与负数取模同理，将K加上N，直至K&gt;0为止，所得的数即为最小的乘法逆元；</p>
+<p>若K为正整数，则直接输出即可<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        x=<span class="number">1</span>;</span><br><span class="line">        y=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> r=exgcd(b,a%b,x,y);</span><br><span class="line">    <span class="keyword">int</span> t=x;x=y;y=t-(a/b)*y;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m,x,y;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;m,&amp;n))&#123;</span><br><span class="line">        exgcd(m,n,x,y);</span><br><span class="line">        <span class="keyword">while</span>(x&lt;<span class="number">0</span>)</span><br><span class="line">            x+=n;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> acm </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 51nod </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[51nod1242 斐波那契数列 矩阵快速幂]]></title>
       <url>/2016/04/08/ACM/51nod1242%20%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97%20%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/</url>
       <content type="html"><![CDATA[<p>斐波那契数列的定义如下：</p>
@@ -4425,9 +4425,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 快速幂 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -4564,9 +4564,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 快速幂 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
