@@ -95,18 +95,22 @@
 
 
 
-<meta name="description" content="避免查询的模糊匹配 索引问题   避免对索引字段进行计算操作 避免在索引字段上使用not,&amp;lt;&amp;gt;,!= 避免在索引列上使用IS NULL和IS NOT NULL 避免在索引列上出现数据类型转换 避免在索引字段上使用函数 避免建立索引的列中使用空值   复杂操作&amp;ensp;&amp;ensp;部分UPDATE、SELETE语句写的很复杂（经常嵌套多级子查询）—可以考虑适当拆成几步，先生成一些临时">
+<meta name="description" content="MySQL的偷懒行为之Change Buffer在使用MySQL的时候，只要MySQL服务给你返回成功信息后，得到你需要的结果，你并不关注MySQL的行为；但是其实在MySQL内部，其实有很多的特性和机制来延迟真正的持久化等耗时耗资源行为。下面我将为你介绍其中的一个特性：change buffer 简介(What)The change buffer is a special data struct">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SQL优化">
-<meta property="og:url" content="http://yoursite.com/2017/11/02/MySQL/SQL优化/index.html">
+<meta property="og:title" content="Change Buffer">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/MySQL/Change Buffer/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="避免查询的模糊匹配 索引问题   避免对索引字段进行计算操作 避免在索引字段上使用not,&amp;lt;&amp;gt;,!= 避免在索引列上使用IS NULL和IS NOT NULL 避免在索引列上出现数据类型转换 避免在索引字段上使用函数 避免建立索引的列中使用空值   复杂操作&amp;ensp;&amp;ensp;部分UPDATE、SELETE语句写的很复杂（经常嵌套多级子查询）—可以考虑适当拆成几步，先生成一些临时">
+<meta property="og:description" content="MySQL的偷懒行为之Change Buffer在使用MySQL的时候，只要MySQL服务给你返回成功信息后，得到你需要的结果，你并不关注MySQL的行为；但是其实在MySQL内部，其实有很多的特性和机制来延迟真正的持久化等耗时耗资源行为。下面我将为你介绍其中的一个特性：change buffer 简介(What)The change buffer is a special data struct">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-20T15:28:17.746Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JVC4.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7J9uq.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JSvn.md.jpg">
+<meta property="og:updated_time" content="2019-06-16T14:26:34.003Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SQL优化">
-<meta name="twitter:description" content="避免查询的模糊匹配 索引问题   避免对索引字段进行计算操作 避免在索引字段上使用not,&amp;lt;&amp;gt;,!= 避免在索引列上使用IS NULL和IS NOT NULL 避免在索引列上出现数据类型转换 避免在索引字段上使用函数 避免建立索引的列中使用空值   复杂操作&amp;ensp;&amp;ensp;部分UPDATE、SELETE语句写的很复杂（经常嵌套多级子查询）—可以考虑适当拆成几步，先生成一些临时">
+<meta name="twitter:title" content="Change Buffer">
+<meta name="twitter:description" content="MySQL的偷懒行为之Change Buffer在使用MySQL的时候，只要MySQL服务给你返回成功信息后，得到你需要的结果，你并不关注MySQL的行为；但是其实在MySQL内部，其实有很多的特性和机制来延迟真正的持久化等耗时耗资源行为。下面我将为你介绍其中的一个特性：change buffer 简介(What)The change buffer is a special data struct">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/16/V7JVC4.jpg">
 
 
 
@@ -136,13 +140,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/02/MySQL/SQL优化/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/03/MySQL/Change Buffer/">
 
 
 
 
 
-  <title>SQL优化 | OMG_By</title>
+  <title>Change Buffer | OMG_By</title>
   
 
 
@@ -311,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/MySQL/SQL优化/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/MySQL/Change Buffer/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -328,7 +332,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SQL优化</h1>
+          <h1 class="post-title" itemprop="name headline">Change Buffer</h1>
         
 
         <div class="post-meta">
@@ -340,8 +344,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T20:14:16+08:00">
-                2017-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T16:11:15+08:00">
+                2019-04-03
               </time>
             
 
@@ -405,38 +409,74 @@
       
 
       
-        <ol>
-<li>避免查询的模糊匹配</li>
-<li>索引问题</li>
+        <h1 id="MySQL的偷懒行为之Change-Buffer"><a href="#MySQL的偷懒行为之Change-Buffer" class="headerlink" title="MySQL的偷懒行为之Change Buffer"></a>MySQL的偷懒行为之Change Buffer</h1><p>在使用MySQL的时候，只要MySQL服务给你返回成功信息后，得到你需要的结果，你并不关注MySQL的行为；但是其实在MySQL内部，其实有很多的特性和机制来延迟真正的持久化等耗时耗资源行为。下面我将为你介绍其中的一个特性：change buffer</p>
+<h2 id="简介-What"><a href="#简介-What" class="headerlink" title="简介(What)"></a>简介(What)</h2><p>The change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
+<p>当需要改变<font color="red">二级索引</font>的数据，并且该<font color="red">数据页不在内存缓冲池中</font>；这个时候会直接向客户端返回修改成功的信息。MySQL并不实时的去更新磁盘数据，而是在之后一定条件下触发更新操作。这就是<font color="red">change buffer</font>在作祟。</p>
+<p>change buffer在MySQL5.5版本之前，只支持insert操作，所以最初被称为insert buffer。在之后的版本中，支持了更多的修改操作，所以后面改称为change buffer。</p>
+<h2 id="为什么需要change-buffer-Why"><a href="#为什么需要change-buffer-Why" class="headerlink" title="为什么需要change buffer(Why)"></a>为什么需要change buffer(Why)</h2><p>首先，你要明白<font color="red">二级索引的数据页在磁盘上存储得很散乱</font>，读取的时候需要消耗大量的资源去做寻址等操作。这里涉及到了操作系统知识，并不在本文的科普范围。</p>
+<p>其次，一般情况下，二级索引的数据访问的并不是很频繁，作为冷数据的存在，<font color="red">即使读取到了内存当中，很快也会被挤出内存缓冲池</font>。如果每次更新操作都读取进来，那也是一笔很大的开销，所以MySQL会将多次更新给合并到一块去更新。（这里涉及到了LRU的淘汰知识，后续会有专门的文章讲解，这里你只需要知道有这个东西就行了）</p>
+<p>所以，change buffer的主要作用有以下两点：</p>
+<ol>
+<li>减少了MySQL<font color="red">随机</font>读取磁盘的次数</li>
+<li>将<font color="red">多次的随机写</font>磁盘操作，合并成了<font color="red">一次的顺序写</font>磁盘操作</li>
 </ol>
-<ul>
-<li>避免对索引字段进行计算操作</li>
-<li>避免在索引字段上使用not,&lt;&gt;,!=</li>
-<li>避免在索引列上使用IS NULL和IS NOT NULL</li>
-<li>避免在索引列上出现数据类型转换</li>
-<li>避免在索引字段上使用函数</li>
-<li>避免建立索引的列中使用空值</li>
+<p>这里再介绍一下change buffer的限制条件：<font color="red">非唯一的辅助索引</font></p>
+<p>前面我们说过二级索引的数据在磁盘上分布的很散乱，但是聚簇索引就不会这样；我们都知道Innodb的数据都存储在聚簇索引的叶子节点，Innodb为了保证能够更快的读取数据，会<font color="red">将聚簇索引的数据页尽可能在物理上顺序放在一起</font>。</p>
+<p>此外，在修改聚簇索引和唯一辅助索引上的数据时，为了<font color="red">保证数据的唯一性</font>，总是会在进行修改操作前进行一次查询操作，这个时候已经将该数据页读取到内存缓存池中了。直接修改内存中数据页上的数据信息更快，完全没有必要使用change buffer。</p>
+<h2 id="change-buffer干了什么-DO）"><a href="#change-buffer干了什么-DO）" class="headerlink" title="change buffer干了什么(DO）"></a>change buffer干了什么(DO）</h2><h3 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h3><p>下面我们来看change buffer的执行过程：</p>
+<ol>
+<li>如果需要修改的数据页在内存中，则直接修改内存数据并返回</li>
+<li>如果需要修改的数据页不在内存中，则向change buffer中添加一条记录（修改数据页的记录)</li>
+<li>在redo log中添加一条记录（change buffer页的修改记录）<br><a href="https://imgchr.com/i/V7JVC4" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JVC4.jpg" alt="V7JVC4.jpg"></a></li>
+</ol>
+<p>从change buffer的执行过程中，我们可以看到，如果需要修改的数据页page 2不在内存中时，Innodb并不会去磁盘中读取，而是在change buffer中记录了page 2中的数据变更。</p>
+<p>系统会周期性的将change buffer的数据写入到系统表空间中。所以不需要担心change buffer的数据丢失问题。</p>
+<h3 id="什么时候进行合并操作"><a href="#什么时候进行合并操作" class="headerlink" title="什么时候进行合并操作"></a>什么时候进行合并操作</h3><ul>
+<li>二级索引页被读取到buffer pool中，在页面可用之前，会先进行合并缓存操作</li>
+<li>change buffer bitmap页追踪到该辅助索引页无可用空间时</li>
+<li>Master Thread定时任务</li>
+<li>在崩溃恢复时，索引页被读入到缓冲池时，会将存在系统表空间的change buffer应用到二级索引的叶子节点</li>
+<li>当–innodb-fast-shutdown=0时，数据库实例关闭时会强制将change buffer合并到数据页中并刷盘。</li>
 </ul>
-<ol start="3">
-<li><p>复杂操作<br>&ensp;&ensp;部分UPDATE、SELETE语句写的很复杂（经常嵌套多级子查询）—可以考虑适当拆成几步，先生成一些临时数据表，再进行关联操作。</p>
-</li>
-<li><p>在可以使用UNION ALL的语句里，使用了UNION</p>
-</li>
-<li>在WHERE语句中，尽量避免对索引字段进行计算操作</li>
-<li>对WHERE语句的法则</li>
+<h3 id="change-buffer的存储"><a href="#change-buffer的存储" class="headerlink" title="change buffer的存储"></a>change buffer的存储</h3><p><a href="https://imgchr.com/i/V7J9uq" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7J9uq.md.jpg" alt="V7J9uq.md.jpg"></a></p>
+<p>change buffer在物理上是以一个普通的btree存储。根页是存储在系统表空间的固定页中（涉及innodb的数据存储结构，太高深了~还没到那个层次，就看个热闹)</p>
+<p>上图是一条ibuf记录的存储格式，通过（space id, page no , counter）三列作为主键来唯一决定一条记录，其中counter是一个递增值，目的是为了维持不同操作的有序性。可以通过counter来保证merge时执行时的顺序和用户操作的顺序一致。</p>
+<p>在插入时，会先将counter的值设置成0xFFFF；然后将定位到小于等于(space id, page no, 0xFFFF)的位置，再将counter为当前记录counter值加1。(这样做的原因是为了合并的时候能够更方便的找到同一数据页的缓存，并保证有序)</p>
+<p><a href="https://imgchr.com/i/V7JSvn" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JSvn.md.jpg" alt="V7JSvn.md.jpg"></a><br>因为ibuf缓存是针对具体的数据页的，因此在缓存操作的时候需要避免空页和满页的缓存操作。(满页：即将分裂的页，并不一定是所有空闲空间用完的页，一个数据页会有1/16的空隙)</p>
+<ol>
+<li>针对空页情况，在准备插入IBUF_OP_DELETE类型的操作缓存时，会预估执行完此操作后该page中还存在多少记录，如果只剩下一条记录，则走正常流程，将数据页读取到内存中。</li>
+<li>针对满页情况，则是通过ibuf_bitmap页记录，该页存在于每个ibd的固定位置；ibuf_bitmap中记录了每个数据页的缓存状态和空闲空间大小。<br>在执行IBUF_OP_INSERT类型的操作前，会将该page的IBUF_BITMAP_BUFFERED设置为true。<br>通过IBUF_BITMAP_FREE来记录该page的空闲空间；在插入前，会去找到该page的空闲空间大小，如果本次操作超出限制，则会触发一次异步ibuf merge。</li>
 </ol>
-<ul>
-<li>避免在WHERE子句中使用in，not  in，or 或者having。</li>
-<li>不要以字符格式声明数字，要以数字格式声明字符值。（日期同样）否则会使索引无效，产生全表扫描。</li>
-</ul>
-<ol start="7">
-<li><p>对SELECT语句的法则<br>&ensp;&ensp;尽量避免使用SELECT * FROM 这种方式</p>
+<h3 id="merge过程"><a href="#merge过程" class="headerlink" title="merge过程"></a>merge过程</h3><ol>
+<li>一个磁盘上的数据页被读取到内存缓冲池中</li>
+<li>到ibuf_bitmap中判断该数据页是否有缓存行为</li>
+<li>如果存在缓存，则从ibuf的btree树中读取该数据页的缓存操作；并应用到该内存数据页上</li>
+<li>只有当应用缓存完成，才能提供给用户查询等操作行为</li>
+<li>在一定情况下执行刷盘操作，持久化到磁盘</li>
+</ol>
+<h3 id="merge触发情况"><a href="#merge触发情况" class="headerlink" title="merge触发情况"></a>merge触发情况</h3><ol>
+<li>二级索引页被读入到内存中</li>
+<li>插入ibuf操作时，遇到满页，会造成页分裂操作时，触发一次异步的merge</li>
+<li>当前ibuf tree size&gt;max_size + 10时，会执行一次同步的merge</li>
+<li>本次插入ibuf操作可能会导致ibuf tree索引分裂时，根据ibuf size的大小情况会触发不同情况的merge</li>
+<li>master定时任务会合并相应数量的buffer</li>
+<li>对某个表执行flush table时，会强制对该表的page进行merge</li>
+<li>数据库关闭时，根据innodb_fast_shutdown来决定是否进行merge</li>
+</ol>
+<h2 id="相关参数"><a href="#相关参数" class="headerlink" title="相关参数"></a>相关参数</h2><ol>
+<li><p>innodb_change_buffering<br>innodb_change_buffering参数可以控制什么操作会使用change buffer。默认是all</p>
+<p> |||<br> | — | — |<br> | all | The default value: buffer inserts, delete-marking operations, and purges. |<br> | none | Do not buffer any operations. |<br> | inserts | Buffer insert operations. |<br> | deletes | Buffer delete-marking operations. |<br> | changes | Buffer both inserts and delete-marking operations. |<br> | purges | Buffer physical deletion operations that happen in the background. |</p>
 </li>
-<li><p>排序<br>&ensp;&ensp;避免使用耗费资源的操作，带有DISTINCT,UNION,MINUS,INTERSECT,ORDER BY的SQL语句会启动SQL引擎 执行，耗费资源的排序(SORT)功能. DISTINCT需要一次排序操作, 而其他的至少需要执行两次排序</p>
+<li><p>innodb_change_buffer_max_size<br>innodb_change_buffer_max_size参数控制change buffer占buffer pool的百分比。默认25%，最大50%</p>
 </li>
-<li><p>慎重使用临时表可以极大的提高系统性能</p>
+<li><p>查看change buffer的使用情况</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;SHOW ENGINE INNODB STATUS \G</span><br><span class="line"><span class="keyword">INSERT</span> BUFFER <span class="keyword">AND</span> ADAPTIVE <span class="keyword">HASH</span> <span class="keyword">INDEX</span></span><br><span class="line">Ibuf: <span class="keyword">size</span> <span class="number">1</span>, free <span class="keyword">list</span> <span class="keyword">len</span> <span class="number">56</span>, seg <span class="keyword">size</span> <span class="number">58</span>, <span class="number">517693</span> merges</span><br><span class="line">merged <span class="keyword">operations</span>:</span><br><span class="line"> <span class="keyword">insert</span> <span class="number">560451</span>, <span class="keyword">delete</span> mark <span class="number">0</span>, <span class="keyword">delete</span> <span class="number">0</span></span><br><span class="line">discarded <span class="keyword">operations</span>:</span><br><span class="line"> <span class="keyword">insert</span> <span class="number">0</span>, <span class="keyword">delete</span> mark <span class="number">0</span>, <span class="keyword">delete</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<p>Ibuf表示当前缓冲区中change buffer的页使用情况<br>size表示已使用的页数，free list len表示空闲的页，seg size表示总共的页数（等于size + free list len + 1)，merges合并数<br>merged operations表示change buffer中每个操作的次数。<br>insert表示Insert Buffer，delete mark表示Delete Buffer，delete表示Purge Buffer。<br>discarded operations表示当change buffer发生merge操作时，表已经被删除，此时不再需要将记录合并到辅助索引中去。</p>
+<p>从上面的信息可以看出这个数据库实例的change buffer效果并不明显（通过insert/merges计算)。change buffer适用于存在大量修改二级索引页的DML活动中。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>change buffer将随机IO转换成顺序IO，避免了IO带来的性能损耗，减少了随机读磁盘的次数，提高了数据库的写性能。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html</a><br><a href="https://dev.mysql.com/doc/refman/5.7/en/faqs-innodb-change-buffer.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/faqs-innodb-change-buffer.html</a><br><a href="http://mysql.taobao.org/monthly/2015/07/01/" target="_blank" rel="noopener">http://mysql.taobao.org/monthly/2015/07/01/</a><br><a href="https://blog.csdn.net/bohu83/article/details/81837872" target="_blank" rel="noopener">https://blog.csdn.net/bohu83/article/details/81837872</a></p>
 
       
     </div>
@@ -467,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/31/Redis/Redis学习--Sorted-Sets数据类型/" rel="next" title="Redis学习--Sorted-Sets数据结构">
-                <i class="fa fa-chevron-left"></i> Redis学习--Sorted-Sets数据结构
+              <a href="/2019/01/25/Redis/Redis的内存管理和优化/" rel="next" title="Redis的内存管理和优化">
+                <i class="fa fa-chevron-left"></i> Redis的内存管理和优化
               </a>
             
           </div>
@@ -477,8 +517,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/07/CentOS安装JDK/" rel="prev" title="CentOS安装JDK、MySQL、tomcat、zookeeper">
-                CentOS安装JDK、MySQL、tomcat、zookeeper <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/01/面试准备/Object的常用方法/" rel="prev" title="Object的常用方法">
+                Object的常用方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -536,8 +576,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -554,7 +603,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-count">96</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -565,7 +614,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -576,7 +625,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -652,6 +701,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL的偷懒行为之Change-Buffer"><span class="nav-number">1.</span> <span class="nav-text">MySQL的偷懒行为之Change Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介-What"><span class="nav-number">1.1.</span> <span class="nav-text">简介(What)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要change-buffer-Why"><span class="nav-number">1.2.</span> <span class="nav-text">为什么需要change buffer(Why)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-buffer干了什么-DO）"><span class="nav-number">1.3.</span> <span class="nav-text">change buffer干了什么(DO）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#执行过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候进行合并操作"><span class="nav-number">1.3.2.</span> <span class="nav-text">什么时候进行合并操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer的存储"><span class="nav-number">1.3.3.</span> <span class="nav-text">change buffer的存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge过程"><span class="nav-number">1.3.4.</span> <span class="nav-text">merge过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge触发情况"><span class="nav-number">1.3.5.</span> <span class="nav-text">merge触发情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关参数"><span class="nav-number">1.4.</span> <span class="nav-text">相关参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

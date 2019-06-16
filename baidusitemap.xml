@@ -4,6 +4,110 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/01/25/Redis/Redis%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2019-06-16T14:30:35.556Z</lastmod>
+    <data>
+        <display>
+        <title>Redis的内存管理和优化</title>
+        <pubTime>2019-01-25T13:34:13.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/01/16/MySQL/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/</loc>
+    <lastmod>2019-06-16T14:27:36.239Z</lastmod>
+    <data>
+        <display>
+        <title>事务隔离</title>
+        <pubTime>2019-01-16T14:32:26.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+        <tag>MySQL实战45讲</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/04/03/MySQL/Change%20Buffer/</loc>
+    <lastmod>2019-06-16T14:26:34.003Z</lastmod>
+    <data>
+        <display>
+        <title>Change Buffer</title>
+        <pubTime>2019-04-03T08:11:15.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/01/23/MySQL/Binlog%E6%A0%BC%E5%BC%8F/</loc>
+    <lastmod>2019-06-16T14:19:20.846Z</lastmod>
+    <data>
+        <display>
+        <title>Binlog格式</title>
+        <pubTime>2019-01-23T12:14:16.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/06/03/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2019-06-16T14:17:21.135Z</lastmod>
+    <data>
+        <display>
+        <title>单例模式</title>
+        <pubTime>2019-06-03T14:41:31.000Z</pubTime>
+        
+        <tag>面试</tag>
+         
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="编程思想" url="http://yoursite.com/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/06/11/Redis/Redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87%EF%BC%885%EF%BC%89-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/</loc>
     <lastmod>2019-06-16T14:02:43.579Z</lastmod>
     <data>
@@ -232,26 +336,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2017/11/02/MySQL/SQL%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2019-01-20T15:28:17.746Z</lastmod>
-    <data>
-        <display>
-        <title>SQL优化</title>
-        <pubTime>2017-11-02T12:14:16.000Z</pubTime>
-        
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2018/08/11/MySQL/Mysql%E4%B9%8B%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2019-01-20T15:26:19.556Z</lastmod>
     <data>
@@ -378,28 +462,6 @@
         <display>
         <title>一条更新语句的执行过程</title>
         <pubTime>2019-01-14T14:32:26.000Z</pubTime>
-        
-        <tag>MySQL</tag>
-         
-        <tag>MySQL实战45讲</tag>
-         
-         
-           
-             
-              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/01/16/MySQL/%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/</loc>
-    <lastmod>2019-01-17T15:19:41.983Z</lastmod>
-    <data>
-        <display>
-        <title>事务隔离</title>
-        <pubTime>2019-01-16T14:32:26.000Z</pubTime>
         
         <tag>MySQL</tag>
          
