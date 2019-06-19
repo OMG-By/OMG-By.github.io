@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/01/25/Redis/Redis%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2019-06-16T14:30:35.556Z</lastmod>
+    <lastmod>2019-06-19T09:32:34.189Z</lastmod>
     <data>
         <display>
         <title>Redis的内存管理和优化</title>
@@ -17,6 +17,68 @@
            
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/04/03/MySQL/Change%20Buffer/</loc>
+    <lastmod>2019-06-19T09:32:04.724Z</lastmod>
+    <data>
+        <display>
+        <title>Change Buffer</title>
+        <pubTime>2019-04-03T08:11:15.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/06/03/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2019-06-19T09:30:38.728Z</lastmod>
+    <data>
+        <display>
+        <title>单例模式</title>
+        <pubTime>2019-06-03T14:41:31.000Z</pubTime>
+        
+        <tag>面试</tag>
+         
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="编程思想" url="http://yoursite.com/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/01/23/MySQL/Binlog%E6%A0%BC%E5%BC%8F/</loc>
+    <lastmod>2019-06-16T14:42:53.550Z</lastmod>
+    <data>
+        <display>
+        <title>Binlog格式</title>
+        <pubTime>2019-01-23T12:14:16.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
           
         </display>
     </data>
@@ -39,68 +101,6 @@
            
              
               <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/04/03/MySQL/Change%20Buffer/</loc>
-    <lastmod>2019-06-16T14:26:34.003Z</lastmod>
-    <data>
-        <display>
-        <title>Change Buffer</title>
-        <pubTime>2019-04-03T08:11:15.000Z</pubTime>
-        
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/01/23/MySQL/Binlog%E6%A0%BC%E5%BC%8F/</loc>
-    <lastmod>2019-06-16T14:19:20.846Z</lastmod>
-    <data>
-        <display>
-        <title>Binlog格式</title>
-        <pubTime>2019-01-23T12:14:16.000Z</pubTime>
-        
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/06/03/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2019-06-16T14:17:21.135Z</lastmod>
-    <data>
-        <display>
-        <title>单例模式</title>
-        <pubTime>2019-06-03T14:41:31.000Z</pubTime>
-        
-        <tag>面试</tag>
-         
-        <tag>设计模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="编程思想" url="http://yoursite.com/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3/"/>
           
         </display>
     </data>

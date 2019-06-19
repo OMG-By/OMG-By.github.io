@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JVC4.jpg">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7J9uq.md.jpg">
 <meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JSvn.md.jpg">
-<meta property="og:updated_time" content="2019-06-16T14:26:34.003Z">
+<meta property="og:updated_time" content="2019-06-19T09:32:04.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Change Buffer">
 <meta name="twitter:description" content="MySQL的偷懒行为之Change Buffer在使用MySQL的时候，只要MySQL服务给你返回成功信息后，得到你需要的结果，你并不关注MySQL的行为；但是其实在MySQL内部，其实有很多的特性和机制来延迟真正的持久化等耗时耗资源行为。下面我将为你介绍其中的一个特性：change buffer 简介(What)The change buffer is a special data struct">
@@ -413,6 +413,7 @@
 <h2 id="简介-What"><a href="#简介-What" class="headerlink" title="简介(What)"></a>简介(What)</h2><p>The change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
 <p>当需要改变<font color="red">二级索引</font>的数据，并且该<font color="red">数据页不在内存缓冲池中</font>；这个时候会直接向客户端返回修改成功的信息。MySQL并不实时的去更新磁盘数据，而是在之后一定条件下触发更新操作。这就是<font color="red">change buffer</font>在作祟。</p>
 <p>change buffer在MySQL5.5版本之前，只支持insert操作，所以最初被称为insert buffer。在之后的版本中，支持了更多的修改操作，所以后面改称为change buffer。</p>
+<a id="more"></a>
 <h2 id="为什么需要change-buffer-Why"><a href="#为什么需要change-buffer-Why" class="headerlink" title="为什么需要change buffer(Why)"></a>为什么需要change buffer(Why)</h2><p>首先，你要明白<font color="red">二级索引的数据页在磁盘上存储得很散乱</font>，读取的时候需要消耗大量的资源去做寻址等操作。这里涉及到了操作系统知识，并不在本文的科普范围。</p>
 <p>其次，一般情况下，二级索引的数据访问的并不是很频繁，作为冷数据的存在，<font color="red">即使读取到了内存当中，很快也会被挤出内存缓冲池</font>。如果每次更新操作都读取进来，那也是一笔很大的开销，所以MySQL会将多次更新给合并到一块去更新。（这里涉及到了LRU的淘汰知识，后续会有专门的文章讲解，这里你只需要知道有这个东西就行了）</p>
 <p>所以，change buffer的主要作用有以下两点：</p>
