@@ -97,7 +97,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="OMG_By">
-<meta property="og:url" content="http://yoursite.com/categories/JAVA/index.html">
+<meta property="og:url" content="http://yoursite.com/categories/Java/index.html">
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/JAVA/">
+  <link rel="canonical" href="http://yoursite.com/categories/Java/">
 
 
 
 
 
-  <title>分类: JAVA | OMG_By</title>
+  <title>分类: Java | OMG_By</title>
   
 
 
@@ -299,7 +299,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>JAVA<small>分类</small>
+        <h1>Java<small>分类</small>
         </h1>
       </div>
 
@@ -311,121 +311,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/06/02/面试准备/HashMap详解/" itemprop="url">
+            <a class="post-title-link" href="/2019/06/04/面试准备/Cloneable实现原理/" itemprop="url">
               
-                <span itemprop="name">HashMap详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-02T22:41:31+08:00" content="2019-06-02">
-          06-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/01/面试准备/Object的常用方法/" itemprop="url">
-              
-                <span itemprop="name">Object的常用方法</span>
+                <span itemprop="name">Cloneable接口实现原理</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-01T22:41:31+08:00" content="2019-06-01">
-          06-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/28/servlet的9大内置对象/" itemprop="url">
-              
-                <span itemprop="name">servlet的9大内置对象</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-10-28T22:41:31+08:00" content="2017-10-28">
-          10-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/20/Java虚拟机/" itemprop="url">
-              
-                <span itemprop="name">Java内存区域</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-10-20T21:22:31+08:00" content="2017-10-20">
-          10-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/17/四种线程池/" itemprop="url">
-              
-                <span itemprop="name">Java的四种线程池</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-10-17T12:42:31+08:00" content="2017-10-17">
-          10-17
+        <time class="post-time" itemprop="dateCreated" datetime="2019-06-04T22:41:31+08:00" content="2019-06-04">
+          06-04
         </time>
       </div>
 
@@ -488,7 +384,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -499,7 +395,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1069,6 +965,112 @@
                 searchResultList += result.item;
               })
               searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -30px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/haru/haru.model.json",0.5)</script>
+  
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
               resultContent.innerHTML = searchResultList;
             }
           }

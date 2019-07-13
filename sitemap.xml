@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/03/02/MySQL/InnoDB%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/</loc>
+    
+    <lastmod>2019-07-13T06:03:13.193Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/02/MySQL/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</loc>
+    
+    <lastmod>2019-07-13T05:56:52.659Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/04/02/MySQL/MySQL%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%80%8E%E4%B9%88%E5%8A%9E/</loc>
+    
+    <lastmod>2019-07-13T05:53:16.552Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/06/04/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/Cloneable%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</loc>
+    
+    <lastmod>2019-06-23T13:13:08.542Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/01/25/Redis/Redis%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%8C%96/</loc>
     
     <lastmod>2019-06-19T09:32:34.189Z</lastmod>

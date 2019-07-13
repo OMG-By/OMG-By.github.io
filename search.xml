@@ -3,6 +3,31 @@
   
     
     <entry>
+      <title><![CDATA[Cloneable接口实现原理]]></title>
+      <url>/2019/06/04/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/Cloneable%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
+      <content type="html"><![CDATA[<p>Cloneable接口是Java开发中常用的一个接口，它的作用是使一个类的实例能够将自身拷贝到另一个新的实例当中。</p>
+<p>在开发过程中，如果一个类中的字段比较多，而我们如果采用在客户端中逐字段复制的方法来进行拷贝操作的话，将不可避免的造成客户端代码繁杂，而且也无法对类中的私有对象进行复制，而如果让需要具备拷贝功能的类实现<code>Cloneable</code>接口，并重写<code>clone()</code>方法的方式来简洁地实现实例拷贝功能。</p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p><code>private class Demo implements Cloneable{}</code><br>我们创建一个Demo类，并让他实现Cloneable接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public interface Cloneable &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们发现<code>Cloneable</code>几口里面并没有定义任何接口方法。<br>这是因为在<code>Object</code>类中已经将<code>clone()</code>方法定义为所有类都应该具有的基本功能，只是将该方法声明为了<code>protected</code>类型。它是一个<code>native</code>本地方法。</p>
+<p>如果一个类不实现该接口就直接调用<code>clone()</code>方法的话，就会抛出“不支持拷贝”异常。<br>所以如果要让一个类具有拷贝实例的功能，那么除了要重写<code>Object</code>类中<code>clone()</code>方法外，还必须实现Cloneable接口。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Java </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[单例模式]]></title>
       <url>/2019/06/03/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
       <content type="html"><![CDATA[<p>定义：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
@@ -199,6 +224,236 @@
 <p>从上面的信息可以看出这个数据库实例的change buffer效果并不明显（通过insert/merges计算)。change buffer适用于存在大量修改二级索引页的DML活动中。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>change buffer将随机IO转换成顺序IO，避免了IO带来的性能损耗，减少了随机读磁盘的次数，提高了数据库的写性能。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html</a><br><a href="https://dev.mysql.com/doc/refman/5.7/en/faqs-innodb-change-buffer.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/faqs-innodb-change-buffer.html</a><br><a href="http://mysql.taobao.org/monthly/2015/07/01/" target="_blank" rel="noopener">http://mysql.taobao.org/monthly/2015/07/01/</a><br><a href="https://blog.csdn.net/bohu83/article/details/81837872" target="_blank" rel="noopener">https://blog.csdn.net/bohu83/article/details/81837872</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> MySQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL忘记密码怎么办]]></title>
+      <url>/2019/04/02/MySQL/MySQL%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
+      <content type="html"><![CDATA[<h1 id="MySQL忘记密码怎么办？"><a href="#MySQL忘记密码怎么办？" class="headerlink" title="MySQL忘记密码怎么办？"></a>MySQL忘记密码怎么办？</h1><p>有的时候搭建MySQL后，由于密码没有保存好、忘记密码、密码过期等原因，导致登录不上数据库。这个时候该怎么办？</p>
+<p>如果数据库使用人员，那还是乖乖的找数据库管理人员修改密码吧！<br>如果是数据库管理人员，能够登录到MySQL实例所在服务器的话。下面将介绍两种方式进行修改密码操作。</p>
+<h2 id="skip-grant-tables"><a href="#skip-grant-tables" class="headerlink" title="skip-grant-tables"></a>skip-grant-tables</h2><p>第一种方式就是网上介绍最多的通过配置skip-grant-tables参数来跳过MySQL登录校验后，进行修改密码。</p>
+<p>步骤就是：</p>
+<ol>
+<li>需要关闭MySQL实例。</li>
+<li>配置参数。这里有两种方式：第一种就是在启动的使用，启动命令添加–skip-grant-tables；第二种就是通过修改配置文件，在[mysqld]下添加skip-grant-tables。</li>
+<li>启动数据库</li>
+<li>通过alter mysql.user set authentication_string=password(‘newpass’) where XXX@XXX;</li>
+<li>去掉skip-grant-tables配置后重新启动。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">注：</span><br><span class="line">MySQL5.6的密码参数列为：password</span><br><span class="line">MySQL5.7的密码参数列为：authentication_string</span><br><span class="line"></span><br><span class="line">MySQL的账号是以`用户名`@`主机地址`计算的。同一用户名不同主机地址视为不同账号。</span><br></pre></td></tr></table></figure>
+<p>这种方法的缺点很明显：</p>
+<ol>
+<li>数据库必须有一段时间不能提供服务。</li>
+<li>开启跳过权限检查的参数后，安全性无法得到保障。所有人都能登录，即使没有改账号也能登录成功。<a id="more"></a>
+</li>
+</ol>
+<h2 id="利用MyISAM表的特性"><a href="#利用MyISAM表的特性" class="headerlink" title="利用MyISAM表的特性"></a>利用MyISAM表的特性</h2><p>在MySQL8.0之前，mysql.user表都是MyISAM表，可以利用MyISAM表的特性进行修改密码操作。MySQL8.0后，放弃了MyISAM表，所以这个方法对8.0后的版本没有用。</p>
+<p>这个方法需要有一个临时的数据库。<br>假设我们当前有两个数据库，一个3307，一个3309；3307实例的密码忘记了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@vdb_172_16_123_101 /root]# ps aux | grep mysql</span><br><span class="line">mysql     2792  0.3 10.3 1067856 184220 pts/0  Sl   19:46   0:00 /usr/local/mysql/bin/mysqld --defaults-file=/data/mysql/mysql_3307/my.cnf</span><br><span class="line">mysql     2822  0.4 10.5 1067856 186072 pts/0  Sl   19:46   0:00 /usr/local/mysql/bin/mysqld --defaults-file=/data/mysql/mysql_3309/my.cnf</span><br><span class="line">root      2869  0.0  0.0 112648   960 pts/0    R+   19:47   0:00 grep --color=auto mysql</span><br></pre></td></tr></table></figure></p>
+<p>第一步：我们首先登录3309实例，并创建一个临时库testdb(库名可以指定定)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:mysql_3309.sock [(none)]&gt; create database testdb;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>第二步：将3307实例下的mysql库下的user*文件都拷贝到第一步创建的3309实例的testdb库下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@vdb_172_16_123_101 /root]# cp -a /data/mysql/mysql_3307/data/mysql/user.* /data/mysql/mysql_3309/data/testdb/</span><br><span class="line">[root@vdb_172_16_123_101 /root]# mysql -S /tmp/mysql_3309.sock -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 6</span><br><span class="line">Server version: 5.7.17-log MySQL Community Server (GPL)</span><br><span class="line"> </span><br><span class="line">Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"> </span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"> </span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br><span class="line"> </span><br><span class="line">root@localhost:mysql_3309.sock [(none)]&gt; use testdb;</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"> </span><br><span class="line">Database changed</span><br><span class="line">root@localhost:mysql_3309.sock [testdb]&gt; show tables;</span><br><span class="line">+------------------+</span><br><span class="line">| Tables_in_testdb |</span><br><span class="line">+------------------+</span><br><span class="line">| user             |</span><br><span class="line">+------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>第三步：在3309实例下修改testdb库下user表的密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[root@vdb_172_16_123_101 /root]# mysql -S /tmp/mysql_3309.sock -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 7</span><br><span class="line">Server version: 5.7.17-log MySQL Community Server (GPL)</span><br><span class="line"> </span><br><span class="line">Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"> </span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"> </span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br><span class="line"> </span><br><span class="line">root@localhost:mysql_3309.sock [(none)]&gt; select user,host,authentication_string from testdb.user;</span><br><span class="line">+-----------+-----------+-------------------------------------------+</span><br><span class="line">| user      | host      | authentication_string                     |</span><br><span class="line">+-----------+-----------+-------------------------------------------+</span><br><span class="line">| root      | localhost | *527F89C205EA0A51A7537FFA7B6090D91A7D77AE |</span><br><span class="line">| mysql.sys | localhost | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |</span><br><span class="line">+-----------+-----------+-------------------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"> </span><br><span class="line">root@localhost:mysql_3309.sock [(none)]&gt; update testdb.user set authentication_string=password(&apos;newpass&apos;) where user=&apos;root&apos;;</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.00 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 1</span><br><span class="line"> </span><br><span class="line">root@localhost:mysql_3309.sock [(none)]&gt; exit</span><br><span class="line">Bye</span><br></pre></td></tr></table></figure></p>
+<p>第四步：将user*文件拷贝回3307的mysql库下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@vdb_172_16_123_101 /root]# cp -a /data/mysql/mysql_3309/data/testdb/user.* /data/mysql/mysql_3307/data/mysql</span><br><span class="line">cp: overwrite ‘/data/mysql/mysql_3307/data/mysql/user.frm’? y</span><br><span class="line">cp: overwrite ‘/data/mysql/mysql_3307/data/mysql/user.MYD’? y</span><br><span class="line">cp: overwrite ‘/data/mysql/mysql_3307/data/mysql/user.MYI’? y</span><br></pre></td></tr></table></figure></p>
+<p>第五步：给一个HUP信号给3307，重新加载配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@vdb_172_16_123_101 /root]# ps aux | grep mysqld</span><br><span class="line">mysql     2792  0.0 10.7 1067856 189960 pts/0  Sl   19:46   0:01 /usr/local/mysql/bin/mysqld --defaults-file=/data/mysql/mysql_3307/my.cnf</span><br><span class="line">mysql     2822  0.0 11.6 1067856 206352 pts/0  Sl   19:46   0:01 /usr/local/mysql/bin/mysqld --defaults-file=/data/mysql/mysql_3309/my.cnf</span><br><span class="line">root      2912  0.0  0.0 112648   964 pts/0    S+   20:07   0:00 grep --color=auto mysqld</span><br><span class="line">[root@vdb_172_16_123_101 /root]# kill -HUP 2792</span><br></pre></td></tr></table></figure></p>
+<p>第六步：用新密码登录3307实例</p>
+<pre><code>[root@vdb_172_16_123_101 /root]# mysql -S /tmp/mysql_3307.sock -p&apos;newpass&apos;
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.17-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.
+
+root@localhost:mysql_3307.sock [(none)]&gt; 
+</code></pre><p>这种方法是利用MyISAM表拷贝即可使用的特性，在一个临时实例中修改后替换。可以不用重启数据库，不会对业务造成影响。<br>为了安全起见，在操作前还是需要对原文件进行备份。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> MySQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL体系结构]]></title>
+      <url>/2019/03/02/MySQL/InnoDB%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/</url>
+      <content type="html"><![CDATA[<h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul>
+<li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol>
+<li>每秒的操作<ul>
+<li>刷新日志缓冲到磁盘（总是）</li>
+<li>合并插入缓冲</li>
+<li>刷新脏页到磁盘（至多100个）</li>
+<li>切换到后台进程</li>
+</ul>
+</li>
+<li>每10秒的操作<ul>
+<li>删除无用的undo页（总是）</li>
+<li>合并20个插入缓冲（总是）</li>
+<li>调回主循环（总是）</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>IO Thread</li>
+<li>purge Thread</li>
+<li>Page cleaner Thread</li>
+</ul>
+<a id="more"></a>
+<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ul>
+<li><p>Change buffer（Insert buffer、Delete buffer、Purge buffer）<br>在对非唯一索引的插入和更新操作过程中，如果该数据页在内存中，则直接对数据页进行修改。如果该数据页不在内存中，Innodb并不会马上到磁盘上将该数据页读入内存中，而是先将修改存入到Change buffer中，再按照一定的频率将修改合并到数据页中。</p>
+<ol>
+<li>为什么是需要在非唯一索引的<br>如果是对唯一索引上的数据进行修改，那么在修改前需要进行唯一性校验，这个时候会对该数据页进行查询操作，此时已经将该数据页读取到了内存当中，所以Change buffer的优化对唯一索引并没有什么效果。</li>
+<li>如果宕机是否会导致数据的丢失？<br>Change buffer中数据，不仅会保存在内存当中，还会持久化到磁盘（系统表空间）当中。（持久化机制？）</li>
+<li>什么情况下会合并？<ul>
+<li>当对该数据页进行查询操作时，会将该数据页读取到内存当中。此时，会进行Change buffer的合并操作，将Change buffer中对该数据页的修改应用到该数据页。</li>
+<li>Insert buffer Bitmap页追踪到该辅助索引页中已无可用空间</li>
+<li>Master Thread</li>
+</ul>
+</li>
+<li>合并流程怎样？<ul>
+<li>从磁盘中读取数据页到内存（老版本）</li>
+<li>从Change buffer中读取这个数据页的修改引用到内存中的数据页</li>
+<li>写redo log。记录了内存也和Change buffer的变更。（此时内存中的数据页属于脏页）<br><a href="https://imgchr.com/i/Zhzndf" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzndf.md.jpg" alt="Zhzndf.md.jpg"></a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>redo buffer<br>redo log中记录的是数据页的物理修改。在事务执行过程中不断的写入到redo buffer中。<br>redo buffer在以下情况会持久化到磁盘。</p>
+<ul>
+<li>Master Thread每秒的定时任务</li>
+<li>每个事务提交时</li>
+<li>写入量过大，导致redo buffer不足是<br>由innodb_flush_log_at_trx_commit控制刷盘策略</li>
+<li>0代表当事务提交时刷盘，只由Master Thread每秒定时任务执行刷盘</li>
+<li>1代表在执行commit时将重做日志缓冲同步到写到磁盘</li>
+<li>2异步刷盘，直接写到文件系统的缓存中，不保证commit执行时肯定会刷盘</li>
+</ul>
+</li>
+<li>数据页和索引页<br>数据都是存储在磁盘上的，当需要访问时才会从磁盘中将该数据所在的页读取到内存当中，并以一定的策略进行淘汰策略和刷盘策略。</li>
+<li>哈希信息页</li>
+<li>元数据信息页</li>
+</ul>
+<h3 id="Innodb机制"><a href="#Innodb机制" class="headerlink" title="Innodb机制"></a>Innodb机制</h3><ul>
+<li>checkpoint<br>在一定条件下，将内存中的脏页持久化到磁盘，并记录数据页刷新的位点信息(LSN)的一种机制。<ol>
+<li>缩短数据库的恢复时间（数据库关闭时将所有的脏页刷新到磁盘/Sharp Checkpoint）</li>
+<li>缓冲池不够用时，刷新部分脏页（为了保证缓冲池中有足够可用的数据页，Innodb会强制进行Checkpoint/Dirty Page too much Checkpoint)</li>
+<li>重做日志不可用时，刷新部分脏页（redo log是一个循环文件，如果redo log的写入量特别大，导致此时redo log几乎写满，Innodb会先将部分脏页先刷新到磁盘，释放redo log空间，此时会触发Checkpoint。/Async/Sync Flush Checkpoint）</li>
+<li>Master Thread每秒任务，刷新部分脏页</li>
+<li>LRU列表空闲页不足时，刷新部分脏页（Innodb会保证LRU列表中有一定数量空闲页可使用，如果LRU列表中没有这么多空闲页，那么Innodb会将LRU列表尾端的页移除，如果其中存在脏页，那么此时会进行Checkpoint操作/FLUSH_LRU_LIST Checkpoint）</li>
+</ol>
+</li>
+<li><p>两次写（Double write）<br>在写数据之前，先把这个数据页写到一块独立物理位置后，再写到数据页中。<br>由两部分组成，一部分是Innodb内存中的double write buffer；另一部分是物理磁盘上的ibdata系统表空间的大小为2M，共128个连续的page。<br>在对缓冲池中的脏页进行刷新时，并不直接写磁盘，而是会通过memcpy函数将脏页先复制到内存中的doublewrite buffer，之后通过doublewrite buffer分两次，每次1M顺序地写入到共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘。<br><a href="https://imgchr.com/i/ZhzmeP" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzmeP.md.jpg" alt="ZhzmeP.md.jpg"></a></p>
+</li>
+<li><p>WAL（write ahead log)</p>
+<pre><code>1. 先记录undo/redo log,确保日志刷到磁盘上持久存储。
+2. 更新内存数据页，并&lt;font color=&quot;red&quot;&gt;异步刷盘&lt;/font&gt;。
+3. 事务日志持久化到binlog，&lt;font color=&quot;red&quot;&gt;此时返回给客户端事务已提交&lt;/font&gt;。
+4. 提交事务，在redo log中写入到commit记录。
+</code></pre></li>
+<li><p>两阶段提交<br>我们可以看到对于更新数据的操作，MySQL的处理逻辑是先将内存中的数据页更新，然后写入redolog(prepare阶段），写入binglog，redo log(commit阶段)<br><a href="https://imgchr.com/i/ZhzEQA" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzEQA.md.jpg" alt="ZhzEQA.md.jpg"></a></p>
+<p>在两阶段不同时刻宕机，会发生什么情况？<br>innodb发现redolog中没有commit，就会拿着XA号去binlog中寻找是否存在</p>
+<ul>
+<li>在时刻A宕机，此时是不存在的，所以事务回滚。</li>
+<li>在时刻B宕机，此时Binlog中存在该XA号，所以会恢复该事务。</li>
+</ul>
+</li>
+<li><p>MVCC(多版本并发控制）<br>事务在开启的时候会获取一个一致性快照，每个事务都有一个唯一的事务ID，叫做transaction ID。<br>每行数据也有多个版本，每次事务更新数据的时候都会生成一个新的数据版本，并且将transaction ID赋值给这个数据版本的事务ID。<br>图中的虚线代表的就是undo log,V1、V2、V3并不物理真实存在，需要获取V2则需要从V4依次应用U3、U2。<br>一个数据版本，对于一个事务视图来说，除了自己更新的总是可见以外：</p>
+<ol>
+<li>版本未提交，不可见</li>
+<li>版本已提交，但是是在视图创建后提交的，不可见</li>
+<li>版本已提交，而且是在视图创建前提交的，可见<br><a href="https://imgchr.com/i/Zhzuo8" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzuo8.md.jpg" alt="Zhzuo8.md.jpg"></a></li>
+</ol>
+</li>
+<li><p>自适应哈希</p>
+</li>
+<li>异步IO</li>
+<li>刷新临近页</li>
+<li>组提交<h3 id="存储格式"><a href="#存储格式" class="headerlink" title="存储格式"></a>存储格式</h3><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> MySQL </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MySQL体系结构]]></title>
+      <url>/2019/03/02/MySQL/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</url>
+      <content type="html"><![CDATA[<h1 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h1><p><a href="https://imgchr.com/i/ZhxoZV" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxoZV.md.jpg" alt="ZhxoZV.md.jpg"></a></p>
+<ul>
+<li>连接器<br>连接器负责跟客户端建立连接、获取权限、维持和管理连接。<br>在这个阶段，连接器会对用户输入的账号密码进行判断。并判断用户连接和数据库连接是否都到了最大限制。以及后续对超时连接进行清理操作。<ol>
+<li>在连接之前，不管用户名密码是够正确，权限如何，连接器会先对连接数进行检查。</li>
+<li>权限会存在两份，一份在数据库中持久化存储，一份保存在内存当中。flush privileges操作就是将内存中的信息给清空，并从数据库中重新加载到内存中。</li>
+<li>在执行grant和revoke操作时，会先将磁盘中的信息修改，然后同步到内存中。但是如果是直接修改的mysql.user表，此时不会主动去更新内存。</li>
+<li>连接器只会到内存中读取用户信息以及权限。连接器只会在进行连接的时候才对用户账号密码进行校验，这意味着，如果一个用户已经连接上，修改密码并不会影响此连接。</li>
+<li>对于全局权限是实时从内存中获取，这代表如果进行权限修改会马上生效。但是对库的权限修改稍微有点区别，虽然也是实时同步到内存，但是如果该连接已经使用了use database进入某库，那么该连接会将该库的权限保存到当前会话变量中，对该库操作权限仍是进入时的状态。</li>
+</ol>
+</li>
+<li>缓存器<br>缓存器会将之前执行过的语句以key-value的形式缓存在内存当中，key是执行的语句,value是该语句执行的结果。如果能够直接获取到，那么会将结果直接返回。（返回结果前还会进行一次权限校验）<br>但是，如果对该表存在更新等数据修改操作，那么这个表上所有的缓存将会清空以保证读取数据的一致性。</li>
+<li>分析器<br>对sql进行词法和语法分析，此时会生成一颗解析树。此时会将sql语句转化成数据库能够看懂的形式，如将字符串’T’识别成’表名T’。此时会去读取库表结构，判断该表是否存在，该字段是够存在。</li>
+<li>优化器<br>根据自身的信息采集、以往执行计划分析等选择自认为最优的执行计划、选择相应的索引。<br>MySQL有一整套规则来判断SQL语句的最优方案，但是该方案不一定是最快的。<br>可以人为的对优化器进行控制，使其选择相应的方案。如force index/ignore index/STRAIGHT_JOIN等。</li>
+<li>执行器<br>根据优化器生成的执行计划来调用存储引擎的接口获取数据并对数据进行处理返回给客户端。</li>
+<li>存储引擎</li>
+</ul>
+<h1 id="MySQL内存结构"><a href="#MySQL内存结构" class="headerlink" title="MySQL内存结构"></a>MySQL内存结构</h1><p><a href="https://imgchr.com/i/ZhxTaT" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxTaT.md.jpg" alt="ZhxTaT.md.jpg"></a></p>
+<h2 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h2><ul>
+<li>innodb_buffer_pool_size  innodb缓冲池大小</li>
+<li>innodb_log_buffer_size   redo日志缓冲</li>
+<li>key_buffer_size          MyISAM索引缓冲</li>
+<li>table_definition_cache   表定义文件描述缓存</li>
+<li>table_open_cache         表空间文件描述缓存</li>
+<li>max_heap_table_size      memory、heap表的最大容量</li>
+</ul>
+<h2 id="线程内存"><a href="#线程内存" class="headerlink" title="线程内存"></a>线程内存</h2><ul>
+<li>read_buffer_size</li>
+<li>read_rnd_buffer_size</li>
+<li>sort_buffer_size</li>
+<li>join_buffer_size</li>
+<li>binlog_cache_size</li>
+<li>tmp_table_size</li>
+<li>thread_stack</li>
+<li>thread_chche_size</li>
+<li>net_buffer_length</li>
+</ul>
 ]]></content>
       
         <categories>

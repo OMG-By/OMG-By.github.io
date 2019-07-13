@@ -307,6 +307,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/面试准备/Cloneable实现原理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/04/面试准备/Cloneable实现原理/" itemprop="url">Cloneable接口实现原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-04T22:41:31+08:00">
+                2019-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Cloneable接口是Java开发中常用的一个接口，它的作用是使一个类的实例能够将自身拷贝到另一个新的实例当中。</p>
+<p>在开发过程中，如果一个类中的字段比较多，而我们如果采用在客户端中逐字段复制的方法来进行拷贝操作的话，将不可避免的造成客户端代码繁杂，而且也无法对类中的私有对象进行复制，而如果让需要具备拷贝功能的类实现<code>Cloneable</code>接口，并重写<code>clone()</code>方法的方式来简洁地实现实例拷贝功能。</p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p><code>private class Demo implements Cloneable{}</code><br>我们创建一个Demo类，并让他实现Cloneable接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public interface Cloneable &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们发现<code>Cloneable</code>几口里面并没有定义任何接口方法。<br>这是因为在<code>Object</code>类中已经将<code>clone()</code>方法定义为所有类都应该具有的基本功能，只是将该方法声明为了<code>protected</code>类型。它是一个<code>native</code>本地方法。</p>
+<p>如果一个类不实现该接口就直接调用<code>clone()</code>方法的话，就会抛出“不支持拷贝”异常。<br>所以如果要让一个类具有拷贝实例的功能，那么除了要重写<code>Object</code>类中<code>clone()</code>方法外，还必须实现Cloneable接口。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/面试准备/单例模式/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -895,6 +1041,510 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/MySQL/MySQL忘记密码怎么办/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/02/MySQL/MySQL忘记密码怎么办/" itemprop="url">MySQL忘记密码怎么办</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T20:14:16+08:00">
+                2019-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="MySQL忘记密码怎么办？"><a href="#MySQL忘记密码怎么办？" class="headerlink" title="MySQL忘记密码怎么办？"></a>MySQL忘记密码怎么办？</h1><p>有的时候搭建MySQL后，由于密码没有保存好、忘记密码、密码过期等原因，导致登录不上数据库。这个时候该怎么办？</p>
+<p>如果数据库使用人员，那还是乖乖的找数据库管理人员修改密码吧！<br>如果是数据库管理人员，能够登录到MySQL实例所在服务器的话。下面将介绍两种方式进行修改密码操作。</p>
+<h2 id="skip-grant-tables"><a href="#skip-grant-tables" class="headerlink" title="skip-grant-tables"></a>skip-grant-tables</h2><p>第一种方式就是网上介绍最多的通过配置skip-grant-tables参数来跳过MySQL登录校验后，进行修改密码。</p>
+<p>步骤就是：</p>
+<ol>
+<li>需要关闭MySQL实例。</li>
+<li>配置参数。这里有两种方式：第一种就是在启动的使用，启动命令添加–skip-grant-tables；第二种就是通过修改配置文件，在[mysqld]下添加skip-grant-tables。</li>
+<li>启动数据库</li>
+<li>通过alter mysql.user set authentication_string=password(‘newpass’) where XXX@XXX;</li>
+<li>去掉skip-grant-tables配置后重新启动。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">注：</span><br><span class="line">MySQL5.6的密码参数列为：password</span><br><span class="line">MySQL5.7的密码参数列为：authentication_string</span><br><span class="line"></span><br><span class="line">MySQL的账号是以`用户名`@`主机地址`计算的。同一用户名不同主机地址视为不同账号。</span><br></pre></td></tr></table></figure>
+<p>这种方法的缺点很明显：</p>
+<ol>
+<li>数据库必须有一段时间不能提供服务。</li>
+<li>开启跳过权限检查的参数后，安全性无法得到保障。所有人都能登录，即使没有改账号也能登录成功。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/02/MySQL/MySQL忘记密码怎么办/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ol></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/InnoDB整体架构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/02/MySQL/InnoDB整体架构/" itemprop="url">MySQL体系结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:14:16+08:00">
+                2019-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul>
+<li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol>
+<li>每秒的操作<ul>
+<li>刷新日志缓冲到磁盘（总是）</li>
+<li>合并插入缓冲</li>
+<li>刷新脏页到磁盘（至多100个）</li>
+<li>切换到后台进程</li>
+</ul>
+</li>
+<li>每10秒的操作<ul>
+<li>删除无用的undo页（总是）</li>
+<li>合并20个插入缓冲（总是）</li>
+<li>调回主循环（总是）</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>IO Thread</li>
+<li>purge Thread</li>
+<li>Page cleaner Thread</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/02/MySQL/InnoDB整体架构/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/MySQL体系结构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/02/MySQL/MySQL体系结构/" itemprop="url">MySQL体系结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:14:16+08:00">
+                2019-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h1><p><a href="https://imgchr.com/i/ZhxoZV" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxoZV.md.jpg" alt="ZhxoZV.md.jpg"></a></p>
+<ul>
+<li>连接器<br>连接器负责跟客户端建立连接、获取权限、维持和管理连接。<br>在这个阶段，连接器会对用户输入的账号密码进行判断。并判断用户连接和数据库连接是否都到了最大限制。以及后续对超时连接进行清理操作。<ol>
+<li>在连接之前，不管用户名密码是够正确，权限如何，连接器会先对连接数进行检查。</li>
+<li>权限会存在两份，一份在数据库中持久化存储，一份保存在内存当中。flush privileges操作就是将内存中的信息给清空，并从数据库中重新加载到内存中。</li>
+<li>在执行grant和revoke操作时，会先将磁盘中的信息修改，然后同步到内存中。但是如果是直接修改的mysql.user表，此时不会主动去更新内存。</li>
+<li>连接器只会到内存中读取用户信息以及权限。连接器只会在进行连接的时候才对用户账号密码进行校验，这意味着，如果一个用户已经连接上，修改密码并不会影响此连接。</li>
+<li>对于全局权限是实时从内存中获取，这代表如果进行权限修改会马上生效。但是对库的权限修改稍微有点区别，虽然也是实时同步到内存，但是如果该连接已经使用了use database进入某库，那么该连接会将该库的权限保存到当前会话变量中，对该库操作权限仍是进入时的状态。</li>
+</ol>
+</li>
+<li>缓存器<br>缓存器会将之前执行过的语句以key-value的形式缓存在内存当中，key是执行的语句,value是该语句执行的结果。如果能够直接获取到，那么会将结果直接返回。（返回结果前还会进行一次权限校验）<br>但是，如果对该表存在更新等数据修改操作，那么这个表上所有的缓存将会清空以保证读取数据的一致性。</li>
+<li>分析器<br>对sql进行词法和语法分析，此时会生成一颗解析树。此时会将sql语句转化成数据库能够看懂的形式，如将字符串’T’识别成’表名T’。此时会去读取库表结构，判断该表是否存在，该字段是够存在。</li>
+<li>优化器<br>根据自身的信息采集、以往执行计划分析等选择自认为最优的执行计划、选择相应的索引。<br>MySQL有一整套规则来判断SQL语句的最优方案，但是该方案不一定是最快的。<br>可以人为的对优化器进行控制，使其选择相应的方案。如force index/ignore index/STRAIGHT_JOIN等。</li>
+<li>执行器<br>根据优化器生成的执行计划来调用存储引擎的接口获取数据并对数据进行处理返回给客户端。</li>
+<li>存储引擎</li>
+</ul>
+<h1 id="MySQL内存结构"><a href="#MySQL内存结构" class="headerlink" title="MySQL内存结构"></a>MySQL内存结构</h1><p><a href="https://imgchr.com/i/ZhxTaT" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxTaT.md.jpg" alt="ZhxTaT.md.jpg"></a></p>
+<h2 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h2><ul>
+<li>innodb_buffer_pool_size  innodb缓冲池大小</li>
+<li>innodb_log_buffer_size   redo日志缓冲</li>
+<li>key_buffer_size          MyISAM索引缓冲</li>
+<li>table_definition_cache   表定义文件描述缓存</li>
+<li>table_open_cache         表空间文件描述缓存</li>
+<li>max_heap_table_size      memory、heap表的最大容量</li>
+</ul>
+<h2 id="线程内存"><a href="#线程内存" class="headerlink" title="线程内存"></a>线程内存</h2><ul>
+<li>read_buffer_size</li>
+<li>read_rnd_buffer_size</li>
+<li>sort_buffer_size</li>
+<li>join_buffer_size</li>
+<li>binlog_cache_size</li>
+<li>tmp_table_size</li>
+<li>thread_stack</li>
+<li>thread_chche_size</li>
+<li>net_buffer_length</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/Redis/Redis的内存管理和优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1183,608 +1833,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/22/MySQL/mysqldump遇到DDL/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/22/MySQL/mysqldump遇到DDL/" itemprop="url">当执行-single-transaction做逻辑备份时，遇到DDL</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-22T20:54:48+08:00">
-                2019-01-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>当使用-single-transaction做逻辑备份的时候，遇到一个DDL语句会怎样？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Q1:SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span><br><span class="line">Q2:START TRANSACTION  WITH CONSISTENT SNAPSHOT；</span><br><span class="line">/* other tables */</span><br><span class="line">Q3:SAVEPOINT sp;</span><br><span class="line">/* 时刻 1 */</span><br><span class="line">Q4:show create table `t1`;</span><br><span class="line">/* 时刻 2 */</span><br><span class="line">Q5:SELECT * FROM `t1`;</span><br><span class="line">/* 时刻 3 */</span><br><span class="line">Q6:ROLLBACK TO SAVEPOINT sp;</span><br><span class="line">/* 时刻 4 */</span><br><span class="line">/* other tables */</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/22/MySQL/mysqldump遇到DDL/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/21/MySQL/索引/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/21/MySQL/索引/" itemprop="url">索引</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-21T22:21:45+08:00">
-                2019-01-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <font color="red">索引的出现其实就是为了提高数据查询的效率，就像书的目录一样。</font>
-
-<h3 id="索引的常见模型"><a href="#索引的常见模型" class="headerlink" title="索引的常见模型"></a>索引的常见模型</h3><p>索引的出现时为了提高查询效率，但是实现索引的方式有很多种，所以这里也就引入了索引模型的概念。可以用来提高读写操作的数据结构有很多，这里先介绍比较简单的数据结构：哈希表和搜索树。</p>
-<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表是一种以K-V存储的数据结构，我们只要输入待查找的值，就可以找到其对应的值。哈希的思路很简单，把值放在数组里，用一个哈希函数把Key换算成一个确认的位置，然后把value放在数组的这个位置。遇到同一个位置上有很多value时，就用一个链表串起来。</p>
-<p>哈希链表适用于只有等值查询的场景</p>
-<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><p>二叉搜索树的特点是：每个节点的左儿子小于父节点，父节点又小于右儿子。查询的平均复杂度是O(log(N))。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/21/MySQL/索引/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/MySQL/事务隔离/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/16/MySQL/事务隔离/" itemprop="url">事务隔离</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-16T22:32:26+08:00">
-                2019-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>简单来说：事务就是保证一组数据库操作，要么全部成功，要么全部是失败。在MySQL中，事务支持是在引擎层实现的。MySQL是一个支持多引擎的系统，并不是所有的引擎都支持事务。比如MySQL原生的MyISAM引擎就不支持事务。</p>
-<h3 id="隔离性和隔离级别"><a href="#隔离性和隔离级别" class="headerlink" title="隔离性和隔离级别"></a>隔离性和隔离级别</h3><p>提到事务，肯定会想到ACID（即原子性、一致性、隔离性、持久性），这里就讨论一下隔离性。<br>当数据库上有多个事务同时执行的时候，就可能出现脏读、不可重复读、幻读的问题，为了解决这些问题，就有了“隔离级别”的概念。</p>
-<ul>
-<li>读未提交：一个事务还没提交时，它做的变更就能被别的事务看到。</li>
-<li>读已提交：一个事务提交后，它做的变更才会被其他事务看到</li>
-<li>可重复读：一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。</li>
-<li>串行化：后访问的事务必须等前一个事务完成后，才能继续执行。</li>
-</ul>
-<p>假设数据表T中只有一列，其中一行的值为1。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(c int) engine=InnoDB;</span><br><span class="line">insert into T(c) values(1);</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://m.qpic.cn/psb?/V140pON30woojR/N34*jAP61rjm0uHLDCigAi2GlkgbvdMqoW4J9gqGBok!/b/dL8AAAAAAAAA&amp;bo=OAT.BAAAAAADB.Q!&amp;rf=viewer_4" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/16/MySQL/事务隔离/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/MySQL/一个更新语句的执行过程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/14/MySQL/一个更新语句的执行过程/" itemprop="url">一条更新语句的执行过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T22:32:26+08:00">
-                2019-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>下面我们以下面这个表和更新语句来进行分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create table T(ID int primary key, c int);</span><br><span class="line">update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure></p>
-<p>对于更新语句，查询语句的那一套流程，更新语句同样是会走一遍。</p>
-<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>如果每一次更新操作都要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新；整个过程IO成本、查找成本都很高。为了解决这个问题，MySQL采用了WAL技术来提升更新效率。WAL的全称是write-Ahead Logging。它的关键点在于<font color="red">先写日志，再写磁盘</font>。</p>
-<p>具体来说，就是当有一条记录需要更新的时候，innodb引擎就会先把记录写到redo log里面，并更新内存，这个时候更新就算完成了。同时，innodb引擎会在适当的时候，将这个操作记录更新到次磁盘里面，而这个更新往往是在系统比较空闲的时候做。</p>
-<p>innodb的redo log是固定大小的，比如可以配置为一组4个文件，每个文件大小是1GB，那么redo log总共就可以记录4GB的操作，从头开始写，写到末尾就又回到开头循环写。<br><img src="https://m.qpic.cn/psb?/V140pON30woojR/cO8DivjlNOs4*4J.jc9sWkTtPIM5APzdpDE8aPjQews!/b/dLYAAAAAAAAA&amp;bo=hAUyAwAAAAADB5I!&amp;rf=viewer_4" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/14/MySQL/一个更新语句的执行过程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1837,7 +1885,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1848,7 +1896,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
