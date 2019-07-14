@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-06-23T13:13:08.542Z</updated>
+  <updated>2019-07-13T10:08:32.280Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mac安装多版本JDK</title>
+    <link href="http://yoursite.com/2019/07/13/mac%E5%AE%89%E8%A3%85%E5%A4%9A%E7%89%88%E6%9C%ACJDK/"/>
+    <id>http://yoursite.com/2019/07/13/mac安装多版本JDK/</id>
+    <published>2019-07-13T09:55:42.000Z</published>
+    <updated>2019-07-13T10:08:32.280Z</updated>
+    
+    <content type="html"><![CDATA[<p>随着JDK版本的快速迭代，作为优秀(kubi)的Java用户者，为了跟随时代的潮流，也开始使用1.8版本。</p><p>但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记录。</p><p>在终端下面使用<code>java -version</code>查看就可以查看使用的JDK版本了。<br>使用<code>/usr/libexec/java_home -V</code>可以查看本地已经安装的JDK</p><p>关于JDK1.x for mac的安装略过，网上有大把的教程。<br>我这里以安装3个版本1.6/1.7/1.8为例。</p><p>一、编辑.bash_profile<br><code>vim ~/.bash_profile</code></p><p>二、在.bash_profile中添加下面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_6_HOME=`/usr/libexec/java_home -v 1.6`</span><br><span class="line">export JAVA_7_HOME=`/usr/libexec/java_home -v 1.7`</span><br><span class="line">export JAVA_8_HOME=`/usr/libexec/java_home -v 1.8`</span><br><span class="line"></span><br><span class="line">#默认设为JDK1.7</span><br><span class="line">export JAVA_HOME=$JAVA_7_HOME</span><br><span class="line"></span><br><span class="line">#alias命令动态切换JDK版本</span><br><span class="line">alias jdk6=&quot;export JAVA_HOME=$JAVA_6_HOME&quot;</span><br><span class="line">alias jdk7=&quot;export JAVA_HOME=$JAVA_7_HOME&quot;</span><br><span class="line">alias jdk8=&quot;export JAVA_HOME=$JAVA_8_HOME&quot;</span><br></pre></td></tr></table></figure></p><p>三、刷新环境<br><code>source ~/.bash_profile</code></p><p>四、测试<br>执行：<code>jdk8</code>，再执行<code>java -version</code>，看看是不是1.8版本？<br>执行：<code>jdk6</code>，再执行<code>java -version</code>，看看是不是1.6版本？</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;随着JDK版本的快速迭代，作为优秀(kubi)的Java用户者，为了跟随时代的潮流，也开始使用1.8版本。&lt;/p&gt;
+&lt;p&gt;但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记
+      
+    
+    </summary>
+    
+      <category term="一些奇淫技巧" scheme="http://yoursite.com/categories/%E4%B8%80%E4%BA%9B%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
+    
+    
+      <category term="小技巧" scheme="http://yoursite.com/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>Cloneable接口实现原理</title>
@@ -185,11 +211,11 @@
   </entry>
   
   <entry>
-    <title>MySQL体系结构</title>
-    <link href="http://yoursite.com/2019/03/02/MySQL/InnoDB%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/"/>
-    <id>http://yoursite.com/2019/03/02/MySQL/InnoDB整体架构/</id>
-    <published>2019-03-02T12:14:16.000Z</published>
-    <updated>2019-07-13T06:03:13.193Z</updated>
+    <title>InnoDB整体架构</title>
+    <link href="http://yoursite.com/2019/03/03/MySQL/InnoDB%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84/"/>
+    <id>http://yoursite.com/2019/03/03/MySQL/InnoDB整体架构/</id>
+    <published>2019-03-03T12:14:16.000Z</published>
+    <updated>2019-07-13T06:09:15.874Z</updated>
     
     <content type="html"><![CDATA[<h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul><li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol><li>每秒的操作<ul><li>刷新日志缓冲到磁盘（总是）</li><li>合并插入缓冲</li><li>刷新脏页到磁盘（至多100个）</li><li>切换到后台进程</li></ul></li><li>每10秒的操作<ul><li>删除无用的undo页（总是）</li><li>合并20个插入缓冲（总是）</li><li>调回主循环（总是）</li></ul></li></ol></li><li>IO Thread</li><li>purge Thread</li><li>Page cleaner Thread</li></ul><a id="more"></a><h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ul><li><p>Change buffer（Insert buffer、Delete buffer、Purge buffer）<br>在对非唯一索引的插入和更新操作过程中，如果该数据页在内存中，则直接对数据页进行修改。如果该数据页不在内存中，Innodb并不会马上到磁盘上将该数据页读入内存中，而是先将修改存入到Change buffer中，再按照一定的频率将修改合并到数据页中。</p><ol><li>为什么是需要在非唯一索引的<br>如果是对唯一索引上的数据进行修改，那么在修改前需要进行唯一性校验，这个时候会对该数据页进行查询操作，此时已经将该数据页读取到了内存当中，所以Change buffer的优化对唯一索引并没有什么效果。</li><li>如果宕机是否会导致数据的丢失？<br>Change buffer中数据，不仅会保存在内存当中，还会持久化到磁盘（系统表空间）当中。（持久化机制？）</li><li>什么情况下会合并？<ul><li>当对该数据页进行查询操作时，会将该数据页读取到内存当中。此时，会进行Change buffer的合并操作，将Change buffer中对该数据页的修改应用到该数据页。</li><li>Insert buffer Bitmap页追踪到该辅助索引页中已无可用空间</li><li>Master Thread</li></ul></li><li>合并流程怎样？<ul><li>从磁盘中读取数据页到内存（老版本）</li><li>从Change buffer中读取这个数据页的修改引用到内存中的数据页</li><li>写redo log。记录了内存也和Change buffer的变更。（此时内存中的数据页属于脏页）<br><a href="https://imgchr.com/i/Zhzndf" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzndf.md.jpg" alt="Zhzndf.md.jpg"></a></li></ul></li></ol></li><li><p>redo buffer<br>redo log中记录的是数据页的物理修改。在事务执行过程中不断的写入到redo buffer中。<br>redo buffer在以下情况会持久化到磁盘。</p><ul><li>Master Thread每秒的定时任务</li><li>每个事务提交时</li><li>写入量过大，导致redo buffer不足是<br>由innodb_flush_log_at_trx_commit控制刷盘策略</li><li>0代表当事务提交时刷盘，只由Master Thread每秒定时任务执行刷盘</li><li>1代表在执行commit时将重做日志缓冲同步到写到磁盘</li><li>2异步刷盘，直接写到文件系统的缓存中，不保证commit执行时肯定会刷盘</li></ul></li><li>数据页和索引页<br>数据都是存储在磁盘上的，当需要访问时才会从磁盘中将该数据所在的页读取到内存当中，并以一定的策略进行淘汰策略和刷盘策略。</li><li>哈希信息页</li><li>元数据信息页</li></ul><h3 id="Innodb机制"><a href="#Innodb机制" class="headerlink" title="Innodb机制"></a>Innodb机制</h3><ul><li>checkpoint<br>在一定条件下，将内存中的脏页持久化到磁盘，并记录数据页刷新的位点信息(LSN)的一种机制。<ol><li>缩短数据库的恢复时间（数据库关闭时将所有的脏页刷新到磁盘/Sharp Checkpoint）</li><li>缓冲池不够用时，刷新部分脏页（为了保证缓冲池中有足够可用的数据页，Innodb会强制进行Checkpoint/Dirty Page too much Checkpoint)</li><li>重做日志不可用时，刷新部分脏页（redo log是一个循环文件，如果redo log的写入量特别大，导致此时redo log几乎写满，Innodb会先将部分脏页先刷新到磁盘，释放redo log空间，此时会触发Checkpoint。/Async/Sync Flush Checkpoint）</li><li>Master Thread每秒任务，刷新部分脏页</li><li>LRU列表空闲页不足时，刷新部分脏页（Innodb会保证LRU列表中有一定数量空闲页可使用，如果LRU列表中没有这么多空闲页，那么Innodb会将LRU列表尾端的页移除，如果其中存在脏页，那么此时会进行Checkpoint操作/FLUSH_LRU_LIST Checkpoint）</li></ol></li><li><p>两次写（Double write）<br>在写数据之前，先把这个数据页写到一块独立物理位置后，再写到数据页中。<br>由两部分组成，一部分是Innodb内存中的double write buffer；另一部分是物理磁盘上的ibdata系统表空间的大小为2M，共128个连续的page。<br>在对缓冲池中的脏页进行刷新时，并不直接写磁盘，而是会通过memcpy函数将脏页先复制到内存中的doublewrite buffer，之后通过doublewrite buffer分两次，每次1M顺序地写入到共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘。<br><a href="https://imgchr.com/i/ZhzmeP" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzmeP.md.jpg" alt="ZhzmeP.md.jpg"></a></p></li><li><p>WAL（write ahead log)</p><pre><code>1. 先记录undo/redo log,确保日志刷到磁盘上持久存储。2. 更新内存数据页，并&lt;font color=&quot;red&quot;&gt;异步刷盘&lt;/font&gt;。3. 事务日志持久化到binlog，&lt;font color=&quot;red&quot;&gt;此时返回给客户端事务已提交&lt;/font&gt;。4. 提交事务，在redo log中写入到commit记录。</code></pre></li><li><p>两阶段提交<br>我们可以看到对于更新数据的操作，MySQL的处理逻辑是先将内存中的数据页更新，然后写入redolog(prepare阶段），写入binglog，redo log(commit阶段)<br><a href="https://imgchr.com/i/ZhzEQA" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzEQA.md.jpg" alt="ZhzEQA.md.jpg"></a></p><p>在两阶段不同时刻宕机，会发生什么情况？<br>innodb发现redolog中没有commit，就会拿着XA号去binlog中寻找是否存在</p><ul><li>在时刻A宕机，此时是不存在的，所以事务回滚。</li><li>在时刻B宕机，此时Binlog中存在该XA号，所以会恢复该事务。</li></ul></li><li><p>MVCC(多版本并发控制）<br>事务在开启的时候会获取一个一致性快照，每个事务都有一个唯一的事务ID，叫做transaction ID。<br>每行数据也有多个版本，每次事务更新数据的时候都会生成一个新的数据版本，并且将transaction ID赋值给这个数据版本的事务ID。<br>图中的虚线代表的就是undo log,V1、V2、V3并不物理真实存在，需要获取V2则需要从V4依次应用U3、U2。<br>一个数据版本，对于一个事务视图来说，除了自己更新的总是可见以外：</p><ol><li>版本未提交，不可见</li><li>版本已提交，但是是在视图创建后提交的，不可见</li><li>版本已提交，而且是在视图创建前提交的，可见<br><a href="https://imgchr.com/i/Zhzuo8" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzuo8.md.jpg" alt="Zhzuo8.md.jpg"></a></li></ol></li><li><p>自适应哈希</p></li><li>异步IO</li><li>刷新临近页</li><li>组提交<h3 id="存储格式"><a href="#存储格式" class="headerlink" title="存储格式"></a>存储格式</h3><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3></li></ul>]]></content>
     
@@ -559,36 +585,6 @@
       
         &lt;h1 id=&quot;object-c&quot;&gt;&lt;a href=&quot;#object-c&quot; class=&quot;headerlink&quot; title=&quot;object.c&quot;&gt;&lt;/a&gt;object.c&lt;/h1&gt;&lt;p&gt;object.c文件主要记录了Redis对象的创建和释放方法&lt;br&gt;&lt;figure clas
       
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis原理----主从复制</title>
-    <link href="http://yoursite.com/2018/10/26/Redis/Redis%E5%8E%9F%E7%90%86----%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"/>
-    <id>http://yoursite.com/2018/10/26/Redis/Redis原理----主从复制/</id>
-    <published>2018-10-26T13:34:13.000Z</published>
-    <updated>2018-10-28T15:41:46.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>很多企业都没有使用到Redis的集群，但是至少都做了主从。有了主从，当master挂掉的时候，运维让从库过来接管，服务就可以继续，否则master需要经过数据恢复和重启的过程，这就可能会拖很长时间，影响线上业务的持续服务。  </p><p>在了解Redis主从复制之前，让我们先来理解一下现代分布式系统的理论基石–CAP原理。</p><h2 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h2><p>CAP原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打CAP的论文发表之后，分布式存储中间件犹如雨后春笋一个一个涌现出来。  </p><ul><li>C-Consistent 一致性</li><li>A-Availability 可用性</li><li>P-Partition tolerance 分区容忍性</li></ul><p>分布式系统的节点往往都是分布在不同的机器上进行网络隔离开的，这意味着必然会有网络断开的风险，这个网络断开的场景的专业词汇叫着「网络分区」。</p><a id="more"></a><p>在网络分区发生时，两个分布式节点之间无法进行通信，我们对一个节点进行的修改操作将无法同步到另外一个节点，所以数据的「一致性」将无法满足，因为两个分布式节点的数据不再保持一致。除非我们牺牲「可用性」，也就是暂停分布式节点服务，在网络分区发生时，不再提供修改数据的功能，直到网络状况完全恢复正常再继续对外提供服务。<br><img src="https://i.imgur.com/owNDznt.jpg" alt=""><br>一句话概括CAP原理就是–<b>网络分区发生时，一致性和可用性两难全。</b>  </p><p>Redis的主从数据是异步同步的，所以分布式的Redis系统并不满足[一致性]要求。当客户端在Redis的主节点修改了数据后，立即返回，即使在主从网络断开的情况下，主从节点依旧可以正常对外提供服务，所以Redis满足[可用性]。  </p><p>Redis保证[最终一致性]，从节点会努力追赶主节点，最终从节点的状态会和主节点的状态保持一致。如果网络断开，主从节点的数据将会出现大量不一致，一旦网络恢复，从节点会采用多种策略努力追赶上落后的数据，继续经历保持和主节点一致。  </p><h2 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h2><p>Redis同步支持主从同步和从从同步，从从同步功能是Redis后续版本增加的功能，为了减轻主库的同步负担。<br><img src="https://i.imgur.com/1IiirbA.jpg" alt="">  </p><h2 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h2><p>Redis同步的是指令流，主节点会将那些对自己状态产生修改性影响的指令记录在本地的内存buffer中，然后异步将buffer中的指令同步到从节点，从节点一边执行同步的指令流来达到和主节点一样的状态，一边向主节点反馈自己同步的偏移量。  </p><p>因为内存的buffer（复制积压缓冲区）是有限的，所以Redis主库不能将所有的指令都记录在内存buffer中。Redis的复制内存buffer是一个定长的环形数组，如果数组内容满了，就会从头开始覆盖前面的内容。<br><img src="https://i.imgur.com/I9g0mo3.jpg" alt=""><br>如果因为网络状况不好，从节点在短时间内无法和主节点进行同步，那么在网络状况恢复时，Redis的主节点中那些没有同步的指令在buffer中有可能已经被后续的指令覆盖掉了，从节点将无法直接通过指令流来进行同步，这个时候就需要用到更加复杂的同步机制–快照同步。  </p><h2 id="快照同步"><a href="#快照同步" class="headerlink" title="快照同步"></a>快照同步</h2><p>快照同步是一个非常耗费资源的操作，它首先需要在主库上进行一次bgsave将当前内存中的数据全部快照到磁盘文件中，然后再将快照文件的传送给从节点。从节点在接收完毕后，立即执行一次全量加载，加载之前会将内存中的数据清空。加载完毕后通知主节点继续进行增量同步。  </p><p>在整个快照同步执行的过程中，主节点的复制buffer还在不停的往前移动，如果快照同步的时间过长或者复制buffer太小，都会导致同步期间的增量指令在复制buffer中被覆盖，这样就会导致快照同步完成后无法进行增量复制，然后会再次发起快照同步，如果极有可能陷入无限的死循环，从而影响主节点的正常服务。<br><img src="https://i.imgur.com/aw8EZAS.jpg" alt=""><br><b>请务必设置一个合适复制buffer大小参数，避免这种情况的发生。</b>  </p><h2 id="无盘复制"><a href="#无盘复制" class="headerlink" title="无盘复制"></a>无盘复制</h2><p>主节点在进行快照同步时，会进行很重的文件IO操作，特别是对于非SSD磁盘存储时，快照会对系统的负载产生较大影响。特别是当系统正在进行AOF的fsync操作时如果发生快照，fsync将会被推迟执行，这就会严重影响主节点的服务效率。  </p><p>所以从Redis2.8.18版开始支持无盘复制。所谓无盘复制就是指主服务器直接通过套接字将快照内容发送到从节点，生成快照是一个遍历的过程，主节点会一边遍历内容，一边将序列化的内容发送给从节点，从节点还是跟之前一样，先将接收到的内容存储到磁盘文件中，再进行一次性加载。  </p><h2 id="Wait指令"><a href="#Wait指令" class="headerlink" title="Wait指令"></a>Wait指令</h2><p>Redis的复制是异步进行的，wait指令可以让异步复制变身同步复制，确保系统的强一致性（不严格）。wait指令时Redis3.0版本以后出现的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;set key value  </span><br><span class="line">OK  </span><br><span class="line">&gt;wait 1 0  </span><br><span class="line">(interge) 1</span><br></pre></td></tr></table></figure></p><p>wait提供两个参数，第一个参数是从库的数量N，第二个参数是时间t，以毫秒为单位。它表示等待wait指令之前的所有写操作同步到N个从库（也就是确保N个从库的同步没有滞后），最多等待时间t。如果时间t=0，代表无限等待知道N个从库同步完成达到一致。  </p><p>假设此时出现了网络分区，wait指令第二个参数时间t=0，主从同步无法继续进行，wait指令会永远阻塞，Redis服务器将丧失可用性。  </p><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>主从复制是Redis分布式的基础，Redis的高可用离开了朱重构复制将无法进行。  </p><p>如果你将Redis只用作缓存，跟memcache一样对待，也就唔需要从库做备份，挂掉了重新启动一下就行了。但是只要你使用了Redis的持久化功能，就必须认真对待主从复制，它是系统数据安全的基础保障。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很多企业都没有使用到Redis的集群，但是至少都做了主从。有了主从，当master挂掉的时候，运维让从库过来接管，服务就可以继续，否则master需要经过数据恢复和重启的过程，这就可能会拖很长时间，影响线上业务的持续服务。  &lt;/p&gt;
-&lt;p&gt;在了解Redis主从复制之前，让我们先来理解一下现代分布式系统的理论基石–CAP原理。&lt;/p&gt;
-&lt;h2 id=&quot;CAP原理&quot;&gt;&lt;a href=&quot;#CAP原理&quot; class=&quot;headerlink&quot; title=&quot;CAP原理&quot;&gt;&lt;/a&gt;CAP原理&lt;/h2&gt;&lt;p&gt;CAP原理就好比分布式领域的牛顿定律，它是分布式存储的理论基石。自打CAP的论文发表之后，分布式存储中间件犹如雨后春笋一个一个涌现出来。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;C-Consistent 一致性&lt;/li&gt;
-&lt;li&gt;A-Availability 可用性&lt;/li&gt;
-&lt;li&gt;P-Partition tolerance 分区容忍性&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;分布式系统的节点往往都是分布在不同的机器上进行网络隔离开的，这意味着必然会有网络断开的风险，这个网络断开的场景的专业词汇叫着「网络分区」。&lt;/p&gt;
     
     </summary>
     
