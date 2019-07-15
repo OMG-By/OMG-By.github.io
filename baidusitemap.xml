@@ -4,8 +4,23 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/07/15/Bitmap%E3%80%81Bloom-Filter%E3%80%81Cuckoo-Filter/</loc>
+    <lastmod>2019-07-15T04:14:57.889Z</lastmod>
+    <data>
+        <display>
+        <title>Bitmap、Bloom Filter、Cuckoo Filter</title>
+        <pubTime>2019-07-15T04:11:26.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/07/13/mac%E5%AE%89%E8%A3%85%E5%A4%9A%E7%89%88%E6%9C%ACJDK/</loc>
-    <lastmod>2019-07-13T10:08:32.280Z</lastmod>
+    <lastmod>2019-07-14T10:04:25.341Z</lastmod>
     <data>
         <display>
         <title>mac安装多版本JDK</title>
