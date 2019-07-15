@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/04/04/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/</loc>
+    <lastmod>2019-07-15T15:06:44.757Z</lastmod>
+    <data>
+        <display>
+        <title>三次握手和四次挥手</title>
+        <pubTime>2019-04-04T15:03:37.000Z</pubTime>
+        
+        <tag>计算机网络</tag>
+         
+        <tag>面试</tag>
+         
+         
+           
+             
+              <breadCrumb title="计算机基础" url="http://yoursite.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/07/15/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%A7%A3%E6%9E%90/</loc>
+    <lastmod>2019-07-15T14:59:24.827Z</lastmod>
+    <data>
+        <display>
+        <title>Java线程池解析</title>
+        <pubTime>2019-07-15T14:02:22.000Z</pubTime>
+        
+        <tag>JAVA</tag>
+         
+        <tag>面试</tag>
+         
+         
+           
+             
+              <breadCrumb title="JAVA" url="http://yoursite.com/categories/JAVA/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/07/15/Bitmap%E3%80%81Bloom-Filter%E3%80%81Cuckoo-Filter/</loc>
     <lastmod>2019-07-15T04:16:44.081Z</lastmod>
     <data>

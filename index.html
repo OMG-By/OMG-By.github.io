@@ -307,6 +307,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/面试准备/Java线程池解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/15/面试准备/Java线程池解析/" itemprop="url">Java线程池解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-15T22:02:22+08:00">
+                2019-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>线程池</strong>：可以根据字面意思简单的理解，一个管理线程的池子。</p>
+<ul>
+<li>帮我们管理线程，避免增加创建线程和销毁线程的资源损耗。</li>
+<li>提高响应速度。</li>
+<li>重复利用。</li>
+</ul>
+<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public ThreadPoolExecutor(int corePoolSize,</span><br><span class="line">                              int maximumPoolSize,</span><br><span class="line">                              long keepAliveTime,</span><br><span class="line">                              TimeUnit unit,</span><br><span class="line">                              BlockingQueue&lt;Runnable&gt; workQueue) &#123;</span><br><span class="line">        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</span><br><span class="line">             Executors.defaultThreadFactory(), defaultHandler);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>corePoolSize：线程池核心线程数最大值</li>
+<li>maximumPoolSize： 线程池最大线程数大小</li>
+<li>keepAliveTime： 线程池中非核心线程空闲的存活时间大小</li>
+<li>unit： 线程空闲存活时间单位</li>
+<li>workQueue： 存放任务的阻塞队列</li>
+<li>threadFactory： 用于设置创建线程的工厂，可以给创建的线程设置有意义的名字，可方便排查问题。</li>
+<li>handler：  线城池的饱和策略事件，主要有四种类型。</li>
+</ul>
+<h1 id="任务执行流程"><a href="#任务执行流程" class="headerlink" title="任务执行流程"></a>任务执行流程</h1><p>线程池执行流程，对应<code>execute()</code>方法。<br><a href="https://imgchr.com/i/Z7iOzt" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/15/Z7iOzt.md.jpg" alt="Z7iOzt.md.jpg"></a><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/15/面试准备/Java线程池解析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/Bitmap、Bloom-Filter、Cuckoo-Filter/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1189,6 +1351,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/04/面试准备/三次握手和四次挥手/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/04/面试准备/三次握手和四次挥手/" itemprop="url">三次握手和四次挥手</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-04T23:03:37+08:00">
+                2019-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机基础/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="三次握手流程"><a href="#三次握手流程" class="headerlink" title="三次握手流程"></a>三次握手流程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">客户端-&gt;服务端: SYNC=1,seq=x</span><br><span class="line">Note left of 客户端: SYCN_SEND</span><br><span class="line">服务端--&gt;客户端: SYNC=1,ACK=1,seq=y,ack=x+1</span><br><span class="line">Note right of 服务端: SYNC_RECV</span><br><span class="line">客户端-&gt;服务端: ACK=1,seq=x+1,ack=y+1</span><br><span class="line">Note left of 客户端: ESTAB-LISHED</span><br><span class="line">Note right of 服务端: ESTAB-LISHED</span><br></pre></td></tr></table></figure>
+<p>第一次握手：建立连接时，客户端发送sync包(syn=x)到服务器，并进入SYN_SENT状态，等待服务器确认；</p>
+<p>第二次握手：服务器收到syn包，发送确认号(ack=x+1)，同时自己也发送一个syn包(syn=y)，即ACK+SYN包；服务器进入SYN_RECV状态。</p>
+<p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1)；发送完毕后，客户端和服务端都进入ESTABLISHED状态完成三次握手。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/04/面试准备/三次握手和四次挥手/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/MySQL/Change Buffer/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1486,349 +1797,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/03/MySQL/InnoDB整体架构/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/03/MySQL/InnoDB整体架构/" itemprop="url">InnoDB整体架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T20:14:16+08:00">
-                2019-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul>
-<li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol>
-<li>每秒的操作<ul>
-<li>刷新日志缓冲到磁盘（总是）</li>
-<li>合并插入缓冲</li>
-<li>刷新脏页到磁盘（至多100个）</li>
-<li>切换到后台进程</li>
-</ul>
-</li>
-<li>每10秒的操作<ul>
-<li>删除无用的undo页（总是）</li>
-<li>合并20个插入缓冲（总是）</li>
-<li>调回主循环（总是）</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>IO Thread</li>
-<li>purge Thread</li>
-<li>Page cleaner Thread</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/03/03/MySQL/InnoDB整体架构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/MySQL体系结构/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/02/MySQL/MySQL体系结构/" itemprop="url">MySQL体系结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:14:16+08:00">
-                2019-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h1><p><a href="https://imgchr.com/i/ZhxoZV" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxoZV.md.jpg" alt="ZhxoZV.md.jpg"></a></p>
-<ul>
-<li>连接器<br>连接器负责跟客户端建立连接、获取权限、维持和管理连接。<br>在这个阶段，连接器会对用户输入的账号密码进行判断。并判断用户连接和数据库连接是否都到了最大限制。以及后续对超时连接进行清理操作。<ol>
-<li>在连接之前，不管用户名密码是够正确，权限如何，连接器会先对连接数进行检查。</li>
-<li>权限会存在两份，一份在数据库中持久化存储，一份保存在内存当中。flush privileges操作就是将内存中的信息给清空，并从数据库中重新加载到内存中。</li>
-<li>在执行grant和revoke操作时，会先将磁盘中的信息修改，然后同步到内存中。但是如果是直接修改的mysql.user表，此时不会主动去更新内存。</li>
-<li>连接器只会到内存中读取用户信息以及权限。连接器只会在进行连接的时候才对用户账号密码进行校验，这意味着，如果一个用户已经连接上，修改密码并不会影响此连接。</li>
-<li>对于全局权限是实时从内存中获取，这代表如果进行权限修改会马上生效。但是对库的权限修改稍微有点区别，虽然也是实时同步到内存，但是如果该连接已经使用了use database进入某库，那么该连接会将该库的权限保存到当前会话变量中，对该库操作权限仍是进入时的状态。</li>
-</ol>
-</li>
-<li>缓存器<br>缓存器会将之前执行过的语句以key-value的形式缓存在内存当中，key是执行的语句,value是该语句执行的结果。如果能够直接获取到，那么会将结果直接返回。（返回结果前还会进行一次权限校验）<br>但是，如果对该表存在更新等数据修改操作，那么这个表上所有的缓存将会清空以保证读取数据的一致性。</li>
-<li>分析器<br>对sql进行词法和语法分析，此时会生成一颗解析树。此时会将sql语句转化成数据库能够看懂的形式，如将字符串’T’识别成’表名T’。此时会去读取库表结构，判断该表是否存在，该字段是够存在。</li>
-<li>优化器<br>根据自身的信息采集、以往执行计划分析等选择自认为最优的执行计划、选择相应的索引。<br>MySQL有一整套规则来判断SQL语句的最优方案，但是该方案不一定是最快的。<br>可以人为的对优化器进行控制，使其选择相应的方案。如force index/ignore index/STRAIGHT_JOIN等。</li>
-<li>执行器<br>根据优化器生成的执行计划来调用存储引擎的接口获取数据并对数据进行处理返回给客户端。</li>
-<li>存储引擎</li>
-</ul>
-<h1 id="MySQL内存结构"><a href="#MySQL内存结构" class="headerlink" title="MySQL内存结构"></a>MySQL内存结构</h1><p><a href="https://imgchr.com/i/ZhxTaT" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxTaT.md.jpg" alt="ZhxTaT.md.jpg"></a></p>
-<h2 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h2><ul>
-<li>innodb_buffer_pool_size  innodb缓冲池大小</li>
-<li>innodb_log_buffer_size   redo日志缓冲</li>
-<li>key_buffer_size          MyISAM索引缓冲</li>
-<li>table_definition_cache   表定义文件描述缓存</li>
-<li>table_open_cache         表空间文件描述缓存</li>
-<li>max_heap_table_size      memory、heap表的最大容量</li>
-</ul>
-<h2 id="线程内存"><a href="#线程内存" class="headerlink" title="线程内存"></a>线程内存</h2><ul>
-<li>read_buffer_size</li>
-<li>read_rnd_buffer_size</li>
-<li>sort_buffer_size</li>
-<li>join_buffer_size</li>
-<li>binlog_cache_size</li>
-<li>tmp_table_size</li>
-<li>thread_stack</li>
-<li>thread_chche_size</li>
-<li>net_buffer_length</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1881,7 +1849,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">104</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1892,7 +1860,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1903,7 +1871,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
