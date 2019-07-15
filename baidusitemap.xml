@@ -5,14 +5,19 @@
     
   <url>
     <loc>http://yoursite.com/2019/07/15/Bitmap%E3%80%81Bloom-Filter%E3%80%81Cuckoo-Filter/</loc>
-    <lastmod>2019-07-15T04:14:57.889Z</lastmod>
+    <lastmod>2019-07-15T04:16:44.081Z</lastmod>
     <data>
         <display>
         <title>Bitmap、Bloom Filter、Cuckoo Filter</title>
         <pubTime>2019-07-15T04:11:26.000Z</pubTime>
         
+        <tag>小技巧</tag>
+         
          
            
+             
+              <breadCrumb title="一些奇淫技巧" url="http://yoursite.com/categories/%E4%B8%80%E4%BA%9B%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
+          
         </display>
     </data>
     </url>
