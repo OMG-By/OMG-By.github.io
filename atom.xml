@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-07-15T14:59:24.827Z</updated>
+  <updated>2019-07-17T05:20:10.808Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java类加载机制</title>
+    <link href="http://yoursite.com/2019/07/16/Java/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
+    <id>http://yoursite.com/2019/07/16/Java/Java类加载机制/</id>
+    <published>2019-07-16T14:59:41.000Z</published>
+    <updated>2019-07-17T05:20:10.808Z</updated>
+    
+    <content type="html"><![CDATA[<p>类的加载是指将类的<code>.class</code>文件中的<strong>二进制数据读入到内存</strong>中，将其放在运行时数据区的方法区，然后在Java堆中创建一个java.lang.Class对象(类也是对象)，用来封装类在方法区内的数据结构。<br>类加载的最终产物是位于堆中的Class对象，该Class对象封装了类在方法区内的数据结构，并且向开发者提供了访问方法区内的数据结构的接口。<br><a href="https://imgchr.com/i/ZqjkUs" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/17/ZqjkUs.jpg" alt="ZqjkUs.jpg"></a></p><p>类加载器不需要等到某个类被“首次主动使用”时再加载，JVM规范允许类加载器在预料某个类将要被使用的时候就预先加载，如果在预先加载的过程中遇到了<code>.class</code>文件缺失或存在错误，类加载器必须在程序<font color="red">首次主动使用该类</font>时才报告错误，如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。</p><h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p><a href="https://imgchr.com/i/ZqjPbQ" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/17/ZqjPbQ.jpg" alt="ZqjPbQ.jpg"></a></p><p>类的生命周期主要包含<code>加载</code>、<code>验证</code>、<code>准备</code>、<code>解析</code>、<code>初始化</code>、<code>使用</code>、<code>卸载</code>。<br>在加载过程中的五个阶段中，<code>加载</code>、<code>验证</code>、<code>准备</code>、<code>初始化</code>发生的顺序是一定的，而<code>解析</code>在某些情况下可以在<code>初始化</code>阶段之后执行。这是为了支持Java语言的运行时绑定。<br>另外需要注意的是：这几个阶段是按照顺序开始，而不是按照顺序进行或完成，因为这些阶段通常是相互交叉混合进行的，通常在一个阶段执行的过程中需要调用或激活另一个阶段。<br><a id="more"></a></p><h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>查找并加载类的二进制数据是类加载过程的第一个阶段，在这个阶段，虚拟机需要完成以下事情：</p><ul><li>通过一个类的全限定名来获取其定义的二进制字节流</li><li>将这个字节流代表的静态存储结构转化成方法区的运行时数据结构</li><li>在Java堆中生成一个代表这个类的<code>java.lang.Class</code>对象，作为对方法区中这些数据的访问入口</li></ul><h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>验证是连接阶段的第一步，连接阶段的目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，不会危害虚拟机自身的安全。</p><p>在验证阶段，主要是完成以下的校验动作：</p><h3 id="文件格式验证"><a href="#文件格式验证" class="headerlink" title="文件格式验证"></a>文件格式验证</h3><p>验证字节流是否符合Class文件格式的规范。例如：是否以<code>OxCAFEBASE</code>开头、主版本号是否在当前虚拟机的处理范围之内、常量池中的常量是否有不被支持的类型。</p><h3 id="元数据校验"><a href="#元数据校验" class="headerlink" title="元数据校验"></a>元数据校验</h3><p>对字节码描述的信息进行语义分析，保证其描述的信息符合Java语言规范的要求；列如：这个类是否有父类，除了<code>java.lang.Object</code></p><h3 id="字节码验证"><a href="#字节码验证" class="headerlink" title="字节码验证"></a>字节码验证</h3><p>通过数据流和控制流分析，确定程序语义是合法的、符合逻辑的。</p><h3 id="符号引用验证"><a href="#符号引用验证" class="headerlink" title="符号引用验证"></a>符号引用验证</h3><p>确保解析动作能正确执行</p><p>验证阶段是非常重要的，但不是必须的，它对程序运行期没有影响，如果所引用的类经过反复验证，那么可以考虑采用 <code>-Xverifynone</code>参数来关闭大部分的类验证措施，以缩短虚拟机类加载的时间。</p><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>为类的<code>静态变量</code>分配内存，并将其初始化为默认值</p><p>准备阶段是正式为类变量分配内存并设置类变量初始值的阶段，这些内存都将在方法区分配。</p><ul><li>这个阶段进行内存分配的<font color="red">仅包括类变量(static)</font>，不包括实例变量；实例变量会在对象实例化时随着实例一块分配在Java堆中。</li><li>这个阶段设置的初始值通常是数据类型的默认值，而不是在Java程序中被显式赋予的值。</li><li>如果是同时被final和static修饰的属性，这在准备阶段会被初始化为定义的值。</li></ul><blockquote><p>假设有一个变量public static int value = 3<br>那么变量value在准备阶段过后的初始值是0，而不是3，因为这个时候还没开始执行任何Java方法，把value赋值为3的public static指令是在程序编译后，存放在类构造器<clinit>()方法中，所以value赋值为3的动作在初始化阶段才会执行。</clinit></p></blockquote><h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>解析阶段是虚拟机将常量池内的符号引用替换成直接引用的过程。<br>解析动作主要是针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符7类符号类型进行，</p><ul><li>符号引用：用一组符号描述目标，可以是任何字面量</li><li>直接引用：直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄</li></ul><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>为类的静态变量赋予正确的初始值，JVM负责对类进行初始化，主要对类变量进行初始化。在Java中对类变量进行初始值设定有两种方式：</p><ul><li>声明类变量是指定初始值</li><li>使用静态代码块为类变量指定初始值</li></ul><h3 id="初始化步骤"><a href="#初始化步骤" class="headerlink" title="初始化步骤"></a>初始化步骤</h3><ul><li>假如这个类还没有被加载和连接，则程序先加载并连接该类</li><li>假如该类的直接父类还没有被初始化，则先初始化其直接父类</li><li>假如类中有初始化语句，则系统依次执行这些初始化语句</li></ul><h3 id="类初始化情况"><a href="#类初始化情况" class="headerlink" title="类初始化情况"></a>类初始化情况</h3><ul><li>使用new创建类的实例</li><li>第一次访问某个类或接口的静态变量，或者对静态变量赋值</li><li>第一次调用类的静态方法</li><li>使用反射加载类(Class.forName(“xxx.xxx”))</li><li>初始化某个类的子类，其父类也会被初始化</li><li>Java虚拟机启动的时候标明启动的类(Java Test)，直接使用<code>java.exe</code>运行某个主类。</li></ul><h1 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h1><p>JVM预定义了三种类加载器，当一个JVM启动的时候，Java会默认使用类加载器进行类加载。</p><ul><li>启动类加载器:负责加载存放在<code>JDK\jre\lib</code>下或被<code>-Xbootclasspath</code>指定路径中的类库。</li><li>扩展类加载器:负责加载<code>JDK\jre\lib\ext</code>或由<code>java.ext.dirs</code>系统变量指定的路径中的所有类库。</li><li>引用类加载器:负责加载用户类路径（ClassPath）所指定的类。程序默认的类加载器。<br><a href="https://imgchr.com/i/ZqjFEj" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/17/ZqjFEj.jpg" alt="ZqjFEj.jpg"></a></li></ul><blockquote><p>注：父类加载器并不是通过继承关系实现的，而是采用组合的方式<br>启动类加载器是C++实现，属于虚拟机的一部分；其他类加载器都是由启动类加载器加载到内存中的。</p></blockquote><h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><ul><li>全盘负责：当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入</li><li>双亲委派：先让父类加载器试图加载该类，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类</li><li>缓存机制：缓存机制将会保证所有加载过的Class都会被缓存，当程序中需要使用某个Class时，类加载器先从缓存区寻找该Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。这就是为什么修改了Class后，必须重启JVM，程序的修改才会生效</li></ul><h2 id="类加载方式"><a href="#类加载方式" class="headerlink" title="类加载方式"></a>类加载方式</h2><ul><li>命令行启动应用时候由JVM初始化加载</li><li>通过Class.forName()方法动态加载</li><li>通过ClassLoader.loadClass()方法动态加载</li></ul><h1 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h1><p>双亲委派模型的工作流程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。</p><blockquote><p><a href="https://mp.weixin.qq.com/s?__biz=MzI4NDY5Mjc1Mg==&amp;mid=2247483934&amp;idx=1&amp;sn=41c46eceb2add54b7cde9eeb01412a90&amp;chksm=ebf6da61dc81537721d36aadb5d20613b0449762842f9128753e716ce5fefe2b659d8654c4e8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzI4NDY5Mjc1Mg==&amp;mid=2247483934&amp;idx=1&amp;sn=41c46eceb2add54b7cde9eeb01412a90&amp;chksm=ebf6da61dc81537721d36aadb5d20613b0449762842f9128753e716ce5fefe2b659d8654c4e8&amp;scene=21#wechat_redirect</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;类的加载是指将类的&lt;code&gt;.class&lt;/code&gt;文件中的&lt;strong&gt;二进制数据读入到内存&lt;/strong&gt;中，将其放在运行时数据区的方法区，然后在Java堆中创建一个java.lang.Class对象(类也是对象)，用来封装类在方法区内的数据结构。&lt;br&gt;类加载的最终产物是位于堆中的Class对象，该Class对象封装了类在方法区内的数据结构，并且向开发者提供了访问方法区内的数据结构的接口。&lt;br&gt;&lt;a href=&quot;https://imgchr.com/i/ZqjkUs&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;img src=&quot;https://s2.ax1x.com/2019/07/17/ZqjkUs.jpg&quot; alt=&quot;ZqjkUs.jpg&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;类加载器不需要等到某个类被“首次主动使用”时再加载，JVM规范允许类加载器在预料某个类将要被使用的时候就预先加载，如果在预先加载的过程中遇到了&lt;code&gt;.class&lt;/code&gt;文件缺失或存在错误，类加载器必须在程序&lt;font color=&quot;red&quot;&gt;首次主动使用该类&lt;/font&gt;时才报告错误，如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。&lt;/p&gt;
+&lt;h1 id=&quot;类加载过程&quot;&gt;&lt;a href=&quot;#类加载过程&quot; class=&quot;headerlink&quot; title=&quot;类加载过程&quot;&gt;&lt;/a&gt;类加载过程&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://imgchr.com/i/ZqjPbQ&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;img src=&quot;https://s2.ax1x.com/2019/07/17/ZqjPbQ.jpg&quot; alt=&quot;ZqjPbQ.jpg&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;类的生命周期主要包含&lt;code&gt;加载&lt;/code&gt;、&lt;code&gt;验证&lt;/code&gt;、&lt;code&gt;准备&lt;/code&gt;、&lt;code&gt;解析&lt;/code&gt;、&lt;code&gt;初始化&lt;/code&gt;、&lt;code&gt;使用&lt;/code&gt;、&lt;code&gt;卸载&lt;/code&gt;。&lt;br&gt;在加载过程中的五个阶段中，&lt;code&gt;加载&lt;/code&gt;、&lt;code&gt;验证&lt;/code&gt;、&lt;code&gt;准备&lt;/code&gt;、&lt;code&gt;初始化&lt;/code&gt;发生的顺序是一定的，而&lt;code&gt;解析&lt;/code&gt;在某些情况下可以在&lt;code&gt;初始化&lt;/code&gt;阶段之后执行。这是为了支持Java语言的运行时绑定。&lt;br&gt;另外需要注意的是：这几个阶段是按照顺序开始，而不是按照顺序进行或完成，因为这些阶段通常是相互交叉混合进行的，通常在一个阶段执行的过程中需要调用或激活另一个阶段。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Arrays.sort和Collections.sort实现原理</title>
+    <link href="http://yoursite.com/2019/07/16/Java/Arrays-sort%E5%92%8CCollections-sort%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"/>
+    <id>http://yoursite.com/2019/07/16/Java/Arrays-sort和Collections-sort实现原理/</id>
+    <published>2019-07-16T14:51:54.000Z</published>
+    <updated>2019-07-16T14:54:32.017Z</updated>
+    
+    <content type="html"><![CDATA[<p>事实上，在使用<code>Collections.sort(list)</code>的时候，就调用list.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list) &#123;</span><br><span class="line">        list.sort(null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>我们在深入进去后，发现其实调用的就是Array.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;rawtypes&quot;&#125;)</span><br><span class="line">    default void sort(Comparator&lt;? super E&gt; c) &#123;</span><br><span class="line">        Object[] a = this.toArray();</span><br><span class="line">        Arrays.sort(a, (Comparator) c);</span><br><span class="line">        ListIterator&lt;E&gt; i = this.listIterator();</span><br><span class="line">        for (Object e : a) &#123;</span><br><span class="line">            i.next();</span><br><span class="line">            i.set((E) e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p><p>而在Array.sort中，会根据该对象是否能够通过归并排序来选择不同的排序方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; void sort(T[] a, Comparator&lt;? super T&gt; c) &#123;</span><br><span class="line">        if (c == null) &#123;</span><br><span class="line">            sort(a);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (LegacyMergeSort.userRequested)</span><br><span class="line">                legacyMergeSort(a, c);</span><br><span class="line">            else</span><br><span class="line">                TimSort.sort(a, 0, a.length, c, null, 0, 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p><ul><li>legacyMergeSort：归并排序</li><li><a href="https://blog.csdn.net/yangzhongblog/article/details/8184707" target="_blank" rel="noopener">TimSort</a><br>：结合归并排序和插入排序的一种排序算法</li></ul><blockquote><p>TimSort 算法为了减少对升序部分的回溯和对降序部分的性能倒退，将输入按其升序和降序特点进行了分区。排序的输入的单位不是一个个单独的数字，而是一个个的块-分区。其中每一个分区叫一个run。针对这些 run 序列，每次拿一个 run 出来按规则进行合并。每次合并会将两个 run合并成一个 run。合并的结果保存到栈中。合并直到消耗掉所有的 run，这时将栈上剩余的 run合并到只剩一个 run 为止。这时这个仅剩的 run 便是排好序的结果。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;事实上，在使用&lt;code&gt;Collections.sort(list)&lt;/code&gt;的时候，就调用list.sort()&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span 
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title>Java线程池解析</title>
@@ -233,9 +285,9 @@
       <category term="计算机基础" scheme="http://yoursite.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
     
     
-      <category term="计算机网络" scheme="http://yoursite.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
-    
       <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="计算机网络" scheme="http://yoursite.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   
@@ -532,56 +584,6 @@
       <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
     
       <category term="MySQL实战45讲" scheme="http://yoursite.com/tags/MySQL%E5%AE%9E%E6%88%9845%E8%AE%B2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一条查询语句的执行过程</title>
-    <link href="http://yoursite.com/2019/01/13/MySQL/MySQL%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/"/>
-    <id>http://yoursite.com/2019/01/13/MySQL/MySQL基本架构/</id>
-    <published>2019-01-13T14:32:26.000Z</published>
-    <updated>2019-01-14T14:34:11.225Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="MySQL基本架构"><a href="#MySQL基本架构" class="headerlink" title="MySQL基本架构"></a>MySQL基本架构</h2><p><img src="https://m.qpic.cn/psb?/V140pON30woojR/ussYTDB3vJmBbUYn8*kQP.aOU4fUXs6XhkExUtrBwWA!/b/dMMAAAAAAAAA&amp;bo=oAU4BAAAAAARB6k!&amp;rf=viewer_4" alt=""><br>MySQL基本架构可以分为Server层和存储引擎层两部分。</p><p>Server层包括连接器、查询缓存、分析器、优化器、执行器等，覆盖MySQL大多数核心服务功能，以及<font color="red">所有的内置函数</font>（如日期、时间、数学等），所有的跨存储引擎的功能都在这一层实现，如存储过程、触发器、视图等。<br><a id="more"></a><br>下面以select * from T where ID=10；这条语句做讲解。</p><h3 id="连接器"><a href="#连接器" class="headerlink" title="连接器"></a>连接器</h3><p>连接器负责和客户端建立连接、获取权限、维持和管理连接。<br>使用mysql客户端工具来跟服务端进行建立连接。在完成经典的TCP握手后，连接器就要验证用户身份。</p><ul><li>如果用户名或密码不对，会收到一个”Access denied for user”的错误，然后客户端程序结束执行。</li><li>如果用户名密码认真通过，连接器会到权限表里面查出你拥有的权限。在此连接后续过程中进行的权限判断逻辑都依赖于此时读取到的权限。</li></ul><p>这意味着，一个用户成功建立连接后，即使你用管理员账号对这个用户的权限进行了修改，也不会影响到已经存在连接的权限。</p><p>连接完成后，如果没有后续动作，这个连接就处于空闲状态；如果处于空闲状态太久没有进行操作，连接器就会自动将它断开。如果在连接端口后，客户端再发送请求的话，就会收到一个错误提醒：Lost connection to MySQL server during query。这时候会进行重连才能够执行请求了。</p><p>有时候会发现MySQL占用内存涨得特别快，这是因为MySQL在执行过程中临时使用的内存是管理在连接对象里面的。这些资源会在连接断开的时候才释放。但是由于长连接积累一直不释放，导致内存占用太大，被系统强行杀掉（OOM），从现象来看就是MySQL异常重启了。<br>怎么解决这个问题呢？</p><ol><li>定期断开长连接。使用一段时间，或者程序里面判断执行过一个占用内存的大查询后，断开连接，之后要查询再重连。</li><li>如果使用的是MySQL5.7以上版本，可以在每次执行一个比较大的操作后，通过执行mysql_reset_connection来初始化连接资源。这个过程不需要重连和重新做权限验证，但是会将连接恢复到刚刚创建完时的状态。</li></ol><h3 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h3><p>连接建立完成后，就可以开始执行命令了。那么在进行查询语句时，会先到缓存中去查询缓存，之前是不是执行过这条语句。之前执行过的语句和结果可能会以键值对的形式被直接缓存在内存中。key是查询的语句，value是查询的结果。如果能够在缓存中找到查询的语句，那么就会直接返回value值给客户端。</p><p><b>但是大多数情况下，建议是不要使用查询缓存</b><br>查询缓存的失效非常频繁，只要有对一个表的更新，这个表上所有的查询缓存就会被清空。对于更新压力大的数据库来说，查询缓存的命中率非常低。出给你的业务就是一张静态表，很长时间才更新一次。<br>你可以将参数query_cache_type设置为DEMAND，这样对于默认的SQL语句都不使用查询缓存。而对于你确定要使用查询缓存的语句，可以用SQL_CACHE显式指定：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;select SQL_CACHE * from T where ID=10;</span><br></pre></td></tr></table></figure></p><p>MySQL8.0版本直接将查询缓存的整块功能给删掉了。</p><h3 id="分析器"><a href="#分析器" class="headerlink" title="分析器"></a>分析器</h3><p>如果没有命中缓存，就要开始真正执行语句了。首先MySQL需要知道你要做什么，所以需要对SQL语句进行解析。</p><p>分析器先会做“词法解析”。你输入的是由多个字符串和空格组成的一条SQL语句，MySQL需要识别出里面的字符串分别是什么，代表什么。<br>MySQL从输入的“select”这个关键字识别出来，这是一个查询语句。它也要把字符串“T”识别成“表名T”，把字符串“ID”识别成“列ID”。<br>做完识别后，就要做“语法分析”。根据词法分析的结果，语法分析器会根据语法规则，判断你输入的这个SQL语句是否满足MySQL语法。如果你的语句不对，将会收到“you hava an error in your SQL syntax”的错处提醒。</p><h3 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h3><p>经过了分析器，MySQL就知道你要做什么了。在正式开始执行前，还要经过优化器的处理。<br>优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联的时候，决定各个表的连接顺序。</p><h3 id="执行器"><a href="#执行器" class="headerlink" title="执行器"></a>执行器</h3><p>MySQL知道了你要做什么，该怎么做后就开始执行了。<br>开始执行的时候，要先判断一下你对这个表T有没有执行权限，如果没有，就会返回没有权限的错误。<br>如果有权限，就打开表继续执行。打开表的时候，执行器会根据表的引擎定义，去使用这个引擎提供的接口。<br>比如我们例子中的表T中，ID字段没有索引，那么执行器的执行流程是这样的：</p><pre><code>1. 调用InnodDB引擎接口取这个表的第一行，判断ID值是不是10，如果不是则跳过，如果是则将这行存在结果集中。2. 调用引擎接口取“下一行”，重复相同的判断逻辑，知道取到这个表的最后一行。3. 执行器将上述遍历过程中所有满足条件的行组成的记录集作为结果集返回给客户端。</code></pre><p>对于有索引的表，执行的逻辑也差不多。第一次调用的是“取满足条件的第一行”这个接口，之后循环取“满足条件的下一行”这个接口。<br>你会在数据库的慢查询日志中看到一个rows_examined的字段，表示这语句执行过程中扫描了多少行。这个值就是在执行器每次调用引擎获取数据行的时候累加的。<br>在有些场景下，执行器调用一次，在引擎内部则扫描了多行，因此引擎扫描函数跟rows_examined并不是完全相同的。</p><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>如果表中没有字段k，而执行select * from T where k=1;肯定会报“不存在列”错误，这个错误是在哪个阶段报出来的？<br>答案：分析器，MySQL设计受Oracle影响，会在分析判断语句是否正确，表是否存在，列是否存在。<br>《高性能MySQL》里提到解析器处理语法和解析查询，会生成一颗对应的解析树</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;MySQL基本架构&quot;&gt;&lt;a href=&quot;#MySQL基本架构&quot; class=&quot;headerlink&quot; title=&quot;MySQL基本架构&quot;&gt;&lt;/a&gt;MySQL基本架构&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://m.qpic.cn/psb?/V140pON30woojR/ussYTDB3vJmBbUYn8*kQP.aOU4fUXs6XhkExUtrBwWA!/b/dMMAAAAAAAAA&amp;amp;bo=oAU4BAAAAAARB6k!&amp;amp;rf=viewer_4&quot; alt=&quot;&quot;&gt;&lt;br&gt;MySQL基本架构可以分为Server层和存储引擎层两部分。&lt;/p&gt;
-&lt;p&gt;Server层包括连接器、查询缓存、分析器、优化器、执行器等，覆盖MySQL大多数核心服务功能，以及&lt;font color=&quot;red&quot;&gt;所有的内置函数&lt;/font&gt;（如日期、时间、数学等），所有的跨存储引擎的功能都在这一层实现，如存储过程、触发器、视图等。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="MySQL" scheme="http://yoursite.com/categories/MySQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://yoursite.com/tags/MySQL/"/>
-    
-      <category term="MySQL实战45讲" scheme="http://yoursite.com/tags/MySQL%E5%AE%9E%E6%88%9845%E8%AE%B2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记一次磁盘空间不足</title>
-    <link href="http://yoursite.com/2018/12/29/Linux/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%89%BE%E4%B8%8D%E5%88%B0%E4%BB%80%E4%B9%88%E6%96%87%E4%BB%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2018/12/29/Linux/记一次磁盘空间不足，找不到什么文件导致的解决方法/</id>
-    <published>2018-12-29T03:06:28.000Z</published>
-    <updated>2018-12-29T03:42:05.854Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>在一台虚拟机机器上发现磁盘空间不足的情况，通过登录上去查看，发现是挂载盘占用磁盘资源太多，通过df命令查看，但是并找不到具体是哪个文件占用过多。<br>通过以下查找大文件命令也没有找到相应的大文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -type f -size +100M</span><br></pre></td></tr></table></figure></p><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>文件被删除后，并没有及时的释放磁盘资源，导致磁盘空间不足的情况。<br>通过以下命令，查看已经标记为删除但是没有释放的文件。对相应程序进行重启后解决<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof|grep -i delete|less</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;问题描述：&quot;&gt;&lt;a href=&quot;#问题描述：&quot; class=&quot;headerlink&quot; title=&quot;问题描述：&quot;&gt;&lt;/a&gt;问题描述：&lt;/h3&gt;&lt;p&gt;在一台虚拟机机器上发现磁盘空间不足的情况，通过登录上去查看，发现是挂载盘占用磁盘资源太多，通过df命令查看，但是并找
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
   </entry>
   
