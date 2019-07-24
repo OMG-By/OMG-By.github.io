@@ -307,6 +307,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/Redis/Redis对象/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/10/Redis/Redis对象/" itemprop="url">Redis对象结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T21:34:13+08:00">
+                2018-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="object-c"><a href="#object-c" class="headerlink" title="object.c"></a>object.c</h1><p>object.c文件主要记录了Redis对象的创建和释放方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">robj *createEmbeddedStringObject(char *ptr, size_t len) &#123;</span><br><span class="line">    robj *o = zmalloc(sizeof(robj)+sizeof(struct sdshdr)+len+1);</span><br><span class="line">    struct sdshdr *sh = (void*)(o+1);</span><br><span class="line"></span><br><span class="line">    o-&gt;type = REDIS_STRING;</span><br><span class="line">    o-&gt;encoding = REDIS_ENCODING_EMBSTR;</span><br><span class="line">    o-&gt;ptr = sh+1;</span><br><span class="line">    o-&gt;refcount = 1;</span><br><span class="line">    o-&gt;lru = LRU_CLOCK();</span><br><span class="line"></span><br><span class="line">    sh-&gt;len = len;</span><br><span class="line">    sh-&gt;free = 0;</span><br><span class="line">    if (ptr) &#123;</span><br><span class="line">        memcpy(sh-&gt;buf,ptr,len);</span><br><span class="line">        sh-&gt;buf[len] = &apos;\0&apos;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        memset(sh-&gt;buf,0,len+1);</span><br><span class="line">    &#125;</span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从这个函数中，我们可以看出Redis在创建一个REDIS_ENCODING_EMBSTR编码的字符串对象时，是SDS连同redisObject一同创建的。也就是说这个字符串是不可以修改的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">robj *createStringObjectFromLongLong(long long value) &#123;</span><br><span class="line"></span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // value 的大小符合 REDIS 共享整数的范围</span><br><span class="line">    // 那么返回一个共享对象</span><br><span class="line">    if (value &gt;= 0 &amp;&amp; value &lt; REDIS_SHARED_INTEGERS) &#123;</span><br><span class="line">        incrRefCount(shared.integers[value]);</span><br><span class="line">        o = shared.integers[value];</span><br><span class="line"></span><br><span class="line">    // 不符合共享范围，创建一个新的整数对象</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 值可以用 long 类型保存，</span><br><span class="line">        // 创建一个 REDIS_ENCODING_INT 编码的字符串对象</span><br><span class="line">        if (value &gt;= LONG_MIN &amp;&amp; value &lt;= LONG_MAX) &#123;</span><br><span class="line">            o = createObject(REDIS_STRING, NULL);</span><br><span class="line">            o-&gt;encoding = REDIS_ENCODING_INT;</span><br><span class="line">            o-&gt;ptr = (void*)((long)value);</span><br><span class="line"></span><br><span class="line">        // 值不能用 long 类型保存（long long 类型），将值转换为字符串，</span><br><span class="line">        // 并创建一个 REDIS_ENCODING_RAW 的字符串对象来保存值</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            o = createObject(REDIS_STRING,sdsfromlonglong(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数是根据传入的整数值来创建一个字符串对象。从这里可以看到主要有三个判断：</p>
+<ol>
+<li>如果设置的值符合Redis共享整数对象的范围时，是直接复用共享对象，并不会去创建一个新的对象。</li>
+<li>如果传入的值是long类型的，这创建一个REDIS_ENCODING_INT编码类型的字符串对象。</li>
+<li>如果传入的值为long long类型的，则创建REDIS_ENCODING_RAW编码类型的字符串对象。</li>
+</ol>
+<p>debug命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/* Object command allows to inspect the internals of an Redis Object.</span><br><span class="line"> * Usage: OBJECT &lt;verb&gt; ... arguments ... */</span><br><span class="line">void objectCommand(redisClient *c) &#123;</span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // 返回对戏哪个的引用计数</span><br><span class="line">    if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;refcount&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,o-&gt;refcount);</span><br><span class="line"></span><br><span class="line">    // 返回对象的编码</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;encoding&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyBulkCString(c,strEncoding(o-&gt;encoding));</span><br><span class="line">    </span><br><span class="line">    // 返回对象的空闲时间</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;idletime&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,estimateObjectIdleTime(o)/1000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        addReplyError(c,&quot;Syntax error. Try OBJECT (refcount|encoding|idletime)&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/26/Redis/Redis原理----主从复制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1883,158 +2034,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/MySQL/MySQL主从复制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/16/MySQL/MySQL主从复制/" itemprop="url">MySQL主从复制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T15:11:15+08:00">
-                2018-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="什么是主从复制"><a href="#什么是主从复制" class="headerlink" title="什么是主从复制"></a>什么是主从复制</h3><p>将主数据库中的DDL和DML操作通过二进制日志文件传输到从数据库上，然后将这些日志重新执行（重做）；从而使从数据库的数据和主数据库的数据保持一致。</p>
-<h3 id="主从复制的作用"><a href="#主从复制的作用" class="headerlink" title="主从复制的作用"></a>主从复制的作用</h3><ul>
-<li>主数据库出现问题时，可以切换到从数据库</li>
-<li>可以在数据库层面进行读写分离</li>
-<li>可以在从数据库上进行备份操作</li>
-</ul>
-<h3 id="复制过程"><a href="#复制过程" class="headerlink" title="复制过程"></a>复制过程</h3><p><img src="http://ocx5m3vc3.bkt.clouddn.com/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6.png" alt=""><br>Binary log：主数据库的二进制文件<br>Relay log：从服务器的中继日志<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/16/MySQL/MySQL主从复制/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2087,7 +2086,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2109,7 +2108,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

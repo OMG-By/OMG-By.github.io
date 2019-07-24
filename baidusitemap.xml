@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/07/24/java%E5%AE%9E%E7%8E%B0%E5%BF%AB%E6%8E%92/</loc>
+    <lastmod>2019-07-24T07:05:44.833Z</lastmod>
+    <data>
+        <display>
+        <title>java实现快排</title>
+        <pubTime>2019-07-24T07:04:30.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>算法</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://yoursite.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/07/23/Linux/Linux%E5%91%BD%E4%BB%A4%E4%B9%8Bsort/</loc>
     <lastmod>2019-07-23T05:26:13.970Z</lastmod>
     <data>
