@@ -307,6 +307,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/13/mac安装多版本JDK/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/13/mac安装多版本JDK/" itemprop="url">mac安装多版本JDK</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-13T17:55:42+08:00">
+                2019-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/一些奇淫技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">一些奇淫技巧</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随着JDK版本的快速迭代，作为优秀(kubi)的Java拥护者，为了跟随时代的潮流，也开始使用1.8版本。</p>
+<p>但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记录。</p>
+<p>在终端下面使用<code>java -version</code>查看就可以查看使用的JDK版本了。<br>使用<code>/usr/libexec/java_home -V</code>可以查看本地已经安装的JDK</p>
+<p>关于JDK1.x for mac的安装略过，网上有大把的教程。<br>我这里以安装3个版本1.6/1.7/1.8为例。</p>
+<p>一、编辑.bash_profile<br><code>vim ~/.bash_profile</code></p>
+<p>二、在.bash_profile中添加下面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_6_HOME=`/usr/libexec/java_home -v 1.6`</span><br><span class="line">export JAVA_7_HOME=`/usr/libexec/java_home -v 1.7`</span><br><span class="line">export JAVA_8_HOME=`/usr/libexec/java_home -v 1.8`</span><br><span class="line"></span><br><span class="line">#默认设为JDK1.7</span><br><span class="line">export JAVA_HOME=$JAVA_7_HOME</span><br><span class="line"></span><br><span class="line">#alias命令动态切换JDK版本</span><br><span class="line">alias jdk6=&quot;export JAVA_HOME=$JAVA_6_HOME&quot;</span><br><span class="line">alias jdk7=&quot;export JAVA_HOME=$JAVA_7_HOME&quot;</span><br><span class="line">alias jdk8=&quot;export JAVA_HOME=$JAVA_8_HOME&quot;</span><br></pre></td></tr></table></figure></p>
+<p>三、刷新环境<br><code>source ~/.bash_profile</code></p>
+<p>四、测试<br>执行：<code>jdk8</code>，再执行<code>java -version</code>，看看是不是1.8版本？<br>执行：<code>jdk6</code>，再执行<code>java -version</code>，看看是不是1.6版本？</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/面试准备/Cloneable实现原理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1656,183 +1805,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/MySQL体系结构/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/02/MySQL/MySQL体系结构/" itemprop="url">MySQL体系结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:14:16+08:00">
-                2019-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h1><p><a href="https://imgchr.com/i/ZhxoZV" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxoZV.md.jpg" alt="ZhxoZV.md.jpg"></a></p>
-<ul>
-<li>连接器<br>连接器负责跟客户端建立连接、获取权限、维持和管理连接。<br>在这个阶段，连接器会对用户输入的账号密码进行判断。并判断用户连接和数据库连接是否都到了最大限制。以及后续对超时连接进行清理操作。<ol>
-<li>在连接之前，不管用户名密码是够正确，权限如何，连接器会先对连接数进行检查。</li>
-<li>权限会存在两份，一份在数据库中持久化存储，一份保存在内存当中。flush privileges操作就是将内存中的信息给清空，并从数据库中重新加载到内存中。</li>
-<li>在执行grant和revoke操作时，会先将磁盘中的信息修改，然后同步到内存中。但是如果是直接修改的mysql.user表，此时不会主动去更新内存。</li>
-<li>连接器只会到内存中读取用户信息以及权限。连接器只会在进行连接的时候才对用户账号密码进行校验，这意味着，如果一个用户已经连接上，修改密码并不会影响此连接。</li>
-<li>对于全局权限是实时从内存中获取，这代表如果进行权限修改会马上生效。但是对库的权限修改稍微有点区别，虽然也是实时同步到内存，但是如果该连接已经使用了use database进入某库，那么该连接会将该库的权限保存到当前会话变量中，对该库操作权限仍是进入时的状态。</li>
-</ol>
-</li>
-<li>缓存器<br>缓存器会将之前执行过的语句以key-value的形式缓存在内存当中，key是执行的语句,value是该语句执行的结果。如果能够直接获取到，那么会将结果直接返回。（返回结果前还会进行一次权限校验）<br>但是，如果对该表存在更新等数据修改操作，那么这个表上所有的缓存将会清空以保证读取数据的一致性。</li>
-<li>分析器<br>对sql进行词法和语法分析，此时会生成一颗解析树。此时会将sql语句转化成数据库能够看懂的形式，如将字符串’T’识别成’表名T’。此时会去读取库表结构，判断该表是否存在，该字段是够存在。</li>
-<li>优化器<br>根据自身的信息采集、以往执行计划分析等选择自认为最优的执行计划、选择相应的索引。<br>MySQL有一整套规则来判断SQL语句的最优方案，但是该方案不一定是最快的。<br>可以人为的对优化器进行控制，使其选择相应的方案。如force index/ignore index/STRAIGHT_JOIN等。</li>
-<li>执行器<br>根据优化器生成的执行计划来调用存储引擎的接口获取数据并对数据进行处理返回给客户端。</li>
-<li>存储引擎</li>
-</ul>
-<h1 id="MySQL内存结构"><a href="#MySQL内存结构" class="headerlink" title="MySQL内存结构"></a>MySQL内存结构</h1><p><a href="https://imgchr.com/i/ZhxTaT" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhxTaT.md.jpg" alt="ZhxTaT.md.jpg"></a></p>
-<h2 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h2><ul>
-<li>innodb_buffer_pool_size  innodb缓冲池大小</li>
-<li>innodb_log_buffer_size   redo日志缓冲</li>
-<li>key_buffer_size          MyISAM索引缓冲</li>
-<li>table_definition_cache   表定义文件描述缓存</li>
-<li>table_open_cache         表空间文件描述缓存</li>
-<li>max_heap_table_size      memory、heap表的最大容量</li>
-</ul>
-<h2 id="线程内存"><a href="#线程内存" class="headerlink" title="线程内存"></a>线程内存</h2><ul>
-<li>read_buffer_size</li>
-<li>read_rnd_buffer_size</li>
-<li>sort_buffer_size</li>
-<li>join_buffer_size</li>
-<li>binlog_cache_size</li>
-<li>tmp_table_size</li>
-<li>thread_stack</li>
-<li>thread_chche_size</li>
-<li>net_buffer_length</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1885,7 +1857,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1896,7 +1868,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
