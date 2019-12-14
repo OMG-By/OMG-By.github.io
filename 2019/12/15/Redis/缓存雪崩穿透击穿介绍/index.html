@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="概念介绍,">
 
 
 
@@ -95,13 +95,21 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="OMG_By">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。 这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。 缓存雪崩需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设">
+<meta name="keywords" content="概念介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存雪崩穿透击穿介绍">
+<meta property="og:url" content="http://yoursite.com/2019/12/15/Redis/缓存雪崩穿透击穿介绍/index.html">
 <meta property="og:site_name" content="OMG_By">
+<meta property="og:description" content="看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。 这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。 缓存雪崩需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4nqarcj30dx0ak751.jpg">
+<meta property="og:updated_time" content="2019-12-14T16:49:41.954Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OMG_By">
+<meta name="twitter:title" content="缓存雪崩穿透击穿介绍">
+<meta name="twitter:description" content="看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。 这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。 缓存雪崩需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg">
 
 
 
@@ -131,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/15/Redis/缓存雪崩穿透击穿介绍/">
 
 
 
 
 
-  <title>归档 | OMG_By</title>
+  <title>缓存雪崩穿透击穿介绍 | OMG_By</title>
   
 
 
@@ -156,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -292,182 +300,196 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/15/Redis/缓存雪崩穿透击穿介绍/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">缓存雪崩穿透击穿介绍</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T00:40:24+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 4 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/12/15/Redis/Redis初始化启动过程/" itemprop="url">
-              
-                <span itemprop="name">Redis初始化启动过程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-12-15T01:48:31+08:00" content="2019-12-15">
-          12-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/12/15/Redis/缓存雪崩穿透击穿介绍/" itemprop="url">
-              
-                <span itemprop="name">缓存雪崩穿透击穿介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-12-15T00:40:24+08:00" content="2019-12-15">
-          12-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/19/python/python装饰器/" itemprop="url">
-              
-                <span itemprop="name">python装饰器</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-08-19T21:40:56+08:00" content="2018-08-19">
-          08-19
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/21/python/获取本机IP/" itemprop="url">
-              
-                <span itemprop="name">python获取本机IP</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-07-21T16:28:05+08:00" content="2018-07-21">
-          07-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
+      
+        <p>看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。</p>
+<p>这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。</p>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设在定时任务中设置的过期时间都一样，那么在某一个时间点时，大量的key同时过期。本来缓存抵挡住了大量的请求，key过期后，这些压力全部同时打到了数据库中，数据库可能就扛不住。直接被打挂了，重启数据库后，立马又被新的流量打挂了。这就是缓存雪崩。<br>(注：这里还有个隐患，Redis可能会频繁的处理过期key，从而导致Redis性能降低)<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg" alt=""></p>
+<p>处理缓存雪崩主要有以下几个思路：</p>
+<ol>
+<li>分散过期时间。把每个key的过期时间都加上一个随机的过期值。保证数据不会在同一时间大面积失效。</li>
+<li>设置过期标志更新缓存。给每一个缓存数据都增加一个相应的缓存标记，记录缓存是否失效。如果缓存失效，则更新数据缓存。这样虽然在缓存首次失效时，仍会带来数据库压力问题。但是能够在一定程度上缓解后续被新流量打挂以及所有服务不可用的情况。</li>
+<li>在代码层面上设定一定策略，比如加锁等待、减慢请求速度。给数据库留下启动和重建缓存的机会。</li>
+</ol>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透就是指客户端不断的查询缓存和数据库都没有的数据。相当于进行了两次无用的查询。降低缓存的命中率，增加数据库的压力。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4nqarcj30dx0ak751.jpg" alt=""></p>
+<p>解决手段：</p>
+<ol>
+<li>客户端进行校验，先将明显不符合的key给过滤掉。</li>
+<li>对于查询不到的数据，直接赋值一个null给它。</li>
+<li>使用布隆过滤器来对不存在数据进行过滤掉。</li>
+<li>限流。</li>
+</ol>
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p>缓存击穿和缓存雪崩有点像。但是又不一样，缓存雪崩是大面积的缓存同时失效，打崩了DB。而缓存击穿是指一个key非常热点，在不停的扛着大并发，当这个key失效的瞬间，持续的大并发就击穿缓存，直接请求数据库。</p>
+<p>解决手段:<br>主要场景是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。<br>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/概念介绍/" rel="tag"># 概念介绍</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/19/python/python装饰器/" rel="next" title="python装饰器">
+                <i class="fa fa-chevron-left"></i> python装饰器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/15/Redis/Redis初始化启动过程/" rel="prev" title="Redis初始化启动过程">
+                Redis初始化启动过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -475,6 +497,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDc2MS8yMTI4Mg"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -495,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -611,6 +651,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">1.</span> <span class="nav-text">缓存雪崩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存穿透"><span class="nav-number">2.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存击穿"><span class="nav-number">3.</span> <span class="nav-text">缓存击穿</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -781,6 +837,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -809,6 +869,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
