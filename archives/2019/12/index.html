@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="MySQL,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -95,23 +95,13 @@
 
 
 
-<meta name="description" content="InnoDB整体架构后台线程 Master ThreadMaster Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。 每秒的操作 刷新日志缓冲到磁盘（总是） 合并插入缓冲 刷新脏页到磁盘（至多100个） 切换到后台进程   每10秒的操作 删除无用的undo页（总是） 合并20个插入缓冲（总是） 调回主循环（总是）     IO Thread purge Thread">
-<meta name="keywords" content="MySQL">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MySQL体系结构">
-<meta property="og:url" content="http://yoursite.com/2019/03/02/MySQL/InnoDB整体架构/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OMG_By">
+<meta property="og:url" content="http://yoursite.com/archives/2019/12/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="InnoDB整体架构后台线程 Master ThreadMaster Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。 每秒的操作 刷新日志缓冲到磁盘（总是） 合并插入缓冲 刷新脏页到磁盘（至多100个） 切换到后台进程   每10秒的操作 删除无用的undo页（总是） 合并20个插入缓冲（总是） 调回主循环（总是）     IO Thread purge Thread">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/13/Zhzndf.md.jpg">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/13/ZhzmeP.md.jpg">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/13/ZhzEQA.md.jpg">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/13/Zhzuo8.md.jpg">
-<meta property="og:updated_time" content="2019-07-13T06:03:13.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL体系结构">
-<meta name="twitter:description" content="InnoDB整体架构后台线程 Master ThreadMaster Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。 每秒的操作 刷新日志缓冲到磁盘（总是） 合并插入缓冲 刷新脏页到磁盘（至多100个） 切换到后台进程   每10秒的操作 删除无用的undo页（总是） 合并20个插入缓冲（总是） 调回主循环（总是）     IO Thread purge Thread">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/13/Zhzndf.md.jpg">
+<meta name="twitter:title" content="OMG_By">
 
 
 
@@ -141,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/02/MySQL/InnoDB整体架构/">
+  <link rel="canonical" href="http://yoursite.com/archives/2019/12/">
 
 
 
 
 
-  <title>MySQL体系结构 | OMG_By</title>
+  <title>归档 | OMG_By</title>
   
 
 
@@ -166,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <div class="container sidebar-position-right page-archive">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -302,269 +292,72 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+        
+          
+        
+        嗯..! 目前共计 3 篇日志。 继续努力。
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2019">2019</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/InnoDB整体架构/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2019/12/15/缓存雪崩穿透击穿介绍/" itemprop="url">
+              
+                <span itemprop="name">缓存雪崩穿透击穿介绍</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">MySQL体系结构</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:14:16+08:00">
-                2019-03-02
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-12-15T00:40:24+08:00" content="2019-12-15">
+          12-15
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul>
-<li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol>
-<li>每秒的操作<ul>
-<li>刷新日志缓冲到磁盘（总是）</li>
-<li>合并插入缓冲</li>
-<li>刷新脏页到磁盘（至多100个）</li>
-<li>切换到后台进程</li>
-</ul>
-</li>
-<li>每10秒的操作<ul>
-<li>删除无用的undo页（总是）</li>
-<li>合并20个插入缓冲（总是）</li>
-<li>调回主循环（总是）</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>IO Thread</li>
-<li>purge Thread</li>
-<li>Page cleaner Thread</li>
-</ul>
-<a id="more"></a>
-<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><ul>
-<li><p>Change buffer（Insert buffer、Delete buffer、Purge buffer）<br>在对非唯一索引的插入和更新操作过程中，如果该数据页在内存中，则直接对数据页进行修改。如果该数据页不在内存中，Innodb并不会马上到磁盘上将该数据页读入内存中，而是先将修改存入到Change buffer中，再按照一定的频率将修改合并到数据页中。</p>
-<ol>
-<li>为什么是需要在非唯一索引的<br>如果是对唯一索引上的数据进行修改，那么在修改前需要进行唯一性校验，这个时候会对该数据页进行查询操作，此时已经将该数据页读取到了内存当中，所以Change buffer的优化对唯一索引并没有什么效果。</li>
-<li>如果宕机是否会导致数据的丢失？<br>Change buffer中数据，不仅会保存在内存当中，还会持久化到磁盘（系统表空间）当中。（持久化机制？）</li>
-<li>什么情况下会合并？<ul>
-<li>当对该数据页进行查询操作时，会将该数据页读取到内存当中。此时，会进行Change buffer的合并操作，将Change buffer中对该数据页的修改应用到该数据页。</li>
-<li>Insert buffer Bitmap页追踪到该辅助索引页中已无可用空间</li>
-<li>Master Thread</li>
-</ul>
-</li>
-<li>合并流程怎样？<ul>
-<li>从磁盘中读取数据页到内存（老版本）</li>
-<li>从Change buffer中读取这个数据页的修改引用到内存中的数据页</li>
-<li>写redo log。记录了内存也和Change buffer的变更。（此时内存中的数据页属于脏页）<br><a href="https://imgchr.com/i/Zhzndf" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzndf.md.jpg" alt="Zhzndf.md.jpg"></a></li>
-</ul>
-</li>
-</ol>
-</li>
-<li><p>redo buffer<br>redo log中记录的是数据页的物理修改。在事务执行过程中不断的写入到redo buffer中。<br>redo buffer在以下情况会持久化到磁盘。</p>
-<ul>
-<li>Master Thread每秒的定时任务</li>
-<li>每个事务提交时</li>
-<li>写入量过大，导致redo buffer不足是<br>由innodb_flush_log_at_trx_commit控制刷盘策略</li>
-<li>0代表当事务提交时刷盘，只由Master Thread每秒定时任务执行刷盘</li>
-<li>1代表在执行commit时将重做日志缓冲同步到写到磁盘</li>
-<li>2异步刷盘，直接写到文件系统的缓存中，不保证commit执行时肯定会刷盘</li>
-</ul>
-</li>
-<li>数据页和索引页<br>数据都是存储在磁盘上的，当需要访问时才会从磁盘中将该数据所在的页读取到内存当中，并以一定的策略进行淘汰策略和刷盘策略。</li>
-<li>哈希信息页</li>
-<li>元数据信息页</li>
-</ul>
-<h3 id="Innodb机制"><a href="#Innodb机制" class="headerlink" title="Innodb机制"></a>Innodb机制</h3><ul>
-<li>checkpoint<br>在一定条件下，将内存中的脏页持久化到磁盘，并记录数据页刷新的位点信息(LSN)的一种机制。<ol>
-<li>缩短数据库的恢复时间（数据库关闭时将所有的脏页刷新到磁盘/Sharp Checkpoint）</li>
-<li>缓冲池不够用时，刷新部分脏页（为了保证缓冲池中有足够可用的数据页，Innodb会强制进行Checkpoint/Dirty Page too much Checkpoint)</li>
-<li>重做日志不可用时，刷新部分脏页（redo log是一个循环文件，如果redo log的写入量特别大，导致此时redo log几乎写满，Innodb会先将部分脏页先刷新到磁盘，释放redo log空间，此时会触发Checkpoint。/Async/Sync Flush Checkpoint）</li>
-<li>Master Thread每秒任务，刷新部分脏页</li>
-<li>LRU列表空闲页不足时，刷新部分脏页（Innodb会保证LRU列表中有一定数量空闲页可使用，如果LRU列表中没有这么多空闲页，那么Innodb会将LRU列表尾端的页移除，如果其中存在脏页，那么此时会进行Checkpoint操作/FLUSH_LRU_LIST Checkpoint）</li>
-</ol>
-</li>
-<li><p>两次写（Double write）<br>在写数据之前，先把这个数据页写到一块独立物理位置后，再写到数据页中。<br>由两部分组成，一部分是Innodb内存中的double write buffer；另一部分是物理磁盘上的ibdata系统表空间的大小为2M，共128个连续的page。<br>在对缓冲池中的脏页进行刷新时，并不直接写磁盘，而是会通过memcpy函数将脏页先复制到内存中的doublewrite buffer，之后通过doublewrite buffer分两次，每次1M顺序地写入到共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘。<br><a href="https://imgchr.com/i/ZhzmeP" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzmeP.md.jpg" alt="ZhzmeP.md.jpg"></a></p>
-</li>
-<li><p>WAL（write ahead log)</p>
-<pre><code>1. 先记录undo/redo log,确保日志刷到磁盘上持久存储。
-2. 更新内存数据页，并&lt;font color=&quot;red&quot;&gt;异步刷盘&lt;/font&gt;。
-3. 事务日志持久化到binlog，&lt;font color=&quot;red&quot;&gt;此时返回给客户端事务已提交&lt;/font&gt;。
-4. 提交事务，在redo log中写入到commit记录。
-</code></pre></li>
-<li><p>两阶段提交<br>我们可以看到对于更新数据的操作，MySQL的处理逻辑是先将内存中的数据页更新，然后写入redolog(prepare阶段），写入binglog，redo log(commit阶段)<br><a href="https://imgchr.com/i/ZhzEQA" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/ZhzEQA.md.jpg" alt="ZhzEQA.md.jpg"></a></p>
-<p>在两阶段不同时刻宕机，会发生什么情况？<br>innodb发现redolog中没有commit，就会拿着XA号去binlog中寻找是否存在</p>
-<ul>
-<li>在时刻A宕机，此时是不存在的，所以事务回滚。</li>
-<li>在时刻B宕机，此时Binlog中存在该XA号，所以会恢复该事务。</li>
-</ul>
-</li>
-<li><p>MVCC(多版本并发控制）<br>事务在开启的时候会获取一个一致性快照，每个事务都有一个唯一的事务ID，叫做transaction ID。<br>每行数据也有多个版本，每次事务更新数据的时候都会生成一个新的数据版本，并且将transaction ID赋值给这个数据版本的事务ID。<br>图中的虚线代表的就是undo log,V1、V2、V3并不物理真实存在，需要获取V2则需要从V4依次应用U3、U2。<br>一个数据版本，对于一个事务视图来说，除了自己更新的总是可见以外：</p>
-<ol>
-<li>版本未提交，不可见</li>
-<li>版本已提交，但是是在视图创建后提交的，不可见</li>
-<li>版本已提交，而且是在视图创建前提交的，可见<br><a href="https://imgchr.com/i/Zhzuo8" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/13/Zhzuo8.md.jpg" alt="Zhzuo8.md.jpg"></a></li>
-</ol>
-</li>
-<li><p>自适应哈希</p>
-</li>
-<li>异步IO</li>
-<li>刷新临近页</li>
-<li>组提交<h3 id="存储格式"><a href="#存储格式" class="headerlink" title="存储格式"></a>存储格式</h3><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3></li>
-</ul>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/02/MySQL/MySQL体系结构/" rel="next" title="MySQL体系结构">
-                <i class="fa fa-chevron-left"></i> MySQL体系结构
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/02/MySQL/MySQL忘记密码怎么办/" rel="prev" title="MySQL忘记密码怎么办">
-                MySQL忘记密码怎么办 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
+
     </div>
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
@@ -572,15 +365,6 @@
 
 
           
-
-  
-    <div class="comments" id="comments">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDc2MS8yMTI4Mg"></div>
-    </div>
-
-  
-
-
 
         </div>
         
@@ -601,17 +385,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -628,7 +403,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -639,7 +414,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -650,7 +425,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -726,22 +501,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB整体架构"><span class="nav-number">1.</span> <span class="nav-text">InnoDB整体架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台线程"><span class="nav-number">1.0.1.</span> <span class="nav-text">后台线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存池"><span class="nav-number">1.0.2.</span> <span class="nav-text">内存池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Innodb机制"><span class="nav-number">1.0.3.</span> <span class="nav-text">Innodb机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储格式"><span class="nav-number">1.0.4.</span> <span class="nav-text">存储格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-number">1.0.5.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引"><span class="nav-number">1.0.6.</span> <span class="nav-text">索引</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -912,10 +671,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
 
   
 
@@ -944,17 +699,6 @@
 
 
 
-  
-    <script type="text/javascript">
-      (function(d, s) {
-        var j, e = d.getElementsByTagName(s)[0];
-        if (typeof LivereTower === 'function') { return; }
-        j = d.createElement(s);
-        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-        j.async = true;
-        e.parentNode.insertBefore(j, e);
-      })(document, 'script');
-    </script>
   
 
 

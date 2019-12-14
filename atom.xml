@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-14T16:27:53.885Z</updated>
+  <updated>2019-12-14T16:44:52.295Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>缓存雪崩穿透击穿介绍</title>
+    <link href="http://yoursite.com/2019/12/15/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E7%A9%BF%E9%80%8F%E5%87%BB%E7%A9%BF%E4%BB%8B%E7%BB%8D/"/>
+    <id>http://yoursite.com/2019/12/15/缓存雪崩穿透击穿介绍/</id>
+    <published>2019-12-14T16:40:24.000Z</published>
+    <updated>2019-12-14T16:44:52.295Z</updated>
+    
+    <content type="html"><![CDATA[<p>看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。</p><p>这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。</p><h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设在定时任务中设置的过期时间都一样，那么在某一个时间点时，大量的key同时过期。本来缓存抵挡住了大量的请求，key过期后，这些压力全部同时打到了数据库中，数据库可能就扛不住。直接被打挂了，重启数据库后，立马又被新的流量打挂了。这就是缓存雪崩。<br>(注：这里还有个隐患，Redis可能会频繁的处理过期key，从而导致Redis性能降低)<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg" alt=""></p><p>处理缓存雪崩主要有以下几个思路：</p><ol><li>分散过期时间。把每个key的过期时间都加上一个随机的过期值。保证数据不会在同一时间大面积失效。</li><li>设置过期标志更新缓存。给每一个缓存数据都增加一个相应的缓存标记，记录缓存是否失效。如果缓存失效，则更新数据缓存。这样虽然在缓存首次失效时，仍会带来数据库压力问题。但是能够在一定程度上缓解后续被新流量打挂以及所有服务不可用的情况。</li><li>在代码层面上设定一定策略，比如加锁等待、减慢请求速度。给数据库留下启动和重建缓存的机会。</li></ol><h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透就是指客户端不断的查询缓存和数据库都没有的数据。相当于进行了两次无用的查询。降低缓存的命中率，增加数据库的压力。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4nqarcj30dx0ak751.jpg" alt=""></p><p>解决手段：</p><ol><li>客户端进行校验，先将明显不符合的key给过滤掉。</li><li>对于查询不到的数据，直接赋值一个null给它。</li><li>使用布隆过滤器来对不存在数据进行过滤掉。</li><li>限流。</li></ol><h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p>缓存击穿和缓存雪崩有点像。但是又不一样，缓存雪崩是大面积的缓存同时失效，打崩了DB。而缓存击穿是指一个key非常热点，在不停的扛着大并发，当这个key失效的瞬间，持续的大并发就击穿缓存，直接请求数据库。</p><p>解决手段:<br>主要场景是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。<br>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。&lt;/p&gt;
+&lt;p&gt;这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。&lt;/p&gt;
+&lt;h2 id=&quot;缓存雪崩&quot;&gt;&lt;a 
+      
+    
+    </summary>
+    
+      <category term="-Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="-概念介绍" scheme="http://yoursite.com/tags/%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>python装饰器</title>
