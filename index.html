@@ -307,6 +307,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/Redis/Redis4.0的大key发现和删除/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/19/Redis/Redis4.0的大key发现和删除/" itemprop="url">Redis4.0的大key发现和删除</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-19T01:22:47+08:00">
+                2019-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis4.0版本之后引入了memory usage命令和lazyfree机制。不管是对大key的发现，还是解决删除大key造成的阻塞问题都有了很大的提升。</p>
+<h3 id="大key发现"><a href="#大key发现" class="headerlink" title="大key发现"></a>大key发现</h3><p>memory usage的实现主要在<code>object.c-&gt;memoryCommand</code>方法中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;memory&quot;,memoryCommand,-2,</span><br><span class="line">     &quot;random read-only&quot;,</span><br><span class="line">     0,NULL,0,0,0,0,0,0&#125;,</span><br><span class="line">     </span><br><span class="line">else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;usage&quot;) &amp;&amp; c-&gt;argc &gt;= 3) &#123;</span><br><span class="line">        dictEntry *de;</span><br><span class="line">        long long samples = OBJ_COMPUTE_SIZE_DEF_SAMPLES;</span><br><span class="line">        for (int j = 3; j &lt; c-&gt;argc; j++) &#123;</span><br><span class="line">            if (!strcasecmp(c-&gt;argv[j]-&gt;ptr,&quot;samples&quot;) &amp;&amp;</span><br><span class="line">                j+1 &lt; c-&gt;argc)</span><br><span class="line">            &#123;</span><br><span class="line">                if (getLongLongFromObjectOrReply(c,c-&gt;argv[j+1],&amp;samples,NULL)</span><br><span class="line">                     == C_ERR) return;</span><br><span class="line">                if (samples &lt; 0) &#123;</span><br><span class="line">                    addReply(c,shared.syntaxerr);</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                if (samples == 0) samples = LLONG_MAX;;</span><br><span class="line">                j++; /* skip option argument. */</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                addReply(c,shared.syntaxerr);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if ((de = dictFind(c-&gt;db-&gt;dict,c-&gt;argv[2]-&gt;ptr)) == NULL) &#123;</span><br><span class="line">            addReplyNull(c);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        size_t usage = objectComputeSize(dictGetVal(de),samples);</span><br><span class="line">        usage += sdsAllocSize(dictGetKey(de));</span><br><span class="line">        usage += sizeof(dictEntry);</span><br><span class="line">        addReplyLongLong(c,usage);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/19/Redis/Redis4.0的大key发现和删除/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/15/Redis/Redis初始化启动过程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -613,7 +760,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/python/python装饰器/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -632,7 +779,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/19/python/python装饰器/" itemprop="url">python装饰器</a></h1>
+                <a class="post-title-link" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/" itemprop="url">Spring boot整合SpringTask实现定时任务</a></h1>
         
 
         <div class="post-meta">
@@ -644,8 +791,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T21:40:56+08:00">
-                2018-08-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T15:45:09+08:00">
+                2019-07-26
               </time>
             
 
@@ -667,8 +814,205 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Boot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>SpringTask是Spring自主研发的一个定时任务工具，不需要引入其他依赖就可以使用。</p>
+<h2 id="SpringTask-Cron语法"><a href="#SpringTask-Cron语法" class="headerlink" title="SpringTask Cron语法"></a>SpringTask Cron语法</h2><p>类似于shell中的<code>crontab</code>，只不过最前面多了一个<code>Seconds</code>秒级别。<br>Seconds Minutes Hours DayofMonth Month DayofWeek</p>
+<table>
+<thead>
+<tr>
+<th>时间元素</th>
+<th>可出现的字符</th>
+<th>数值范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seconds</td>
+<td>,-*/</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>Minutes</td>
+<td>,-*/</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>Hours</td>
+<td>,-*/</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>Day of Month</td>
+<td>,-*/?LW</td>
+<td>0-31</td>
+</tr>
+<tr>
+<td>Month</td>
+<td>,-*/</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>Day of Week</td>
+<td>,-*/?L#</td>
+<td>1-7</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>“,” 列出枚举值</li>
+<li>“-“ 触发范围</li>
+<li>“*” 任意值</li>
+<li>“/“ 每隔一段时间执行</li>
+<li>“?” 任意值</li>
+<li>“#” 确定第几个星期几</li>
+<li>“L” 表示最后的有效值</li>
+<li>“W” 表示有效工作日
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </li></ul></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/24/java实现快排/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/24/java实现快排/" itemprop="url">java实现快排</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T15:04:30+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -706,11 +1050,19 @@
       
         
           
-            <p>python装饰器就是用于<font color="red">扩展原来函数功能的一种函数</font>，这个函数的特殊之处在于它的返回值也是一个函数。使用python装饰器的好处就是在不用更改原函数的代码前提下给函数增加新的功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原函数</span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>要想扩展一个函数的功能，最简单的方法就是直接修改原函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def func():</span><br><span class="line">	print(&quot;before&quot;)</span><br><span class="line">	print(&quot;hello&quot;)</span><br><span class="line">	print(&quot;after&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>如果不想修改原函数，还是想增强函数的功能时，可以另外定义一个函数调用原函数。（类似于设计模式中的装饰模式，有组合和代理两种方式）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def deco(func):</span><br><span class="line">	print(&quot;before&quot;)</span><br><span class="line">	func()</span><br><span class="line">	print(&quot;after&quot;)</span><br><span class="line"></span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    f = func</span><br><span class="line">    deco(f)#只有把func()或者f()作为参数执行，新加入功能才会生效</span><br><span class="line">    print(&quot;f.__name__ is&quot;,f.__name__)#f的name就是func()</span><br><span class="line">    print()</span><br><span class="line">    #func()</span><br></pre></td></tr></table></figure></p>
-<p>但是如果存在很多个类似于func的函数需要相同的扩展，那岂不是要执行deco函数许多次？<br>下面我们实现一个最简陋的装饰器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def deco(func):</span><br><span class="line">	def wrapper(*args, **kwargs):</span><br><span class="line">		print(&quot;before&quot;)</span><br><span class="line">		func(*args, **kwargs)</span><br><span class="line">		print(&quot;after&quot;)</span><br><span class="line">	return wrapper</span><br><span class="line"></span><br><span class="line">@deco</span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>这里的deco函数就是最原始的装饰器，它的参数是一个函数，然后返回值也是一个函数。其中作为参数的这个函数func()就在返回函数wrapper()的内部执行。然后在函数func()前面加上@deco。<br>所以这里装饰器就像一个注入符号：有了它，拓展了原来函数的功能既不需要侵入函数内更改代码，也不需要重复执行原函数。<br>在func函数前还可以使用多个@的方式来执行多个装饰器，多个装饰器的执行顺序就是从最后一个装饰器开始执行到第一个装饰器，在执行函数本身。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">def dec1(func):  </span><br><span class="line">    print(&quot;1111&quot;)  </span><br><span class="line">    def one():  </span><br><span class="line">        print(&quot;2222&quot;)  </span><br><span class="line">        func()  </span><br><span class="line">        print(&quot;3333&quot;)  </span><br><span class="line">    return one  </span><br><span class="line"></span><br><span class="line">def dec2(func):  </span><br><span class="line">    print(&quot;aaaa&quot;)  </span><br><span class="line">    def two():  </span><br><span class="line">        print(&quot;bbbb&quot;)  </span><br><span class="line">        func()  </span><br><span class="line">        print(&quot;cccc&quot;)  </span><br><span class="line">    return two  </span><br><span class="line"></span><br><span class="line">@dec1  </span><br><span class="line">@dec2  </span><br><span class="line">def test():  </span><br><span class="line">    print(&quot;test test&quot;)  </span><br><span class="line"></span><br><span class="line">test()  </span><br><span class="line"></span><br><span class="line">aaaa  </span><br><span class="line">1111  </span><br><span class="line">2222  </span><br><span class="line">bbbb  </span><br><span class="line">test test  </span><br><span class="line">cccc  </span><br><span class="line">3333</span><br></pre></td></tr></table></figure></p>
+            <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>在数组中选出一个元素做为中枢值，把所有比它小的元素都移动到它的左边，比它大的元素都移动到它的右边。直到数组有序。<br><img src="https://img-blog.csdnimg.cn/20190723124826723.gif" alt=""></p>
+<h3 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">private static void qSort(int[] a,int left,int right)&#123;</span><br><span class="line">    if(left &lt; right)&#123;</span><br><span class="line">        int mid = divide(a,left,right);</span><br><span class="line">        qSort(a,left,mid);</span><br><span class="line">        qSort(a,mid+1,right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static int divide(int[] a,int left,int right)&#123;</span><br><span class="line">    int mid = left;</span><br><span class="line"></span><br><span class="line">    while(left &lt; right) &#123;</span><br><span class="line">        while (left &lt; right &amp;&amp; a[right] &gt;= a[mid]) &#123;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        while (left &lt; right &amp;&amp; a[left] &lt; a[mid]) &#123;</span><br><span class="line">            left++;</span><br><span class="line">        &#125;</span><br><span class="line">        if (left &lt; right) &#123;</span><br><span class="line">            swap(a, left, right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void swap(int[] a, int left, int right) &#123;</span><br><span class="line">    int tmp = a[left];</span><br><span class="line">    a[left] = a[right];</span><br><span class="line">    a[right] = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体流程：</p>
+<ol>
+<li>定义两个指针<code>left</code>和<code>right</code>代表两个初始化位置，分别表示需要排序数组的最左和最右。</li>
+<li>一直遍历，right向左移动，直到找到小于中枢值的位置。</li>
+<li>一直遍历，left向右移动，直到找到大于中枢值的位置。</li>
+<li>如果left&lt;right，交换这两个元素。</li>
+<li>重复上面步骤。</li>
+<li>使用递归再对两边子数组进行排序。</li>
+</ol>
+<h3 id="非递归实现"><a href="#非递归实现" class="headerlink" title="非递归实现"></a>非递归实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//    非递归实现快排</span><br><span class="line">    private static void qSort2(int[] a,int left,int right)&#123;</span><br><span class="line">        Stack&lt;Integer&gt; s = new Stack&lt;&gt;();</span><br><span class="line">        s.push(left);</span><br><span class="line">        s.push(right);</span><br><span class="line"></span><br><span class="line">        while(!s.isEmpty())&#123;</span><br><span class="line">            int r = s.pop();</span><br><span class="line">            int l = s.pop();</span><br><span class="line">            int mid = divide(a,l,r);</span><br><span class="line">            if(l &lt; mid)&#123;</span><br><span class="line">                s.push(l);</span><br><span class="line">                s.push(mid);</span><br><span class="line">            &#125;</span><br><span class="line">            if(mid + 1 &lt; right)&#123;</span><br><span class="line">                s.push(mid+1);</span><br><span class="line">                s.push(right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>对需要排序的数组的左指针和右指针l、r记录起来，压入到栈中，每次循环都会弹出一对l、r。<br>当栈为空时，说明都已经排序了。接收循环。</p>
 
           
         
@@ -759,7 +1111,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/python/获取本机IP/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/23/Linux/Linux命令之sort/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -778,7 +1130,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/21/python/获取本机IP/" itemprop="url">python获取本机IP</a></h1>
+                <a class="post-title-link" href="/2019/07/23/Linux/Linux命令之sort/" itemprop="url">Linux命令之sort</a></h1>
         
 
         <div class="post-meta">
@@ -790,8 +1142,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-21T16:28:05+08:00">
-                2018-07-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-23T12:48:18+08:00">
+                2019-07-23
               </time>
             
 
@@ -813,8 +1165,155 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Linux自带排序命令：<code>sort</code><br>在一些临时性排序需求的时候，使用该命令可以快速的处理。小巧的工具使我们使用非常便捷。<br>语法：<code>sort [-bcCdfghiRMmnrsuVz] [-k field1[,field2]] [-S memsize] [-T dir] [-t char] [-o output] [file ...]</code></p>
+<h2 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-b 忽略每行前面开始出的空格字符。</span><br><span class="line">-c 检查文件是否已经按照顺序排序。</span><br><span class="line">-d 排序时，处理英文字母、数字及空格字符外，忽略其他的字符。</span><br><span class="line">-f 排序时，将小写字母视为大写字母。</span><br><span class="line">-i 排序时，除了040至176之间的ASCII字符外，忽略其他的字符。</span><br><span class="line">-k：以哪个区间 (field) 来进行排序</span><br><span class="line">-m：将几个排序好的文件进行合并，只是单纯合并，不做排序</span><br><span class="line">-M：将前面3个字母依照月份的缩写进行排序</span><br><span class="line">-n：依照数值的大小排序</span><br><span class="line">-o&lt;输出文件&gt;：将排序后的结果存入指定的文件</span><br><span class="line">-r：降序</span><br><span class="line">-R: 乱序</span><br><span class="line">-u：忽略相同行</span><br><span class="line">-t&lt;分隔字符&gt;：指定分隔符，默认的分隔符为空白字符和非空白字符之间的空字符</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/23/Linux/Linux命令之sort/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/21/SpringBoot/SpringBoot整合Redis/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/21/SpringBoot/SpringBoot整合Redis/" itemprop="url">SpringBoot整合Redis</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-21T22:34:11+08:00">
+                2019-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
                   </a>
                 </span>
 
@@ -852,7 +1351,9 @@
       
         
           
-            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span><span class="params">()</span>:</span></span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">      s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">      s.connect((<span class="string">'8.8.8.8'</span>, <span class="number">80</span>))</span><br><span class="line">      ip = s.getsockname()[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">finally</span>:</span><br><span class="line">      s.close()</span><br><span class="line">  <span class="keyword">return</span> ip</span><br></pre></td></tr></table></figure>
+            <h1 id="Spring-boot中使用Redis"><a href="#Spring-boot中使用Redis" class="headerlink" title="Spring boot中使用Redis"></a>Spring boot中使用Redis</h1><h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># REDIS (RedisProperties)</span><br><span class="line"># Redis数据库索引（默认为0）</span><br><span class="line">spring.redis.database=0</span><br><span class="line"># Redis服务器地址</span><br><span class="line">spring.redis.host=localhost</span><br><span class="line"># Redis服务器连接端口</span><br><span class="line">spring.redis.port=6379</span><br><span class="line"># Redis服务器连接密码（默认为空）</span><br><span class="line">spring.redis.password=</span><br><span class="line"># 连接池最大连接数（使用负值表示没有限制）</span><br><span class="line">spring.redis.pool.max-active=8</span><br><span class="line"># 连接池最大阻塞等待时间（使用负值表示没有限制）</span><br><span class="line">spring.redis.pool.max-wait=-1</span><br><span class="line"># 连接池中的最大空闲连接</span><br><span class="line">spring.redis.pool.max-idle=8</span><br><span class="line"># 连接池中的最小空闲连接</span><br><span class="line">spring.redis.pool.min-idle=0</span><br><span class="line"># 连接超时时间（毫秒）</span><br><span class="line">spring.redis.timeout=0</span><br><span class="line"></span><br><span class="line">## Redis自定义key配置选项</span><br></pre></td></tr></table></figure>
+<h2 id="访问测试"><a href="#访问测试" class="headerlink" title="访问测试"></a>访问测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@SpringApplicationConfiguration(Application.class)</span><br><span class="line">public class ApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">	@Autowired</span><br><span class="line">	private StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void test() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">		// 保存字符串</span><br><span class="line">		stringRedisTemplate.opsForValue().set(&quot;aaa&quot;, &quot;111&quot;);</span><br><span class="line">		Assert.assertEquals(&quot;111&quot;, stringRedisTemplate.opsForValue().get(&quot;aaa&quot;));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           
         
       
@@ -887,9 +1388,478 @@
 
 
     
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/21/SpringBoot/SpringBoot整合Swagger2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/21/SpringBoot/SpringBoot整合Swagger2/" itemprop="url">SpringBoot整合Swagger2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-21T21:57:43+08:00">
+                2019-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/mall/" itemprop="url" rel="index">
+                    <span itemprop="name">mall</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Swagger2"><a href="#Swagger2" class="headerlink" title="Swagger2"></a>Swagger2</h1><p>Swagger2用于解决前后端开发人员之间的api对接，减少与其他团队开发期间的沟通成本。Swagger2可以轻松的整合到Spring boot中，并与SpringMVC程序配合组织处强大的Restful API文档。即可以减少我们创建文档的工作量，同时说明内容整合到实现代码中，让维护文档和修改代码整合为一体，可以让我们在修改代码逻辑的同时方便的修改文档说明。<br>另外，Swagger2也提供了强大的页面测试功能来调试每个Restful API</p>
+<h2 id="添加Swagger2依赖"><a href="#添加Swagger2依赖" class="headerlink" title="添加Swagger2依赖"></a>添加Swagger2依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/21/SpringBoot/SpringBoot整合Swagger2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/SpringBoot/Spring-boot整合MyBatis逆向工程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/18/SpringBoot/Spring-boot整合MyBatis逆向工程/" itemprop="url">Spring boot整合MyBatis逆向工程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-18T23:03:57+08:00">
+                2019-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/mall/" itemprop="url" rel="index">
+                    <span itemprop="name">mall</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="pom-xml中添加依赖"><a href="#pom-xml中添加依赖" class="headerlink" title="pom.xml中添加依赖"></a>pom.xml中添加依赖</h2><p>在这里引入了<code>pagehelper</code>，<code>pagehelper</code>是MyBatis的分页插件，通过几行简单的代码就是实现分页功能；在与Spring boot整合的时候，只要整合了<code>pagehelper</code>就自动整合了MyBatis。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">            &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!-- spring boot健康检查、审计、统计、监控--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--MyBatis分页插件--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.github.pagehelper&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;pagehelper-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.2.10&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!-- MyBatis 生成器--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;mybatis-generator-core&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.3.3&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!--连接池--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.1.10&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;5.1.21&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="修改Spring-boot配置文件"><a href="#修改Spring-boot配置文件" class="headerlink" title="修改Spring boot配置文件"></a>修改Spring boot配置文件</h2><p>在<code>application.yml</code>中添加数据源配置和MyBatis的mapper.xml的路径配置。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080</span><br><span class="line"></span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql://127.0.0.1:13307/spring</span><br><span class="line">    password: hoo</span><br><span class="line">    username: hoo</span><br><span class="line"></span><br><span class="line">mybatis:</span><br><span class="line">  mapper-locations:</span><br><span class="line">    - classpath:mapper/*.xml</span><br><span class="line">    - classpath*:com/**/mapper/*.xml</span><br></pre></td></tr></table></figure>
+<h2 id="修改Mybatis-generator配置文件"><a href="#修改Mybatis-generator配置文件" class="headerlink" title="修改Mybatis generator配置文件"></a>修改Mybatis generator配置文件</h2><p>主要是修改数据库连接配置，MyBatis generator生成的model、mapper接口、mapper.xml文件的路径。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE generatorConfiguration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;generatorConfiguration&gt;</span><br><span class="line">    &lt;properties resource=&quot;generator.properties&quot;/&gt;</span><br><span class="line">    &lt;context id=&quot;MySqlContext&quot; targetRuntime=&quot;MyBatis3&quot; defaultModelType=&quot;flat&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;beginningDelimiter&quot; value=&quot;`&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;endingDelimiter&quot; value=&quot;`&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;javaFileEncoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">        &lt;!-- 为模型生成序列化方法--&gt;</span><br><span class="line">        &lt;plugin type=&quot;org.mybatis.generator.plugins.SerializablePlugin&quot;/&gt;</span><br><span class="line">        &lt;!-- 为生成的Java模型创建一个toString方法 --&gt;</span><br><span class="line">        &lt;plugin type=&quot;org.mybatis.generator.plugins.ToStringPlugin&quot;/&gt;</span><br><span class="line">        &lt;!-- 数据库资源配置 --&gt;</span><br><span class="line">        &lt;jdbcConnection driverClass=&quot;com.mysql.jdbc.Driver&quot;</span><br><span class="line">                        connectionURL=&quot;jdbc:mysql://127.0.0.1:13307/spring&quot;</span><br><span class="line">                        userId=&quot;hoo&quot;</span><br><span class="line">                        password=&quot;hoo&quot;&gt;</span><br><span class="line">            &lt;!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题--&gt;</span><br><span class="line">            &lt;property name=&quot;nullCatalogMeansCurrent&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">        &lt;/jdbcConnection&gt;</span><br><span class="line">        &lt;!-- 生成的model放置路径 --&gt;</span><br><span class="line">        &lt;javaModelGenerator targetPackage=&quot;com.hoo.springboot.mbg.model&quot; targetProject=&quot;./src/main/java&quot;/&gt;</span><br><span class="line">        &lt;!-- 生成的mapper接口放置路径 --&gt;</span><br><span class="line">        &lt;sqlMapGenerator targetPackage=&quot;com.hoo.springboot.mbg.mapper&quot; targetProject=&quot;./src/main/resources&quot;/&gt;</span><br><span class="line">        &lt;!-- 生成的mapper配置文件放置路径 --&gt;</span><br><span class="line">        &lt;javaClientGenerator type=&quot;XMLMAPPER&quot; targetPackage=&quot;com.hoo.springboot.mbg.mapper&quot;</span><br><span class="line">                             targetProject=&quot;./src/main/java&quot;/&gt;</span><br><span class="line">        &lt;!--生成全部表tableName设为%--&gt;</span><br><span class="line">        &lt;table tableName=&quot;%&quot;&gt;</span><br><span class="line">            &lt;generatedKey column=&quot;id&quot; sqlStatement=&quot;MySql&quot; identity=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/context&gt;</span><br><span class="line">&lt;/generatorConfiguration&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="运行Generator的main函数生成代码"><a href="#运行Generator的main函数生成代码" class="headerlink" title="运行Generator的main函数生成代码"></a>运行Generator的main函数生成代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Generator &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        //MBG 执行过程中的警告信息</span><br><span class="line">        List&lt;String&gt; warnings = new ArrayList&lt;String&gt;();</span><br><span class="line">        //当生成的代码重复时，覆盖原代码</span><br><span class="line">        boolean overwrite = true;</span><br><span class="line">        //读取我们的 MBG 配置文件</span><br><span class="line">        InputStream is = Generator.class.getResourceAsStream(&quot;/generatorConfig.xml&quot;);</span><br><span class="line">        ConfigurationParser cp = new ConfigurationParser(warnings);</span><br><span class="line">        Configuration config = cp.parseConfiguration(is);</span><br><span class="line">        is.close();</span><br><span class="line"></span><br><span class="line">        DefaultShellCallback callback = new DefaultShellCallback(overwrite);</span><br><span class="line">        /* 创建 MBG */</span><br><span class="line">        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);</span><br><span class="line">        //执行生成代码</span><br><span class="line">        myBatisGenerator.generate(null);</span><br><span class="line">        //输出警告信息</span><br><span class="line">        for (String warning : warnings) &#123;</span><br><span class="line">            System.out.println(warning);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/Java/Java类加载机制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/16/Java/Java类加载机制/" itemprop="url">Java类加载机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-16T22:59:41+08:00">
+                2019-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>类的加载是指将类的<code>.class</code>文件中的<strong>二进制数据读入到内存</strong>中，将其放在运行时数据区的方法区，然后在Java堆中创建一个java.lang.Class对象(类也是对象)，用来封装类在方法区内的数据结构。<br>类加载的最终产物是位于堆中的Class对象，该Class对象封装了类在方法区内的数据结构，并且向开发者提供了访问方法区内的数据结构的接口。<br><a href="https://imgchr.com/i/ZqjkUs" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/17/ZqjkUs.jpg" alt="ZqjkUs.jpg"></a></p>
+<p>类加载器不需要等到某个类被“首次主动使用”时再加载，JVM规范允许类加载器在预料某个类将要被使用的时候就预先加载，如果在预先加载的过程中遇到了<code>.class</code>文件缺失或存在错误，类加载器必须在程序<font color="red">首次主动使用该类</font>时才报告错误，如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。</p>
+<h1 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h1><p><a href="https://imgchr.com/i/ZqjPbQ" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/17/ZqjPbQ.jpg" alt="ZqjPbQ.jpg"></a></p>
+<p>类的生命周期主要包含<code>加载</code>、<code>验证</code>、<code>准备</code>、<code>解析</code>、<code>初始化</code>、<code>使用</code>、<code>卸载</code>。<br>在加载过程中的五个阶段中，<code>加载</code>、<code>验证</code>、<code>准备</code>、<code>初始化</code>发生的顺序是一定的，而<code>解析</code>在某些情况下可以在<code>初始化</code>阶段之后执行。这是为了支持Java语言的运行时绑定。<br>另外需要注意的是：这几个阶段是按照顺序开始，而不是按照顺序进行或完成，因为这些阶段通常是相互交叉混合进行的，通常在一个阶段执行的过程中需要调用或激活另一个阶段。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/16/Java/Java类加载机制/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -935,7 +1905,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">117</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -946,7 +1916,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -957,7 +1927,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
