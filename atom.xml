@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-26T12:18:03.795Z</updated>
+  <updated>2019-12-29T14:21:46.576Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>redis复制过程演变</title>
+    <link href="http://yoursite.com/2019/12/29/new/redis%E5%A4%8D%E5%88%B6%E8%BF%87%E7%A8%8B%E6%BC%94%E5%8F%98/"/>
+    <id>http://yoursite.com/2019/12/29/new/redis复制过程演变/</id>
+    <published>2019-12-29T14:19:06.000Z</published>
+    <updated>2019-12-29T14:21:46.576Z</updated>
+    
+    <content type="html"><![CDATA[<p>Redis的主从复制主要经历以下的几个阶段：</p><ol><li>2.8版本以下—-sync</li><li>2.8-4.0版本—-psync</li><li>4.0版本+ —-psync2</li></ol><p>下面我就来简单的讲讲Redis主从复制的演变过程。</p><h2 id="Redis主从复制过程"><a href="#Redis主从复制过程" class="headerlink" title="Redis主从复制过程"></a>Redis主从复制过程</h2><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadwq7etd2j31r50u0464.jpg" alt=""></p><ul><li>客户端发送slaveof命令给Redis实例</li><li>准备阶段函数为<code>replicationSetMaster</code>，这个函数主要会做一些复制之前的数据和状态清理工作。</li><li>更新server.master</li><li>将实例状态修改为REPL_STATE_CONNECT<a id="more"></a><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadwqm9ps9j31pc0u045z.jpg" alt=""><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadxodwcpuj31pf0u0dns.jpg" alt=""><br>Redis每秒会调用一次<code>replicationCron</code>定时任务。根据Redis当前所处状态来决定下一步操作。</li><li>当Redis状态为<code>REPL_STATE_CONNECT</code>时会调用<code>connectWithMaster</code>创建连接master事件。该函数会将Redis状态修改为<code>REPL_STATE_CONNECTING</code></li><li>接下来进行心跳检查、权限校验等操作</li><li>master接收到slave的复制命令后，就会触发一次rdb全备，并记录下全备期间的命令。</li><li>master将全备文件发送给slave后，将增量命令发送给slave。</li><li>心跳维持和持续复制</li></ul><h2 id="主从复制的演变"><a href="#主从复制的演变" class="headerlink" title="主从复制的演变"></a>主从复制的演变</h2><p>在2.8之前的版本中，如果由于网络等原因导致主从复制断开。那么就会将从节点状态修改为<code>REPL_STATE_CONNECTING</code>。进而会重新进行全量同步流程。</p><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadxz7g5aoj31rq0gcju1.jpg" alt=""><br>在2.8版本中，Redis增加了psync命令，并且增加了一个复制积压缓冲区的数据结构（默认为1M）。<br>复制积压缓冲区是一个环形的结构，保存了最近可用的写命令数据。<br>在<code>replicationCron</code>定时任务中每秒发送一个<code>REPLCONF ACK OFFSET</code>命令将自身的偏移量信息发送给master，如果offset的命令在复制积压缓冲区中，那么说明增量数据是可用的。就没必要进行全量同步，直接将复制积压缓冲区中的增量数据发送给slave就可以了。</p><p>在redis4.0+版本中又引进了psync2命令来避免一些特殊场景(主从架构、级联架构)下发生主从切换后不必要的全量同步操作。<br>将一组replid和offset给增加成为两组。主要用来记录上一次复制中主实例的runid值。然后在slaveof时判断是否有必要进行全量同步操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">replid1：</span><br><span class="line">主节点：自身的replid和offset</span><br><span class="line">从节点：主节点的replid和offset</span><br><span class="line"></span><br><span class="line">replid2:</span><br><span class="line">上一次主实例的replid和offset</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Redis的主从复制主要经历以下的几个阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;2.8版本以下—-sync&lt;/li&gt;
+&lt;li&gt;2.8-4.0版本—-psync&lt;/li&gt;
+&lt;li&gt;4.0版本+ —-psync2&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面我就来简单的讲讲Redis主从复制的演变过程。&lt;/p&gt;
+&lt;h2 id=&quot;Redis主从复制过程&quot;&gt;&lt;a href=&quot;#Redis主从复制过程&quot; class=&quot;headerlink&quot; title=&quot;Redis主从复制过程&quot;&gt;&lt;/a&gt;Redis主从复制过程&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gadwq7etd2j31r50u0464.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端发送slaveof命令给Redis实例&lt;/li&gt;
+&lt;li&gt;准备阶段函数为&lt;code&gt;replicationSetMaster&lt;/code&gt;，这个函数主要会做一些复制之前的数据和状态清理工作。&lt;/li&gt;
+&lt;li&gt;更新server.master&lt;/li&gt;
+&lt;li&gt;将实例状态修改为REPL_STATE_CONNECT
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>浅析GeoHash</title>
@@ -564,33 +598,6 @@
       <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
     
       <category term="JAVA" scheme="http://yoursite.com/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GET和POST的区别</title>
-    <link href="http://yoursite.com/2019/04/05/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://yoursite.com/2019/04/05/面试准备/GET和POST的区别/</id>
-    <published>2019-04-05T14:16:26.000Z</published>
-    <updated>2019-12-18T17:21:15.116Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="GET和POST请求的区别"><a href="#GET和POST请求的区别" class="headerlink" title="GET和POST请求的区别"></a>GET和POST请求的区别</h1><p>GET和POST是HTTP请求的两种发送方式，其本质上并没有多大区别。HTTP的底层是TCP/IP协议，所以GET和POST底层实现也是TCP/IP协议，也就是GET和POST都是TCP连接，GET和POST做的事情都是一样的。如果在GET上加上<code>request body</code>，POST上加上<code>url</code>在技术上完全是可行的。</p><p>但是GET和POST在一些表现上还是有区别的。主要体现在以下几个方面：</p><ul><li>GET请求在URL中传送的参数是有长度限制的，POST没有</li><li>GET会将参数直接显示在URL上，所以POST更为安全</li><li>GET参数传递通过URL，POST参数传递通过request body</li><li>GET请求参数记录会被保留在浏览器记录中，POST不会</li><li>POST支持多种编码方式</li><li>POST在回退的时候会再次提交数据，GET不会</li><li>在某些浏览器下，GET只会发送一次数据包，而POST需要发送两次</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;GET和POST请求的区别&quot;&gt;&lt;a href=&quot;#GET和POST请求的区别&quot; class=&quot;headerlink&quot; title=&quot;GET和POST请求的区别&quot;&gt;&lt;/a&gt;GET和POST请求的区别&lt;/h1&gt;&lt;p&gt;GET和POST是HTTP请求的两种发送方式，其本质
-      
-    
-    </summary>
-    
-      <category term="计算机基础" scheme="http://yoursite.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
-    
-      <category term="计算机网络" scheme="http://yoursite.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   
