@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-29T14:21:46.576Z</updated>
+  <updated>2019-12-29T16:00:07.049Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pika学习之数据结构篇</title>
+    <link href="http://yoursite.com/2019/12/29/new/pika/pika%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AF%87/"/>
+    <id>http://yoursite.com/2019/12/29/new/pika/pika学习之数据结构篇/</id>
+    <published>2019-12-29T15:58:59.000Z</published>
+    <updated>2019-12-29T16:00:07.049Z</updated>
+    
+    <content type="html"><![CDATA[<p>pika的持久化存储模块称为nemo存储引擎，其本质上是对rocksDB(只支持KV存储)的改造和封装。使其支持多数据结构的存储。<br>pika作为类redis数据库，所以肯定得兼容redis最基本的五种数据结构：string、hash、list、set、zset。 </p><h2 id="KV存储"><a href="#KV存储" class="headerlink" title="KV存储"></a>KV存储</h2><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae07se7opj30k204tq33.jpg" alt=""><br>KV存储作为rocksDB原生支持的存储方式，所以并没有做太多的处理。仅仅只是在value的结尾加上8个字节的附加信息(前4个字节表示version，后4个字节表示ttl)。<br>version字段用于对该键值对进行标记，以便后续处理，如删除一个键值对时，可以在该version进行标记，后续再进行真正的删除，这样可以减少删除操作造成的服务阻塞时间。</p><h2 id="Hash存储"><a href="#Hash存储" class="headerlink" title="Hash存储"></a>Hash存储</h2><p>对于每一个Hash结构，它都包含hash键(key)、域名(field)、值(value)。<br>nome的存储方式是将key和field组合成为一个新的key，将这个新生成的key与要存储的value组成最终落盘的kv键值对。<br>对于每一个hash键，nome还为它添加了一个存储元数据信息的落盘kv，它保存的是对应hash键下的所有域值对的个数。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae07pcssxj30jx04y0t0.jpg" alt=""></p><ul><li>左图字段保存的是hash键的对象，它由标记位+key+version+ttl组成</li><li>右图字段仅仅只保存一个数字，表示该hash下field的数量</li></ul><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae0docgmtj30rg06iq3b.jpg" alt=""><br>上图表示nome对传统hash结构转换成kv结构的拆分存储模式。</p><ul><li>k结构部分由标记位+长度+key+field组成。size表示的是hash键key的长度。</li><li>v结构部分就由具体的value+version+ttl组成。<a id="more"></a></li></ul><h2 id="List存储"><a href="#List存储" class="headerlink" title="List存储"></a>List存储</h2><p>每个List结构的底层存储也是采用链表结构来完成，对于每个List键，它的每个元素都落盘成一个kv键值对。<br>和Hash结构一样，每个List也需要拥有一个它的元素信息结构。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae0oa3gxuj30m806mjrq.jpg" alt=""></p><ul><li>List的key存储和hash的一样，只有标记位不一样而已。</li><li>value则存储了List的元数据信息，它有四个字段，从前到后分别为该List键内的元素个数、最左边元素节点的sequence(表头)、最右边元素节点的sequence(表尾)、下一个插入元素节点应该使用的sequence。</li></ul><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae0oe8d2tj30qx06mq3b.jpg" alt=""></p><ul><li>k结构部分由标记位+长度+key+sequence组成。size表示的是hash键key的长度。</li><li>v结构部分由前一个元素的sequence+后一个元素的sequence+value+version+ttl组成。从而实现了一个双向链表的结构。</li></ul><h2 id="Set存储"><a href="#Set存储" class="headerlink" title="Set存储"></a>Set存储</h2><p>Set，本质上就是一个value值为nil的Hash结构。在Java和Redis中，都是利用hashtable来实现的。nome并没有做什么特殊处理，只是在存储value时，只保存了version和ttl结构。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae10jcgjdj30lw06oglt.jpg" alt=""><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae10oq2i8j30kw06mq35.jpg" alt=""></p><h2 id="Zset存储"><a href="#Zset存储" class="headerlink" title="Zset存储"></a>Zset存储</h2><p>Zset就是一个有序的Set结构，所以对于每个元素，增加了一个scope值。把该元素对应的score值整合进去，这样便于依据Score值进行排序（因为从rocksdb内拿出的数据时按键排序的）<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae13azcgrj30ii068q33.jpg" alt=""><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae13e4n73j30oa068wep.jpg" alt=""><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gae13hlow6j30oa068wep.jpg" alt=""><br>score是从double类型转变过来的int64_t类型，这样做是为了可以让原来的浮点型的score直接参与到字符串的排序当中（浮点型的存储格式与字符串的比较方式不兼容）。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;pika的持久化存储模块称为nemo存储引擎，其本质上是对rocksDB(只支持KV存储)的改造和封装。使其支持多数据结构的存储。&lt;br&gt;pika作为类redis数据库，所以肯定得兼容redis最基本的五种数据结构：string、hash、list、set、zset。 &lt;/p&gt;
+&lt;h2 id=&quot;KV存储&quot;&gt;&lt;a href=&quot;#KV存储&quot; class=&quot;headerlink&quot; title=&quot;KV存储&quot;&gt;&lt;/a&gt;KV存储&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gae07se7opj30k204tq33.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;KV存储作为rocksDB原生支持的存储方式，所以并没有做太多的处理。仅仅只是在value的结尾加上8个字节的附加信息(前4个字节表示version，后4个字节表示ttl)。&lt;br&gt;version字段用于对该键值对进行标记，以便后续处理，如删除一个键值对时，可以在该version进行标记，后续再进行真正的删除，这样可以减少删除操作造成的服务阻塞时间。&lt;/p&gt;
+&lt;h2 id=&quot;Hash存储&quot;&gt;&lt;a href=&quot;#Hash存储&quot; class=&quot;headerlink&quot; title=&quot;Hash存储&quot;&gt;&lt;/a&gt;Hash存储&lt;/h2&gt;&lt;p&gt;对于每一个Hash结构，它都包含hash键(key)、域名(field)、值(value)。&lt;br&gt;nome的存储方式是将key和field组合成为一个新的key，将这个新生成的key与要存储的value组成最终落盘的kv键值对。&lt;br&gt;对于每一个hash键，nome还为它添加了一个存储元数据信息的落盘kv，它保存的是对应hash键下的所有域值对的个数。&lt;br&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gae07pcssxj30jx04y0t0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;左图字段保存的是hash键的对象，它由标记位+key+version+ttl组成&lt;/li&gt;
+&lt;li&gt;右图字段仅仅只保存一个数字，表示该hash下field的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gae0docgmtj30rg06iq3b.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;上图表示nome对传统hash结构转换成kv结构的拆分存储模式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;k结构部分由标记位+长度+key+field组成。size表示的是hash键key的长度。&lt;/li&gt;
+&lt;li&gt;v结构部分就由具体的value+version+ttl组成。
+    
+    </summary>
+    
+      <category term="Pika" scheme="http://yoursite.com/categories/Pika/"/>
+    
+    
+      <category term="Pika" scheme="http://yoursite.com/tags/Pika/"/>
+    
+  </entry>
   
   <entry>
     <title>redis复制过程演变</title>
@@ -562,33 +594,6 @@
 &lt;p&gt;HashMap的常用操作就是&lt;b&gt;GET&lt;/b&gt;和&lt;b&gt;PUT&lt;/b&gt;&lt;/p&gt;
 &lt;h4 id=&quot;PUT&quot;&gt;&lt;a href=&quot;#PUT&quot; class=&quot;headerlink&quot; title=&quot;PUT&quot;&gt;&lt;/a&gt;PUT&lt;/h4&gt;&lt;p&gt;我们在调用put方法的时候，会利用一个哈希函数来确定&lt;code&gt;Entry&lt;/code&gt;的插入位置。为了解决哈希冲突的问题，HashMap采用&lt;font color=&quot;red&quot;&gt;链表法&lt;/font&gt;来解决这个问题。&lt;br&gt;&lt;code&gt;注意：位置0上存放的一定是Null&lt;/code&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Object k;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if (e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.equals(k))) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                V oldValue = e.value;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                e.value = value;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                e.recordAccess(this);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                return oldValue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;modCount++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;addEntry(hash, key, value, i);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;return null;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;在遇到Hash冲突的时候，就将&lt;code&gt;Entry&lt;/code&gt;以链表的形式给插入到相应的位置，这里需要注意的是：HashMap采用的是&lt;font color=&quot;red&quot;&gt;头插法&lt;/font&gt;的形式。这是因为设计者认为最新加入的&lt;code&gt;Entry&lt;/code&gt;更有可能被访问。&lt;br&gt;此时HashMap的结构为&lt;b&gt;数组加链表&lt;/b&gt;&lt;br&gt;&lt;img src=&quot;https://s2.ax1x.com/2019/06/16/V7M7nO.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://yoursite.com/categories/JAVA/"/>
-    
-    
-      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
-    
-      <category term="JAVA" scheme="http://yoursite.com/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Object的常用方法</title>
-    <link href="http://yoursite.com/2019/06/01/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/Object%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2019/06/01/面试准备/Object的常用方法/</id>
-    <published>2019-06-01T14:41:31.000Z</published>
-    <updated>2019-12-18T17:21:15.114Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Object类常见方法"><a href="#Object类常见方法" class="headerlink" title="Object类常见方法"></a>Object类常见方法</h1><p>Object是一个特殊的类，所有的类都会隐式的继承Object类。Object中主要有以下11个方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">注：native方法：使用这个关键字说明这个方法是原生方法，底层使用C/C++实现，并且被编译成了DLL，由Java调用。函数实现在DLL中，JDK源码并不包含。</span><br><span class="line"></span><br><span class="line">public final native Class&lt;?&gt; getClass()</span><br><span class="line">用于返回当前运行时对象的Class对象，使用final关键字修饰，不允许子类重写。</span><br><span class="line"></span><br><span class="line">public native int hashCode()</span><br><span class="line">用于返回对象的哈希码，主要使用在哈希表中。</span><br><span class="line"></span><br><span class="line">public boolean equals(Object obj)</span><br><span class="line">用于比较2个对象的内存地址是否相等，String类对该方法进行了重写。</span><br><span class="line"></span><br><span class="line">protected native Object clone() throws CloneNotSupportedException</span><br><span class="line">用于创建当前对象的一份拷贝。Object本身并没有实现Cloneable接口，所以不重写clone方法并且进行调用就会发生CloneNotSupportedException异常。</span><br><span class="line"></span><br><span class="line">public String toString()</span><br><span class="line">默认返回类的名字@实例的哈希码的16进制的字符串，建议所有子类都重写该方法。</span><br><span class="line"></span><br><span class="line">public final native void notify()</span><br><span class="line">final方法，用于唤醒一个在此对象监视器上等待的线程。如果有多个线程在等待只会任意唤醒一个。</span><br><span class="line"></span><br><span class="line">public final native void notifyAll()</span><br><span class="line">用于唤醒该对象上所有的等待线程。</span><br><span class="line"></span><br><span class="line">public final native void wait(long timeout) throws InterruptedException</span><br><span class="line">public final void wait(long timeout, int nanos) throws InterruptedException</span><br><span class="line">public final void wait() throws InterruptedException</span><br><span class="line">暂停线程的执行，第二个超时时间需要增加nanos毫秒，第三个没有超时时间。</span><br><span class="line"></span><br><span class="line">protected void finalize() throws Throwable &#123; &#125;</span><br><span class="line">实例被垃圾回收器回收的时候触发的操作。</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;Object类常见方法&quot;&gt;&lt;a href=&quot;#Object类常见方法&quot; class=&quot;headerlink&quot; title=&quot;Object类常见方法&quot;&gt;&lt;/a&gt;Object类常见方法&lt;/h1&gt;&lt;p&gt;Object是一个特殊的类，所有的类都会隐式的继承Object类。O
-      
     
     </summary>
     
