@@ -3,6 +3,45 @@
   
     
     <entry>
+      <title><![CDATA[听《工作三年我学到了什么》总结]]></title>
+      <url>/2020/01/05/new/other/%E5%90%AC%E3%80%8A%E5%B7%A5%E4%BD%9C%E4%B8%89%E5%B9%B4%E6%88%91%E5%AD%A6%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>最近听到一篇文章，觉得其中很多的点给了我很多收获。所以反复听了很多遍，并做了大概的总结。关键词：沟通、尝试、上升、思考、落地。</p>
+<ul>
+<li>不要把自己局限于某一个位置，试着多尝试不同的东西，“管理”好自己,“管理”好身边的人。</li>
+<li>你的技术能力决定了你能多快去完成目标。而你的非技术能力决定了你在朝哪个方向努力。</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gakzw4xmkcj30u00ubn5h.jpg" alt=""></p>
+<a id="more"></a>
+<p>总的来说，就是站在不同角色的角度来看待事情，思他人之所思。(领导、依赖人、客户、被求助者、被依赖人)</p>
+<h2 id="向上管理"><a href="#向上管理" class="headerlink" title="向上管理"></a>向上管理</h2><p>在工作当中，我们经常都是领导分配什么任务，我们就去努力完成任务。<br>而没有去思考这个任务到底能不能胜任，有没有更适合去做这个任务的人，以及更适合自己的任务却被分配给了其他的人。<br><b>领导是一个统筹管理的角色</b>，他大多时候只会关注总体任务是否完成。而没在意谁完成，怎么完成。</p>
+<p><font color="red">我们应该站在领导的角度上去思考整个项目任务</font>当我们遇到不合理任务时，及时表达自己的想法和看法，看是否存在更好解决方案。<br>一个适合自己的任务，不仅能够节省大量完成任务的时间，还能保证完成的质量。</p>
+<p>当然，在更多时候人手并不是很充足，所以并不是说一味的去拒绝任务；完成任务仍然是第一优先级，只有在完成任务的基础上，才能去发表和实现自己的想法。</p>
+<h2 id="沟通先行"><a href="#沟通先行" class="headerlink" title="沟通先行"></a>沟通先行</h2><p>在整个项目流程当中，我们会遇到很多依赖别人的点。我们尽量在到达这个点之间就提前跟相关依赖人沟通，确定资源，而不是在需要的时候才去申请资源。</p>
+<h2 id="高效会议"><a href="#高效会议" class="headerlink" title="高效会议"></a>高效会议</h2><p>在参加会议前，我们需要明确自己在其中的角色、需要了解、表达的东西。明确需要沟通的相关人员及其负责部分。<br>在会议当中，我们需要准确的提出自己的问题以及看法，避免形成沟通黑洞。<br>会议之后，需要及时记录会议记录，避免忘记。不同紧急程度的任务可以采用不同的方式去联系相关人员。</p>
+<h2 id="上升意识"><a href="#上升意识" class="headerlink" title="上升意识"></a>上升意识</h2><p>不要将自己的角色给限制死，需要时常的跳出去，从不同的维度发展自己。不断的去尝试边界，并尝试突破。<br>主动的去发现项目的风险点、改进点。多从其他人手中争取锻炼自己的机会。</p>
+<blockquote>
+<p><a href="https://pythonhunter.org/episodes/sp02" target="_blank" rel="noopener">原文：https://pythonhunter.org/episodes/sp02</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 生活杂记 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 思考 </tag>
+            
+            <tag> 总结 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JB全家桶激活教程]]></title>
       <url>/2020/01/04/new/other/JB%E5%85%A8%E5%AE%B6%E6%A1%B6%E6%BF%80%E6%B4%BB%E6%95%99%E7%A8%8B/</url>
       <content type="html"><![CDATA[<ul>
@@ -4325,39 +4364,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[Hibernate_一级缓存]]></title>
-      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
-      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
-<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
-<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
-<ul>
-<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 框架 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hibernate </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Hibernate_持久化类]]></title>
       <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</url>
       <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
@@ -4383,6 +4389,39 @@ skip-grant-tables
 </li>
 </ul>
 <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hibernate </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hibernate_一级缓存]]></title>
+      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
+      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
 ]]></content>
       
         <categories>
@@ -5341,26 +5380,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[Linux命令（特殊功能）]]></title>
-      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
-      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
-      
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Linux常用命令（简）]]></title>
       <url>/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="noopener">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
@@ -5394,6 +5413,26 @@ skip-grant-tables
 <h3 id="umount命令"><a href="#umount命令" class="headerlink" title="umount命令"></a>umount命令</h3><p>&ensp;&ensp;磁盘卸载</p>
 <p><br><br><br><br><center> <strong>长期不定时更新中。。。。。。。。。</strong></center></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux命令（特殊功能）]]></title>
+      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
+      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
       
         <categories>
             
@@ -5528,30 +5567,6 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[软件]]></title>
-      <url>/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</url>
-      <content type="html"><![CDATA[<p>各种杂七杂八的软件：</p>
-<ul>
-<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="noopener">Windows FX</a></li>
-<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="noopener">Myeclipse</a></li>
-<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="noopener">Kali系统</a></li>
-<li><a href="http://pan.baidu.com/s/1dFni0Jv" target="_blank" rel="noopener">JDK压缩包</a></li>
-<li><a href="http://pan.baidu.com/s/1i49KJlj" target="_blank" rel="noopener">zookeeper</a></li>
-<li><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="noopener">tomcat</a></li>
-<li></li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软件 </category>
-            
-        </categories>
-        
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[虚函数]]></title>
       <url>/2017/10/18/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
       <content type="html"><![CDATA[<p>引入原因：为了方便使用多态特性，我们常常需要在基类中定于虚函数。</p>
@@ -5609,6 +5624,30 @@ skip-grant-tables
             <tag> C++ </tag>
             
         </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[软件]]></title>
+      <url>/2017/10/18/%E5%B0%8F%E8%BD%AF%E4%BB%B6/</url>
+      <content type="html"><![CDATA[<p>各种杂七杂八的软件：</p>
+<ul>
+<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="noopener">Windows FX</a></li>
+<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="noopener">Myeclipse</a></li>
+<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="noopener">Kali系统</a></li>
+<li><a href="http://pan.baidu.com/s/1dFni0Jv" target="_blank" rel="noopener">JDK压缩包</a></li>
+<li><a href="http://pan.baidu.com/s/1i49KJlj" target="_blank" rel="noopener">zookeeper</a></li>
+<li><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="noopener">tomcat</a></li>
+<li></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软件 </category>
+            
+        </categories>
+        
         
     </entry>
     
@@ -5894,9 +5933,15 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1264线段相交]]></title>
-      <url>/2016/04/10/ACM/51nod1264%E7%BA%BF%E6%AE%B5%E7%9B%B8%E4%BA%A4/</url>
-      <content type="html"><![CDATA[<p>1264 线段相交<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出平面上两条线段的两个端点，判断这两条线段是否相交（有一个公共点或有部分重合认为相交）。 如果相交，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - T + 1行：每行8个数，x1,y1,x2,y2,x3,y3,x4,y4。(-10^8 &lt;= xi, yi &lt;= 10^8)<br>(直线1的两个端点为x1,y1 | x2, y2,直线2的两个端点为x3,y3 | x4, y4)<br>Output<br>输出共T行，如果相交输出”Yes”，否则输出”No”。<br>Input示例<br>2<br>1 2 2 1 0 0 2 2<br>-1 1 1 1 0 0 1 -1<br>Output示例<br>Yes<br>No<br>做这到题首先要了解叉乘的概念~~<a href="http://blog.csdn.net/hustspy1990/article/details/11082745" target="_blank" rel="noopener">http://blog.csdn.net/hustspy1990/article/details/11082745</a><br>然后还要知道两条线段相交的必要条件 <a href="http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4" target="_blank" rel="noopener">http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*  (a-c)×(d-c)*(d-c)×(b-c)&gt;=0&amp;&amp;(c-a)×(b-a)*(b-a)×(d-a)&gt;= 0就可以判断ab,cd相交*/</span></span><br><span class="line"><span class="comment">/*  p1×p2 = x1y2 - x2y1 = - p2×p1-----（叉乘公式）*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">double</span> x,y;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//struct point a,b,c,d;</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mp</span><span class="params">(point a,point b,point c,point d)</span></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> C=(a.x-c.x)*(d.y-c.y)-(d.x-c.x)*(a.y-c.y);</span><br><span class="line">    <span class="keyword">double</span> D=(d.x-c.x)*(b.y-c.y)-(b.x-c.x)*(d.y-c.y);</span><br><span class="line">    <span class="keyword">if</span>(C*D&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(point a , point b , point c , point d)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!mp(a,b,c,d)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span>(!mp(c,d,a,b)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> T;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</span><br><span class="line">    <span class="keyword">while</span>(T--)&#123;</span><br><span class="line">        point a,b,c,d;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf%lf%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;b.x,&amp;b.y,&amp;c.x,&amp;c.y,&amp;d.x,&amp;d.y);</span><br><span class="line">        <span class="keyword">if</span>(check(a,b,c,d))</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+      <title><![CDATA[51nod1256乘法逆元]]></title>
+      <url>/2016/04/10/ACM/51nod1256%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83/</url>
+      <content type="html"><![CDATA[<p>1256 乘法逆元</p>
+<p>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出2个数M和N(M &lt; N)，且M与N互质，找出一个数K满足0 &lt; K &lt; N且K <em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input<br>输入2个数M, N中间用空格分隔（1 &lt;= M &lt; N &lt;= 10^9)<br>OutPut<br>输出一个数K，满足0 &lt; K &lt; N且K </em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input示例<br>2 3<br>Output示例</p>
+<p>2</p>
+<p>思路：K <em> M % N = 1等价于 K</em>M=N<em>X+1  即 K</em>M+N*(-X)=1 </p>
+<p>根据扩展欧几里德算法，求出K和（-X）；</p>
+<p>而K是应为正整数，即需要若K为负整数，则需要将之化正，即与负数取模同理，将K加上N，直至K&gt;0为止，所得的数即为最小的乘法逆元；</p>
+<p>若K为正整数，则直接输出即可<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        x=<span class="number">1</span>;</span><br><span class="line">        y=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> r=exgcd(b,a%b,x,y);</span><br><span class="line">    <span class="keyword">int</span> t=x;x=y;y=t-(a/b)*y;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m,x,y;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;m,&amp;n))&#123;</span><br><span class="line">        exgcd(m,n,x,y);</span><br><span class="line">        <span class="keyword">while</span>(x&lt;<span class="number">0</span>)</span><br><span class="line">            x+=n;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -5915,15 +5960,9 @@ skip-grant-tables
     </entry>
     
     <entry>
-      <title><![CDATA[51nod1256乘法逆元]]></title>
-      <url>/2016/04/10/ACM/51nod1256%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83/</url>
-      <content type="html"><![CDATA[<p>1256 乘法逆元</p>
-<p>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题 收藏 关注<br>给出2个数M和N(M &lt; N)，且M与N互质，找出一个数K满足0 &lt; K &lt; N且K <em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input<br>输入2个数M, N中间用空格分隔（1 &lt;= M &lt; N &lt;= 10^9)<br>OutPut<br>输出一个数K，满足0 &lt; K &lt; N且K </em> M % N = 1，如果有多个满足条件的，输出最小的。<br>Input示例<br>2 3<br>Output示例</p>
-<p>2</p>
-<p>思路：K <em> M % N = 1等价于 K</em>M=N<em>X+1  即 K</em>M+N*(-X)=1 </p>
-<p>根据扩展欧几里德算法，求出K和（-X）；</p>
-<p>而K是应为正整数，即需要若K为负整数，则需要将之化正，即与负数取模同理，将K加上N，直至K&gt;0为止，所得的数即为最小的乘法逆元；</p>
-<p>若K为正整数，则直接输出即可<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        x=<span class="number">1</span>;</span><br><span class="line">        y=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> r=exgcd(b,a%b,x,y);</span><br><span class="line">    <span class="keyword">int</span> t=x;x=y;y=t-(a/b)*y;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m,x,y;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;m,&amp;n))&#123;</span><br><span class="line">        exgcd(m,n,x,y);</span><br><span class="line">        <span class="keyword">while</span>(x&lt;<span class="number">0</span>)</span><br><span class="line">            x+=n;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+      <title><![CDATA[51nod1264线段相交]]></title>
+      <url>/2016/04/10/ACM/51nod1264%E7%BA%BF%E6%AE%B5%E7%9B%B8%E4%BA%A4/</url>
+      <content type="html"><![CDATA[<p>1264 线段相交<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出平面上两条线段的两个端点，判断这两条线段是否相交（有一个公共点或有部分重合认为相交）。 如果相交，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - T + 1行：每行8个数，x1,y1,x2,y2,x3,y3,x4,y4。(-10^8 &lt;= xi, yi &lt;= 10^8)<br>(直线1的两个端点为x1,y1 | x2, y2,直线2的两个端点为x3,y3 | x4, y4)<br>Output<br>输出共T行，如果相交输出”Yes”，否则输出”No”。<br>Input示例<br>2<br>1 2 2 1 0 0 2 2<br>-1 1 1 1 0 0 1 -1<br>Output示例<br>Yes<br>No<br>做这到题首先要了解叉乘的概念~~<a href="http://blog.csdn.net/hustspy1990/article/details/11082745" target="_blank" rel="noopener">http://blog.csdn.net/hustspy1990/article/details/11082745</a><br>然后还要知道两条线段相交的必要条件 <a href="http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4" target="_blank" rel="noopener">http://dev.gameres.com/Program/Abstract/Geometry.htm#%E5%88%A4%E6%96%AD%E4%B8%A4%E7%BA%BF%E6%AE%B5%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4</a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*  (a-c)×(d-c)*(d-c)×(b-c)&gt;=0&amp;&amp;(c-a)×(b-a)*(b-a)×(d-a)&gt;= 0就可以判断ab,cd相交*/</span></span><br><span class="line"><span class="comment">/*  p1×p2 = x1y2 - x2y1 = - p2×p1-----（叉乘公式）*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">double</span> x,y;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//struct point a,b,c,d;</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mp</span><span class="params">(point a,point b,point c,point d)</span></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> C=(a.x-c.x)*(d.y-c.y)-(d.x-c.x)*(a.y-c.y);</span><br><span class="line">    <span class="keyword">double</span> D=(d.x-c.x)*(b.y-c.y)-(b.x-c.x)*(d.y-c.y);</span><br><span class="line">    <span class="keyword">if</span>(C*D&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(point a , point b , point c , point d)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!mp(a,b,c,d)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span>(!mp(c,d,a,b)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> T;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</span><br><span class="line">    <span class="keyword">while</span>(T--)&#123;</span><br><span class="line">        point a,b,c,d;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf%lf%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;b.x,&amp;b.y,&amp;c.x,&amp;c.y,&amp;d.x,&amp;d.y);</span><br><span class="line">        <span class="keyword">if</span>(check(a,b,c,d))</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       
         <categories>
@@ -5959,9 +5998,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 快速幂 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
@@ -6098,9 +6137,9 @@ skip-grant-tables
         
         <tags>
             
-            <tag> 51nod </tag>
-            
             <tag> 快速幂 </tag>
+            
+            <tag> 51nod </tag>
             
         </tags>
         
