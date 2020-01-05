@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="思考,总结,">
+  <meta name="keywords" content="Pika,">
 
 
 
@@ -95,20 +95,24 @@
 
 
 
-<meta name="description" content="最近听到一篇文章，觉得其中很多的点给了我很多收获。所以反复听了很多遍，并做了大概的总结。关键词：沟通、尝试、上升、思考、落地。  不要把自己局限于某一个位置，试着多尝试不同的东西，“管理”好自己,“管理”好身边的人。 你的技术能力决定了你能多快去完成目标。而你的非技术能力决定了你在朝哪个方向努力。">
-<meta name="keywords" content="思考,总结">
+<meta name="description" content="pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。 slave的trysync线程向master发起trysync，同时将同步位点信息发送给master master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步  全量同步pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsy">
+<meta name="keywords" content="Pika">
 <meta property="og:type" content="article">
-<meta property="og:title" content="听《工作三年我学到了什么》总结">
-<meta property="og:url" content="http://yoursite.com/2020/01/05/new/other/听《工作三年我学到了什么》总结/index.html">
+<meta property="og:title" content="pika学习之同步篇">
+<meta property="og:url" content="http://yoursite.com/2020/01/05/new/pika/pika复制模块/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="最近听到一篇文章，觉得其中很多的点给了我很多收获。所以反复听了很多遍，并做了大概的总结。关键词：沟通、尝试、上升、思考、落地。  不要把自己局限于某一个位置，试着多尝试不同的东西，“管理”好自己,“管理”好身边的人。 你的技术能力决定了你能多快去完成目标。而你的非技术能力决定了你在朝哪个方向努力。">
+<meta property="og:description" content="pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。 slave的trysync线程向master发起trysync，同时将同步位点信息发送给master master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步  全量同步pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsy">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gakzw4xmkcj30u00ubn5h.jpg">
-<meta property="og:updated_time" content="2020-01-04T16:54:59.543Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0h9q8ulj30hn0dr0tm.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0spmbugj30i20en75l.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0rxhp2rj30i20att9m.jpg">
+<meta property="og:updated_time" content="2020-01-05T14:11:12.720Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="听《工作三年我学到了什么》总结">
-<meta name="twitter:description" content="最近听到一篇文章，觉得其中很多的点给了我很多收获。所以反复听了很多遍，并做了大概的总结。关键词：沟通、尝试、上升、思考、落地。  不要把自己局限于某一个位置，试着多尝试不同的东西，“管理”好自己,“管理”好身边的人。 你的技术能力决定了你能多快去完成目标。而你的非技术能力决定了你在朝哪个方向努力。">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gakzw4xmkcj30u00ubn5h.jpg">
+<meta name="twitter:title" content="pika学习之同步篇">
+<meta name="twitter:description" content="pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。 slave的trysync线程向master发起trysync，同时将同步位点信息发送给master master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步  全量同步pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsy">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg">
 
 
 
@@ -138,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/01/05/new/other/听《工作三年我学到了什么》总结/">
+  <link rel="canonical" href="http://yoursite.com/2020/01/05/new/pika/pika复制模块/">
 
 
 
 
 
-  <title>听《工作三年我学到了什么》总结 | OMG_By</title>
+  <title>pika学习之同步篇 | OMG_By</title>
   
 
 
@@ -313,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/other/听《工作三年我学到了什么》总结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/pika/pika复制模块/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -330,7 +334,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">听《工作三年我学到了什么》总结</h1>
+          <h1 class="post-title" itemprop="name headline">pika学习之同步篇</h1>
         
 
         <div class="post-meta">
@@ -342,7 +346,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T00:53:03+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T22:08:29+08:00">
                 2020-01-05
               </time>
             
@@ -365,8 +369,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活杂记/" itemprop="url" rel="index">
-                    <span itemprop="name">生活杂记</span>
+                  <a href="/categories/Pika/" itemprop="url" rel="index">
+                    <span itemprop="name">Pika</span>
                   </a>
                 </span>
 
@@ -407,22 +411,68 @@
       
 
       
-        <p>最近听到一篇文章，觉得其中很多的点给了我很多收获。所以反复听了很多遍，并做了大概的总结。关键词：沟通、尝试、上升、思考、落地。</p>
-<ul>
-<li>不要把自己局限于某一个位置，试着多尝试不同的东西，“管理”好自己,“管理”好身边的人。</li>
-<li>你的技术能力决定了你能多快去完成目标。而你的非技术能力决定了你在朝哪个方向努力。</li>
+        <ul>
+<li>pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。</li>
+<li>slave的trysync线程向master发起trysync，同时将同步位点信息发送给master</li>
+<li>master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步</li>
 </ul>
-<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gakzw4xmkcj30u00ubn5h.jpg" alt=""></p>
+<h1 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h1><p>pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。</p>
+<h2 id="实现逻辑"><a href="#实现逻辑" class="headerlink" title="实现逻辑"></a>实现逻辑</h2><ol>
+<li>slave在trysnc前启动rsync进程启动rsync服务</li>
+<li>master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份</li>
+<li>master通过rsync向slave发送dump出的文件</li>
+<li>slave用收到的文件替换自己的db</li>
+<li>slave用最新的偏移量再次发起trysnc</li>
+<li>完成同步 </li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg" alt=""></p>
+<center>slave同步流程</center>
+
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg" alt=""></p>
+<center>master同步流程</center>
+
 <a id="more"></a>
-<p>总的来说，就是站在不同角色的角度来看待事情，思他人之所思。(领导、依赖人、客户、被求助者、被依赖人)</p>
-<h2 id="向上管理"><a href="#向上管理" class="headerlink" title="向上管理"></a>向上管理</h2><p>在工作当中，我们经常都是领导分配什么任务，我们就去努力完成任务。<br>而没有去思考这个任务到底能不能胜任，有没有更适合去做这个任务的人，以及更适合自己的任务却被分配给了其他的人。<br><b>领导是一个统筹管理的角色</b>，他大多时候只会关注总体任务是否完成。而没在意谁完成，怎么完成。</p>
-<p><font color="red">我们应该站在领导的角度上去思考整个项目任务</font>当我们遇到不合理任务时，及时表达自己的想法和看法，看是否存在更好解决方案。<br>一个适合自己的任务，不仅能够节省大量完成任务的时间，还能保证完成的质量。</p>
-<p>当然，在更多时候人手并不是很充足，所以并不是说一味的去拒绝任务；完成任务仍然是第一优先级，只有在完成任务的基础上，才能去发表和实现自己的想法。</p>
-<h2 id="沟通先行"><a href="#沟通先行" class="headerlink" title="沟通先行"></a>沟通先行</h2><p>在整个项目流程当中，我们会遇到很多依赖别人的点。我们尽量在到达这个点之间就提前跟相关依赖人沟通，确定资源，而不是在需要的时候才去申请资源。</p>
-<h2 id="高效会议"><a href="#高效会议" class="headerlink" title="高效会议"></a>高效会议</h2><p>在参加会议前，我们需要明确自己在其中的角色、需要了解、表达的东西。明确需要沟通的相关人员及其负责部分。<br>在会议当中，我们需要准确的提出自己的问题以及看法，避免形成沟通黑洞。<br>会议之后，需要及时记录会议记录，避免忘记。不同紧急程度的任务可以采用不同的方式去联系相关人员。</p>
-<h2 id="上升意识"><a href="#上升意识" class="headerlink" title="上升意识"></a>上升意识</h2><p>不要将自己的角色给限制死，需要时常的跳出去，从不同的维度发展自己。不断的去尝试边界，并尝试突破。<br>主动的去发现项目的风险点、改进点。多从其他人手中争取锻炼自己的机会。</p>
+<p>slave连接状态：</p>
+<ul>
+<li>No Connect：不尝试成为任何其他节点的slave</li>
+<li>Connect：Slaveof后尝试成为某个节点的slave，发送trysnc命令和同步点</li>
+<li>Connecting：收到master回复可以slaveof，尝试跟master建立心跳</li>
+<li>Connected: 心跳建立成功</li>
+<li>WaitSync：不断检测是否DBSync完成，完成后更新DB并发起新的slaveof<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0h9q8ulj30hn0dr0tm.jpg" alt=""></li>
+</ul>
+<h1 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h1><p>Pika的主从同步是通过Binlog来完成的，在一主多从的结构中，master节点也可以给多个slave复用一个Binlog，不同的slave拥有不同的偏移量。</p>
+<h2 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h2><ol>
+<li>当WorkerThread接收到客户端的命令，按照执行顺序，添加到Binlog里</li>
+<li>BinglogSenderThread判断它所负责的从节点在主节点的Binlog里是否有需要同步的命令，若有则发送给从节点</li>
+<li>BinglogReceiverModule模块则做以下三件事情：接收主节点的BinlogSenderThread发送过来的同步命令；把接收到的命令应用到本地的数据上；把接收到的命令添加到本地Binlog里 至此，一条命令从主节点到从节点的同步过程完成<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0spmbugj30i20en75l.jpg" alt=""></li>
+</ol>
+<ul>
+<li>WorkerThread：接受和处理用户的命令</li>
+<li>BinlogSenderThread：负责顺序地向对应的从节点发送在需要同步的命令</li>
+<li>BinlogReceiverModule: 负责接受主节点发送过来的同步命令</li>
+<li>Binglog：用于顺序的记录需要同步的命令</li>
+</ul>
+<p>上图中的<code>BinLogReceiverModule</code>是为了更好的说明方便而抽象出来的一个对象，从图中可以看出<code>BinLogReceiverModule</code>是由一个<code>BinlogReceiverThread</code>和多个<code>BinlogBGWorker</code>组成。</p>
+<ul>
+<li>BinlogReceiverThread: 负责接受由主节点传送过来的命令，并分发给各个BinlogBGWorker，若当前的节点是只读状态（不能接受客户端的同步命令），则在这个阶段写Binlog</li>
+<li>BinlogBGWorker：负责执行同步命令；若该节点不是只读状态（还能接受客户端的同步命令），则在这个阶段写Binlog（在命令执行之前写）</li>
+</ul>
+<p>BinlogReceiverThread接收到一个同步命令后，它会给这个命令赋予一个唯一的序列号（这个序列号是递增的），并把它分发给一个BinlogBGWorker；而各个BinlogBGWorker则会根据各个命令的所对应的序列号的顺序来执行各个命令，这样也就保证了命令执行的顺序和主节点执行的顺序一致了 之所以这么设计主要原因是：</p>
+<ol>
+<li>配备多个BinlogBGWorker是可以提高主从同步的效率，减少主从同步的滞后延迟</li>
+<li>BinlogBGWorker在执行执行之前写Binlog可以提高命令执行的并行度</li>
+<li>在当前节点是非只读状态，让BinglogReceiverThread来写Binlog，是为了让Binglog里保存的命令顺序和命令的执行顺序保持一致</li>
+</ol>
+<h2 id="Binlog结构"><a href="#Binlog结构" class="headerlink" title="Binlog结构"></a>Binlog结构</h2><p>由于主从偏移量一样，所以一旦发生网络或节点故障需要重连主从时，slave只需要将当前的偏移量发送给master，master找到后从该偏移量开始同步后续命令。<br>理论上命令不做处理一条一条追加到Binlog文件中，这也就意味着如果文件写错一个字节就会导致整个文件不可用，所以pika采用了类似leveldb log的格式来进行存储。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0rxhp2rj30i20att9m.jpg" alt=""></p>
+<h3 id="leveldb-log"><a href="#leveldb-log" class="headerlink" title="leveldb log"></a>leveldb log</h3><p>在leveldb中，所有的写操作都必须先成功的append到操作日志中，然后再更新内存memtable</p>
+<ol>
+<li>可以将随机的写IO变成append，极大的提高写磁盘速度</li>
+<li>防止在节点down机导致内存数据丢失，造成数据丢失<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The log file contents are a sequence of 32KB blocks.  The only</span><br><span class="line">exception is that the tail of the file may contain a partial block.</span><br><span class="line"></span><br><span class="line">Each block consists of a sequence of records:</span><br><span class="line">   block := record* trailer?</span><br><span class="line">   record :=</span><br><span class="line">    checksum: uint32    // crc32c of type and data[] ; little-endian</span><br><span class="line">    length: uint16      // little-endian</span><br><span class="line">    type: uint8     // One of FULL, FIRST, MIDDLE, LAST</span><br><span class="line">    data: uint8[length]</span><br><span class="line"></span><br><span class="line">A record never starts within the last six bytes of a block (since it</span><br><span class="line">won&apos;t fit).  Any leftover bytes here form the trailer, which must</span><br><span class="line">consist entirely of zero bytes and must be skipped by readers.</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>日志文件由连续的大小为32KB的block组成，block又由连续的record组成，record的格式为 | CRC(4 byte) | Length(2 byte) | type(1 byte) | data |</p>
 <blockquote>
-<p><a href="https://pythonhunter.org/episodes/sp02" target="_blank" rel="noopener">原文：https://pythonhunter.org/episodes/sp02</a></p>
+<p><a href="https://www.jianshu.com/p/223f0c73ddc2" target="_blank" rel="noopener">LevelDB 功能与架构</a></p>
 </blockquote>
 
       
@@ -441,9 +491,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/思考/" rel="tag"># 思考</a>
-          
-            <a href="/tags/总结/" rel="tag"># 总结</a>
+            <a href="/tags/Pika/" rel="tag"># Pika</a>
           
         </div>
       
@@ -456,8 +504,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/04/new/other/JB全家桶激活教程/" rel="next" title="JB全家桶激活教程">
-                <i class="fa fa-chevron-left"></i> JB全家桶激活教程
+              <a href="/2020/01/05/new/何为IO多路复用/" rel="next" title="何为IO多路复用">
+                <i class="fa fa-chevron-left"></i> 何为IO多路复用
               </a>
             
           </div>
@@ -465,10 +513,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/05/new/other/提问的智慧/" rel="prev" title="提问的智慧">
-                提问的智慧 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -660,7 +704,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#向上管理"><span class="nav-number">1.</span> <span class="nav-text">向上管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#沟通先行"><span class="nav-number">2.</span> <span class="nav-text">沟通先行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高效会议"><span class="nav-number">3.</span> <span class="nav-text">高效会议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上升意识"><span class="nav-number">4.</span> <span class="nav-text">上升意识</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#全量同步"><span class="nav-number">1.</span> <span class="nav-text">全量同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现逻辑"><span class="nav-number">1.1.</span> <span class="nav-text">实现逻辑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#增量同步"><span class="nav-number">2.</span> <span class="nav-text">增量同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作过程"><span class="nav-number">2.1.</span> <span class="nav-text">工作过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Binlog结构"><span class="nav-number">2.2.</span> <span class="nav-text">Binlog结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#leveldb-log"><span class="nav-number">2.2.1.</span> <span class="nav-text">leveldb log</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-05T08:32:32.647Z</updated>
+  <updated>2020-01-05T14:11:12.720Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pika学习之同步篇</title>
+    <link href="http://yoursite.com/2020/01/05/new/pika/pika%E5%A4%8D%E5%88%B6%E6%A8%A1%E5%9D%97/"/>
+    <id>http://yoursite.com/2020/01/05/new/pika/pika复制模块/</id>
+    <published>2020-01-05T14:08:29.000Z</published>
+    <updated>2020-01-05T14:11:12.720Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。</li><li>slave的trysync线程向master发起trysync，同时将同步位点信息发送给master</li><li>master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步</li></ul><h1 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h1><p>pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。</p><h2 id="实现逻辑"><a href="#实现逻辑" class="headerlink" title="实现逻辑"></a>实现逻辑</h2><ol><li>slave在trysnc前启动rsync进程启动rsync服务</li><li>master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份</li><li>master通过rsync向slave发送dump出的文件</li><li>slave用收到的文件替换自己的db</li><li>slave用最新的偏移量再次发起trysnc</li><li>完成同步 </li></ol><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg" alt=""></p><center>slave同步流程</center><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg" alt=""></p><center>master同步流程</center><a id="more"></a><p>slave连接状态：</p><ul><li>No Connect：不尝试成为任何其他节点的slave</li><li>Connect：Slaveof后尝试成为某个节点的slave，发送trysnc命令和同步点</li><li>Connecting：收到master回复可以slaveof，尝试跟master建立心跳</li><li>Connected: 心跳建立成功</li><li>WaitSync：不断检测是否DBSync完成，完成后更新DB并发起新的slaveof<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0h9q8ulj30hn0dr0tm.jpg" alt=""></li></ul><h1 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h1><p>Pika的主从同步是通过Binlog来完成的，在一主多从的结构中，master节点也可以给多个slave复用一个Binlog，不同的slave拥有不同的偏移量。</p><h2 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h2><ol><li>当WorkerThread接收到客户端的命令，按照执行顺序，添加到Binlog里</li><li>BinglogSenderThread判断它所负责的从节点在主节点的Binlog里是否有需要同步的命令，若有则发送给从节点</li><li>BinglogReceiverModule模块则做以下三件事情：接收主节点的BinlogSenderThread发送过来的同步命令；把接收到的命令应用到本地的数据上；把接收到的命令添加到本地Binlog里 至此，一条命令从主节点到从节点的同步过程完成<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0spmbugj30i20en75l.jpg" alt=""></li></ol><ul><li>WorkerThread：接受和处理用户的命令</li><li>BinlogSenderThread：负责顺序地向对应的从节点发送在需要同步的命令</li><li>BinlogReceiverModule: 负责接受主节点发送过来的同步命令</li><li>Binglog：用于顺序的记录需要同步的命令</li></ul><p>上图中的<code>BinLogReceiverModule</code>是为了更好的说明方便而抽象出来的一个对象，从图中可以看出<code>BinLogReceiverModule</code>是由一个<code>BinlogReceiverThread</code>和多个<code>BinlogBGWorker</code>组成。</p><ul><li>BinlogReceiverThread: 负责接受由主节点传送过来的命令，并分发给各个BinlogBGWorker，若当前的节点是只读状态（不能接受客户端的同步命令），则在这个阶段写Binlog</li><li>BinlogBGWorker：负责执行同步命令；若该节点不是只读状态（还能接受客户端的同步命令），则在这个阶段写Binlog（在命令执行之前写）</li></ul><p>BinlogReceiverThread接收到一个同步命令后，它会给这个命令赋予一个唯一的序列号（这个序列号是递增的），并把它分发给一个BinlogBGWorker；而各个BinlogBGWorker则会根据各个命令的所对应的序列号的顺序来执行各个命令，这样也就保证了命令执行的顺序和主节点执行的顺序一致了 之所以这么设计主要原因是：</p><ol><li>配备多个BinlogBGWorker是可以提高主从同步的效率，减少主从同步的滞后延迟</li><li>BinlogBGWorker在执行执行之前写Binlog可以提高命令执行的并行度</li><li>在当前节点是非只读状态，让BinglogReceiverThread来写Binlog，是为了让Binglog里保存的命令顺序和命令的执行顺序保持一致</li></ol><h2 id="Binlog结构"><a href="#Binlog结构" class="headerlink" title="Binlog结构"></a>Binlog结构</h2><p>由于主从偏移量一样，所以一旦发生网络或节点故障需要重连主从时，slave只需要将当前的偏移量发送给master，master找到后从该偏移量开始同步后续命令。<br>理论上命令不做处理一条一条追加到Binlog文件中，这也就意味着如果文件写错一个字节就会导致整个文件不可用，所以pika采用了类似leveldb log的格式来进行存储。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0rxhp2rj30i20att9m.jpg" alt=""></p><h3 id="leveldb-log"><a href="#leveldb-log" class="headerlink" title="leveldb log"></a>leveldb log</h3><p>在leveldb中，所有的写操作都必须先成功的append到操作日志中，然后再更新内存memtable</p><ol><li>可以将随机的写IO变成append，极大的提高写磁盘速度</li><li>防止在节点down机导致内存数据丢失，造成数据丢失<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The log file contents are a sequence of 32KB blocks.  The only</span><br><span class="line">exception is that the tail of the file may contain a partial block.</span><br><span class="line"></span><br><span class="line">Each block consists of a sequence of records:</span><br><span class="line">   block := record* trailer?</span><br><span class="line">   record :=</span><br><span class="line">    checksum: uint32    // crc32c of type and data[] ; little-endian</span><br><span class="line">    length: uint16      // little-endian</span><br><span class="line">    type: uint8     // One of FULL, FIRST, MIDDLE, LAST</span><br><span class="line">    data: uint8[length]</span><br><span class="line"></span><br><span class="line">A record never starts within the last six bytes of a block (since it</span><br><span class="line">won&apos;t fit).  Any leftover bytes here form the trailer, which must</span><br><span class="line">consist entirely of zero bytes and must be skipped by readers.</span><br></pre></td></tr></table></figure></li></ol><p>日志文件由连续的大小为32KB的block组成，block又由连续的record组成，record的格式为 | CRC(4 byte) | Length(2 byte) | type(1 byte) | data |</p><blockquote><p><a href="https://www.jianshu.com/p/223f0c73ddc2" target="_blank" rel="noopener">LevelDB 功能与架构</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。&lt;/li&gt;
+&lt;li&gt;slave的trysync线程向master发起trysync，同时将同步位点信息发送给master&lt;/li&gt;
+&lt;li&gt;master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;全量同步&quot;&gt;&lt;a href=&quot;#全量同步&quot; class=&quot;headerlink&quot; title=&quot;全量同步&quot;&gt;&lt;/a&gt;全量同步&lt;/h1&gt;&lt;p&gt;pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。&lt;/p&gt;
+&lt;h2 id=&quot;实现逻辑&quot;&gt;&lt;a href=&quot;#实现逻辑&quot; class=&quot;headerlink&quot; title=&quot;实现逻辑&quot;&gt;&lt;/a&gt;实现逻辑&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;slave在trysnc前启动rsync进程启动rsync服务&lt;/li&gt;
+&lt;li&gt;master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份&lt;/li&gt;
+&lt;li&gt;master通过rsync向slave发送dump出的文件&lt;/li&gt;
+&lt;li&gt;slave用收到的文件替换自己的db&lt;/li&gt;
+&lt;li&gt;slave用最新的偏移量再次发起trysnc&lt;/li&gt;
+&lt;li&gt;完成同步 &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;center&gt;slave同步流程&lt;/center&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;center&gt;master同步流程&lt;/center&gt;
+    
+    </summary>
+    
+      <category term="Pika" scheme="http://yoursite.com/categories/Pika/"/>
+    
+    
+      <category term="Pika" scheme="http://yoursite.com/tags/Pika/"/>
+    
+  </entry>
   
   <entry>
     <title>何为IO多路复用</title>
@@ -592,30 +632,6 @@
       <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
     
       <category term="JAVA" scheme="http://yoursite.com/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Bitmap、Bloom Filter、Cuckoo Filter</title>
-    <link href="http://yoursite.com/2019/07/15/Bitmap%E3%80%81Bloom-Filter%E3%80%81Cuckoo-Filter/"/>
-    <id>http://yoursite.com/2019/07/15/Bitmap、Bloom-Filter、Cuckoo-Filter/</id>
-    <published>2019-07-15T04:11:26.000Z</published>
-    <updated>2019-12-18T17:21:15.059Z</updated>
-    
-    <content type="html"><![CDATA[<p>昨天，在跟同学&amp;同事谈人生谈理想的时候。他告诉我他学长面试头条，其中一道题是如何判断一个整数在不在40亿整数集中；他说他学长竟然不知道<code>bitmap</code>(<a href="https://mp.weixin.qq.com/s/pUq213AJDpTGdGw4ywIS7g" target="_blank" rel="noopener">原题链接</a>)!!!然后我又给他科普了一下<code>布隆过滤器</code>和<code>布谷鸟过滤器</code>。<br>所以借此文章来记录一下这些知识，并巩固一下。</p><h1 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h1><p>Bitmap，直译就叫位图。可以理解为通过一个bit数组存储特定数据的一种数据结构；由于bit是数据的最小单位，所以这种数据结构往往是非常节省存储空间的。在Java和Redis中都存在同名实现结构。<br>在一个记录只有两种状态，是或不是的场景下，如果使用其他数据结构存储则会存在大量空间空间的浪费。即使存在海量的数据，我们也只需要为每个数据分配<code>1byte</code>的空间就可以记录了。比如：用户画像<br>Bitmap可以<font color="red">节省大量的存储空间</font>，所以可以很容易的倍一次性加载到内存中。Bitmap结构还有一个很重要的特点:<font color="red">可以很方便的进行位运算</font><br>比如我们需要统计用户满足以下条件的用户：程序员、带眼镜、长头发。。。。那么我们可以将对相应条件的用户画像的<code>Bitmap</code>结构做<code>AND</code>操作，就可以方便的过滤出满足条件的对象了。</p><h2 id="Bitmap的优化"><a href="#Bitmap的优化" class="headerlink" title="Bitmap的优化"></a>Bitmap的优化</h2><a id="more"></a><p>假如一个Bitmap中只有稀疏的那个几个1，那么其他空间是不是就被浪费了呢？</p><p>谷歌开发的EWAHComressedBitmap对Bitmap存储空间做了一定的优化操作。</p><p>EWAH把Bitmap存储在一个long数组中，long数组的每一个元素都可以当做64位的二进制数，也就是整个Bitmap的子集，称为<code>Word</code>。<br>当创建一个空的Bitmap时，只有4个<code>Word</code>，也就是只有4个long数组，随着数据的不断插入，<code>Word</code>数组会随着进行扩容。<br><code>Word</code>节点分为两种，直接存储数据的叫做<code>Literal Word</code>，简称LW。存储跨度信息的叫<code>Running Length Word</code>，简称RLW。<br>每一个RLW分为两部分，低32位表示当前Word横跨了多少个空Word，高32位表示当前RLW后面又多少个连续的LW。这样即使存在很多个0的位置，也能进行合并，减少浪费。<br><a href="https://imgchr.com/i/ZoGNon" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/15/ZoGNon.md.jpg" alt="ZoGNon.md.jpg"></a></p><h1 id="Bloom-Filter"><a href="#Bloom-Filter" class="headerlink" title="Bloom Filter"></a>Bloom Filter</h1><p>Bitmap适合处理<font color="red">按顺序字段映射</font>，如ID。但是当遇到其他情况时就无能为力了，比如判断一个单词是否存在于单词集中，这个时候如果需要映射的话，只能够对该单词进行相应的<code>hash</code>计算后映射到Bitmap上，But！绝大情况下会存在hash冲突，无法确认是不是。</p><p>于是便引入了<font color="red">布隆过滤器</font>。布隆过滤器也不能完全的消除误差。只能说大大的减少了误差率。</p><p>布隆过滤器的原理就是<font color="red">将需要判断的对象进行多次不同的hash计算后，同时判断那几位是否都为1</font>，由此可见，布隆过滤器的误差率取决于hash函数的选取。<br><a href="https://imgchr.com/i/ZoGYZj" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/15/ZoGYZj.md.jpg" alt="ZoGYZj.md.jpg"></a></p><h1 id="Cuckoo-Filter"><a href="#Cuckoo-Filter" class="headerlink" title="Cuckoo Filter"></a>Cuckoo Filter</h1><p>布隆过滤器存在一个致命的缺点，那就是已经置为1的位不能再重置为0。这是因为你并不能判断该位具体被多少个对象映射了。只能在你认为误差率已经不能接受时进行重建。</p><p>我也是最近才了解到有<code>布谷鸟过滤器</code>的存在。</p><h2 id="布谷鸟哈希"><a href="#布谷鸟哈希" class="headerlink" title="布谷鸟哈希"></a>布谷鸟哈希</h2><p>最简单的布谷鸟哈希结构时一维数组结构，会有两个hash算法将新来的元素映射到数组的两个位置。如果两个位置中有一个位置为空，那么就可以把元素放进去；但是如果这两个位置都满了，那么会随机踢走一个，然后自己霸占这个位置。<br>被踢走的那个元素会寻找其他位置，重复上面的行为。知道所有的元素都找到了对应的位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p1 = hash1(x) % l</span><br><span class="line">p2 = hash2(x) % l</span><br></pre></td></tr></table></figure></p><p>布谷鸟算法为了避免重复踢的这个过程执行次数过多，会设置一个阈值，如果执行次数超过这个值，那么就会进行扩容操作，重新放置所有的元素。<br><a href="https://imgchr.com/i/ZoGGLQ" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/15/ZoGGLQ.md.jpg" alt="ZoGGLQ.md.jpg"></a><br><a href="https://imgchr.com/i/ZoG8sg" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/15/ZoG8sg.md.jpg" alt="ZoG8sg.md.jpg"></a></p><h2 id="布谷鸟过滤器"><a href="#布谷鸟过滤器" class="headerlink" title="布谷鸟过滤器"></a>布谷鸟过滤器</h2><p>布谷鸟过滤器和布谷鸟哈希结构一样，也是一维数组，但是不同于布谷鸟哈希的是，布谷鸟哈希会存储整个元素，而布谷鸟过滤器只会储存元素的指纹信息（只有几个bit，类似于布隆过滤器）。</p><p>首先布谷鸟过滤器还是只会选用两个 hash 函数，但是每个位置可以放置多个座位。这两个 hash 函数选择的比较特殊，因为过滤器中只能存储指纹信息。当这个位置上的指纹被挤兑之后，它需要计算出另一个对偶位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fp = fingerprint(x)</span><br><span class="line">p1 = hash(x)</span><br><span class="line">p2 = p1 ^ hash(fp)  // 异或</span><br></pre></td></tr></table></figure></p><p>我们可以看出p1和p2具有<code>对偶性</code>。所以我们根本不需要知道当前的位置是 p1 还是 p2，只需要将当前的位置和 hash(fp) 进行异或计算就可以得到对偶位置。而且只需要确保 hash(fp) != 0 就可以确保 p1 != p2，如此就不会出现自己踢自己导致死循环的问题。</p><p>由于布谷鸟过滤器保证了一个byte只被一个元素映射，所以允许删除操作，但是会存在误删的情况。</p><blockquote><p><a href="http://blog.talkingdata.net/?p=2493" target="_blank" rel="noopener">http://blog.talkingdata.net/?p=2493</a><br><a href="https://juejin.im/post/5c4fd2af51882525da267385" target="_blank" rel="noopener">https://juejin.im/post/5c4fd2af51882525da267385</a><br><a href="https://cloud.tencent.com/developer/article/1447177" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1447177</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;昨天，在跟同学&amp;amp;同事谈人生谈理想的时候。他告诉我他学长面试头条，其中一道题是如何判断一个整数在不在40亿整数集中；他说他学长竟然不知道&lt;code&gt;bitmap&lt;/code&gt;(&lt;a href=&quot;https://mp.weixin.qq.com/s/pUq213AJDpTGdGw4ywIS7g&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;原题链接&lt;/a&gt;)!!!然后我又给他科普了一下&lt;code&gt;布隆过滤器&lt;/code&gt;和&lt;code&gt;布谷鸟过滤器&lt;/code&gt;。&lt;br&gt;所以借此文章来记录一下这些知识，并巩固一下。&lt;/p&gt;
-&lt;h1 id=&quot;Bitmap&quot;&gt;&lt;a href=&quot;#Bitmap&quot; class=&quot;headerlink&quot; title=&quot;Bitmap&quot;&gt;&lt;/a&gt;Bitmap&lt;/h1&gt;&lt;p&gt;Bitmap，直译就叫位图。可以理解为通过一个bit数组存储特定数据的一种数据结构；由于bit是数据的最小单位，所以这种数据结构往往是非常节省存储空间的。在Java和Redis中都存在同名实现结构。&lt;br&gt;在一个记录只有两种状态，是或不是的场景下，如果使用其他数据结构存储则会存在大量空间空间的浪费。即使存在海量的数据，我们也只需要为每个数据分配&lt;code&gt;1byte&lt;/code&gt;的空间就可以记录了。比如：用户画像&lt;br&gt;Bitmap可以&lt;font color=&quot;red&quot;&gt;节省大量的存储空间&lt;/font&gt;，所以可以很容易的倍一次性加载到内存中。Bitmap结构还有一个很重要的特点:&lt;font color=&quot;red&quot;&gt;可以很方便的进行位运算&lt;/font&gt;&lt;br&gt;比如我们需要统计用户满足以下条件的用户：程序员、带眼镜、长头发。。。。那么我们可以将对相应条件的用户画像的&lt;code&gt;Bitmap&lt;/code&gt;结构做&lt;code&gt;AND&lt;/code&gt;操作，就可以方便的过滤出满足条件的对象了。&lt;/p&gt;
-&lt;h2 id=&quot;Bitmap的优化&quot;&gt;&lt;a href=&quot;#Bitmap的优化&quot; class=&quot;headerlink&quot; title=&quot;Bitmap的优化&quot;&gt;&lt;/a&gt;Bitmap的优化&lt;/h2&gt;
-    
-    </summary>
-    
-      <category term="一些奇淫技巧" scheme="http://yoursite.com/categories/%E4%B8%80%E4%BA%9B%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
-    
-    
-      <category term="小技巧" scheme="http://yoursite.com/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
