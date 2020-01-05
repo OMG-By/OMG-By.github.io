@@ -307,6 +307,342 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/何为IO多路复用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/05/new/何为IO多路复用/" itemprop="url">何为IO多路复用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T16:29:22+08:00">
+                2020-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="网络编程概念"><a href="#网络编程概念" class="headerlink" title="网络编程概念"></a>网络编程概念</h2><p>在网络当中，数据的传输是基于HTTP/TCP协议簇来实现的。TCP协议仅仅是把这些数据看做是一串二进制流来进行处理。<br>所以：<b>客户端和服务器是通过在建立的连接上发送字节流来进行通信</b></p>
+<p>一个连接由它两端的套接字地址唯一确定，结构为<code>(客户端地址:客户端端口号，服务端地址:服务端端口号)</code>。有了通信双方的连接地址信息后，就可以进行数据传输了。</p>
+<p>在Unix系统中，实现了一套套接字接口来描述和规范双方通信的整个过程。<br>创建-&gt;连接-&gt;绑定-&gt;监听-&gt;响应<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1galrpl667mj30hs0dzwfp.jpg" alt=""></p>
+<blockquote>
+<ul>
+<li>socket()：创建一个套接字描述符</li>
+<li>connect()：客户端通过调用connect函数来建立和服务器的连接</li>
+<li>bind()：告诉内核将socket()创建的套接字与某个服务端地址与端口连接起来，后续会对这个地址和端口进行监听</li>
+<li>listen()：告诉内核，将这个套接字当成服务器这种被动实体来看待(服务器是等待客户端连接的被动实体，而内核认为socket()创建的套接字默认是主动实体，所以才需要listen()函数，告诉内核进行主动到被动实体的转换)</li>
+<li>accept()：等待客户端的连接请求并返回一个新的已连接描述符</li>
+</ul>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/01/05/new/何为IO多路复用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/other/提问的智慧/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/05/new/other/提问的智慧/" itemprop="url">提问的智慧</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T13:40:58+08:00">
+                2020-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活杂记/" itemprop="url" rel="index">
+                    <span itemprop="name">生活杂记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="在你提问之前"><a href="#在你提问之前" class="headerlink" title="在你提问之前"></a>在你提问之前</h1><ul>
+<li>尝试在你准备提问的论坛的旧文章中搜索答案</li>
+<li>尝试上网搜索以找到答案</li>
+<li>尝试阅读手册以找到答案</li>
+<li>尝试阅读常见问题文件（FAQ）以找到答案</li>
+<li>尝试自己检查或试验以找到答案</li>
+<li>向你身边的强者朋友打听以找到答案</li>
+<li>如果你是程序开发者，请尝试阅读源代码以找到答案</li>
+</ul>
+<h1 id="当你提问时"><a href="#当你提问时" class="headerlink" title="当你提问时"></a>当你提问时</h1><ul>
+<li>慎选提问的论坛</li>
+<li>Stack Overflow</li>
+<li>网站和 IRC 论坛</li>
+<li>第二步，使用项目邮件列表</li>
+<li>使用有意义且描述明确的标题</li>
+<li>使问题容易回复</li>
+<li>用清晰、正确、精准并合法语法的语句</li>
+<li>使用易于读取且标准的文件格式发送问题</li>
+<li>精确地描述问题并言之有物</li>
+<li>话不在多而在精</li>
+<li>别动辄声称找到 Bug</li>
+<li>低声下气不能代替你的功课</li>
+<li>描述问题症状而非你的猜测</li>
+<li>按发生时间先后列出问题症状</li>
+<li>描述目标而不是过程</li>
+<li>别要求使用私人电邮回复</li>
+<li>清楚明确的表达你的问题以及需求</li>
+<li>询问有关代码的问题时</li>
+<li>别把自己家庭作业的问题贴上来</li>
+<li>去掉无意义的提问句</li>
+<li>即使你很急也不要在标题写紧急</li>
+<li>礼多人不怪，而且有时还很有帮助</li>
+<li>问题解决后，加个简短的补充说明</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1galmxel3nqj30u00vk43j.jpg" alt=""></p>
+<blockquote>
+<p><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way" target="_blank" rel="noopener">原文地址</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/other/听《工作三年我学到了什么》总结/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1525,357 +1861,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/" itemprop="url">Spring boot整合SpringTask实现定时任务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T15:45:09+08:00">
-                2019-07-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Boot</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SpringTask是Spring自主研发的一个定时任务工具，不需要引入其他依赖就可以使用。</p>
-<h2 id="SpringTask-Cron语法"><a href="#SpringTask-Cron语法" class="headerlink" title="SpringTask Cron语法"></a>SpringTask Cron语法</h2><p>类似于shell中的<code>crontab</code>，只不过最前面多了一个<code>Seconds</code>秒级别。<br>Seconds Minutes Hours DayofMonth Month DayofWeek</p>
-<table>
-<thead>
-<tr>
-<th>时间元素</th>
-<th>可出现的字符</th>
-<th>数值范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Seconds</td>
-<td>,-*/</td>
-<td>0-59</td>
-</tr>
-<tr>
-<td>Minutes</td>
-<td>,-*/</td>
-<td>0-59</td>
-</tr>
-<tr>
-<td>Hours</td>
-<td>,-*/</td>
-<td>0-23</td>
-</tr>
-<tr>
-<td>Day of Month</td>
-<td>,-*/?LW</td>
-<td>0-31</td>
-</tr>
-<tr>
-<td>Month</td>
-<td>,-*/</td>
-<td>1-12</td>
-</tr>
-<tr>
-<td>Day of Week</td>
-<td>,-*/?L#</td>
-<td>1-7</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>“,” 列出枚举值</li>
-<li>“-“ 触发范围</li>
-<li>“*” 任意值</li>
-<li>“/“ 每隔一段时间执行</li>
-<li>“?” 任意值</li>
-<li>“#” 确定第几个星期几</li>
-<li>“L” 表示最后的有效值</li>
-<li>“W” 表示有效工作日
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/24/java实现快排/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/24/java实现快排/" itemprop="url">java实现快排</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T15:04:30+08:00">
-                2019-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>在数组中选出一个元素做为中枢值，把所有比它小的元素都移动到它的左边，比它大的元素都移动到它的右边。直到数组有序。<br><img src="https://img-blog.csdnimg.cn/20190723124826723.gif" alt=""></p>
-<h3 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">private static void qSort(int[] a,int left,int right)&#123;</span><br><span class="line">    if(left &lt; right)&#123;</span><br><span class="line">        int mid = divide(a,left,right);</span><br><span class="line">        qSort(a,left,mid);</span><br><span class="line">        qSort(a,mid+1,right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static int divide(int[] a,int left,int right)&#123;</span><br><span class="line">    int mid = left;</span><br><span class="line"></span><br><span class="line">    while(left &lt; right) &#123;</span><br><span class="line">        while (left &lt; right &amp;&amp; a[right] &gt;= a[mid]) &#123;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        while (left &lt; right &amp;&amp; a[left] &lt; a[mid]) &#123;</span><br><span class="line">            left++;</span><br><span class="line">        &#125;</span><br><span class="line">        if (left &lt; right) &#123;</span><br><span class="line">            swap(a, left, right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static void swap(int[] a, int left, int right) &#123;</span><br><span class="line">    int tmp = a[left];</span><br><span class="line">    a[left] = a[right];</span><br><span class="line">    a[right] = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体流程：</p>
-<ol>
-<li>定义两个指针<code>left</code>和<code>right</code>代表两个初始化位置，分别表示需要排序数组的最左和最右。</li>
-<li>一直遍历，right向左移动，直到找到小于中枢值的位置。</li>
-<li>一直遍历，left向右移动，直到找到大于中枢值的位置。</li>
-<li>如果left&lt;right，交换这两个元素。</li>
-<li>重复上面步骤。</li>
-<li>使用递归再对两边子数组进行排序。</li>
-</ol>
-<h3 id="非递归实现"><a href="#非递归实现" class="headerlink" title="非递归实现"></a>非递归实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//    非递归实现快排</span><br><span class="line">    private static void qSort2(int[] a,int left,int right)&#123;</span><br><span class="line">        Stack&lt;Integer&gt; s = new Stack&lt;&gt;();</span><br><span class="line">        s.push(left);</span><br><span class="line">        s.push(right);</span><br><span class="line"></span><br><span class="line">        while(!s.isEmpty())&#123;</span><br><span class="line">            int r = s.pop();</span><br><span class="line">            int l = s.pop();</span><br><span class="line">            int mid = divide(a,l,r);</span><br><span class="line">            if(l &lt; mid)&#123;</span><br><span class="line">                s.push(l);</span><br><span class="line">                s.push(mid);</span><br><span class="line">            &#125;</span><br><span class="line">            if(mid + 1 &lt; right)&#123;</span><br><span class="line">                s.push(mid+1);</span><br><span class="line">                s.push(right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>对需要排序的数组的左指针和右指针l、r记录起来，压入到栈中，每次循环都会弹出一对l、r。<br>当栈为空时，说明都已经排序了。接收循环。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1928,7 +1913,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">122</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

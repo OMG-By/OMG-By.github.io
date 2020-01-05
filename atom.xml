@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-04T16:54:59.543Z</updated>
+  <updated>2020-01-05T08:32:32.647Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>何为IO多路复用</title>
+    <link href="http://yoursite.com/2020/01/05/new/%E4%BD%95%E4%B8%BAIO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/"/>
+    <id>http://yoursite.com/2020/01/05/new/何为IO多路复用/</id>
+    <published>2020-01-05T08:29:22.000Z</published>
+    <updated>2020-01-05T08:32:32.647Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="网络编程概念"><a href="#网络编程概念" class="headerlink" title="网络编程概念"></a>网络编程概念</h2><p>在网络当中，数据的传输是基于HTTP/TCP协议簇来实现的。TCP协议仅仅是把这些数据看做是一串二进制流来进行处理。<br>所以：<b>客户端和服务器是通过在建立的连接上发送字节流来进行通信</b></p><p>一个连接由它两端的套接字地址唯一确定，结构为<code>(客户端地址:客户端端口号，服务端地址:服务端端口号)</code>。有了通信双方的连接地址信息后，就可以进行数据传输了。</p><p>在Unix系统中，实现了一套套接字接口来描述和规范双方通信的整个过程。<br>创建-&gt;连接-&gt;绑定-&gt;监听-&gt;响应<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1galrpl667mj30hs0dzwfp.jpg" alt=""></p><blockquote><ul><li>socket()：创建一个套接字描述符</li><li>connect()：客户端通过调用connect函数来建立和服务器的连接</li><li>bind()：告诉内核将socket()创建的套接字与某个服务端地址与端口连接起来，后续会对这个地址和端口进行监听</li><li>listen()：告诉内核，将这个套接字当成服务器这种被动实体来看待(服务器是等待客户端连接的被动实体，而内核认为socket()创建的套接字默认是主动实体，所以才需要listen()函数，告诉内核进行主动到被动实体的转换)</li><li>accept()：等待客户端的连接请求并返回一个新的已连接描述符</li></ul></blockquote><a id="more"></a><h2 id="最简单的单进程服务器"><a href="#最简单的单进程服务器" class="headerlink" title="最简单的单进程服务器"></a>最简单的单进程服务器</h2><p>由于Unix的历史遗留问题，原始的套接字接口对地址和端口等数据封装并不简洁。<br>在最初的服务器中，一个服务器进程只能同时处理一个客户端连接与相关的读写操作。<br>在读写的过程中，整个进程被该客户端独占，当前服务器进程只能处理该客户端连接的读写操作，无法对其他客户端连接请求进行处理。</p><h2 id="IO并发提升"><a href="#IO并发提升" class="headerlink" title="IO并发提升"></a>IO并发提升</h2><h3 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h3><p>如果去优化单进程？<br>一个进程不行，那就搞多个进程来同时处理不就得了。</p><p>由于一个客户端的connect对应着一个服务端的accept，那么每次客户端过来时，都使用fork()来进行accept的系统调用。</p><p>缺点：</p><ul><li>进程创建的数量随连接请求的增加而增加。</li><li>fork等系统调用会使得进程的上下文进行切换，效率很低。</li><li>进程与进程之间的地址空间私有。使得进程之间的数据共享比较困难。</li></ul><h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>线程是运行在进程上下文的逻辑流。一个进程可以包含多个线程，多个线程运行在单一的进程上下文中，因此共享这个进程的地址空间的所有内容，解决了进程与进程之间通信难的问题。同时，由于一个线程的上下文要比一个进程的上下文小得多，所以线程的上下文切换，要比进程的上下文切换效率高得多。线程是轻量级的进程，解决了进程上下文切换效率低的问题。</p><h3 id="基于单进程的IO多路复用"><a href="#基于单进程的IO多路复用" class="headerlink" title="基于单进程的IO多路复用"></a>基于单进程的IO多路复用</h3><p>前面谈到的都是通过增加进程和线程的数量来同时处理多个套接字。而IO多路复用只需要一个进程就能够处理多个套接字。</p><p>其本质是：<b>一个服务端进程可以同时处理多个套接字描述符</b></p><p>在之前的讲述中，一个服务端进程，只能同时处理一个连接。如果想同时处理多个客户端连接，需要多进程或者多线程的帮助，免不了上下文切换的开销。IO多路复用技术就解决了上下文切换的问题。IO多路复用技术的发展可以分为select-&gt;poll-&gt;epoll三个阶段。</p><p>IO多路复用的核心就是添加了一个<b>套接字集合管理员</b>，它可以同时监听多个套接字。由于客户端连接以及读写事件到来的随机性，我们需要这个管理员在单进程内部对多个套接字的事件进行合理的调度。</p><h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>select()函数会在某个或某些套接字的状态从不可读变为可读、或不可写变为可写的时候通知服务器主进程。所以select()本身的调用是阻塞的。但是具体哪一个套接字或哪些套接字变为可读或可写我们是不知道的，所以我们需要遍历所有select()返回的套接字来判断哪些套接字可以进行处理了。</p><p>但是，select()函数本身的调用阻塞的。因为select()需要一直等到有状态变化的套接字之后（比如监听套接字或者连接套接字的状态由不可读变为可读），才能解除select()本身的阻塞，继续对读写就绪的套接字进行处理。虽然这里是阻塞的，但是它能够同时返回多个就绪的套接字，而不是之前单进程中只能够处理一个套接字，大大提升了效率</p><p>优点：</p><ul><li>实现了对多个套接字的同时、集中管理</li><li>通过遍历所有的套接字集合，能够获取所有已就绪的套接字，对这些就绪的套接字进行操作不会阻塞</li></ul><p>缺点：</p><ul><li>select管理的套接字描述符们存在数量限制。在Unix中，一个进程最多同时监听1024个套接字描述符</li><li>select返回的时候，并不知道具体是哪个套接字描述符已经就绪，所以需要遍历所有套接字来判断哪个已经就绪，可以继续进行读写</li></ul><h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p><b>poll解决了select带来的套接字描述符的最大数量限制问题</b></p><p>poll的fds参数集合了select的read、write和exception套接字数组，合三为一。poll中的fds没有了1024个的数量限制。当有些描述符状态发生变化并就绪之后，poll同select一样会返回。但是遗憾的是，我们同样不知道具体是哪个或哪些套接字已经就绪，我们仍需要遍历套接字集合去判断究竟是哪个套接字已经就绪，这一点并没有解决刚才提到select的第二个问题。</p><h4 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h4><p>epoll是最先进的套接字管理员，解决了上述select和poll中所存在的问题。它将一个阻塞的select、poll系统调用拆分成了三个步骤。一次select或poll可以看作是由一次 epoll_create、若干次 epoll_ctl、若干次 epoll_wait构成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int epoll_create(int size);</span><br><span class="line">int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)；</span><br><span class="line">int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);</span><br></pre></td></tr></table></figure></p><ul><li>epoll_create()：创建一个epoll实例。后续操作会使用</li><li>epoll_ctl()：对套接字描述符集合进行增删改操作，并告诉内核需要监听套接字描述符的什么事件</li><li>epoll_wait()：等待监听列表中的连接事件（监听套接字描述符才会发生）或读写事件（连接套接字描述符才会发生）。如果有某个或某些套接字事件已经准备就绪，就会返回这些已就绪的套接字们</li></ul><p>我们调用epoll_wait()等待连接或读写等事件，在某个套接字描述符上准备就绪。当有事件准备就绪之后，会存到第二个参数epoll_event结构体中。通过访问这个结构体就可以得到所有已经准备好事件的套接字描述符。这里就不用再像之前select和poll那样，遍历所有的套接字描述符之后才能知道究竟是哪个描述符已经准备就绪了，这样减少了一次O(n)的遍历，大大提高了效率。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;网络编程概念&quot;&gt;&lt;a href=&quot;#网络编程概念&quot; class=&quot;headerlink&quot; title=&quot;网络编程概念&quot;&gt;&lt;/a&gt;网络编程概念&lt;/h2&gt;&lt;p&gt;在网络当中，数据的传输是基于HTTP/TCP协议簇来实现的。TCP协议仅仅是把这些数据看做是一串二进制流来进行处理。&lt;br&gt;所以：&lt;b&gt;客户端和服务器是通过在建立的连接上发送字节流来进行通信&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;一个连接由它两端的套接字地址唯一确定，结构为&lt;code&gt;(客户端地址:客户端端口号，服务端地址:服务端端口号)&lt;/code&gt;。有了通信双方的连接地址信息后，就可以进行数据传输了。&lt;/p&gt;
+&lt;p&gt;在Unix系统中，实现了一套套接字接口来描述和规范双方通信的整个过程。&lt;br&gt;创建-&amp;gt;连接-&amp;gt;绑定-&amp;gt;监听-&amp;gt;响应&lt;br&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1galrpl667mj30hs0dzwfp.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;socket()：创建一个套接字描述符&lt;/li&gt;
+&lt;li&gt;connect()：客户端通过调用connect函数来建立和服务器的连接&lt;/li&gt;
+&lt;li&gt;bind()：告诉内核将socket()创建的套接字与某个服务端地址与端口连接起来，后续会对这个地址和端口进行监听&lt;/li&gt;
+&lt;li&gt;listen()：告诉内核，将这个套接字当成服务器这种被动实体来看待(服务器是等待客户端连接的被动实体，而内核认为socket()创建的套接字默认是主动实体，所以才需要listen()函数，告诉内核进行主动到被动实体的转换)&lt;/li&gt;
+&lt;li&gt;accept()：等待客户端的连接请求并返回一个新的已连接描述符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>提问的智慧</title>
+    <link href="http://yoursite.com/2020/01/05/new/other/%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/"/>
+    <id>http://yoursite.com/2020/01/05/new/other/提问的智慧/</id>
+    <published>2020-01-05T05:40:58.000Z</published>
+    <updated>2020-01-05T05:46:49.081Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="在你提问之前"><a href="#在你提问之前" class="headerlink" title="在你提问之前"></a>在你提问之前</h1><ul><li>尝试在你准备提问的论坛的旧文章中搜索答案</li><li>尝试上网搜索以找到答案</li><li>尝试阅读手册以找到答案</li><li>尝试阅读常见问题文件（FAQ）以找到答案</li><li>尝试自己检查或试验以找到答案</li><li>向你身边的强者朋友打听以找到答案</li><li>如果你是程序开发者，请尝试阅读源代码以找到答案</li></ul><h1 id="当你提问时"><a href="#当你提问时" class="headerlink" title="当你提问时"></a>当你提问时</h1><ul><li>慎选提问的论坛</li><li>Stack Overflow</li><li>网站和 IRC 论坛</li><li>第二步，使用项目邮件列表</li><li>使用有意义且描述明确的标题</li><li>使问题容易回复</li><li>用清晰、正确、精准并合法语法的语句</li><li>使用易于读取且标准的文件格式发送问题</li><li>精确地描述问题并言之有物</li><li>话不在多而在精</li><li>别动辄声称找到 Bug</li><li>低声下气不能代替你的功课</li><li>描述问题症状而非你的猜测</li><li>按发生时间先后列出问题症状</li><li>描述目标而不是过程</li><li>别要求使用私人电邮回复</li><li>清楚明确的表达你的问题以及需求</li><li>询问有关代码的问题时</li><li>别把自己家庭作业的问题贴上来</li><li>去掉无意义的提问句</li><li>即使你很急也不要在标题写紧急</li><li>礼多人不怪，而且有时还很有帮助</li><li>问题解决后，加个简短的补充说明</li></ul><p><img src="https://tva1.sinaimg.cn/large/006tNbRwly1galmxel3nqj30u00vk43j.jpg" alt=""></p><blockquote><p><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way" target="_blank" rel="noopener">原文地址</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;在你提问之前&quot;&gt;&lt;a href=&quot;#在你提问之前&quot; class=&quot;headerlink&quot; title=&quot;在你提问之前&quot;&gt;&lt;/a&gt;在你提问之前&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;尝试在你准备提问的论坛的旧文章中搜索答案&lt;/li&gt;
+&lt;li&gt;尝试上网搜索以找到答案&lt;/li&gt;
+&lt;
+      
+    
+    </summary>
+    
+      <category term="生活杂记" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>听《工作三年我学到了什么》总结</title>
@@ -557,58 +616,6 @@
     
     
       <category term="小技巧" scheme="http://yoursite.com/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mac安装多版本JDK</title>
-    <link href="http://yoursite.com/2019/07/13/mac%E5%AE%89%E8%A3%85%E5%A4%9A%E7%89%88%E6%9C%ACJDK/"/>
-    <id>http://yoursite.com/2019/07/13/mac安装多版本JDK/</id>
-    <published>2019-07-13T09:55:42.000Z</published>
-    <updated>2019-12-18T17:21:15.108Z</updated>
-    
-    <content type="html"><![CDATA[<p>随着JDK版本的快速迭代，作为优秀(kubi)的Java拥护者，为了跟随时代的潮流，也开始使用1.8版本。</p><p>但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记录。</p><p>在终端下面使用<code>java -version</code>查看就可以查看使用的JDK版本了。<br>使用<code>/usr/libexec/java_home -V</code>可以查看本地已经安装的JDK</p><p>关于JDK1.x for mac的安装略过，网上有大把的教程。<br>我这里以安装3个版本1.6/1.7/1.8为例。</p><p>一、编辑.bash_profile<br><code>vim ~/.bash_profile</code></p><p>二、在.bash_profile中添加下面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_6_HOME=`/usr/libexec/java_home -v 1.6`</span><br><span class="line">export JAVA_7_HOME=`/usr/libexec/java_home -v 1.7`</span><br><span class="line">export JAVA_8_HOME=`/usr/libexec/java_home -v 1.8`</span><br><span class="line"></span><br><span class="line">#默认设为JDK1.7</span><br><span class="line">export JAVA_HOME=$JAVA_7_HOME</span><br><span class="line"></span><br><span class="line">#alias命令动态切换JDK版本</span><br><span class="line">alias jdk6=&quot;export JAVA_HOME=$JAVA_6_HOME&quot;</span><br><span class="line">alias jdk7=&quot;export JAVA_HOME=$JAVA_7_HOME&quot;</span><br><span class="line">alias jdk8=&quot;export JAVA_HOME=$JAVA_8_HOME&quot;</span><br></pre></td></tr></table></figure></p><p>三、刷新环境<br><code>source ~/.bash_profile</code></p><p>四、测试<br>执行：<code>jdk8</code>，再执行<code>java -version</code>，看看是不是1.8版本？<br>执行：<code>jdk6</code>，再执行<code>java -version</code>，看看是不是1.6版本？</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;随着JDK版本的快速迭代，作为优秀(kubi)的Java拥护者，为了跟随时代的潮流，也开始使用1.8版本。&lt;/p&gt;
-&lt;p&gt;但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记
-      
-    
-    </summary>
-    
-      <category term="一些奇淫技巧" scheme="http://yoursite.com/categories/%E4%B8%80%E4%BA%9B%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
-    
-    
-      <category term="小技巧" scheme="http://yoursite.com/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Cloneable接口实现原理</title>
-    <link href="http://yoursite.com/2019/06/04/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/Cloneable%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"/>
-    <id>http://yoursite.com/2019/06/04/面试准备/Cloneable实现原理/</id>
-    <published>2019-06-04T14:41:31.000Z</published>
-    <updated>2019-12-18T17:21:15.113Z</updated>
-    
-    <content type="html"><![CDATA[<p>Cloneable接口是Java开发中常用的一个接口，它的作用是使一个类的实例能够将自身拷贝到另一个新的实例当中。</p><p>在开发过程中，如果一个类中的字段比较多，而我们如果采用在客户端中逐字段复制的方法来进行拷贝操作的话，将不可避免的造成客户端代码繁杂，而且也无法对类中的私有对象进行复制，而如果让需要具备拷贝功能的类实现<code>Cloneable</code>接口，并重写<code>clone()</code>方法的方式来简洁地实现实例拷贝功能。</p><h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p><code>private class Demo implements Cloneable{}</code><br>我们创建一个Demo类，并让他实现Cloneable接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public interface Cloneable &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>然后我们发现<code>Cloneable</code>几口里面并没有定义任何接口方法。<br>这是因为在<code>Object</code>类中已经将<code>clone()</code>方法定义为所有类都应该具有的基本功能，只是将该方法声明为了<code>protected</code>类型。它是一个<code>native</code>本地方法。</p><p>如果一个类不实现该接口就直接调用<code>clone()</code>方法的话，就会抛出“不支持拷贝”异常。<br>所以如果要让一个类具有拷贝实例的功能，那么除了要重写<code>Object</code>类中<code>clone()</code>方法外，还必须实现Cloneable接口。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Cloneable接口是Java开发中常用的一个接口，它的作用是使一个类的实例能够将自身拷贝到另一个新的实例当中。&lt;/p&gt;
-&lt;p&gt;在开发过程中，如果一个类中的字段比较多，而我们如果采用在客户端中逐字段复制的方法来进行拷贝操作的话，将不可避免的造成客户端代码繁杂，而且也无法对
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
