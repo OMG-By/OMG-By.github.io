@@ -26,7 +26,7 @@
 <tr>
 <td>RDB_OPCODE_EXPIRETIME_MS</td>
 <td>1byte</td>
-<td>252，说明是带过期时间的键值对</td>
+<td>0xfc/0xfd(252/253)，说明是带过期时间的键值对</td>
 </tr>
 <tr>
 <td>ms</td>

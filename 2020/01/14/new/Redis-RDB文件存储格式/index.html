@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwly1gan531wxo8j30ly0dqt9u.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1ganb8w8bbzj31is03g74g.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1ganbdubpn0j31i603mwey.jpg">
-<meta property="og:updated_time" content="2020-01-14T12:51:26.217Z">
+<meta property="og:updated_time" content="2020-01-14T12:54:31.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis RDB文件存储格式">
 <meta name="twitter:description" content="Redis存在两种数据文件：RDB和AOF。AOF文件的结构比较简单，就不做说明。主要是简介RDB数据文件的结构 *.rdb文件是表示Redis瞬间快照的一个二进制文件。根据这个快照文件，可以将Redis恢复到Redis当时的状态。rdb文件针对读写进行了优化操作。尽可能的会使用LZF压缩算法来减少文件的大小。 在命令行下我们可以通过od -x rdb.rdb | less和od -c rdb.r">
@@ -431,7 +431,7 @@
 <tr>
 <td>RDB_OPCODE_EXPIRETIME_MS</td>
 <td>1byte</td>
-<td>252，说明是带过期时间的键值对</td>
+<td>0xfc/0xfd(252/253)，说明是带过期时间的键值对</td>
 </tr>
 <tr>
 <td>ms</td>
