@@ -50,8 +50,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="过期标记和过期时间戳"><a href="#过期标记和过期时间戳" class="headerlink" title="过期标记和过期时间戳"></a>过期标记和过期时间戳</h4><p>一个字节。<code>0xFD</code>表示过期时间戳以秒为单位，<code>0xFC</code>表示过期时间戳以毫秒为单位。<br>后面接下来使用<b>长度编码</b>的方式来表示一个时间戳</p>
-<p>如果设置了过期时间，那么接下来的8个字节就表示具体的过期时间。<br>在导入RDB文件的时候，会将已经过期的key进行丢弃。</p>
+<h4 id="过期标记和过期时间戳"><a href="#过期标记和过期时间戳" class="headerlink" title="过期标记和过期时间戳"></a>过期标记和过期时间戳</h4><p>一个字节。<code>0xFD</code>表示过期时间戳以秒为单位，<code>0xFC</code>表示过期时间戳以毫秒为单位。<br>如果设置了过期时间，那么接下来的8个字节就表示具体的过期时间。<br>在导入RDB文件的时候，会将已经过期的key进行丢弃。</p>
 <p>如果没有设置过期时间，则没有这两个字段。</p>
 <h4 id="key类型"><a href="#key类型" class="headerlink" title="key类型"></a>key类型</h4><p>一个字节，表示保存键值对value的具体编码。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1gan531wxo8j30ly0dqt9u.jpg" alt=""></p>
 <ul>
@@ -60,14 +59,14 @@
 <li>当值为1-4时，该值是一个字符串序列，此字符串序列用于构造列表、集合、集合或哈希表等复杂数据类型。</li>
 </ul>
 <h4 id="键值对-1"><a href="#键值对-1" class="headerlink" title="键值对"></a>键值对</h4><p>key固定为字符串编码保存。<br>value取决于编码，不同的编码有不同的保存格式。<br>后面会有详细介绍。</p>
-<h2 id="长度编码"><a href="#长度编码" class="headerlink" title="长度编码"></a>长度编码</h2><p>长度编码用于存储下一个对象的长度，长度编码是一种可变长字节编码，目的在于使用更少的字节来表示内容。<br>从数据流中取出一个字节，可能存在以下几种情况：</p>
+<h2 id="长度编码"><a href="#长度编码" class="headerlink" title="长度编码"></a>长度编码</h2><p>长度编码用于存储下一个对象的长度，长度编码是一种可变长字节编码，目的在于使用更少的字节来表示内容。<br>从数据流中取出一个字节，前面两个bit可能存在以下几种情况：</p>
 <ul>
 <li>00：接下来6位表示长度</li>
 <li>01：取出下一个字节，组合的14位表示长度</li>
 <li>10：剩余6位舍弃，取出4个字节表示长度</li>
 <li>11：表示下一个对象以特殊格式编码。其余6位表示格式。</li>
 </ul>
-<p>好处：<br>63的数字只需要一个字节进行存储<br>64 – 16383 的数字只需要两个字节进行存储<br>16383 - 2^32 -1 的数字只需要用5个字节（1个字节的标识加4个字节的值）进行存储</p>
+<p>63的数字只需要一个字节进行存储<br>64 – 16383 的数字只需要两个字节进行存储<br>16383 - 2^32 -1 的数字只需要用5个字节（1个字节的标识加4个字节的值）进行存储</p>
 <h2 id="字符串编码"><a href="#字符串编码" class="headerlink" title="字符串编码"></a>字符串编码</h2><p>Redis字符串是二进制安全的，这意味着可以在其中存储任何内容。它没有任何特殊的字符串结尾标记。最好将Redis字符串视为字节数组。</p>
 <p>在RDB文件中有三种类型的字符串：</p>
 <ol>
@@ -82,16 +81,36 @@
 <li>1表示跟随的是16位整数</li>
 <li>2表示跟随的是32位整数</li>
 </ul>
-<h3 id="压缩字符串"><a href="#压缩字符串" class="headerlink" title="压缩字符串"></a>压缩字符串</h3><p>TODO 疑问一：到底是3还是4<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1ganbdubpn0j31i603mwey.jpg" alt=""><br>在长度编码为<code>11</code>的时候，读取后续的6位。如果后续的6位为<code>4</code>表示后面跟随着的是压缩字符串。具体步骤为下：</p>
+<h3 id="压缩字符串"><a href="#压缩字符串" class="headerlink" title="压缩字符串"></a>压缩字符串</h3><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1ganbdubpn0j31i603mwey.jpg" alt=""><br>在长度编码为<code>11</code>的时候，读取后续的6位。如果后续的6位为<code>3</code>表示后面跟随着的是压缩字符串。具体步骤为下：</p>
 <ol>
 <li>使用长度编码方式从c_len中读取出压缩的长度</li>
 <li>使用长度编码方式从o_len中读取出压缩前的长度</li>
 <li>读取出压缩后的字符串</li>
 <li>使用LZF算法解压缩</li>
 </ol>
+<h3 id="List编码和Set编码"><a href="#List编码和Set编码" class="headerlink" title="List编码和Set编码"></a>List编码和Set编码</h3><p>一个Redis list表示为一序列字符串</p>
+<ol>
+<li>首先，从流中读取list的大小，按照长度编码的方式读取出<code>size</code>大小值。</li>
+<li>按照字符串编码方式从流中读取出size个字符串</li>
+<li>使用这些字符串重新构建list</li>
+</ol>
+<h3 id="Hash编码"><a href="#Hash编码" class="headerlink" title="Hash编码"></a>Hash编码</h3><ol>
+<li>从流中按照长度编码的方式读取出hash表的大小size</li>
+<li>从流中按照字符串编码方式读取出2*size个字符串对象</li>
+<li>键值对交替出现</li>
+</ol>
+<h3 id="Ziplist编码"><a href="#Ziplist编码" class="headerlink" title="Ziplist编码"></a>Ziplist编码</h3><p>一个Ziplist编码本质上是一个list类型的字符串，借助于标记(flag)和偏移量(offset)来达到双向遍历。<br>为解析一个ziplist，首先从流中按照字符串编码读取一个字符串，这个字符串就是ziplist的封装。<br>结构如下：</p>
+<ol>
+<li>zlbytes ：这是一个 4 字节无符号整数，表示 ziplist 的总字节数。这 4 字节是 little endian 格式－－最先出现的是最低有效位组</li>
+<li>zltail：这是一个 4 字节无符号整数，little endian 格式。它表示到 ziplist 的尾条目（tail entry）的偏移。</li>
+<li>zllen：这是一个 2 字节无符号整数，little endian 格式。它表示 ziplist 的条目的数量</li>
+<li>entry：一个条目表示 ziplist 的元素。细节在下面</li>
+<li>zlend：总是等于 255。它表示 ziplist 的结束</li>
+</ol>
+<p>ziplist的每个entry都是以下这样的格式： <code>&lt;length-prev-entry&gt;&lt;special-flag&gt;&lt;raw-bytes-of-entry&gt;</code><br>具体参考Redis中ziplist的实现方式。</p>
 <h2 id="CRC校验和"><a href="#CRC校验和" class="headerlink" title="CRC校验和"></a>CRC校验和</h2><p>从Redis5开始启动参数控制是否将8字节的校验和添加到文件末尾，可以通过修改参数关闭该功能。<br>当禁用校验和的时候，此字段为0</p>
 <blockquote>
-<p><a href="https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_File_Format.textile" target="_blank" rel="noopener">https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_File_Format.textile</a><br><a href="https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_Version_History.textile" target="_blank" rel="noopener">https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_Version_History.textile</a><br><a href="https://blog.csdn.net/guiqulaxi920/article/details/51177307" target="_blank" rel="noopener">https://blog.csdn.net/guiqulaxi920/article/details/51177307</a><br><a href="http://ascii.911cha.com/" target="_blank" rel="noopener">http://ascii.911cha.com/</a></p>
+<p><a href="https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_File_Format.textile" target="_blank" rel="noopener">https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_File_Format.textile</a><br><a href="https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_Version_History.textile" target="_blank" rel="noopener">https://github.com/sripathikrishnan/redis-rdb-tools/blob/master/docs/RDB_Version_History.textile</a><br><a href="https://github.com/wen866595/open-doc/blob/master/redis-doc/Redis-RDB-Dump-File-Format-cn.md" target="_blank" rel="noopener">https://github.com/wen866595/open-doc/blob/master/redis-doc/Redis-RDB-Dump-File-Format-cn.md</a><br><a href="https://blog.csdn.net/guiqulaxi920/article/details/51177307" target="_blank" rel="noopener">https://blog.csdn.net/guiqulaxi920/article/details/51177307</a><br><a href="http://ascii.911cha.com/" target="_blank" rel="noopener">http://ascii.911cha.com/</a></p>
 </blockquote>
 ]]></content>
       
