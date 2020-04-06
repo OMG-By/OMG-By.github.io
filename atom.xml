@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-14T13:42:26.518Z</updated>
+  <updated>2020-04-06T15:24:07.737Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习记录汇总</title>
+    <link href="http://yoursite.com/2223/10/22/new/studing/"/>
+    <id>http://yoursite.com/2223/10/22/new/studing/</id>
+    <published>2223-10-22T14:22:22.000Z</published>
+    <updated>2020-04-06T15:24:07.737Z</updated>
+    
+    <content type="html"><![CDATA[<p>没有总结的学习就是耍流氓</p><p align="right">- 沃·兹基朔德齐</p><p>大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。<br>看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。<br>学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。<br>虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学习并没有真正的沉淀下来，过一阵时间又给忘了。经常想做总结，却有被自己的懒惰和借口拐跑了。</p><a id="more"></a><p>所以本篇博客主要是：</p><ol><li>记录看到的好的文章，便于后面有需要进行快速检索</li><li>记录自己的学习过程，等过几年回过头来看自己的成长</li><li>记录生活轨迹，等老了看看自己虚度多少时光</li></ol><p align="right">于2020-04-04 北京 天通苑</p><h1 id="技术文章汇总"><a href="#技术文章汇总" class="headerlink" title="技术文章汇总"></a>技术文章汇总</h1><h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><h3 id="死锁系列"><a href="#死锁系列" class="headerlink" title="死锁系列"></a>死锁系列</h3><ul><li><a href="https://mp.weixin.qq.com/s/xUgzKPMZP777jdytrCL7oA" target="_blank" rel="noopener">漫谈死锁</a>    （1. RC级别下也会存在Next-key 2. RC级别下，获取到不符合记录时会释放锁）<ul><li>innodb_print_all_deadlocks  (将死锁信息记录到errorlog中参数)</li><li>innodb_status_output_locks  (标准监控开关参数)</li></ul></li><li><a href="https://mp.weixin.qq.com/s/8XXimj2AIsRWj0fF-_iz3g" target="_blank" rel="noopener">如何阅读死锁日志</a>  （锁组合）</li><li><a href="https://mp.weixin.qq.com/s/2GIrpSKHe3Y3KWMfDbA7jw" target="_blank" rel="noopener">MySQL 各种SQL语句加锁分析</a><ul><li>innodb_locks_unsafe_for_binlog</li></ul></li><li><a href="https://mp.weixin.qq.com/s/MywiDdffz13i8auSv4Xs9w" target="_blank" rel="noopener">死锁案例一</a>  （简单插入唯一索引插入意向锁案例）</li><li><a href="https://mp.weixin.qq.com/s/7DehY-zQV1XHYufaII4oJg" target="_blank" rel="noopener">死锁案例二</a>  （delete操作会有锁区间行为。PS：删除已有记录会导致锁范围变大)</li><li><a href="https://mp.weixin.qq.com/s/R1dJY4leZh5qRpUkvOsNBw" target="_blank" rel="noopener">死锁案例三</a>  （insert同一区间时，唯一索引的插入意向锁导致的死锁）</li><li><a href="https://mp.weixin.qq.com/s/wXH9XFOK8wui7dDtR6Hzww" target="_blank" rel="noopener">死锁案例四</a>  （并发插入时，插入意向锁不同阶段死锁。<font color="red">注意跟案例三的区别：本案例为X锁等待，案例三为S锁等待</font>)</li><li><a href="https://mp.weixin.qq.com/s/XCdLfyjSuWAEcWIjbcVfvg" target="_blank" rel="noopener">死锁案例五</a>  （repalce into插入死锁情况）</li><li><a href="https://mp.weixin.qq.com/s/Lp7b2TGyFY-4uEN_M6Y8zg" target="_blank" rel="noopener">死锁案例六</a>  （不同事务加锁顺序不一样，导致锁资源交叉影响导致的死锁)</li><li><a href="https://mp.weixin.qq.com/s/pC4XCpUOuNPMFj6UjuhWvw" target="_blank" rel="noopener">死锁案例七</a>  （RC级别下，update不存在记录会持有lock_S + GAP锁）</li><li><a href="https://mp.weixin.qq.com/s/96CDhpgu5uUQ7qKYhKgt3w" target="_blank" rel="noopener">死锁案例八</a>  （多并发插入下的又一插入意向锁竞争导致的死锁案例）</li><li><a href="https://mp.weixin.qq.com/s/h4Mwrowft2KKdTkqmRlYqw" target="_blank" rel="noopener">死锁案例九</a>  （并发批量插入，导致的死锁）</li><li><a href="https://mp.weixin.qq.com/s/b9gNbdEHV3NNQrV9PKDPSw" target="_blank" rel="noopener">死锁案例十</a>  （并发更新普通二级索引造成的死锁。PS：<font color="red">另一程度上说明索引不是随便加就行</font>）</li><li><a href="https://mp.weixin.qq.com/s/vMGlRtMQckJ1LUZaSBn5cw" target="_blank" rel="noopener">死锁案例十一</a>  （<font color="red">5.6升级到5.7后，INSERT INTO .. ON DUPLICATE KEY语句锁模式加强</font>）</li><li><a href="https://mp.weixin.qq.com/s/SFdPDPhI270tnVI3uuOH0Q" target="_blank" rel="noopener">死锁案例十二</a>  （唯一索引，多插入,插入意向锁死锁情况）</li><li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li></ul><p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p><h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><ul><li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a>  （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><h2 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h2><h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2></li><li><a href="https://segmentfault.com/a/1190000020194471" target="_blank" rel="noopener">浅析服务器并发IO性能提升之路</a><h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h2 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2></li><li><a href="https://mp.weixin.qq.com/s/8pMF6pGHgBpWnHrmph16Wg" target="_blank" rel="noopener">git提交规范</a></li></ul><h1 id="LeetCode题目记录"><a href="#LeetCode题目记录" class="headerlink" title="LeetCode题目记录"></a>LeetCode题目记录</h1><p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">5:最长回文子串（中心扩展、马拉车算法）</a><br><a href="https://leetcode-cn.com/problems/trapping-rain-water/" target="_blank" rel="noopener">42:接雨水（简单DP、单调栈）</a></p><h1 id="个人成长文章"><a href="#个人成长文章" class="headerlink" title="个人成长文章"></a>个人成长文章</h1><h2 id="职场"><a href="#职场" class="headerlink" title="职场"></a>职场</h2><h2 id="个人成长"><a href="#个人成长" class="headerlink" title="个人成长"></a>个人成长</h2><h2 id="理财"><a href="#理财" class="headerlink" title="理财"></a>理财</h2><h1 id="学习计划"><a href="#学习计划" class="headerlink" title="学习计划"></a>学习计划</h1><h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><ul><li>Java开发规范(2020.03)</li><li>向上管理的艺术(2020.04)</li><li>图解HTTP</li><li>用户故事地图</li></ul><h2 id="其他书籍"><a href="#其他书籍" class="headerlink" title="其他书籍"></a>其他书籍</h2><ul><li>福尔摩斯探案全集</li></ul><h2 id="技术储备"><a href="#技术储备" class="headerlink" title="技术储备"></a>技术储备</h2><ul><li>时序数据库(4月工作计划)</li><li>elasticsearch（极客时间视频）</li><li>从0开始学架构(2020.04)</li></ul><h2 id="准备学习的东西记录"><a href="#准备学习的东西记录" class="headerlink" title="准备学习的东西记录"></a>准备学习的东西记录</h2><ul><li>MySQL死锁分析</li><li>图解MySQL</li><li>Java线程池ThreadPoolExecutor实现</li></ul><h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1><h1 id="生活轨迹"><a href="#生活轨迹" class="headerlink" title="生活轨迹"></a>生活轨迹</h1><h2 id="追剧"><a href="#追剧" class="headerlink" title="追剧"></a>追剧</h2><ul><li>名侦探柯南</li><li>如果岁月可回头(2020.03)</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;没有总结的学习就是耍流氓&lt;/p&gt;
+&lt;p align=&quot;right&quot;&gt;- 沃·兹基朔德齐&lt;/p&gt;
+
+&lt;p&gt;大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。&lt;br&gt;看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。&lt;br&gt;学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。&lt;br&gt;虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学习并没有真正的沉淀下来，过一阵时间又给忘了。经常想做总结，却有被自己的懒惰和借口拐跑了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Redis RDB文件存储格式</title>
@@ -592,31 +613,6 @@
       <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
       <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Arrays.sort和Collections.sort实现原理</title>
-    <link href="http://yoursite.com/2019/07/16/Java/Arrays-sort%E5%92%8CCollections-sort%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"/>
-    <id>http://yoursite.com/2019/07/16/Java/Arrays-sort和Collections-sort实现原理/</id>
-    <published>2019-07-16T14:51:54.000Z</published>
-    <updated>2019-12-18T17:21:15.060Z</updated>
-    
-    <content type="html"><![CDATA[<p>事实上，在使用<code>Collections.sort(list)</code>的时候，就调用list.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list) &#123;</span><br><span class="line">        list.sort(null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>我们在深入进去后，发现其实调用的就是Array.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;rawtypes&quot;&#125;)</span><br><span class="line">    default void sort(Comparator&lt;? super E&gt; c) &#123;</span><br><span class="line">        Object[] a = this.toArray();</span><br><span class="line">        Arrays.sort(a, (Comparator) c);</span><br><span class="line">        ListIterator&lt;E&gt; i = this.listIterator();</span><br><span class="line">        for (Object e : a) &#123;</span><br><span class="line">            i.next();</span><br><span class="line">            i.set((E) e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p><p>而在Array.sort中，会根据该对象是否能够通过归并排序来选择不同的排序方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; void sort(T[] a, Comparator&lt;? super T&gt; c) &#123;</span><br><span class="line">        if (c == null) &#123;</span><br><span class="line">            sort(a);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (LegacyMergeSort.userRequested)</span><br><span class="line">                legacyMergeSort(a, c);</span><br><span class="line">            else</span><br><span class="line">                TimSort.sort(a, 0, a.length, c, null, 0, 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p><ul><li>legacyMergeSort：归并排序</li><li><a href="https://blog.csdn.net/yangzhongblog/article/details/8184707" target="_blank" rel="noopener">TimSort</a><br>：结合归并排序和插入排序的一种排序算法</li></ul><blockquote><p>TimSort 算法为了减少对升序部分的回溯和对降序部分的性能倒退，将输入按其升序和降序特点进行了分区。排序的输入的单位不是一个个单独的数字，而是一个个的块-分区。其中每一个分区叫一个run。针对这些 run 序列，每次拿一个 run 出来按规则进行合并。每次合并会将两个 run合并成一个 run。合并的结果保存到栈中。合并直到消耗掉所有的 run，这时将栈上剩余的 run合并到只剩一个 run 为止。这时这个仅剩的 run 便是排好序的结果。</p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;事实上，在使用&lt;code&gt;Collections.sort(list)&lt;/code&gt;的时候，就调用list.sort()&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span 
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
   </entry>
   
