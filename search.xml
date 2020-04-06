@@ -6,7 +6,7 @@
       <title><![CDATA[学习记录汇总]]></title>
       <url>/2223/10/22/new/studing/</url>
       <content type="html"><![CDATA[<p>没有总结的学习就是耍流氓</p>
-<p align="right">- 沃·兹基朔德齐</p>
+<p align="right">- 沃·兹基朔德</p>
 
 <p>大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。<br>看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。<br>学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。<br>虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学习并没有真正的沉淀下来，过一阵时间又给忘了。经常想做总结，却有被自己的懒惰和借口拐跑了。</p>
 <a id="more"></a>
@@ -48,10 +48,12 @@
 <li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a>  （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
 </ul>
 <h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><h2 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h2><h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
-<li><a href="https://segmentfault.com/a/1190000020194471" target="_blank" rel="noopener">浅析服务器并发IO性能提升之路</a><h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h2 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2></li>
+<li><a href="https://segmentfault.com/a/1190000020194471" target="_blank" rel="noopener">浅析服务器并发IO性能提升之路</a></li>
+</ul>
+<h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h2 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/8pMF6pGHgBpWnHrmph16Wg" target="_blank" rel="noopener">git提交规范</a></li>
 </ul>
-<h1 id="LeetCode题目记录"><a href="#LeetCode题目记录" class="headerlink" title="LeetCode题目记录"></a>LeetCode题目记录</h1><p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">5:最长回文子串（中心扩展、马拉车算法）</a><br><a href="https://leetcode-cn.com/problems/trapping-rain-water/" target="_blank" rel="noopener">42:接雨水（简单DP、单调栈）</a></p>
+<h1 id="LeetCode题目记录"><a href="#LeetCode题目记录" class="headerlink" title="LeetCode题目记录"></a>LeetCode题目记录</h1><p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">5:最长回文子串（中心扩展、马拉车算法）</a><br><a href="https://leetcode-cn.com/problems/trapping-rain-water/" target="_blank" rel="noopener">42:接雨水（简单DP、单调栈）</a><br><a href="https://leetcode-cn.com/problems/short-encoding-of-words/" target="_blank" rel="noopener">820:单词的压缩编码（字典树）</a></p>
 <h1 id="个人成长文章"><a href="#个人成长文章" class="headerlink" title="个人成长文章"></a>个人成长文章</h1><h2 id="职场"><a href="#职场" class="headerlink" title="职场"></a>职场</h2><h2 id="个人成长"><a href="#个人成长" class="headerlink" title="个人成长"></a>个人成长</h2><h2 id="理财"><a href="#理财" class="headerlink" title="理财"></a>理财</h2><h1 id="学习计划"><a href="#学习计划" class="headerlink" title="学习计划"></a>学习计划</h1><h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><ul>
 <li>Java开发规范(2020.03)</li>
 <li>向上管理的艺术(2020.04)</li>
