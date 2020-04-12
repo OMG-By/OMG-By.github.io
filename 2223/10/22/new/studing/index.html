@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="没有总结的学习就是耍流氓 - 沃·兹基朔德  大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-06T15:34:07.904Z">
+<meta property="og:updated_time" content="2020-04-12T15:57:49.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习记录汇总">
 <meta name="twitter:description" content="没有总结的学习就是耍流氓 - 沃·兹基朔德  大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学">
@@ -421,10 +421,41 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
+<h3 id="故障及优化系列"><a href="#故障及优化系列" class="headerlink" title="故障及优化系列"></a>故障及优化系列</h3><ul>
+<li><a href="https://mp.weixin.qq.com/s/hYsxeevggxwkObJyOqy3iA" target="_blank" rel="noopener">引号错位引起的故障</a> （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …）</li>
+<li><a href="https://mp.weixin.qq.com/s/snJcudytuW4_BvgVk86IXw" target="_blank" rel="noopener">一个事务中调整语句顺序</a> （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。） </li>
+<li><a href="https://mp.weixin.qq.com/s/wFath89f3xXDR1Nxd5g-mw" target="_blank" rel="noopener">库表字符集修改后，老字段仍为原来字符集</a>   （修改库表字符集后，只会改变新增的字符集）</li>
+<li><a href="https://mp.weixin.qq.com/s/jMU1lGhBwuIPrERqeUFAVQ" target="_blank" rel="noopener">聊聊 隐式转换</a>    （真实遇到过其中的字符串转换成浮点型比较，查询结果不准确的问题。实测当长度为17位时会有问题）</li>
+<li><a href="https://mp.weixin.qq.com/s/tWDQUPG5PYaeZilz7dd73Q" target="_blank" rel="noopener">一个特殊的隐式转换问题</a> （5.6版本IN中包括多个类型的话，会存在不能走索引的情况。<a href="http://mysql.taobao.org/monthly/2017/12/06/" target="_blank" rel="noopener">相关阿里月报</a>）</li>
+<li><a href="https://mp.weixin.qq.com/s/f8ZQx3Iuz-BnJ05z8vN2GA" target="_blank" rel="noopener">Strace 解决性能问题案例一则</a>  （问题排查工具，用事实说话，DB不背锅）</li>
+<li><a href="https://mp.weixin.qq.com/s/MdfomhoKV4OBJ_jSv1d0Bg" target="_blank" rel="noopener">业务优化案例一则</a> (mysqlslap压测工具使用)</li>
+<li><a href="https://mp.weixin.qq.com/s/2hFm_hZgbNwi8GsE5MFrQg" target="_blank" rel="noopener">MySQL 案例一则</a> （explicit_defaults_for_timestamp参数解释）<ul>
+<li>explicit_defaults_for_timestamp</li>
+</ul>
+</li>
+<li><a href="https://mp.weixin.qq.com/s/w4qtB5Dz_ybbiY-WRr72-Q" target="_blank" rel="noopener">再说 order by 优化</a> （<font color="red">很精髓的order by案例总结和优化建议。</font>）</li>
+<li><a href="https://mp.weixin.qq.com/s/T6qeXpVoo-M9Iflsh-n1zA" target="_blank" rel="noopener">一次大量删除导致 MySQL 慢查的分析</a> （由于MVCC特性，如果存在长时间未提交的事务，会导致简单查询也可能会变得很慢）</li>
+</ul>
+<p>SQL变慢的原因主要有：</p>
+<ol>
+<li>SQL执行过程走索引不合理，导致执行缓慢。</li>
+<li>使用合理索引，但是获取数据量比较多。(排序，临时表等)</li>
+<li>网络重传丢包导致SQL变慢。</li>
+<li>并发比较高的场景，请求排队处理，等待时间长。</li>
+</ol>
+<p>性能优化是一个老生常谈的问题，需要对相关流程和机制有很深入的研究才能对症下药。平时扩充、积累相关知识，在遇到问题后，才会有思路。经验很重要，但更多的是建立在平时的积累上。</p>
 <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><ul>
+<li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
+<li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
 <li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a>  （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
 </ul>
-<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><h2 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h2><h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
+<h2 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/30007037" target="_blank" rel="noopener">C/C++内存对齐</a>  （Redis 4.0中对sdshdr对象进行了内存对齐优化行为）</li>
+</ul>
+<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/lFas05GVWw2v26tac03czg" target="_blank" rel="noopener">深入分析线程池的实现原理</a> （从源码级别分析了ThreadPoolExecutor类的实现）</li>
+</ul>
+<h2 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h2><h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
 <li><a href="https://segmentfault.com/a/1190000020194471" target="_blank" rel="noopener">浅析服务器并发IO性能提升之路</a></li>
 </ul>
 <h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h2 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
@@ -432,7 +463,7 @@
 </ul>
 <h1 id="LeetCode题目记录"><a href="#LeetCode题目记录" class="headerlink" title="LeetCode题目记录"></a>LeetCode题目记录</h1><p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">5:最长回文子串（中心扩展、马拉车算法）</a><br><a href="https://leetcode-cn.com/problems/trapping-rain-water/" target="_blank" rel="noopener">42:接雨水（简单DP、单调栈）</a><br><a href="https://leetcode-cn.com/problems/short-encoding-of-words/" target="_blank" rel="noopener">820:单词的压缩编码（字典树）</a></p>
 <h1 id="个人成长文章"><a href="#个人成长文章" class="headerlink" title="个人成长文章"></a>个人成长文章</h1><h2 id="职场"><a href="#职场" class="headerlink" title="职场"></a>职场</h2><h2 id="个人成长"><a href="#个人成长" class="headerlink" title="个人成长"></a>个人成长</h2><h2 id="理财"><a href="#理财" class="headerlink" title="理财"></a>理财</h2><h1 id="学习计划"><a href="#学习计划" class="headerlink" title="学习计划"></a>学习计划</h1><h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><ul>
-<li>Java开发规范(2020.03)</li>
+<li>Java开发规范(2020.04.07 done)</li>
 <li>向上管理的艺术(2020.04)</li>
 <li>图解HTTP</li>
 <li>用户故事地图</li>
@@ -446,15 +477,19 @@
 <li>从0开始学架构(2020.04)</li>
 </ul>
 <h2 id="准备学习的东西记录"><a href="#准备学习的东西记录" class="headerlink" title="准备学习的东西记录"></a>准备学习的东西记录</h2><ul>
-<li>MySQL死锁分析</li>
 <li>图解MySQL</li>
 <li>Java线程池ThreadPoolExecutor实现</li>
+<li>动态代理、CGLIB代理</li>
+<li>补充MySQL故障记录：float超过17位等于查询错误</li>
+<li>MySQL闪回工具binlog2sql和MyFlash工具问题记录</li>
+<li>Having和where的区别</li>
+<li>Redis多路IO复用实现</li>
+<li>MySQL的ICP特性</li>
+<li>MySQL的BKA特性</li>
+<li>重新回顾一遍MySQL45讲</li>
+<li>Reactor 设计模式</li>
 </ul>
-<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1><h1 id="生活轨迹"><a href="#生活轨迹" class="headerlink" title="生活轨迹"></a>生活轨迹</h1><h2 id="追剧"><a href="#追剧" class="headerlink" title="追剧"></a>追剧</h2><ul>
-<li>名侦探柯南</li>
-<li>如果岁月可回头(2020.03)</li>
-</ul>
-
+<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1>
       
     </div>
     
@@ -678,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#技术文章汇总"><span class="nav-number">1.</span> <span class="nav-text">技术文章汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">1.1.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁系列"><span class="nav-number">1.1.1.</span> <span class="nav-text">死锁系列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java"><span class="nav-number">1.3.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux命令"><span class="nav-number">1.4.</span> <span class="nav-text">Linux命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统"><span class="nav-number">1.5.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机网络"><span class="nav-number">1.6.</span> <span class="nav-text">计算机网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构和算法"><span class="nav-number">1.7.</span> <span class="nav-text">数据结构和算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">1.8.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode题目记录"><span class="nav-number">2.</span> <span class="nav-text">LeetCode题目记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个人成长文章"><span class="nav-number">3.</span> <span class="nav-text">个人成长文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#职场"><span class="nav-number">3.1.</span> <span class="nav-text">职场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个人成长"><span class="nav-number">3.2.</span> <span class="nav-text">个人成长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理财"><span class="nav-number">3.3.</span> <span class="nav-text">理财</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习计划"><span class="nav-number">4.</span> <span class="nav-text">学习计划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#书籍"><span class="nav-number">4.1.</span> <span class="nav-text">书籍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他书籍"><span class="nav-number">4.2.</span> <span class="nav-text">其他书籍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术储备"><span class="nav-number">4.3.</span> <span class="nav-text">技术储备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备学习的东西记录"><span class="nav-number">4.4.</span> <span class="nav-text">准备学习的东西记录</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习总结"><span class="nav-number">5.</span> <span class="nav-text">学习总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生活轨迹"><span class="nav-number">6.</span> <span class="nav-text">生活轨迹</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#追剧"><span class="nav-number">6.1.</span> <span class="nav-text">追剧</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#技术文章汇总"><span class="nav-number">1.</span> <span class="nav-text">技术文章汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">1.1.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁系列"><span class="nav-number">1.1.1.</span> <span class="nav-text">死锁系列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障及优化系列"><span class="nav-number">1.1.2.</span> <span class="nav-text">故障及优化系列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C"><span class="nav-number">1.3.</span> <span class="nav-text">C/C++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java"><span class="nav-number">1.4.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux命令"><span class="nav-number">1.5.</span> <span class="nav-text">Linux命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统"><span class="nav-number">1.6.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机网络"><span class="nav-number">1.7.</span> <span class="nav-text">计算机网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构和算法"><span class="nav-number">1.8.</span> <span class="nav-text">数据结构和算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">1.9.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode题目记录"><span class="nav-number">2.</span> <span class="nav-text">LeetCode题目记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个人成长文章"><span class="nav-number">3.</span> <span class="nav-text">个人成长文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#职场"><span class="nav-number">3.1.</span> <span class="nav-text">职场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个人成长"><span class="nav-number">3.2.</span> <span class="nav-text">个人成长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理财"><span class="nav-number">3.3.</span> <span class="nav-text">理财</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习计划"><span class="nav-number">4.</span> <span class="nav-text">学习计划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#书籍"><span class="nav-number">4.1.</span> <span class="nav-text">书籍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他书籍"><span class="nav-number">4.2.</span> <span class="nav-text">其他书籍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术储备"><span class="nav-number">4.3.</span> <span class="nav-text">技术储备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备学习的东西记录"><span class="nav-number">4.4.</span> <span class="nav-text">准备学习的东西记录</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学习总结"><span class="nav-number">5.</span> <span class="nav-text">学习总结</span></a></li></ol></div>
             
 
           </div>
