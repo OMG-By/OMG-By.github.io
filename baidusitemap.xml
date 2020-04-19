@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2223/10/22/new/studing/</loc>
-    <lastmod>2020-04-12T15:57:49.692Z</lastmod>
+    <lastmod>2020-04-19T13:17:25.101Z</lastmod>
     <data>
         <display>
         <title>学习记录汇总</title>
@@ -13,6 +13,28 @@
         
          
            
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/04/19/new/other/%E3%80%8A%E7%BA%BF%E4%B8%8A%E7%AE%A1%E7%90%86%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-04-19T13:13:34.629Z</lastmod>
+    <data>
+        <display>
+        <title>《向上管理的艺术》小结</title>
+        <pubTime>2020-04-19T12:53:03.000Z</pubTime>
+        
+        <tag>思考</tag>
+         
+        <tag>总结</tag>
+         
+         
+           
+             
+              <breadCrumb title="生活杂记" url="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%AE%B0/"/>
+          
         </display>
     </data>
     </url>

@@ -44,7 +44,7 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
-<h3 id="故障及优化系列"><a href="#故障及优化系列" class="headerlink" title="故障及优化系列"></a>故障及优化系列</h3><ul>
+<h3 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h3><ul>
 <li><a href="https://mp.weixin.qq.com/s/hYsxeevggxwkObJyOqy3iA" target="_blank" rel="noopener">引号错位引起的故障</a> （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …）</li>
 <li><a href="https://mp.weixin.qq.com/s/snJcudytuW4_BvgVk86IXw" target="_blank" rel="noopener">一个事务中调整语句顺序</a> （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。） </li>
 <li><a href="https://mp.weixin.qq.com/s/wFath89f3xXDR1Nxd5g-mw" target="_blank" rel="noopener">库表字符集修改后，老字段仍为原来字符集</a>   （修改库表字符集后，只会改变新增的字符集）</li>
@@ -58,6 +58,8 @@
 </li>
 <li><a href="https://mp.weixin.qq.com/s/w4qtB5Dz_ybbiY-WRr72-Q" target="_blank" rel="noopener">再说 order by 优化</a> （<font color="red">很精髓的order by案例总结和优化建议。</font>）</li>
 <li><a href="https://mp.weixin.qq.com/s/T6qeXpVoo-M9Iflsh-n1zA" target="_blank" rel="noopener">一次大量删除导致 MySQL 慢查的分析</a> （由于MVCC特性，如果存在长时间未提交的事务，会导致简单查询也可能会变得很慢）</li>
+<li><a href="https://mp.weixin.qq.com/s/0y20YxeSvgwJM7ZUho1C7Q" target="_blank" rel="noopener">MySQL 大量sleeping before entering InnoDB 故障诊断</a> （很详细的一次问题排查步骤，里面有很多有用的命令）</li>
+<li><a href="https://mp.weixin.qq.com/s/Edn_gPwcAHo5sYIzLJghzA" target="_blank" rel="noopener">哪些因素会导致慢查询？</a> （<font color="red">从应用到数据库，非常全面的列出了变慢的原因</font> 加一个：limit 时匹配不到数据会一直扫描。）</li>
 </ul>
 <p>SQL变慢的原因主要有：</p>
 <ol>
@@ -67,6 +69,19 @@
 <li>并发比较高的场景，请求排队处理，等待时间长。</li>
 </ol>
 <p>性能优化是一个老生常谈的问题，需要对相关流程和机制有很深入的研究才能对症下药。平时扩充、积累相关知识，在遇到问题后，才会有思路。经验很重要，但更多的是建立在平时的积累上。</p>
+<h3 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h3><ul>
+<li><a href="https://mp.weixin.qq.com/s/YAE_DidgZwHOzQ4NSZPyUg" target="_blank" rel="noopener">MySQL centos 6 vs 7的性能对比</a></li>
+<li><font color="gray"><a href="https://mp.weixin.qq.com/s/HlAKday9K0D6AtCdg0uUtg" target="_blank" rel="noopener">xfs vs ext4 性能压测对比</a> (先mark，后面再细细品)</font>
+
+</li>
+</ul>
+<h3 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h3><ul>
+<li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
+<li><a href="https://mp.weixin.qq.com/s/CjacOYs8gdkUPdnofktnXg" target="_blank" rel="noopener">show status和set gtid_mode 导致线程死锁案例</a>  （<font color="red">TODO：gdb和通过源码分析问题思路实操</font>）</li>
+</ul>
+<h3 id="参数系列"><a href="#参数系列" class="headerlink" title="参数系列"></a>参数系列</h3><h3 id="工具相关"><a href="#工具相关" class="headerlink" title="工具相关"></a>工具相关</h3><ul>
+<li><a href="https://mp.weixin.qq.com/s/bOdwi_zYOghBHX-eHDb5-w" target="_blank" rel="noopener">使用innobackup 2.4遇到的问题</a>   （2.2是不能备份5.7 版本）</li>
+</ul>
 <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><ul>
 <li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
 <li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
@@ -87,33 +102,67 @@
 <h1 id="LeetCode题目记录"><a href="#LeetCode题目记录" class="headerlink" title="LeetCode题目记录"></a>LeetCode题目记录</h1><p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">5:最长回文子串（中心扩展、马拉车算法）</a><br><a href="https://leetcode-cn.com/problems/trapping-rain-water/" target="_blank" rel="noopener">42:接雨水（简单DP、单调栈）</a><br><a href="https://leetcode-cn.com/problems/short-encoding-of-words/" target="_blank" rel="noopener">820:单词的压缩编码（字典树）</a></p>
 <h1 id="个人成长文章"><a href="#个人成长文章" class="headerlink" title="个人成长文章"></a>个人成长文章</h1><h2 id="职场"><a href="#职场" class="headerlink" title="职场"></a>职场</h2><h2 id="个人成长"><a href="#个人成长" class="headerlink" title="个人成长"></a>个人成长</h2><h2 id="理财"><a href="#理财" class="headerlink" title="理财"></a>理财</h2><h1 id="学习计划"><a href="#学习计划" class="headerlink" title="学习计划"></a>学习计划</h1><h2 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h2><ul>
 <li>Java开发规范(2020.04.07 done)</li>
-<li>向上管理的艺术(2020.04)</li>
-<li>图解HTTP</li>
+<li>向上管理的艺术(2020.04.19 done)</li>
+<li>图解HTTP(2019.04.19 done)</li>
 <li>用户故事地图</li>
-</ul>
-<h2 id="其他书籍"><a href="#其他书籍" class="headerlink" title="其他书籍"></a>其他书籍</h2><ul>
-<li>福尔摩斯探案全集</li>
+<li>Redis开发与运维</li>
+<li>MongoDB权威指南</li>
+<li>GO语言核心编程</li>
 </ul>
 <h2 id="技术储备"><a href="#技术储备" class="headerlink" title="技术储备"></a>技术储备</h2><ul>
-<li>时序数据库(4月工作计划)</li>
+<li>时序数据库(调研)</li>
 <li>elasticsearch（极客时间视频）</li>
 <li>从0开始学架构(2020.04)</li>
 </ul>
 <h2 id="准备学习的东西记录"><a href="#准备学习的东西记录" class="headerlink" title="准备学习的东西记录"></a>准备学习的东西记录</h2><ul>
 <li>图解MySQL</li>
-<li>Java线程池ThreadPoolExecutor实现</li>
 <li>动态代理、CGLIB代理</li>
-<li>补充MySQL故障记录：float超过17位等于查询错误</li>
 <li>MySQL闪回工具binlog2sql和MyFlash工具问题记录</li>
 <li>Having和where的区别</li>
-<li>Redis多路IO复用实现</li>
 <li>MySQL的ICP特性</li>
 <li>MySQL的BKA特性</li>
 <li>重新回顾一遍MySQL45讲</li>
 <li>Reactor 设计模式</li>
+<li>interactive_timeout和wait_timeout</li>
+<li>innodb_thread_concurrency和innodb_concurrency_tickets</li>
+<li>innodb_online_alter_log_max_size</li>
+<li>DDL 过程回顾</li>
+<li>gdb调试MySQL和Redis</li>
+<li>Cmakefile文件的编写</li>
 </ul>
-<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1>]]></content>
+<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1><ul>
+<li>《向上管理的艺术》小结</li>
+</ul>
+]]></content>
       
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[《向上管理的艺术》小结]]></title>
+      <url>/2020/04/19/new/other/%E3%80%8A%E7%BA%BF%E4%B8%8A%E7%AE%A1%E7%90%86%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E5%B0%8F%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>20%的向上管理，决定了80%的工作效率和工作成果。</p>
+<p>在之前的一篇博客<a href="https://omg-by.github.io/2020/01/05/new/other/%E5%90%AC%E3%80%8A%E5%B7%A5%E4%BD%9C%E4%B8%89%E5%B9%B4%E6%88%91%E5%AD%A6%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">听《工作三年我学到了什么》总结</a>提到的音频中，讨论者推荐了《向上管理的艺术》这本书。于是便买了（我才不会告诉你是凑单），利用了一周的睡前时间把它给读完，在读的过程中，回想自己这一年半的工作经历，的确是在无意间触犯到了好几条禁忌行为。。。感谢领导的包容和支持。<br>利用周末空余时间将这本书做个简单的总结，尽量从自身层面优化。不仅是与领导沟通，在生活中也处处需要注意。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gdz9w4eciyj31dv0u07g4.jpg" alt=""></p>
+<p>一个人的汇报反馈机制，往往能影响到上司对你的态度和看法。上司也有自己的事要做，并不会时时刻刻的盯着你；<br>领导负责下发任务，如果没有反馈，那么他将无法掌控任务的进度，甚至最终因没有反馈而导致任务失败，则会大大降低领导对你的看法。<br>领导的经验摆在那，有很多在我们看来比较困难的事，也许领导几句话、一个想法、一个电话就能轻松的解决。<font color="red">领导在一定意义上，也是我们的资源</font>。</p>
+<p>领导也是一个人，也会有各种各样的性格和情绪。<font color="red">如何在合适时机、选择合适方式才式获取到到正反馈信息？</font>这不仅仅跟领导反馈，在生活中，这也是一门需要时时需要注意的地方。<br>毕竟是有求于人，往往就是那么一个不经意的小点，导致了事情的失败，影响的只会是自己，徒增非常多的人力物力。</p>
+<p><font color="red">多站在别人的角度上思考</font>，别人是怎么看待这件事，需要我做什么，希望我怎么做。才能以更好的姿势、更快的效率去做好一件事。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 生活杂记 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 思考 </tag>
+            
+            <tag> 总结 </tag>
+            
+        </tags>
         
     </entry>
     

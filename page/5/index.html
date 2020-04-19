@@ -307,6 +307,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/MySQL/一个更新语句的执行过程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/14/MySQL/一个更新语句的执行过程/" itemprop="url">一条更新语句的执行过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T22:32:26+08:00">
+                2019-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>下面我们以下面这个表和更新语句来进行分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create table T(ID int primary key, c int);</span><br><span class="line">update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure></p>
+<p>对于更新语句，查询语句的那一套流程，更新语句同样是会走一遍。</p>
+<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>如果每一次更新操作都要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新；整个过程IO成本、查找成本都很高。为了解决这个问题，MySQL采用了WAL技术来提升更新效率。WAL的全称是write-Ahead Logging。它的关键点在于<font color="red">先写日志，再写磁盘</font>。</p>
+<p>具体来说，就是当有一条记录需要更新的时候，innodb引擎就会先把记录写到redo log里面，并更新内存，这个时候更新就算完成了。同时，innodb引擎会在适当的时候，将这个操作记录更新到次磁盘里面，而这个更新往往是在系统比较空闲的时候做。</p>
+<p>innodb的redo log是固定大小的，比如可以配置为一组4个文件，每个文件大小是1GB，那么redo log总共就可以记录4GB的操作，从头开始写，写到末尾就又回到开头循环写。<br><img src="https://m.qpic.cn/psb?/V140pON30woojR/cO8DivjlNOs4*4J.jc9sWkTtPIM5APzdpDE8aPjQews!/b/dLYAAAAAAAAA&amp;bo=hAUyAwAAAAADB5I!&amp;rf=viewer_4" alt=""><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/14/MySQL/一个更新语句的执行过程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/MySQL/MySQL基本架构/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1662,389 +1812,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis源码阅读/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/21/Redis/Redis源码阅读/" itemprop="url">Redis源码阅读目录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T21:34:13+08:00">
-                2018-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <table>
-<thead>
-<tr>
-<th>文件</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>adlist.c 、 adlist.h</td>
-<td style="text-align:center">双端链表数据结构的实现。</td>
-</tr>
-<tr>
-<td>ae.c 、 ae.h 、 ae_epoll.c 、 ae_evport.c 、 ae_kqueue.c 、 ae_select.c</td>
-<td style="text-align:center">事件处理器，以及各个具体实现。</td>
-</tr>
-<tr>
-<td>anet.c 、 anet.h</td>
-<td style="text-align:center">Redis 的异步网络框架，内容主要为对 socket 库的包装。</td>
-</tr>
-<tr>
-<td>aof.c</td>
-<td style="text-align:center">AOF 功能的实现。</td>
-</tr>
-<tr>
-<td>asciilogo.h</td>
-<td style="text-align:center">保存了 Redis 的 ASCII LOGO 。</td>
-</tr>
-<tr>
-<td>bio.c 、 bio.h</td>
-<td style="text-align:center">Redis 的后台 I/O 程序，用于将 I/O 操作放到子线程里面执行， 减少 I/O 操作对主线程的阻塞。</td>
-</tr>
-<tr>
-<td>bitops.c</td>
-<td style="text-align:center">二进制位操作命令的实现文件。</td>
-</tr>
-<tr>
-<td>blocked.c</td>
-<td style="text-align:center">用于实现 BLPOP 命令和 WAIT 命令的阻塞效果。</td>
-</tr>
-<tr>
-<td>cluster.c 、 cluster.h</td>
-<td style="text-align:center">Redis 的集群实现。</td>
-</tr>
-<tr>
-<td>config.c 、 config.h</td>
-<td style="text-align:center">Redis 的配置管理实现，负责读取并分析配置文件， 然后根据这些配置修改 Redis 服务器的各个选项。</td>
-</tr>
-<tr>
-<td>crc16.c 、 crc64.c 、 crc64.h</td>
-<td style="text-align:center">计算 CRC 校验和。</td>
-</tr>
-<tr>
-<td>db.c</td>
-<td style="text-align:center">数据库实现。</td>
-</tr>
-<tr>
-<td>debug.c</td>
-<td style="text-align:center">调试实现。</td>
-</tr>
-<tr>
-<td>dict.c 、 dict.h</td>
-<td style="text-align:center">字典数据结构的实现。</td>
-</tr>
-<tr>
-<td>endianconv.c 、 endianconv.h</td>
-<td style="text-align:center">二进制的大端、小端转换函数。</td>
-</tr>
-<tr>
-<td>fmacros.h</td>
-<td style="text-align:center">一些移植性方面的宏。</td>
-</tr>
-<tr>
-<td>help.h</td>
-<td style="text-align:center">utils/generate-command-help.rb 程序自动生成的命令帮助信息。</td>
-</tr>
-<tr>
-<td>hyperloglog.c</td>
-<td style="text-align:center">HyperLogLog 数据结构的实现。</td>
-</tr>
-<tr>
-<td>intset.c 、 intset.h</td>
-<td style="text-align:center">整数集合数据结构的实现，用于优化 SET 类型。</td>
-</tr>
-<tr>
-<td>lzf_c.c 、 lzf_d.c 、 lzf.h 、 lzfP.h</td>
-<td style="text-align:center">Redis 对字符串和 RDB 文件进行压缩时使用的 LZF 压缩算法的实现。</td>
-</tr>
-<tr>
-<td>Makefile 、 Makefile.dep</td>
-<td style="text-align:center">构建文件。</td>
-</tr>
-<tr>
-<td>memtest.c</td>
-<td style="text-align:center">内存测试。</td>
-</tr>
-<tr>
-<td>mkreleasehdr.sh</td>
-<td style="text-align:center">用于生成释出信息的脚本。</td>
-</tr>
-<tr>
-<td>multi.c</td>
-<td style="text-align:center">Redis 的事务实现。</td>
-</tr>
-<tr>
-<td>networking.c</td>
-<td style="text-align:center">Redis 的客户端网络操作库， 用于实现命令请求接收、发送命令回复等工作， 文件中的函数大多为 write 、 read 、 close 等函数的包装， 以及各种协议的分析和构建函数。</td>
-</tr>
-<tr>
-<td>notify.c</td>
-<td style="text-align:center">Redis 的数据库通知实现。</td>
-</tr>
-<tr>
-<td>object.c</td>
-<td style="text-align:center">Redis 的对象系统实现。</td>
-</tr>
-<tr>
-<td>pqsort.c 、 pqsort.h</td>
-<td style="text-align:center">快速排序（QuickSort）算法的实现。</td>
-</tr>
-<tr>
-<td>pubsub.c</td>
-<td style="text-align:center">发布与订阅功能的实现。</td>
-</tr>
-<tr>
-<td>rand.c 、 rand.h</td>
-<td style="text-align:center">伪随机数生成器。</td>
-</tr>
-<tr>
-<td>rdb.c 、 rdb.h</td>
-<td style="text-align:center">RDB 持久化功能的实现。</td>
-</tr>
-<tr>
-<td>redisassert.h</td>
-<td style="text-align:center">Redis 自建的断言系统。</td>
-</tr>
-<tr>
-<td>redis-benchmark.c</td>
-<td style="text-align:center">Redis 的性能测试程序。</td>
-</tr>
-<tr>
-<td>redis.c</td>
-<td style="text-align:center">负责服务器的启动、维护和关闭等事项。</td>
-</tr>
-<tr>
-<td>redis-check-aof.c 、 redis-check-dump.c</td>
-<td style="text-align:center">RDB 文件和 AOF 文件的合法性检查程序。</td>
-</tr>
-<tr>
-<td>redis-cli.c</td>
-<td style="text-align:center">Redis 客户端的实现。</td>
-</tr>
-<tr>
-<td>redis.h</td>
-<td style="text-align:center">Redis 的主要头文件，记录了 Redis 中的大部分数据结构， 包括服务器状态和客户端状态。</td>
-</tr>
-<tr>
-<td>redis-trib.rb</td>
-<td style="text-align:center">Redis 集群的管理程序。</td>
-</tr>
-<tr>
-<td>release.c 、 release.h</td>
-<td style="text-align:center">记录和生成 Redis 的释出版本信息。</td>
-</tr>
-<tr>
-<td>replication.c</td>
-<td style="text-align:center">复制功能的实现。</td>
-</tr>
-<tr>
-<td>rio.c 、 rio.h</td>
-<td style="text-align:center">Redis 对文件 I/O 函数的包装， 在普通 I/O 函数的基础上增加了显式缓存、以及计算校验和等功能。</td>
-</tr>
-<tr>
-<td>scripting.c</td>
-<td style="text-align:center">脚本功能的实现。</td>
-</tr>
-<tr>
-<td>sds.c 、 sds.h</td>
-<td style="text-align:center">SDS 数据结构的实现，SDS 为 Redis 的默认字符串表示。</td>
-</tr>
-<tr>
-<td>sentinel.c</td>
-<td style="text-align:center">Redis Sentinel 的实现。</td>
-</tr>
-<tr>
-<td>setproctitle.c</td>
-<td style="text-align:center">进程环境设置函数。</td>
-</tr>
-<tr>
-<td>sha1.c 、 sha1.h</td>
-<td style="text-align:center">SHA1 校验和计算函数。</td>
-</tr>
-<tr>
-<td>slowlog.c 、 slowlog.h</td>
-<td style="text-align:center">慢查询功能的实现。</td>
-</tr>
-<tr>
-<td>solarisfixes.h</td>
-<td style="text-align:center">针对 Solaris 系统的补丁。</td>
-</tr>
-<tr>
-<td>sort.c</td>
-<td style="text-align:center">SORT 命令的实现。</td>
-</tr>
-<tr>
-<td>syncio.c</td>
-<td style="text-align:center">同步 I/O 操作。</td>
-</tr>
-<tr>
-<td>testhelp.h</td>
-<td style="text-align:center">测试辅助宏。</td>
-</tr>
-<tr>
-<td>t_hash.c 、 t_list.c 、 t_set.c、 t_string.c 、 t_zset.c</td>
-<td style="text-align:center">定义了 Redis 的各种数据类型，以及这些数据类型的命令。</td>
-</tr>
-<tr>
-<td>util.c 、 util.h</td>
-<td style="text-align:center">各种辅助函数。</td>
-</tr>
-<tr>
-<td>valgrind.sup</td>
-<td style="text-align:center">valgrind 的suppression文件。</td>
-</tr>
-<tr>
-<td>version.h</td>
-<td style="text-align:center">记录了 Redis 的版本号。</td>
-</tr>
-<tr>
-<td>ziplist.c 、 ziplist.h</td>
-<td style="text-align:center">ZIPLIST 数据结构的实现，用于优化 LIST 类型。</td>
-</tr>
-<tr>
-<td>zipmap.c 、 zipmap.h</td>
-<td style="text-align:center">ZIPMAP 数据结构的实现，在 Redis 2.6 以前用与优化 HASH 类型， Redis 2.6 开始已经废弃。</td>
-</tr>
-<tr>
-<td>zmalloc.c 、 zmalloc.h</td>
-<td style="text-align:center">内存管理程序。</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2097,7 +1864,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">128</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
