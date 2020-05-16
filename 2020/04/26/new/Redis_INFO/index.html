@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="本文基于Redis最新unstable版本下，执行info命令后，返回的各项指标进行解释。并对其中需要特别注意的指标进行指出说明。并会对阿里云info进行简单对比。区分阿里云对info进行了哪些方面的改造。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-26T02:30:58.590Z">
+<meta property="og:updated_time" content="2020-04-26T06:03:22.046Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis指标说明">
 <meta name="twitter:description" content="本文基于Redis最新unstable版本下，执行info命令后，返回的各项指标进行解释。并对其中需要特别注意的指标进行指出说明。并会对阿里云info进行简单对比。区分阿里云对info进行了哪些方面的改造。">
@@ -433,6 +433,7 @@
 </li>
 <li>Cluster中的信息进行改造</li>
 <li>版本区别，Redis新版本中。将client_longest_output_list、client_biggest_input_buf修改成了client_recent_max_input_buffer、client_recent_max_output_buffer</li>
+<li>info commandstats增加了其他指标</li>
 </ol>
 <h2 id="需要监控的参数"><a href="#需要监控的参数" class="headerlink" title="需要监控的参数"></a>需要监控的参数</h2><ul>
 <li>connected_clients: 当前连接客户端数</li>
@@ -502,8 +503,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2223/10/22/new/studing/" rel="prev" title="学习记录汇总">
-                学习记录汇总 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/05/17/new/redis_BUG记录一则/" rel="prev" title="Redis哨兵client-reconfig-script脚本bug记录一则">
+                Redis哨兵client-reconfig-script脚本bug记录一则 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -588,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
