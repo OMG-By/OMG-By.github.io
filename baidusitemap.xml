@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2020/05/17/new/Redis%E6%89%A9%E5%B1%95%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</loc>
+    <lastmod>2020-05-17T05:43:16.103Z</lastmod>
+    <data>
+        <display>
+        <title>Redis扩展命令实现</title>
+        <pubTime>2020-05-17T05:41:47.000Z</pubTime>
+        
+        <tag>Redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/05/17/new/MySQL%E9%97%AA%E5%9B%9E%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2020-05-16T16:46:17.751Z</lastmod>
     <data>
