@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #87CEEB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #87CEEB, 0 0 5px    #87CEEB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #87CEEB;    /*上边框颜色*/
+        border-left-color: #87CEEB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Redis,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="OMG_By" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Redis中的内存使用主要是数据使用内存+客户端连接使用内存+内存碎片。其中数据内存占用的最多，优化的常用手段是合理的控制对象的生命周期以及正确的使用数据结构。客户端使用内存主要包含输出缓冲区等一些数据传输缓存。 Redis的数据结构只有熟悉的了解数据结构的组成、特性、性能、边界条件等因素后，我们还能更好的分析该数据结构的使用场景和资源消耗情况。 在Redis当中，所有的对象都是通过（redisO">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis的内存管理和优化">
+<meta property="og:url" content="http://yoursite.com/2019/01/25/new/Redis/Redis的内存管理和优化/index.html">
+<meta property="og:site_name" content="OMG_By">
+<meta property="og:description" content="Redis中的内存使用主要是数据使用内存+客户端连接使用内存+内存碎片。其中数据内存占用的最多，优化的常用手段是合理的控制对象的生命周期以及正确的使用数据结构。客户端使用内存主要包含输出缓冲区等一些数据传输缓存。 Redis的数据结构只有熟悉的了解数据结构的组成、特性、性能、边界条件等因素后，我们还能更好的分析该数据结构的使用场景和资源消耗情况。 在Redis当中，所有的对象都是通过（redisO">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7Jart.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JtxA.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JY2d.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JJ8H.md.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/16/V7JUKI.md.jpg">
+<meta property="og:updated_time" content="2019-12-18T17:21:15.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis的内存管理和优化">
+<meta name="twitter:description" content="Redis中的内存使用主要是数据使用内存+客户端连接使用内存+内存碎片。其中数据内存占用的最多，优化的常用手段是合理的控制对象的生命周期以及正确的使用数据结构。客户端使用内存主要包含输出缓冲区等一些数据传输缓存。 Redis的数据结构只有熟悉的了解数据结构的组成、特性、性能、边界条件等因素后，我们还能更好的分析该数据结构的使用场景和资源消耗情况。 在Redis当中，所有的对象都是通过（redisO">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/16/V7Jart.md.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/25/new/Redis/Redis的内存管理和优化/">
+
+
+
+
+
+  <title>Redis的内存管理和优化 | OMG_By</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">OMG_By</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">沉心、静气、学习、总结、进步</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/new/Redis/Redis的内存管理和优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis的内存管理和优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-25T21:34:13+08:00">
+                2019-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Redis中的内存使用主要是数据使用内存+客户端连接使用内存+内存碎片。<br>其中数据内存占用的最多，优化的常用手段是合理的控制对象的生命周期以及正确的使用数据结构。客户端使用内存主要包含输出缓冲区等一些数据传输缓存。</p>
+<h2 id="Redis的数据结构"><a href="#Redis的数据结构" class="headerlink" title="Redis的数据结构"></a>Redis的数据结构</h2><p>只有熟悉的了解数据结构的组成、特性、性能、边界条件等因素后，我们还能更好的分析该数据结构的使用场景和资源消耗情况。</p>
+<p>在Redis当中，所有的对象都是通过（redisObject+具体的对象）形式存在的，所有的对象都被封装在redisObject中，redisObject有五个成员：对象类型（type）、底层编码（encoding)、lru（最近访问时间）、refcount（引用数）、*ptr（指向具体对象的指针）。该结构一共会占用16字节。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct redisObject &#123;</span><br><span class="line">    unsigned type:4;</span><br><span class="line">    unsigned encoding:4;</span><br><span class="line">    unsigned lru:REDIS_LRU_BITS; /* lru time (relative to server.lruclock) */</span><br><span class="line">    int refcount;</span><br><span class="line">    void *ptr;</span><br><span class="line">&#125; robj;</span><br></pre></td></tr></table></figure></p>
+<p>Redis一共有五种基本类型（其他的特殊类型都是此基础上形成的）string、list、hash、set、zset。<br><a href="https://imgchr.com/i/V7Jart" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7Jart.md.jpg" alt="V7Jart.md.jpg"></a></p>
+<p>每一种数据类型在底层的存储实现存在多种选择，根据实际情况选择合适的编码类型。在效率和资源之间做出合适的权衡。<br><a href="https://imgchr.com/i/V7JtxA" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JtxA.md.jpg" alt="V7JtxA.md.jpg"></a></p>
+<a id="more"></a>
+<h3 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h3><p>String类型是redis中使用最为广泛的一个类型，所有的key都是字符串类型；它使用的是redis自己设计的SDS结构：包含len、free以及字符串数组。可以O(1)获取字符串长度和空闲空间。<br>通过buf数组存储数据可以保证二进制安全，以及SDS的预分配机制可以避免频繁的进行数组扩容行为。<br>在创建的字符串长度小于等于39（3.2版本后为44）的时候，Redis会使用embstr编码来存储字符串；在这种编码下，只会进行一次内存分配，会把redisObject和sds一起分配；所以embstr编码的字符串是不能改变的，如果对该字符串进行修改，则该编码会直接变成raw。<br>此外，如果是整型字符串的话，String会使用int格式，直接将整数的值赋值给指针对象。这样就省去了sds的开销。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr &#123;</span><br><span class="line">    int len;</span><br><span class="line">    int free;</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://imgchr.com/i/V7JY2d" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JY2d.md.jpg" alt="V7JY2d.md.jpg"></a></p>
+<h3 id="ziplist"><a href="#ziplist" class="headerlink" title="ziplist"></a>ziplist</h3><p>压缩列表是将所有的元素紧凑的连接在一起，相当于把所有的成员都叠在一起，没有额外的数据结构，空间占用比较小。缺点就是在读写的时候需要修改整个压缩列表，所以在数据量比较小的时候才使用，一般能够达到5-10倍的压缩比。</p>
+<ul>
+<li>ziplist：记录了整个压缩列表所占用的内存直接数</li>
+<li>ziplist：记录压缩表尾节点举例压缩列表起始地址的字节偏移量，通过这个偏移量可以直接确定表尾节点的地址</li>
+<li>zllen：记录了压缩列表包含的节点数量</li>
+<li>entryX：节点列表，压缩列表包含的各个节点，里面记录了前一个节点的长度、本节点的长度、编码等信息。可以方便的实现逆序遍历。</li>
+<li>zlend：特殊值，用于标记压缩列表的末尾。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zlentry &#123;</span><br><span class="line">    unsigned int prevrawlensize, prevrawlen;</span><br><span class="line">    unsigned int lensize, len;</span><br><span class="line">    unsigned int headersize;</span><br><span class="line">    unsigned char encoding;</span><br><span class="line">    unsigned char *p;</span><br><span class="line">&#125; zlentry;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><a href="https://imgchr.com/i/V7JJ8H" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JJ8H.md.jpg" alt="V7JJ8H.md.jpg"></a></p>
+<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><p>在Redis启动的时候，就直接创建了10000个redisObject，代表1-10000的整型，这些整型会一直保存在内存当中，当其他对象需要用到时，就会共享使用这些整型。这也意味着这些整型LRU成员没有用，后续不会有其他的一些开销。</p>
+<h2 id="键值对管理"><a href="#键值对管理" class="headerlink" title="键值对管理"></a>键值对管理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">typedef struct redisDb &#123;</span><br><span class="line">    dict *dict;                 /* The keyspace for this DB */</span><br><span class="line">    dict *expires;              /* Timeout of keys with a timeout set */</span><br><span class="line">    dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP) */</span><br><span class="line">    dict *ready_keys;           /* Blocked keys that received a PUSH */</span><br><span class="line">    dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */</span><br><span class="line">    struct evictionPoolEntry *eviction_pool;    /* Eviction pool of keys */</span><br><span class="line">    int id;                     /* Database ID */</span><br><span class="line">    long long avg_ttl;          /* Average TTL, just for stats */</span><br><span class="line">&#125; redisDb;</span><br></pre></td></tr></table></figure>
+<p>在redis当中使用redisDb表示一个数据库结构，单个redis可以设置16个这样的DB；通过select命令进行选择，不同DB之间互不影响。</p>
+<h3 id="过期Key清理"><a href="#过期Key清理" class="headerlink" title="过期Key清理"></a>过期Key清理</h3><p>通过一个dict结构(dict)来存储具体键值对对象；一个dict结构(expires)来记录redis中设置了过期时间的键值对，这个结构会复用dict中的Key、Value对象，所以并不会造成额外的内存开销。</p>
+<p>在Key过期的时候，redis会自动执行一个del操作对过期的Key进行清理操作。这个行为并不是立即去执行的，而是会在几个条件下触发。一般只会在必要或者CPU空闲的时候做过期清理动作；如访问Key的时候、事件循环结束进入事件侦听前、后台定期任务。</p>
+<p>Redis后台清理任务默认1s执行10次，也就是100ms一次。相当于如果没有其他操作，全部用来做后台任务的话，一次后台任务可以执行100ms；其中最高25%的时间用来删除过期Key的操作，即100ms中有25ms可以用来做Key清理。其他时间用来做Redis管理的任务。</p>
+<p>过期Key清理算法：</p>
+<ol>
+<li>依次遍历所有的DB</li>
+<li>从DB中随机取20个键值对，判断是否过期，如果过期，则删除。</li>
+<li>如果取出的键值对中有大于5个过期，则重复上一步；否则遍历下一个DB</li>
+<li>在清理过程中，如果达到了时间限制，退出清理过程。</li>
+</ol>
+<p>//TODO<br>redis的过期Key清理是在redis.c/activeExpireCycle()函数实现的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">void activeExpireCycle(int type) &#123;</span><br><span class="line">    /* This function has some global state in order to continue the work</span><br><span class="line">     * incrementally across calls. */</span><br><span class="line">    // 静态变量，用来累积函数连续执行时的数据</span><br><span class="line">    static unsigned int current_db = 0; /* Last DB tested. */</span><br><span class="line">    static int timelimit_exit = 0;      /* Time limit hit in previous call? */</span><br><span class="line">    static long long last_fast_cycle = 0; /* When last fast cycle ran. */</span><br><span class="line"></span><br><span class="line">    unsigned int j, iteration = 0;</span><br><span class="line">    // 默认每次处理的数据库数量</span><br><span class="line">    unsigned int dbs_per_call = REDIS_DBCRON_DBS_PER_CALL;</span><br><span class="line">    // 函数开始的时间</span><br><span class="line">    long long start = ustime(), timelimit;</span><br><span class="line"></span><br><span class="line">    // 快速模式</span><br><span class="line">    if (type == ACTIVE_EXPIRE_CYCLE_FAST) &#123;</span><br><span class="line">        /* Don&apos;t start a fast cycle if the previous cycle did not exited</span><br><span class="line">         * for time limt. Also don&apos;t repeat a fast cycle for the same period</span><br><span class="line">         * as the fast cycle total duration itself. */</span><br><span class="line">        // 如果上次函数没有触发 timelimit_exit ，那么不执行处理</span><br><span class="line">        if (!timelimit_exit) return;</span><br><span class="line">        // 如果距离上次执行未够一定时间，那么不执行处理</span><br><span class="line">        if (start &lt; last_fast_cycle + ACTIVE_EXPIRE_CYCLE_FAST_DURATION*2) return;</span><br><span class="line">        // 运行到这里，说明执行快速处理，记录当前时间</span><br><span class="line">        last_fast_cycle = start;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* We usually should test REDIS_DBCRON_DBS_PER_CALL per iteration, with</span><br><span class="line">     * two exceptions:</span><br><span class="line">     *</span><br><span class="line">     * 一般情况下，函数只处理 REDIS_DBCRON_DBS_PER_CALL 个数据库，</span><br><span class="line">     * 除非：</span><br><span class="line">     *</span><br><span class="line">     * 1) Don&apos;t test more DBs than we have.</span><br><span class="line">     *    当前数据库的数量小于 REDIS_DBCRON_DBS_PER_CALL</span><br><span class="line">     * 2) If last time we hit the time limit, we want to scan all DBs</span><br><span class="line">     * in this iteration, as there is work to do in some DB and we don&apos;t want</span><br><span class="line">     * expired keys to use memory for too much time. </span><br><span class="line">     *     如果上次处理遇到了时间上限，那么这次需要对所有数据库进行扫描，</span><br><span class="line">     *     这可以避免过多的过期键占用空间</span><br><span class="line">     */</span><br><span class="line">    if (dbs_per_call &gt; server.dbnum || timelimit_exit)</span><br><span class="line">        dbs_per_call = server.dbnum;</span><br><span class="line"></span><br><span class="line">    /* We can use at max ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC percentage of CPU time</span><br><span class="line">     * per iteration. Since this function gets called with a frequency of</span><br><span class="line">     * server.hz times per second, the following is the max amount of</span><br><span class="line">     * microseconds we can spend in this function. */</span><br><span class="line">    // 函数处理的微秒时间上限</span><br><span class="line">    // ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC 默认为 25 ，也即是 25 % 的 CPU 时间</span><br><span class="line">    timelimit = 1000000*ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC/server.hz/100;</span><br><span class="line">    timelimit_exit = 0;</span><br><span class="line">    if (timelimit &lt;= 0) timelimit = 1;</span><br><span class="line"></span><br><span class="line">    // 如果是运行在快速模式之下</span><br><span class="line">    // 那么最多只能运行 FAST_DURATION 微秒 </span><br><span class="line">    // 默认值为 1000 （微秒）</span><br><span class="line">    if (type == ACTIVE_EXPIRE_CYCLE_FAST)</span><br><span class="line">        timelimit = ACTIVE_EXPIRE_CYCLE_FAST_DURATION; /* in microseconds. */</span><br><span class="line"></span><br><span class="line">    // 遍历数据库</span><br><span class="line">    for (j = 0; j &lt; dbs_per_call; j++) &#123;</span><br><span class="line">        int expired;</span><br><span class="line">        // 指向要处理的数据库</span><br><span class="line">        redisDb *db = server.db+(current_db % server.dbnum);</span><br><span class="line"></span><br><span class="line">        /* Increment the DB now so we are sure if we run out of time</span><br><span class="line">         * in the current DB we&apos;ll restart from the next. This allows to</span><br><span class="line">         * distribute the time evenly across DBs. */</span><br><span class="line">        // 为 DB 计数器加一，如果进入 do 循环之后因为超时而跳出</span><br><span class="line">        // 那么下次会直接从下个 DB 开始处理</span><br><span class="line">        current_db++;</span><br><span class="line"></span><br><span class="line">        /* Continue to expire if at the end of the cycle more than 25%</span><br><span class="line">         * of the keys were expired. */</span><br><span class="line">        do &#123;</span><br><span class="line">            unsigned long num, slots;</span><br><span class="line">            long long now, ttl_sum;</span><br><span class="line">            int ttl_samples;</span><br><span class="line"></span><br><span class="line">            /* If there is nothing to expire try next DB ASAP. */</span><br><span class="line">            // 获取数据库中带过期时间的键的数量</span><br><span class="line">            // 如果该数量为 0 ，直接跳过这个数据库</span><br><span class="line">            if ((num = dictSize(db-&gt;expires)) == 0) &#123;</span><br><span class="line">                db-&gt;avg_ttl = 0;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            // 获取数据库中键值对的数量</span><br><span class="line">            slots = dictSlots(db-&gt;expires);</span><br><span class="line">            // 当前时间</span><br><span class="line">            now = mstime();</span><br><span class="line"></span><br><span class="line">            /* When there are less than 1% filled slots getting random</span><br><span class="line">             * keys is expensive, so stop here waiting for better times...</span><br><span class="line">             * The dictionary will be resized asap. */</span><br><span class="line">            // 这个数据库的使用率低于 1% ，扫描起来太费力了（大部分都会 MISS）</span><br><span class="line">            // 跳过，等待字典收缩程序运行</span><br><span class="line">            if (num &amp;&amp; slots &gt; DICT_HT_INITIAL_SIZE &amp;&amp;</span><br><span class="line">                (num*100/slots &lt; 1)) break;</span><br><span class="line"></span><br><span class="line">            /* The main collection cycle. Sample random keys among keys</span><br><span class="line">             * with an expire set, checking for expired ones. </span><br><span class="line">             *</span><br><span class="line">             * 样本计数器</span><br><span class="line">             */</span><br><span class="line">            // 已处理过期键计数器</span><br><span class="line">            expired = 0;</span><br><span class="line">            // 键的总 TTL 计数器</span><br><span class="line">            ttl_sum = 0;</span><br><span class="line">            // 总共处理的键计数器</span><br><span class="line">            ttl_samples = 0;</span><br><span class="line"></span><br><span class="line">            // 每次最多只能检查 LOOKUPS_PER_LOOP 个键</span><br><span class="line">            if (num &gt; ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP)</span><br><span class="line">                num = ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP;</span><br><span class="line"></span><br><span class="line">            // 开始遍历数据库</span><br><span class="line">            while (num--) &#123;</span><br><span class="line">                dictEntry *de;</span><br><span class="line">                long long ttl;</span><br><span class="line"></span><br><span class="line">                // 从 expires 中随机取出一个带过期时间的键</span><br><span class="line">                if ((de = dictGetRandomKey(db-&gt;expires)) == NULL) break;</span><br><span class="line">                // 计算 TTL</span><br><span class="line">                ttl = dictGetSignedIntegerVal(de)-now;</span><br><span class="line">                // 如果键已经过期，那么删除它，并将 expired 计数器增一</span><br><span class="line">                if (activeExpireCycleTryExpire(db,de,now)) expired++;</span><br><span class="line">                if (ttl &lt; 0) ttl = 0;</span><br><span class="line">                // 累积键的 TTL</span><br><span class="line">                ttl_sum += ttl;</span><br><span class="line">                // 累积处理键的个数</span><br><span class="line">                ttl_samples++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* Update the average TTL stats for this database. */</span><br><span class="line">            // 为这个数据库更新平均 TTL 统计数据</span><br><span class="line">            if (ttl_samples) &#123;</span><br><span class="line">                // 计算当前平均值</span><br><span class="line">                long long avg_ttl = ttl_sum/ttl_samples;</span><br><span class="line">                </span><br><span class="line">                // 如果这是第一次设置数据库平均 TTL ，那么进行初始化</span><br><span class="line">                if (db-&gt;avg_ttl == 0) db-&gt;avg_ttl = avg_ttl;</span><br><span class="line">                /* Smooth the value averaging with the previous one. */</span><br><span class="line">                // 取数据库的上次平均 TTL 和今次平均 TTL 的平均值</span><br><span class="line">                db-&gt;avg_ttl = (db-&gt;avg_ttl+avg_ttl)/2;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* We can&apos;t block forever here even if there are many keys to</span><br><span class="line">             * expire. So after a given amount of milliseconds return to the</span><br><span class="line">             * caller waiting for the other active expire cycle. */</span><br><span class="line">            // 我们不能用太长时间处理过期键，</span><br><span class="line">            // 所以这个函数执行一定时间之后就要返回</span><br><span class="line"></span><br><span class="line">            // 更新遍历次数</span><br><span class="line">            iteration++;</span><br><span class="line"></span><br><span class="line">            // 每遍历 16 次执行一次</span><br><span class="line">            if ((iteration &amp; 0xf) == 0 &amp;&amp; /* check once every 16 iterations. */</span><br><span class="line">                (ustime()-start) &gt; timelimit)</span><br><span class="line">            &#123;</span><br><span class="line">                // 如果遍历次数正好是 16 的倍数</span><br><span class="line">                // 并且遍历的时间超过了 timelimit</span><br><span class="line">                // 那么断开 timelimit_exit</span><br><span class="line">                timelimit_exit = 1;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 已经超时了，返回</span><br><span class="line">            if (timelimit_exit) return;</span><br><span class="line"></span><br><span class="line">            /* We don&apos;t repeat the cycle if there are less than 25% of keys</span><br><span class="line">             * found expired in the current DB. */</span><br><span class="line">            // 如果已删除的过期键占当前总数据库带过期时间的键数量的 25 %</span><br><span class="line">            // 那么不再遍历</span><br><span class="line">        &#125; while (expired &gt; ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP/4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>设想在一个大型的Redis实例中所有的Key在同一时间过期了会出现什么样的结果？</p>
+<p>答案就是：会导致线上读写请求出现明显的卡顿现象。<br>首先，Redis会持续扫描过期字典（多次循环），直到过期字典中的Key变得稀疏才会减缓清理的节奏。另外一个原因就是内存管理器需要频繁的回收内存页，会产生一定的CPU消耗。</p>
+<p>当客户端请求到来时，服务器如果正好过期扫描，客户端的请求将会等待至少25ms后才会进行处理，如果客户端将超时时间设置的比较短，比如10ms，那么就会出现大量的链接因为超时而关闭，业务端就会出现很多异常。<br>并且这时还无法从Redis的slowlog中看到慢查询记录，因为慢查询指的是逻辑处理过程慢，不包含等待时间。</p>
+<p>所以业务开发人员一定要注意过期时间，如果有大批量的key过期，要给过期时间设置一个随机范围，分散过期处理的压力。</p>
+<p>##淘汰机制<br>实例的内存是有上限的，当使用的内存超过了允许的最大内存时，Redis会按照设定的淘汰策略清理内存，以保证实例的正常运行。</p>
+<ul>
+<li>volatile-lru：从<strong>已设置过期时间</strong>的数据中挑选最近最少使用的数据淘汰</li>
+<li>volatile-ttl：从<strong>已设置过期时间</strong>的数据中挑选将要过期的数据淘汰</li>
+<li>volatile-random：从<strong>已设置过期时间</strong>的数据集中任意选择数据淘汰</li>
+<li>allkeys-lru：从数据集中挑选最近最少使用的数据淘汰</li>
+<li>allkeys-random：从数据集中任意选择数据淘汰</li>
+<li>no-enviction：禁止淘汰数据</li>
+</ul>
+<p>淘汰算法：</p>
+<ol>
+<li>遍历所有DB</li>
+<li>按照设置的淘汰策略挑选一个Key进行淘汰</li>
+<li>若策略是lru或ttl，采用近似算法随机取n个样本(默认为5，可配置)，从中挑选出最佳值进行淘汰</li>
+<li>计算内存是否超过允许值，若是，重复1~3</li>
+</ol>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>最佳实践就是平时遇到的一些好案例，或者从前面的原理导出的一些结论。首先，最重要的就是选择正确的数据类型，主要以满足业务，性能和场景为优先考虑。一般数据量不大的业务，没必要花太大的精力；但是对于一些主要业务，就需要做比较细致的优化。如String类型对象可以考虑使用整数，浮点型可以改成整数。对于数据量比较大，比较重要的业务，可以深入优化，根据业务场景对字符串类型进行合理的拆分，以符合使用压缩列表的(可以适当的对压缩列表的转换条件进行放宽)。</p>
+<p><a href="https://imgchr.com/i/V7JUKI" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V7JUKI.md.jpg" alt="V7JUKI.md.jpg"></a><br>这是官网上的一个例子，在4存Key-Value的时候，以object后面加一个整数作为ID，整个数据库可能都是这种类型，数据量又特别大，想对它优化的时候，比较通用的优化方法就是取模，相同前缀的Key单独做hash。整个db空间相当于一个大的哈希表，这样就把本来分配给整个db空间的Key，按照不同的前缀分成小的哈希表，每个哈希表里面保证数据比较小，那这个哈希表就会用压缩列表来保存。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/23/MySQL/Binlog格式/" rel="next" title="Binlog格式">
+                <i class="fa fa-chevron-left"></i> Binlog格式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/02/MySQL/MySQL体系结构/" rel="prev" title="MySQL体系结构">
+                MySQL体系结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDc2MS8yMTI4Mg"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="OMG_By">
+            
+              <p class="site-author-name" itemprop="name">OMG_By</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">133</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/OMG-By" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:omg_by@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.qiuchengjia.cn/" title="戎码人生" target="_blank">戎码人生</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://josemyqaq.github.io/" title="JosemyQAQ" target="_blank">JosemyQAQ</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.csdn.net/whjkm" title="Just do it !" target="_blank">Just do it !</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.pythontip.com/acm/problemCategory" title="ACM各大OJ题集" target="_blank">ACM各大OJ题集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.zmrenwu.com" title="django大神博客" target="_blank">django大神博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis的数据结构"><span class="nav-number">1.</span> <span class="nav-text">Redis的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDS"><span class="nav-number">1.1.</span> <span class="nav-text">SDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ziplist"><span class="nav-number">1.2.</span> <span class="nav-text">ziplist</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享对象"><span class="nav-number">2.</span> <span class="nav-text">共享对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键值对管理"><span class="nav-number">3.</span> <span class="nav-text">键值对管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#过期Key清理"><span class="nav-number">3.1.</span> <span class="nav-text">过期Key清理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">4.</span> <span class="nav-text">最佳实践</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">OMG_By</span>
+
+  
+</div>
+
+<!-- 
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -30px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/haru/haru.model.json",0.5)</script>
+  
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
