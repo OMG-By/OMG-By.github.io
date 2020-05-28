@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2223/10/22/new/studing/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/new/MySQL/MySQL特性介绍之ICP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -326,7 +326,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2223/10/22/new/studing/" itemprop="url">学习记录汇总</a></h1>
+                <a class="post-title-link" href="/2020/05/28/new/MySQL/MySQL特性介绍之ICP/" itemprop="url">MySQL特性介绍之ICP</a></h1>
         
 
         <div class="post-meta">
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2223-10-22T22:22:22+08:00">
-                2223-10-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-28T13:22:48+08:00">
+                2020-05-28
               </time>
             
 
@@ -348,6 +348,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -377,17 +399,33 @@
 
       
         
-          <p>没有总结的学习就是耍流氓</p>
-<p align="right">- 沃·兹基朔德</p>
+          
+            <h2 id="ICP是什么"><a href="#ICP是什么" class="headerlink" title="ICP是什么"></a>ICP是什么</h2><p>Index Condition Pushdown，也称为索引条件下推，体现在执行计划中会出现<code>Using index condition</code>。<br>ICP优化适用于MySQL利用索引从表里检索数据的场景。<br>使用命令<code>set optimizer_switch=&#39;index_condition_pushdown=on&#39;</code>开启</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>索引访问方式是range/ref/eq_ref/ref_or_null，并且需要访问表的完整行记录</li>
+<li>InnoDB和MYISAM表，包括分区的表(5.7)</li>
+<li>对于InnoDB表，ICP只适用于二级索引。ICP的目标是减少访问表的完整行的读取量从而减少IO操作。</li>
+<li>不支持建立在虚拟列上的二级索引</li>
+<li>引用子查询、存储函数的条件没法下推</li>
+<li>Triggered conditions 也没法下推</li>
+</ul>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="不使用ICP"><a href="#不使用ICP" class="headerlink" title="不使用ICP"></a>不使用ICP</h3><ol>
+<li>用二级索引查找数据的主键</li>
+<li>用主键回表读取完整的行记录</li>
+<li>引擎层利用where语句的条件对行记录进行过滤<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf83cpvaofj30gw09bq3i.jpg" alt=""></li>
+</ol>
+<h3 id="使用ICP"><a href="#使用ICP" class="headerlink" title="使用ICP"></a>使用ICP</h3><ol>
+<li>用二级索引查找数据的主键</li>
+<li>如果where条件中的字段在复合索引中，引擎层对where条件里的字段进行过滤后，返回主键</li>
+<li>利用主键回表读取完整的行记录</li>
+<li>引擎层用where语句的剩余条件对行记录进行过滤<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf83ct0w3xj30ge09b74t.jpg" alt=""></li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>ICP的优化在引擎层就能够过滤掉大量的数据，这样无疑能够减少了对base table和mysql server的访问次数，提升了性能。</p>
+<blockquote>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/index-condition-pushdown-optimization.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/index-condition-pushdown-optimization.html</a><br><a href="https://yq.aliyun.com/articles/259696" target="_blank" rel="noopener">https://yq.aliyun.com/articles/259696</a><br><a href="https://zhuanlan.zhihu.com/p/73035620" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/73035620</a></p>
+</blockquote>
 
-<p>大多数学习的时候太过于零散，有的时候看到了一篇很好的文章，想找个时间沉下心来好好学习，可是转眼就又给忘了。<br>看完一本书，也许当时思考过，有一定印象。但是总会遗漏点什么，等真正有需要的时候，往往就真的是有影响。<br>学完一个知识，想要写个博客文章记录一下，可是耗费时间而没有坚持下来，所以知识没有得到积累。<br>虽然一直在不断得学习，但是感觉自己太过于浮躁，很多时候的学习并没有真正的沉淀下来，过一阵时间又给忘了。经常想做总结，却有被自己的懒惰和借口拐跑了。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2223/10/22/new/studing/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -1860,7 +1898,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">133</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1882,7 +1920,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
