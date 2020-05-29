@@ -82,7 +82,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="MySQL机制,">
 
 
 
@@ -95,13 +95,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="OMG_By">
-<meta property="og:url" content="http://yoursite.com/tags/MySQL特性/index.html">
+<meta name="description" content="什么是MRRMulti-Range Read Optimization，是优化器将随机IO转换成顺序IO以降低查询过程中IO开销的一种手段。它的好处有：  使数据访问由随机变为顺序 减少缓冲池中页被替换的次数 批量处理查询操作  可以通过set optimizer_switch=&amp;#39;mrr=on&amp;#39;;命令进行开启。 不使用MRR12345678910mysql&amp;gt; set opti">
+<meta name="keywords" content="MySQL机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL特性介绍之MRR">
+<meta property="og:url" content="http://yoursite.com/2020/05/27/new/MySQL/MySQL机制介绍之MRR/index.html">
 <meta property="og:site_name" content="OMG_By">
+<meta property="og:description" content="什么是MRRMulti-Range Read Optimization，是优化器将随机IO转换成顺序IO以降低查询过程中IO开销的一种手段。它的好处有：  使数据访问由随机变为顺序 减少缓冲池中页被替换的次数 批量处理查询操作  可以通过set optimizer_switch=&amp;#39;mrr=on&amp;#39;;命令进行开启。 不使用MRR12345678910mysql&amp;gt; set opti">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-05-29T00:37:55.822Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OMG_By">
+<meta name="twitter:title" content="MySQL特性介绍之MRR">
+<meta name="twitter:description" content="什么是MRRMulti-Range Read Optimization，是优化器将随机IO转换成顺序IO以降低查询过程中IO开销的一种手段。它的好处有：  使数据访问由随机变为顺序 减少缓冲池中页被替换的次数 批量处理查询操作  可以通过set optimizer_switch=&amp;#39;mrr=on&amp;#39;;命令进行开启。 不使用MRR12345678910mysql&amp;gt; set opti">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/MySQL特性/">
+  <link rel="canonical" href="http://yoursite.com/2020/05/27/new/MySQL/MySQL机制介绍之MRR/">
 
 
 
 
 
-  <title>标签: MySQL特性 | OMG_By</title>
+  <title>MySQL特性介绍之MRR | OMG_By</title>
   
 
 
@@ -156,7 +161,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -292,78 +297,198 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>MySQL特性<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/27/new/MySQL/MySQL机制介绍之MRR/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/05/28/new/MySQL/MySQL特性介绍之ICP/" itemprop="url">
-              
-                <span itemprop="name">MySQL特性介绍之ICP</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">MySQL特性介绍之MRR</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-05-28T13:22:48+08:00" content="2020-05-28">
-          05-28
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T12:59:51+08:00">
+                2020-05-27
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/27/new/MySQL/MySQL特性介绍之MRR/" itemprop="url">
-              
-                <span itemprop="name">MySQL特性介绍之MRR</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2020-05-27T12:59:51+08:00" content="2020-05-27">
-          05-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <h2 id="什么是MRR"><a href="#什么是MRR" class="headerlink" title="什么是MRR"></a>什么是MRR</h2><p>Multi-Range Read Optimization，是优化器将随机IO转换成顺序IO以降低查询过程中IO开销的一种手段。<br>它的好处有：</p>
+<ul>
+<li>使数据访问由随机变为顺序</li>
+<li>减少缓冲池中页被替换的次数</li>
+<li>批量处理查询操作</li>
+</ul>
+<p>可以通过<code>set optimizer_switch=&#39;mrr=on&#39;;</code>命令进行开启。</p>
+<h3 id="不使用MRR"><a href="#不使用MRR" class="headerlink" title="不使用MRR"></a>不使用MRR</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set optimizer_switch=&apos;mrr=off&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  explain select * from test.t1 where (a between 1 and 10) and (c between 9 and 10) ;</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+------------------------------------+</span><br><span class="line">| id | select_type | table | type  | possible_keys | key  | key_len | ref  | rows | Extra                              |</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+------------------------------------+</span><br><span class="line">|  1 | SIMPLE      | t1    | range | mrrx,xx       | xx   | 5       | NULL |    2 | Using index condition; Using where |</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>在不使用MRR时，优化器需要根据二级索引返回的记录来进行回表，这个过程一般会有较多的随机IO操作。</p>
+<h3 id="使用MRR"><a href="#使用MRR" class="headerlink" title="使用MRR"></a>使用MRR</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set optimizer_switch=&apos;mrr=on&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  explain select * from test.t1 where (a between 1 and 10) and (c between 9 and 10) ;</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+-----------------------------------------------+</span><br><span class="line">| id | select_type | table | type  | possible_keys | key  | key_len | ref  | rows | Extra                                         |</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+-----------------------------------------------+</span><br><span class="line">|  1 | SIMPLE      | t1    | range | mrrx,xx       | xx   | 5       | NULL |    2 | Using index condition; Using where; Using MRR |</span><br><span class="line">+----+-------------+-------+-------+---------------+------+---------+------+------+-----------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>在使用了MRR时，SQL语句的执行过程为：</p>
+<ol>
+<li>优化器将二级索引查询到的记录放到一块缓冲区中(read_rnd_buffer_size)</li>
+<li>如果二级索引扫描到文件末尾或者缓冲区已满，则使用快排对缓冲区中的内容按照主键进行排序</li>
+<li>用户线程调用MRR接口获取cluster index，然后根据cluster index获取行数据</li>
+<li>当缓冲区中的cluster index取完数据，则继续调用过程2、3，直到扫描结束</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MRR特性就是在查询过程中，先将满足条件的id查询出来并进行排序后，再进行批量查询操作。从而实现随机IO到顺序IO的转换，提升性能。</p>
+<blockquote>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/mrr-optimization.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/mrr-optimization.html</a><br><a href="https://zhuanlan.zhihu.com/p/110154066" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/110154066</a></p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL机制/" rel="tag"># MySQL机制</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/17/new/Redis/Redis扩展命令实现/" rel="next" title="Redis扩展命令实现">
+                <i class="fa fa-chevron-left"></i> Redis扩展命令实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/28/new/MySQL/MySQL机制介绍之ICP/" rel="prev" title="MySQL特性介绍之ICP">
+                MySQL特性介绍之ICP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -371,6 +496,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDc2MS8yMTI4Mg"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -391,8 +525,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -507,6 +650,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是MRR"><span class="nav-number">1.</span> <span class="nav-text">什么是MRR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不使用MRR"><span class="nav-number">1.1.</span> <span class="nav-text">不使用MRR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MRR"><span class="nav-number">1.2.</span> <span class="nav-text">使用MRR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -677,6 +836,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -705,6 +868,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
