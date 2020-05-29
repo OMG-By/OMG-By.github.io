@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2020/05/30/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E4%B9%8BNLJ%E3%80%81BNL%E3%80%81BKA/</loc>
+    <lastmod>2020-05-29T17:05:25.376Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL机制介绍之NLJ、BNL、BKA</title>
+        <pubTime>2020-05-29T17:03:51.000Z</pubTime>
+        
+        <tag>MySQL机制</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/05/28/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E4%B9%8BICP/</loc>
     <lastmod>2020-05-29T00:45:48.291Z</lastmod>
     <data>
@@ -972,15 +992,13 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/07/18/SpringBoot/Spring-boot%E6%95%B4%E5%90%88MyBatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/2019/07/21/SpringBoot/SpringBoot%E6%95%B4%E5%90%88Swagger2/</loc>
     <lastmod>2019-12-18T17:21:15.102Z</lastmod>
     <data>
         <display>
-        <title>Spring boot整合MyBatis逆向工程</title>
-        <pubTime>2019-07-18T15:03:57.000Z</pubTime>
+        <title>SpringBoot整合Swagger2</title>
+        <pubTime>2019-07-21T13:57:43.000Z</pubTime>
         
-        <tag>Mybatis</tag>
-         
          
            
              
@@ -1013,13 +1031,15 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/07/21/SpringBoot/SpringBoot%E6%95%B4%E5%90%88Swagger2/</loc>
+    <loc>http://yoursite.com/2019/07/18/SpringBoot/Spring-boot%E6%95%B4%E5%90%88MyBatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     <lastmod>2019-12-18T17:21:15.102Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot整合Swagger2</title>
-        <pubTime>2019-07-21T13:57:43.000Z</pubTime>
+        <title>Spring boot整合MyBatis逆向工程</title>
+        <pubTime>2019-07-18T15:03:57.000Z</pubTime>
         
+        <tag>Mybatis</tag>
+         
          
            
              
@@ -1474,26 +1494,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/</loc>
-    <lastmod>2019-12-18T17:21:15.085Z</lastmod>
-    <data>
-        <display>
-        <title>输入映射和输出映射</title>
-        <pubTime>2018-04-20T05:10:35.000Z</pubTime>
-        
-        <tag>Mybatis</tag>
-         
-         
-           
-             
-              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2018/04/21/Mybatis/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</loc>
     <lastmod>2019-12-18T17:21:15.085Z</lastmod>
     <data>
@@ -1514,12 +1514,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/04/20/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2019-12-18T17:21:15.084Z</lastmod>
+    <loc>http://yoursite.com/2018/04/20/Mybatis/%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84%E5%92%8C%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84/</loc>
+    <lastmod>2019-12-18T17:21:15.085Z</lastmod>
     <data>
         <display>
-        <title>Mybatis--原始dao和mapper代理方法</title>
-        <pubTime>2018-04-20T01:16:36.000Z</pubTime>
+        <title>输入映射和输出映射</title>
+        <pubTime>2018-04-20T05:10:35.000Z</pubTime>
         
         <tag>Mybatis</tag>
          
@@ -1554,12 +1554,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/04/23/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
-    <lastmod>2019-12-18T17:21:15.083Z</lastmod>
+    <loc>http://yoursite.com/2018/04/20/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2019-12-18T17:21:15.084Z</lastmod>
     <data>
         <display>
-        <title>Mybatis逆向工程</title>
-        <pubTime>2018-04-23T12:39:06.000Z</pubTime>
+        <title>Mybatis--原始dao和mapper代理方法</title>
+        <pubTime>2018-04-20T01:16:36.000Z</pubTime>
         
         <tag>Mybatis</tag>
          
@@ -1580,6 +1580,26 @@
         <display>
         <title>原生JDBC的问题总结</title>
         <pubTime>2018-04-16T16:00:00.000Z</pubTime>
+        
+        <tag>Mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://yoursite.com/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/04/23/Mybatis/Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
+    <lastmod>2019-12-18T17:21:15.083Z</lastmod>
+    <data>
+        <display>
+        <title>Mybatis逆向工程</title>
+        <pubTime>2018-04-23T12:39:06.000Z</pubTime>
         
         <tag>Mybatis</tag>
          

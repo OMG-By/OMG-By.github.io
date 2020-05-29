@@ -307,6 +307,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/" itemprop="url">MySQL机制介绍之NLJ、BNL、BKA</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-30T01:03:51+08:00">
+                2020-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>MySQL 5.5版本前，MySQL本身只支持一种表间关联方式，就是嵌套循环(Nested Loop)。如果关联表的数据量很大，则join关联的执行时间会非常长。<br>在5.5版本中，MySQL通过引入Block Nested-Loop Join(BNL)算法来优化嵌套执行。</p>
+<h2 id="NLJ"><a href="#NLJ" class="headerlink" title="NLJ"></a>NLJ</h2><p>将驱动表的结果集作为循环基础数据，然后循环从该结果集中每次一条获取数据作为下一个表的过滤条件查询数据，然后合并结果。<br>如果有多表join，则将前面的表的结果集作为循环数据，取到每行再到链接的下一个表循环匹配。</p>
+<h3 id="SNLJ"><a href="#SNLJ" class="headerlink" title="SNLJ"></a>SNLJ</h3><p>Simple Nested-Loops Join(SNLJ，简单嵌套循环联接)，该算法比较简单、直接。驱动表中的每一条记录都与被驱动表中的记录进行匹配判断。对于两表连接，驱动表只需要被访问一次，而被驱动表需要访问多次。这个算法的开销非常大，复杂度为笛卡尔积。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf9s7d0psuj307406mmxc.jpg" alt=""><br>其实现伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For each row r in R do                         -- 扫描R表（驱动表）</span><br><span class="line">    For each row s in S do                     -- 扫描S表（被驱动表）</span><br><span class="line">        If r and s satisfy the join condition  -- 如果r和s满足join条件</span><br><span class="line">            Then output the tuple &lt;r, s&gt;       -- 返回结果集</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/new/MySQL/MySQL机制介绍之ICP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1689,163 +1837,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/Redis/何为IO多路复用/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/01/05/new/Redis/何为IO多路复用/" itemprop="url">何为IO多路复用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T16:29:22+08:00">
-                2020-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="网络编程概念"><a href="#网络编程概念" class="headerlink" title="网络编程概念"></a>网络编程概念</h2><p>在网络当中，数据的传输是基于HTTP/TCP协议簇来实现的。TCP协议仅仅是把这些数据看做是一串二进制流来进行处理。<br>所以：<b>客户端和服务器是通过在建立的连接上发送字节流来进行通信</b></p>
-<p>一个连接由它两端的套接字地址唯一确定，结构为<code>(客户端地址:客户端端口号，服务端地址:服务端端口号)</code>。有了通信双方的连接地址信息后，就可以进行数据传输了。</p>
-<p>在Unix系统中，实现了一套套接字接口来描述和规范双方通信的整个过程。<br>创建-&gt;连接-&gt;绑定-&gt;监听-&gt;响应<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1galrpl667mj30hs0dzwfp.jpg" alt=""></p>
-<blockquote>
-<ul>
-<li>socket()：创建一个套接字描述符</li>
-<li>connect()：客户端通过调用connect函数来建立和服务器的连接</li>
-<li>bind()：告诉内核将socket()创建的套接字与某个服务端地址与端口连接起来，后续会对这个地址和端口进行监听</li>
-<li>listen()：告诉内核，将这个套接字当成服务器这种被动实体来看待(服务器是等待客户端连接的被动实体，而内核认为socket()创建的套接字默认是主动实体，所以才需要listen()函数，告诉内核进行主动到被动实体的转换)</li>
-<li>accept()：等待客户端的连接请求并返回一个新的已连接描述符</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/01/05/new/Redis/何为IO多路复用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1898,7 +1889,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">134</span>
+                  <span class="site-state-item-count">135</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1920,7 +1911,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

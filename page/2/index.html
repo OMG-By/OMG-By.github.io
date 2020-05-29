@@ -307,6 +307,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/Redis/何为IO多路复用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/05/new/Redis/何为IO多路复用/" itemprop="url">何为IO多路复用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T16:29:22+08:00">
+                2020-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="网络编程概念"><a href="#网络编程概念" class="headerlink" title="网络编程概念"></a>网络编程概念</h2><p>在网络当中，数据的传输是基于HTTP/TCP协议簇来实现的。TCP协议仅仅是把这些数据看做是一串二进制流来进行处理。<br>所以：<b>客户端和服务器是通过在建立的连接上发送字节流来进行通信</b></p>
+<p>一个连接由它两端的套接字地址唯一确定，结构为<code>(客户端地址:客户端端口号，服务端地址:服务端端口号)</code>。有了通信双方的连接地址信息后，就可以进行数据传输了。</p>
+<p>在Unix系统中，实现了一套套接字接口来描述和规范双方通信的整个过程。<br>创建-&gt;连接-&gt;绑定-&gt;监听-&gt;响应<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1galrpl667mj30hs0dzwfp.jpg" alt=""></p>
+<blockquote>
+<ul>
+<li>socket()：创建一个套接字描述符</li>
+<li>connect()：客户端通过调用connect函数来建立和服务器的连接</li>
+<li>bind()：告诉内核将socket()创建的套接字与某个服务端地址与端口连接起来，后续会对这个地址和端口进行监听</li>
+<li>listen()：告诉内核，将这个套接字当成服务器这种被动实体来看待(服务器是等待客户端连接的被动实体，而内核认为socket()创建的套接字默认是主动实体，所以才需要listen()函数，告诉内核进行主动到被动实体的转换)</li>
+<li>accept()：等待客户端的连接请求并返回一个新的已连接描述符</li>
+</ul>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/01/05/new/Redis/何为IO多路复用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/other/提问的智慧/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1704,203 +1861,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/" itemprop="url">Spring boot整合SpringTask实现定时任务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T15:45:09+08:00">
-                2019-07-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Boot</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SpringTask是Spring自主研发的一个定时任务工具，不需要引入其他依赖就可以使用。</p>
-<h2 id="SpringTask-Cron语法"><a href="#SpringTask-Cron语法" class="headerlink" title="SpringTask Cron语法"></a>SpringTask Cron语法</h2><p>类似于shell中的<code>crontab</code>，只不过最前面多了一个<code>Seconds</code>秒级别。<br>Seconds Minutes Hours DayofMonth Month DayofWeek</p>
-<table>
-<thead>
-<tr>
-<th>时间元素</th>
-<th>可出现的字符</th>
-<th>数值范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Seconds</td>
-<td>,-*/</td>
-<td>0-59</td>
-</tr>
-<tr>
-<td>Minutes</td>
-<td>,-*/</td>
-<td>0-59</td>
-</tr>
-<tr>
-<td>Hours</td>
-<td>,-*/</td>
-<td>0-23</td>
-</tr>
-<tr>
-<td>Day of Month</td>
-<td>,-*/?LW</td>
-<td>0-31</td>
-</tr>
-<tr>
-<td>Month</td>
-<td>,-*/</td>
-<td>1-12</td>
-</tr>
-<tr>
-<td>Day of Week</td>
-<td>,-*/?L#</td>
-<td>1-7</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>“,” 列出枚举值</li>
-<li>“-“ 触发范围</li>
-<li>“*” 任意值</li>
-<li>“/“ 每隔一段时间执行</li>
-<li>“?” 任意值</li>
-<li>“#” 确定第几个星期几</li>
-<li>“L” 表示最后的有效值</li>
-<li>“W” 表示有效工作日
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/07/26/SpringBoot/Spring-boot整合SpringTask实现定时任务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </li></ul></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1953,7 +1913,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">134</span>
+                  <span class="site-state-item-count">135</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1975,7 +1935,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
