@@ -3,7 +3,7 @@
   
     
     <entry>
-      <title><![CDATA[MySQL特性介绍之ICP]]></title>
+      <title><![CDATA[MySQL机制介绍之ICP]]></title>
       <url>/2020/05/28/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E4%B9%8BICP/</url>
       <content type="html"><![CDATA[<h2 id="ICP是什么"><a href="#ICP是什么" class="headerlink" title="ICP是什么"></a>ICP是什么</h2><p>Index Condition Pushdown，也称为索引条件下推，体现在执行计划中会出现<code>Using index condition</code>。<br>ICP优化适用于MySQL利用索引从表里检索数据的场景。<br>使用命令<code>set optimizer_switch=&#39;index_condition_pushdown=on&#39;</code>开启</p>
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
@@ -47,7 +47,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[MySQL特性介绍之MRR]]></title>
+      <title><![CDATA[MySQL机制介绍之MRR]]></title>
       <url>/2020/05/27/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E4%B9%8BMRR/</url>
       <content type="html"><![CDATA[<h2 id="什么是MRR"><a href="#什么是MRR" class="headerlink" title="什么是MRR"></a>什么是MRR</h2><p>Multi-Range Read Optimization，是优化器将随机IO转换成顺序IO以降低查询过程中IO开销的一种手段。<br>它的好处有：</p>
 <ul>
