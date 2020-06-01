@@ -307,6 +307,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/03/MySQL/InnoDB整体架构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/03/MySQL/InnoDB整体架构/" itemprop="url">InnoDB整体架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T20:14:16+08:00">
+                2019-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="InnoDB整体架构"><a href="#InnoDB整体架构" class="headerlink" title="InnoDB整体架构"></a>InnoDB整体架构</h1><h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><ul>
+<li>Master Thread<br>Master Thread具有最高的线程优先级别，内部由多个循环（每秒/每10秒）组成。<ol>
+<li>每秒的操作<ul>
+<li>刷新日志缓冲到磁盘（总是）</li>
+<li>合并插入缓冲</li>
+<li>刷新脏页到磁盘（至多100个）</li>
+<li>切换到后台进程</li>
+</ul>
+</li>
+<li>每10秒的操作<ul>
+<li>删除无用的undo页（总是）</li>
+<li>合并20个插入缓冲（总是）</li>
+<li>调回主循环（总是）</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>IO Thread</li>
+<li>purge Thread</li>
+<li>Page cleaner Thread</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/03/MySQL/InnoDB整体架构/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/MySQL/MySQL体系结构/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1664,174 +1830,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/MySQL/MySQL问答/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/29/MySQL/MySQL问答/" itemprop="url">MySQL问答</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-29T19:51:25+08:00">
-                2018-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="导致主从不一致的原因"><a href="#导致主从不一致的原因" class="headerlink" title="导致主从不一致的原因"></a>导致主从不一致的原因</h2><ol>
-<li>人为原因（从库写入）</li>
-<li>主库异常宕机</li>
-<li>设置了ignore/do/rewrite等replication等规则</li>
-<li>binlog使用了非row格式</li>
-<li>从库中断</li>
-<li>从库启用了存储过程</li>
-<li>主从数据库版本不一致</li>
-<li>重做时，mysqldump备份没有指定参数</li>
-<li>主从sql_mode不一致</li>
-<li>采用5.6的after_commit方式半同步，主库宕机可能会引起主从不一致。</li>
-<li>启用了增强半同步，但是从库延迟超时自动切换成了异步复制</li>
-</ol>
-<h3 id="预防和解决的方案"><a href="#预防和解决的方案" class="headerlink" title="预防和解决的方案"></a>预防和解决的方案</h3><ol>
-<li>master:innodb_flush_log_at_trx_commit=1&amp;sync_binlog=1</li>
-<li>slave:master_info_repository=”TABLE”&amp;relay_log_info_repository=”TABLE”&amp;relay_log_recovery=1</li>
-<li>设置从库库为只读模式</li>
-<li>可以使用5.7增强半同步避免数据丢失等</li>
-<li>binlog row格式</li>
-<li>必须引定期的数据校验机制</li>
-<li>当使用延迟复制的时候，此时主从数据也是不一致的（计划内），但在切换中，不要把延迟从提升为主库哦~</li>
-<li>mha在主从切换的过程中，因主库系统宕机，可能造成主从不一致（mha本身机制导致这个问题）</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/29/MySQL/MySQL问答/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1884,7 +1882,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -307,6 +307,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/pika/pika复制模块/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/05/new/pika/pika复制模块/" itemprop="url">pika学习之同步篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T22:08:29+08:00">
+                2020-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pika/" itemprop="url" rel="index">
+                    <span itemprop="name">Pika</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <ul>
+<li>pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。</li>
+<li>slave的trysync线程向master发起trysync，同时将同步位点信息发送给master</li>
+<li>master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步</li>
+</ul>
+<h1 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h1><p>pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。</p>
+<h2 id="实现逻辑"><a href="#实现逻辑" class="headerlink" title="实现逻辑"></a>实现逻辑</h2><ol>
+<li>slave在trysnc前启动rsync进程启动rsync服务</li>
+<li>master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份</li>
+<li>master通过rsync向slave发送dump出的文件</li>
+<li>slave用收到的文件替换自己的db</li>
+<li>slave用最新的偏移量再次发起trysnc</li>
+<li>完成同步 </li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg" alt=""></p>
+<center>slave同步流程</center>
+
+<p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg" alt=""></p>
+<center>master同步流程</center>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/01/05/new/pika/pika复制模块/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/05/new/Redis/何为IO多路复用/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1701,166 +1865,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/15/new/Redis/缓存雪崩穿透击穿介绍/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/15/new/Redis/缓存雪崩穿透击穿介绍/" itemprop="url">缓存雪崩穿透击穿介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T00:40:24+08:00">
-                2019-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。</p>
-<p>这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。</p>
-<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设在定时任务中设置的过期时间都一样，那么在某一个时间点时，大量的key同时过期。本来缓存抵挡住了大量的请求，key过期后，这些压力全部同时打到了数据库中，数据库可能就扛不住。直接被打挂了，重启数据库后，立马又被新的流量打挂了。这就是缓存雪崩。<br>(注：这里还有个隐患，Redis可能会频繁的处理过期key，从而导致Redis性能降低)<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg" alt=""></p>
-<p>处理缓存雪崩主要有以下几个思路：</p>
-<ol>
-<li>分散过期时间。把每个key的过期时间都加上一个随机的过期值。保证数据不会在同一时间大面积失效。</li>
-<li>设置过期标志更新缓存。给每一个缓存数据都增加一个相应的缓存标记，记录缓存是否失效。如果缓存失效，则更新数据缓存。这样虽然在缓存首次失效时，仍会带来数据库压力问题。但是能够在一定程度上缓解后续被新流量打挂以及所有服务不可用的情况。</li>
-<li>在代码层面上设定一定策略，比如加锁等待、减慢请求速度。给数据库留下启动和重建缓存的机会。</li>
-</ol>
-<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透就是指客户端不断的查询缓存和数据库都没有的数据。相当于进行了两次无用的查询。降低缓存的命中率，增加数据库的压力。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4nqarcj30dx0ak751.jpg" alt=""></p>
-<p>解决手段：</p>
-<ol>
-<li>客户端进行校验，先将明显不符合的key给过滤掉。</li>
-<li>对于查询不到的数据，直接赋值一个null给它。</li>
-<li>使用布隆过滤器来对不存在数据进行过滤掉。</li>
-<li>限流。</li>
-</ol>
-<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p>缓存击穿和缓存雪崩有点像。但是又不一样，缓存雪崩是大面积的缓存同时失效，打崩了DB。而缓存击穿是指一个key非常热点，在不停的扛着大并发，当这个key失效的瞬间，持续的大并发就击穿缓存，直接请求数据库。</p>
-<p>解决手段:<br>主要场景是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。<br>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1913,7 +1917,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

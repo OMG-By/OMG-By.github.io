@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-29T17:05:25.376Z</updated>
+  <updated>2020-05-31T14:54:57.098Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL机制之index merge</title>
+    <link href="http://yoursite.com/2020/05/31/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%B9%8Bindex-merge/"/>
+    <id>http://yoursite.com/2020/05/31/new/MySQL/MySQL机制之index-merge/</id>
+    <published>2020-05-31T14:50:20.000Z</published>
+    <updated>2020-05-31T14:54:57.098Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>查询时where后面可能会涉及到多个字段，它们之间进行AND或OR。在MySQL 5.0之前，一个表一次只能使用一个索引，无法同时使用多个索引分别进行条件扫描。从5.1开始引入了<code>index merge</code>技术。<br><code>index merge</code>技术就是<font color="red">对多个索引分别进行条件扫描，然后将他们各自的结果进行合并</font></p><p>该特性主要会体现在以下场景：</p><ol><li>对OR语句求并集</li><li>对AND语句求交集</li><li>对AND和OR组合语句求结果</li></ol><p>在满足index merge条件下的查询计划中会出现<code>type:index_merge</code>。</p><h2 id="AND取交集-union"><a href="#AND取交集-union" class="headerlink" title="AND取交集(union)"></a>AND取交集(union)</h2><p>union就是多个索引条件扫描，对得到的结果进行并集运算，显然是多个条件之间进行的是 OR 运算。<br>案例：<code>SELECT * FROM tmp_index_merge where key1_part1 = 2 and key2_part1 = 4\G</code></p><h2 id="OR取并集-intersect"><a href="#OR取并集-intersect" class="headerlink" title="OR取并集(intersect)"></a>OR取并集(intersect)</h2><p>intersect就是多个索引条件扫描得到的结果进行交集运算。<br>案例：<code>SELECT * FROM tmp_index_merge where key1_part1 = 2 or key2_part1 = 4\G</code></p><h2 id="AND和OR组合取并集-sort-union"><a href="#AND和OR组合取并集-sort-union" class="headerlink" title="AND和OR组合取并集(sort_union)"></a>AND和OR组合取并集(sort_union)</h2><p>多个条件扫描进行 OR 运算，但是不符合 index union merge算法的，此时可能会使用 sort_union算法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM tbl_name WHERE key_col1 &lt; 10 OR key_col2 &lt; 20;</span><br><span class="line">SELECT * FROM tbl_name WHERE (key_col1 &gt; 10 OR key_col2 = 20) AND nonkey_col=30;</span><br></pre></td></tr></table></figure></p><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>在MySQL5.6.7之前的版本中，存在<font color="red">range优先原则</font>。只要可以使用Range访问方式，那就不会再使用index merge。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>索引合并机制并不是什么新鲜东西，但是仍然存在很多人认为一条查询只能使用一个索引的观念。本篇文章只是简单的介绍MySQL存在这么一个机制，并未过深的研究。<br>简言之，索引合并会同时利用多个索引进行查询，尽可能得过滤掉不需要的数据行，然后再进行一次统一的回表行为。较少无谓的回表行为。</p><blockquote><p><a href="http://dev.mysql.com/doc/refman/5.6/en/index-merge-optimization.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.6/en/index-merge-optimization.html</a><br><a href="https://www.orczhou.com/index.php/2013/01/mysql-source-code-query-optimization-index-merge/" target="_blank" rel="noopener">https://www.orczhou.com/index.php/2013/01/mysql-source-code-query-optimization-index-merge/</a><br><a href="http://www.cnblogs.com/nocode/archive/2013/01/28/2880654.html" target="_blank" rel="noopener">http://www.cnblogs.com/nocode/archive/2013/01/28/2880654.html</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;查询时where后面可能会涉及到多个字段，它们之间进行AND或OR。在MySQL 5.0之前，一个表一次只能使用一个索引，无法同时使用多个索
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="http://yoursite.com/categories/MySQL/"/>
+    
+    
+      <category term="MySQL机制" scheme="http://yoursite.com/tags/MySQL%E6%9C%BA%E5%88%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL机制介绍之NLJ、BNL、BKA</title>
@@ -558,33 +583,6 @@
     
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>缓存雪崩穿透击穿介绍</title>
-    <link href="http://yoursite.com/2019/12/15/new/Redis/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E7%A9%BF%E9%80%8F%E5%87%BB%E7%A9%BF%E4%BB%8B%E7%BB%8D/"/>
-    <id>http://yoursite.com/2019/12/15/new/Redis/缓存雪崩穿透击穿介绍/</id>
-    <published>2019-12-14T16:40:24.000Z</published>
-    <updated>2019-12-14T16:49:41.954Z</updated>
-    
-    <content type="html"><![CDATA[<p>看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。</p><p>这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。</p><h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>需要使用的热点数据都做了缓存，但是为了保证Redis的内存够用，所以会对一些数据进行设置过期时间操作。一般情况下存在定时任务去刷新缓存信息，这个时候就存在一个隐患的问题：假设在定时任务中设置的过期时间都一样，那么在某一个时间点时，大量的key同时过期。本来缓存抵挡住了大量的请求，key过期后，这些压力全部同时打到了数据库中，数据库可能就扛不住。直接被打挂了，重启数据库后，立马又被新的流量打挂了。这就是缓存雪崩。<br>(注：这里还有个隐患，Redis可能会频繁的处理过期key，从而导致Redis性能降低)<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4egoo5j30er0a6aao.jpg" alt=""></p><p>处理缓存雪崩主要有以下几个思路：</p><ol><li>分散过期时间。把每个key的过期时间都加上一个随机的过期值。保证数据不会在同一时间大面积失效。</li><li>设置过期标志更新缓存。给每一个缓存数据都增加一个相应的缓存标记，记录缓存是否失效。如果缓存失效，则更新数据缓存。这样虽然在缓存首次失效时，仍会带来数据库压力问题。但是能够在一定程度上缓解后续被新流量打挂以及所有服务不可用的情况。</li><li>在代码层面上设定一定策略，比如加锁等待、减慢请求速度。给数据库留下启动和重建缓存的机会。</li></ol><h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透就是指客户端不断的查询缓存和数据库都没有的数据。相当于进行了两次无用的查询。降低缓存的命中率，增加数据库的压力。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9wq4nqarcj30dx0ak751.jpg" alt=""></p><p>解决手段：</p><ol><li>客户端进行校验，先将明显不符合的key给过滤掉。</li><li>对于查询不到的数据，直接赋值一个null给它。</li><li>使用布隆过滤器来对不存在数据进行过滤掉。</li><li>限流。</li></ol><h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p>缓存击穿和缓存雪崩有点像。但是又不一样，缓存雪崩是大面积的缓存同时失效，打崩了DB。而缓存击穿是指一个key非常热点，在不停的扛着大并发，当这个key失效的瞬间，持续的大并发就击穿缓存，直接请求数据库。</p><p>解决手段:<br>主要场景是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。<br>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;看到这个标题，你肯定在想：什么是雪崩？什么是穿透？什么是击穿？怎么感觉都是一个意思，都是缓存失效导致的数据库压力问题。&lt;/p&gt;
-&lt;p&gt;这三个问题的确都会导致数据库压力问题，但是出现的场景还是存在区别滴。在处理手段上也有很大的区别。&lt;/p&gt;
-&lt;h2 id=&quot;缓存雪崩&quot;&gt;&lt;a 
-      
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="概念介绍" scheme="http://yoursite.com/tags/%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D/"/>
     
   </entry>
   
