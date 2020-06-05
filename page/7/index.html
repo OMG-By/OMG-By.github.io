@@ -307,6 +307,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis原理----通信协议/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/21/Redis/Redis原理----通信协议/" itemprop="url">Redis原理----通信协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T19:34:13+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。</p>
+<h2 id="RESP"><a href="#RESP" class="headerlink" title="RESP"></a>RESP</h2><p>RESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种直观的文本协议，优势在于实现异常简单，解析性能极好。</p>
+<p>Redis歇息将传输的数据结构分为5种最小单元类型，单元结束时统一加上回车换行符号\r\n。  </p>
+<ul>
+<li>单行字符以<font color="red">+</font>符号开头</li>
+<li>多行字符以<font color="red">$</font>符号开头，后跟字符串长度</li>
+<li>整数值以<font color="red">：</font>符号开头，后跟整数的字符串形式</li>
+<li>错误消息以<font color="red">-</font>符号开头</li>
+<li>数组以<font color="red">*</font>符号开头，后跟数组的长度</li>
+</ul>
+<p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+hello world\r\n</span><br></pre></td></tr></table></figure></p>
+<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$11\r\n  </span><br><span class="line">hello world\r\n</span><br></pre></td></tr></table></figure></p>
+<p>整数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:1024\r\n</span><br></pre></td></tr></table></figure></p>
+<p>错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-WRONGTYPE Operation ....</span><br></pre></td></tr></table></figure></p>
+<p>数组[1,2,3]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*3\r\n  </span><br><span class="line">:1\r\n</span><br><span class="line">:2\r\n  </span><br><span class="line">:3\r\n</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/21/Redis/Redis原理----通信协议/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/Redis/Redis原理----线程IO模型/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1698,165 +1858,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/11/Redis/Redis设计与实现-数据结构篇（5）-整数集合/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/11/Redis/Redis设计与实现-数据结构篇（5）-整数集合/" itemprop="url">Redis设计与实现-数据结构篇（5）-整数集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T19:41:38+08:00">
-                2018-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="inset-c-inset-h"><a href="#inset-c-inset-h" class="headerlink" title="inset.c/inset.h"></a>inset.c/inset.h</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">typedef struct intset &#123;</span><br><span class="line">    // 编码方式</span><br><span class="line">    uint32_t encoding;</span><br><span class="line">    // 集合包含的元素数量</span><br><span class="line">    uint32_t length;</span><br><span class="line">    // 保存元素的数组</span><br><span class="line">    int8_t contents[];</span><br><span class="line">&#125; intset;</span><br><span class="line"></span><br><span class="line">#define INTSET_ENC_INT16 (sizeof(int16_t))</span><br><span class="line">#define INTSET_ENC_INT32 (sizeof(int32_t))</span><br><span class="line">#define INTSET_ENC_INT64 (sizeof(int64_t))</span><br></pre></td></tr></table></figure>
-<p><a href="https://imgchr.com/i/V73WqK" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V73WqK.jpg" alt="V73WqK.jpg"></a></p>
-<p>length记录了整数集合中包含的元素个数，即contents数组的长度。<br>contents数组是整数集合的底层实现，整数集合中的一个元素就是contents数组的一个元素，其中的元素都是按照数值从小到大排序的，并且元素不重复。虽然contents数组被定义为int8_t类型，但其中的元素类型取决于encoding。</p>
-<p>inset是Redis中的整数集合数据结构，只允许保存整数值。<br>inset之所以有三种表示编码格式的宏定义，是因为根据存储元素数值的大小，能够选取一个最“合适”的类型存储，既能够表示元素的大小，又可以节省空间。当插入的新元素编码要大于当前集合编码格式，则需要进行<strong>升级操作</strong>。</p>
-<p>升级步骤主要分成三步：</p>
-<ol>
-<li>根据新元素的类型，扩展整数集合的底层数组空间大小。</li>
-<li>将底层数组中的元素全部转换成跟新元素一样的类型，并从后向前将元素放到相应的位置，保证跟原有顺序一样。</li>
-<li>将新元素加入到底层数组中。如果因为加入新元素而导致类型调整，则新加入的元素只会在数组的开头或结尾处。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">static intset *intsetUpgradeAndAdd(intset *is, int64_t value) &#123;</span><br><span class="line">    // 当前的编码方式</span><br><span class="line">    uint8_t curenc = intrev32ifbe(is-&gt;encoding);</span><br><span class="line">    // 新值所需的编码方式</span><br><span class="line">    uint8_t newenc = _intsetValueEncoding(value);</span><br><span class="line">    // 当前集合的元素数量</span><br><span class="line">    int length = intrev32ifbe(is-&gt;length);</span><br><span class="line">    // 根据 value 的值，决定是将它添加到底层数组的最前端还是最后端</span><br><span class="line">    // 注意，因为 value 的编码比集合原有的其他元素的编码都要大</span><br><span class="line">    // 所以 value 要么大于集合中的所有元素，要么小于集合中的所有元素</span><br><span class="line">    // 因此，value 只能添加到底层数组的最前端或最后端</span><br><span class="line">    int prepend = value &lt; 0 ? 1 : 0;</span><br><span class="line">    /* First set new encoding and resize */</span><br><span class="line">    // 更新集合的编码方式</span><br><span class="line">    is-&gt;encoding = intrev32ifbe(newenc);</span><br><span class="line">    // 根据新编码对集合（的底层数组）进行空间调整</span><br><span class="line">    // T = O(N)</span><br><span class="line">    is = intsetResize(is,intrev32ifbe(is-&gt;length)+1);</span><br><span class="line">    // T = O(N)</span><br><span class="line">    while(length--)</span><br><span class="line">     _intsetSet(is,length+prepend,_intsetGetEncoded(is,length,curenc));</span><br><span class="line">    /* Set the value at the beginning or the end. */</span><br><span class="line">    // 设置新值，根据 prepend 的值来决定是添加到数组头还是数组尾</span><br><span class="line">    if (prepend)</span><br><span class="line">        _intsetSet(is,0,value);</span><br><span class="line">    else</span><br><span class="line">        _intsetSet(is,intrev32ifbe(is-&gt;length),value);</span><br><span class="line">    // 更新整数集合的元素数量</span><br><span class="line">    is-&gt;length = intrev32ifbe(intrev32ifbe(is-&gt;length)+1);</span><br><span class="line">    return is;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这样升级的特点：</p>
-<ul>
-<li>提高灵活性：通过自动升级底层数组来适应不同类型的新元素，不需要担心类型错误。</li>
-<li>节约内存：整数集合即可以让集合保存三种不同类型的值，又可以确保升级操作只在需要的时候进行</li>
-<li>不支持降级：一旦对数据进行升级后，编码就会一直保存升级后的状态。</li>
-</ul>
-<p>添加或删除元素。在向底层数组中插入或删除新元素时，因为不会导致底层数组的类型变换，所以只需要计算出申请或清除固定的数组空间，进行整体移动后，再进行添加或删除操作。下面就是进行整体移动的函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">static void intsetMoveTail(intset *is, uint32_t from, uint32_t to) &#123;</span><br><span class="line">    void *src, *dst;</span><br><span class="line">    // 要移动的元素个数</span><br><span class="line">    uint32_t bytes = intrev32ifbe(is-&gt;length)-from;</span><br><span class="line">    // 集合的编码方式</span><br><span class="line">    uint32_t encoding = intrev32ifbe(is-&gt;encoding);</span><br><span class="line">    // 根据不同的编码</span><br><span class="line">    // src = (Enc_t*)is-&gt;contents+from 记录移动开始的位置</span><br><span class="line">    // dst = (Enc_t*)is_.contents+to 记录移动结束的位置</span><br><span class="line">    // bytes *= sizeof(Enc_t) 计算一共要移动多少字节</span><br><span class="line">    if (encoding == INTSET_ENC_INT64) &#123;</span><br><span class="line">        src = (int64_t*)is-&gt;contents+from;</span><br><span class="line">        dst = (int64_t*)is-&gt;contents+to;</span><br><span class="line">        bytes *= sizeof(int64_t);</span><br><span class="line">    &#125; else if (encoding == INTSET_ENC_INT32) &#123;</span><br><span class="line">        src = (int32_t*)is-&gt;contents+from;</span><br><span class="line">        dst = (int32_t*)is-&gt;contents+to;</span><br><span class="line">        bytes *= sizeof(int32_t);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        src = (int16_t*)is-&gt;contents+from;</span><br><span class="line">        dst = (int16_t*)is-&gt;contents+to;</span><br><span class="line">        bytes *= sizeof(int16_t);</span><br><span class="line">    &#125;</span><br><span class="line">    // 进行移动</span><br><span class="line">    // T = O(N)</span><br><span class="line">    memmove(dst,src,bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">### API</span><br><span class="line">创建并返回一个空的整数集合</span><br><span class="line">intset *intsetNew(void);</span><br><span class="line">static intset *intsetResize(intset *is, uint32_t len);//重新分配contents数组指定长度的内存</span><br><span class="line">//用二分查找在contents数组中查找value，返回pos</span><br><span class="line">static uint8_t intsetSearch(intset *is, int64_t value, uint32_t *pos);</span><br><span class="line">//添加value到contents正确的位置，保证inset的有序性</span><br><span class="line">intset *intsetAdd(intset *is, int64_t value, uint8_t *success);</span><br><span class="line">//从整数集合中删除指定value</span><br><span class="line">intset *intsetRemove(intset *is, int64_t value, int *success);</span><br><span class="line">uint8_t intsetFind(intset *is, int64_t value);//在inset查找value</span><br><span class="line">int64_t intsetRandom(intset *is);//从整数集合中随机获取一个value</span><br><span class="line">uint8_t intsetGet(intset *is, uint32_t pos, int64_t *value);//获取整数集合指定位置的value</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1909,7 +1910,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">137</span>
+                  <span class="site-state-item-count">138</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1931,7 +1932,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

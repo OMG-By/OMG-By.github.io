@@ -307,6 +307,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/" itemprop="url">MySQL参数之innodb_autoinc_lock_mode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T20:41:13+08:00">
+                2020-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="insert种类"><a href="#insert种类" class="headerlink" title="insert种类"></a>insert种类</h2><p>在讲<code>innodb_autoinc_lock_mode</code>参数之前，我们先来了解下MySQL insert的种类</p>
+<ul>
+<li>simple insert：插入的记录行数是确定的。比如：insert into、replace</li>
+<li>bulk insert：插入的记录行数不能马上确认的。比如：insert…select、replace…select、load data</li>
+<li>mixed-mode insert：也是’simple insert’，但是语句插入中存在没指定自增值的行。比如：INSERT INTO t1 (c1,c2) VALUES (1,’a’), (NULL,’b’), (5,’c’), (NULL,’d’)、INSERT … ON DUPLICATE KEY UPDATE</li>
+</ul>
+<h2 id="锁模式"><a href="#锁模式" class="headerlink" title="锁模式"></a>锁模式</h2><p>在了解了以上insert种类后。我们来对<code>innodb_autoinc_lock_mode</code>参数设置不同值时的表现进行描述。</p>
+<h3 id="传统模式"><a href="#传统模式" class="headerlink" title="传统模式"></a>传统模式</h3><p>innodb_autoinc_lock_mode=0</p>
+<p>这种模式性能最差，它会对所有的insert模式操作都去获取一个特殊的<code>table-level auto-inc</code>。这种锁会持续到语句结束，以确保执行的insert语句以可预测且可重复的顺序分配自动递增值。这种模式更多是为了兼容老版本的MySQL运行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/04/new/MySQL/pt-osc死锁分析记录两则/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1684,153 +1838,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/19/new/other/《线上管理的艺术》小结/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/19/new/other/《线上管理的艺术》小结/" itemprop="url">《向上管理的艺术》小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-19T20:53:03+08:00">
-                2020-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活杂记/" itemprop="url" rel="index">
-                    <span itemprop="name">生活杂记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>20%的向上管理，决定了80%的工作效率和工作成果。</p>
-<p>在之前的一篇博客<a href="https://omg-by.github.io/2020/01/05/new/other/%E5%90%AC%E3%80%8A%E5%B7%A5%E4%BD%9C%E4%B8%89%E5%B9%B4%E6%88%91%E5%AD%A6%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">听《工作三年我学到了什么》总结</a>提到的音频中，讨论者推荐了《向上管理的艺术》这本书。于是便买了（我才不会告诉你是凑单），利用了一周的睡前时间把它给读完，在读的过程中，回想自己这一年半的工作经历，的确是在无意间触犯到了好几条禁忌行为。。。感谢领导的包容和支持。<br>利用周末空余时间将这本书做个简单的总结，尽量从自身层面优化。不仅是与领导沟通，在生活中也处处需要注意。</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gdz9w4eciyj31dv0u07g4.jpg" alt=""></p>
-<p>一个人的汇报反馈机制，往往能影响到上司对你的态度和看法。上司也有自己的事要做，并不会时时刻刻的盯着你；<br>领导负责下发任务，如果没有反馈，那么他将无法掌控任务的进度，甚至最终因没有反馈而导致任务失败，则会大大降低领导对你的看法。<br>领导的经验摆在那，有很多在我们看来比较困难的事，也许领导几句话、一个想法、一个电话就能轻松的解决。<font color="red">领导在一定意义上，也是我们的资源</font>。</p>
-<p>领导也是一个人，也会有各种各样的性格和情绪。<font color="red">如何在合适时机、选择合适方式才式获取到到正反馈信息？</font>这不仅仅跟领导反馈，在生活中，这也是一门需要时时需要注意的地方。<br>毕竟是有求于人，往往就是那么一个不经意的小点，导致了事情的失败，影响的只会是自己，徒增非常多的人力物力。</p>
-<p><font color="red">多站在别人的角度上思考</font>，别人是怎么看待这件事，需要我做什么，希望我怎么做。才能以更好的姿势、更快的效率去做好一件事。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1883,7 +1890,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">137</span>
+                  <span class="site-state-item-count">138</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1905,7 +1912,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
