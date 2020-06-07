@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-05T12:43:42.783Z</updated>
+  <updated>2020-06-07T09:12:51.439Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL机制之Double Write</title>
+    <link href="http://yoursite.com/2020/06/07/new/MySQL/MySQL%E6%9C%BA%E5%88%B6%E4%B9%8BDouble-Write/"/>
+    <id>http://yoursite.com/2020/06/07/new/MySQL/MySQL机制之Double-Write/</id>
+    <published>2020-06-07T09:11:55.000Z</published>
+    <updated>2020-06-07T09:12:51.439Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。<br>一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为<code>页断裂</code> 。在这种情况下，我们并不知道会出现什么未知的现象。<br>为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了<code>两次写（Double Write）</code>机制。</p><h2 id="什么是两次写"><a href="#什么是两次写" class="headerlink" title="什么是两次写"></a>什么是两次写</h2><p>简单来说，就是在对数据页刷盘操作之前，先将该数据页写到一块独立的物理文件位置(ibdata)中。然后再将数据页进行刷盘操作。这样在宕机时，如果出现物理文件损坏，就能够利用ibdata中的副本文件进行修复行为。</p><p>Double Write由两部分组成；一部分是内存中的double write buffer，其大小为2M。另一部分由共享表空间(ibdata)中连续的128页，即2个区组成，大小也是2M。<br>其刷盘流程为：</p><ol><li>当多个数据页需要进行刷盘时，并不直接写入到磁盘的物理文件中，而是先拷贝到内存中的double write buffer中。</li><li>接着从double write buffer中分两次写入到磁盘的共享表空间中(连续存储，顺序写，性能很高)，每次写1M。</li><li>等第二步完成后，再将double write buffer中的脏页数据写入到实际的各个表空间中(离散写)</li></ol><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg" alt=""></p><a id="more"></a><h2 id="如何修复"><a href="#如何修复" class="headerlink" title="如何修复"></a>如何修复</h2><p>在发生故障时，如何进行修复操作？<br>1、如果是写doublewrite buffer本身失败,那么这些数据不会被写到磁盘,InnoDB此时会从磁盘载入原始的数据,然后通过InnoDB的事务日志来计算出正确的数据,重新 写入到doublewrite buffer。<br>2、如果 doublewrite buffer写成功的话,但是写磁盘失败,InnoDB就不用通过事务日志来计算了,而是直接用double write buffer的数据再写一遍。<br>3、在恢复的时候,InnoDB直接比较页面的checksum,如果不对的话,就从硬盘载入原始数据,再由事务日志 开始推演出正确的数据.所以InnoDB的恢复通常需要较长的时间.<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio31sa8aj30il0bhjsr.jpg" alt=""></p><h2 id="5-7优化"><a href="#5-7优化" class="headerlink" title="5.7优化"></a>5.7优化</h2><p>在《MySQL运维内参》一书中，提到了在5.7中，对double write进行了优化<code>批量刷盘</code>。但是我在5.7.18版本中，并没有看到有那个参数<code>innodb_doublewrite_batch_size</code>。</p><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfjtvjy3c0j30fa09k75f.jpg" alt=""></p><p>批量刷盘包括两种方式，分别是LRU(Least Recently Used,最近最少使用)方式和LIST方式。当Buffer Pool空间不足时，再载入新的页面就必须要将一些不怎么用到的、旧的页面淘汰出去，此时系统就会从LRU链表中找到最老的页面，进行批量刷盘，将释放的空间加入到空闲空间中去，这种情况就是LRU刷盘。当日志空间不足，或者是后台MASTER线程在定时刷盘时，不需要区分页面的新旧状态，只需要选择LSN最小的那些页面，从前到后刷一批页面到文件中，此时所用的策略就是LIST方式。  </p><p>在批量刷盘的两次写中，这两种刷盘方法对应的两次写空间互不干涉。  </p><p>从图中可以看出落到最终的每一个shard,其实就是一个batch，对应的参数就是innodb_doublewrite_batch_size。一个shard，有一个数组，长度为innodb_doublewrite_batch_size，与单一页面刷盘的两次写是一样的，只是这个数组只属于一个shard而已。  </p><p>假设由于页面淘汰，系统要做一次批量刷盘，这次就是LRU方式的，那么此时系统就需要将当前页面加入到两次写缓存中，首先根据当前页面所在的Instance号及刷盘类型就可以找到对应的shard缓存，找到缓存后，判断当前shard是否已经满了，即是否已经达到innodb_doublewrite_batch_size的大小，如果没有达到，则将当前页面内容追加复制到当前的shard缓存中，这样当前页面的刷盘操作就完成了。这里并不像单一页面那样，先写入缓存空间中，然后写入ibdata文件的两次写空间，最后还需要立即将页面的真实内容刷入表空间，对于批量刷盘来说，只需要写入到shard缓存即可。  </p><p>如果当前shard中缓存的页面个数已经达到了innodb_doublewrite_batch_size，则说明当前缓存空间已经满了，此时不得不将当前shard缓存的页面写入两次写文件中，写完之后再将两次写文件FLUSH到磁盘，最后将对应的真实页面刷盘，此时可能是随机写入了，因为对应的两次写缓存中虽然是连续的，但对应的真实页面就不会这样了。这里需要注意的一点就是，表空间页面的刷盘，是异步IO操作，此时需要等待异步IO完成，且整个shard中的页面都刷盘后，刷盘操作才可以继续向后执行，而这个shard也可以再次重新使用了，缓存中的数据也都会被清空。</p><p>需要注意的是，上面过程中写入是连续innodb_doublewrite_batch_size 个页面，所以性能会比写入多次而每次写入一个页面的情况好很多。批量刷盘的情况下，有可能每隔innodb_doublewrite_batch_size个页面的刷盘操作，就会出现一次等待操作，且等待时间长短不一定，但这也是在单一页面刷盘的基础上优化过的，做了改进。</p><h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double-write？"><a href="#发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double-write？" class="headerlink" title="发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double write？"></a>发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double write？</h3><p>这个就得从redo log保存的记录格式说起了。<br>redo日志主要采用的是物理日志和逻辑日志两种方式。<br>对于能够唯一确定数据存储在磁盘位置时，使用的是物理日志，通过(group_id,file_id,page_no,offset)4元组来确定位置，并记录数据页变更。在这种记录格式下，能够通过redo log进行问题修复。<br>但是，对于一个操作记录产生的日志跨越了多个数据页时，那么会产生多个物理页面的日志，但对于每个物理页面日志，里面记录则是逻辑信息。在这种情况下，就无法单靠redo log进行问题修复</p><h3 id="性能损耗"><a href="#性能损耗" class="headerlink" title="性能损耗"></a>性能损耗</h3><p>如果开启了double write机制。那么每次刷盘都会多一次内存复制和持久化操作。那么会对性能造成多大的影响呢？<br>由于持久化刷盘过程是顺序写，性能很高。据官方介绍，可能会有10%的性能损耗，但是为了数据得到完整性，这点损耗还是很有必要的。</p><blockquote><p><a href="https://www.cnblogs.com/xuliuzai/p/10290196.html" target="_blank" rel="noopener">https://www.cnblogs.com/xuliuzai/p/10290196.html</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。&lt;br&gt;一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为&lt;code&gt;页断裂&lt;/code&gt; 。在这种情况下，我们并不知道会出现什么未知的现象。&lt;br&gt;为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了&lt;code&gt;两次写（Double Write）&lt;/code&gt;机制。&lt;/p&gt;
+&lt;h2 id=&quot;什么是两次写&quot;&gt;&lt;a href=&quot;#什么是两次写&quot; class=&quot;headerlink&quot; title=&quot;什么是两次写&quot;&gt;&lt;/a&gt;什么是两次写&lt;/h2&gt;&lt;p&gt;简单来说，就是在对数据页刷盘操作之前，先将该数据页写到一块独立的物理文件位置(ibdata)中。然后再将数据页进行刷盘操作。这样在宕机时，如果出现物理文件损坏，就能够利用ibdata中的副本文件进行修复行为。&lt;/p&gt;
+&lt;p&gt;Double Write由两部分组成；一部分是内存中的double write buffer，其大小为2M。另一部分由共享表空间(ibdata)中连续的128页，即2个区组成，大小也是2M。&lt;br&gt;其刷盘流程为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当多个数据页需要进行刷盘时，并不直接写入到磁盘的物理文件中，而是先拷贝到内存中的double write buffer中。&lt;/li&gt;
+&lt;li&gt;接着从double write buffer中分两次写入到磁盘的共享表空间中(连续存储，顺序写，性能很高)，每次写1M。&lt;/li&gt;
+&lt;li&gt;等第二步完成后，再将double write buffer中的脏页数据写入到实际的各个表空间中(离散写)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="MySQL" scheme="http://yoursite.com/categories/MySQL/"/>
+    
+    
+      <category term="MySQL机制" scheme="http://yoursite.com/tags/MySQL%E6%9C%BA%E5%88%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL参数之innodb_fast_shutdown、innodb_force_recovery</title>
+    <link href="http://yoursite.com/2020/06/06/new/MySQL/MySQL%E5%8F%82%E6%95%B0%E4%B9%8Binnodb-fast-shutdown%E3%80%81innodb-force-recovery/"/>
+    <id>http://yoursite.com/2020/06/06/new/MySQL/MySQL参数之innodb-fast-shutdown、innodb-force-recovery/</id>
+    <published>2020-06-06T08:37:49.000Z</published>
+    <updated>2020-06-06T08:38:23.160Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="innodb-fast-shutdown"><a href="#innodb-fast-shutdown" class="headerlink" title="innodb_fast_shutdown"></a>innodb_fast_shutdown</h2><p>MySQL在平时工作时，会将大量的数据都保存在内存当中。那么在关闭的时候，什么东西需要持久化？什么东西不需要持久化呢？<br>在MySQL中，<code>innodb_fast_shutdown</code>参数控制着关闭行为。它的可取值有0、1、2。</p><p>顾名思义，fast_shutdown，0表示不需要快速关闭、1需要快速关闭。</p><ul><li>0：在关闭时需要将内存与磁盘中数据不一致的数据页都进行刷盘行为。主要包含有：<ul><li>删除无用的undo页。</li><li>将log buffer中的日志都flush到log files。</li><li>merge change buffer。</li><li>flush dirty page</li></ul></li><li>1：在关闭时，只进行刷新脏页行为。不需要purge all、merge change buffer。</li><li>2：在关闭时，只进行flush log buffer。不需要purge all、merge change buffer、flush dirty。</li></ul><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol><li>在进行大版本升级时，需要将该参数设置为0</li><li>该参数默认值为1</li><li>该参数设置为2时，下次重启将会做<code>crash recovery</code>行为</li></ol><h2 id="innodb-force-recovery"><a href="#innodb-force-recovery" class="headerlink" title="innodb_force_recovery"></a>innodb_force_recovery</h2><p>有的时候由于MySQL在关闭前存在一些重操作行为，导致MySQL启动需要消耗大量的时间，但是我们需要能够尽可能快速的启动MySQL服务。<br>MySQL提供了参数<code>innodb_force_recovery</code>来规定MySQL启动过程中需要做的行为动作。</p><p>该参数可选值为0~6，当该参数设置值大于0时，可以对表执行select、create、drop操作，但insert、update或者delete这类操作是不允许的。</p><ul><li>0：表示恢复时执行所有的恢复操作。</li><li>1：（SRV_FORCE_IGNORE_CORRUPT）忽略检查到的corrupt页</li><li>2：（SRV_FORCE_NO_BACKGROUND）阻止主线程的运行，如主线程需要执行full purge操作，会导致crash</li><li>3：（SRV_FORCE_NO_TRX_UNDO）不执行事务回滚操作</li><li>4：（SRV_FORCE_NO_IBUF_MERGE）不执行插入缓冲的合并操作</li><li>5：（SRV_FORCE_NO_UNDO_LOG_SCAN）不查看撤销日志（Undo Log），InnoDB存储引擎会将未提交的事务视为已提交</li><li>6：（SRV_FORCE_NO_LOG_REDO）不执行前滚的操作</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;innodb-fast-shutdown&quot;&gt;&lt;a href=&quot;#innodb-fast-shutdown&quot; class=&quot;headerlink&quot; title=&quot;innodb_fast_shutdown&quot;&gt;&lt;/a&gt;innodb_fast_shutdown&lt;/h2&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="http://yoursite.com/categories/MySQL/"/>
+    
+    
+      <category term="MySQL参数" scheme="http://yoursite.com/tags/MySQL%E5%8F%82%E6%95%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL参数之innodb_autoinc_lock_mode</title>
@@ -523,79 +578,6 @@
     
     
       <category term="Pika" scheme="http://yoursite.com/tags/Pika/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>redis复制过程演变</title>
-    <link href="http://yoursite.com/2019/12/29/new/Redis/redis%E5%A4%8D%E5%88%B6%E8%BF%87%E7%A8%8B%E6%BC%94%E5%8F%98/"/>
-    <id>http://yoursite.com/2019/12/29/new/Redis/redis复制过程演变/</id>
-    <published>2019-12-29T14:19:06.000Z</published>
-    <updated>2019-12-29T14:21:46.576Z</updated>
-    
-    <content type="html"><![CDATA[<p>Redis的主从复制主要经历以下的几个阶段：</p><ol><li>2.8版本以下—-sync</li><li>2.8-4.0版本—-psync</li><li>4.0版本+ —-psync2</li></ol><p>下面我就来简单的讲讲Redis主从复制的演变过程。</p><h2 id="Redis主从复制过程"><a href="#Redis主从复制过程" class="headerlink" title="Redis主从复制过程"></a>Redis主从复制过程</h2><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadwq7etd2j31r50u0464.jpg" alt=""></p><ul><li>客户端发送slaveof命令给Redis实例</li><li>准备阶段函数为<code>replicationSetMaster</code>，这个函数主要会做一些复制之前的数据和状态清理工作。</li><li>更新server.master</li><li>将实例状态修改为REPL_STATE_CONNECT<a id="more"></a><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadwqm9ps9j31pc0u045z.jpg" alt=""><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadxodwcpuj31pf0u0dns.jpg" alt=""><br>Redis每秒会调用一次<code>replicationCron</code>定时任务。根据Redis当前所处状态来决定下一步操作。</li><li>当Redis状态为<code>REPL_STATE_CONNECT</code>时会调用<code>connectWithMaster</code>创建连接master事件。该函数会将Redis状态修改为<code>REPL_STATE_CONNECTING</code></li><li>接下来进行心跳检查、权限校验等操作</li><li>master接收到slave的复制命令后，就会触发一次rdb全备，并记录下全备期间的命令。</li><li>master将全备文件发送给slave后，将增量命令发送给slave。</li><li>心跳维持和持续复制</li></ul><h2 id="主从复制的演变"><a href="#主从复制的演变" class="headerlink" title="主从复制的演变"></a>主从复制的演变</h2><p>在2.8之前的版本中，如果由于网络等原因导致主从复制断开。那么就会将从节点状态修改为<code>REPL_STATE_CONNECTING</code>。进而会重新进行全量同步流程。</p><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gadxz7g5aoj31rq0gcju1.jpg" alt=""><br>在2.8版本中，Redis增加了psync命令，并且增加了一个复制积压缓冲区的数据结构（默认为1M）。<br>复制积压缓冲区是一个环形的结构，保存了最近可用的写命令数据。<br>在<code>replicationCron</code>定时任务中每秒发送一个<code>REPLCONF ACK OFFSET</code>命令将自身的偏移量信息发送给master，如果offset的命令在复制积压缓冲区中，那么说明增量数据是可用的。就没必要进行全量同步，直接将复制积压缓冲区中的增量数据发送给slave就可以了。</p><p>在redis4.0+版本中又引进了psync2命令来避免一些特殊场景(主从架构、级联架构)下发生主从切换后不必要的全量同步操作。<br>将一组replid和offset给增加成为两组。主要用来记录上一次复制中主实例的runid值。然后在slaveof时判断是否有必要进行全量同步操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">replid1：</span><br><span class="line">主节点：自身的replid和offset</span><br><span class="line">从节点：主节点的replid和offset</span><br><span class="line"></span><br><span class="line">replid2:</span><br><span class="line">上一次主实例的replid和offset</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Redis的主从复制主要经历以下的几个阶段：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;2.8版本以下—-sync&lt;/li&gt;
-&lt;li&gt;2.8-4.0版本—-psync&lt;/li&gt;
-&lt;li&gt;4.0版本+ —-psync2&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;下面我就来简单的讲讲Redis主从复制的演变过程。&lt;/p&gt;
-&lt;h2 id=&quot;Redis主从复制过程&quot;&gt;&lt;a href=&quot;#Redis主从复制过程&quot; class=&quot;headerlink&quot; title=&quot;Redis主从复制过程&quot;&gt;&lt;/a&gt;Redis主从复制过程&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gadwq7etd2j31r50u0464.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;客户端发送slaveof命令给Redis实例&lt;/li&gt;
-&lt;li&gt;准备阶段函数为&lt;code&gt;replicationSetMaster&lt;/code&gt;，这个函数主要会做一些复制之前的数据和状态清理工作。&lt;/li&gt;
-&lt;li&gt;更新server.master&lt;/li&gt;
-&lt;li&gt;将实例状态修改为REPL_STATE_CONNECT
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>浅析GeoHash</title>
-    <link href="http://yoursite.com/2019/12/26/new/Redis/%E6%B5%85%E6%9E%90GeoHash/"/>
-    <id>http://yoursite.com/2019/12/26/new/Redis/浅析GeoHash/</id>
-    <published>2019-12-26T12:16:58.000Z</published>
-    <updated>2019-12-29T16:03:59.377Z</updated>
-    
-    <content type="html"><![CDATA[<p>GeoHash算法能够将二维的经纬度转换成字符串。主要有以下几个特性:</p><ol><li>每一个字符串代表了某一矩形区域.</li><li>字符串的长度越长，所表示的位置越精确。</li><li>字符串越相近的表示的举例越接近.</li></ol><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>GeoHash将经纬度转换为hash字符串主要分为三步：</p><ol><li>将纬度(-90, 90)平均分成两个区间(-90, 0)、(0, 90)，如果坐标位置的纬度值在第一区间，则编码是0，否则编码为1</li><li>经纬度的编码合并，从0开始，奇数为是纬度，偶数为是经度</li><li>对经纬度合并后的编码，进行base32编码</li></ol><p>大概过程如下图，不断的对经纬度进行切割，直到精准度达到要求。<br><img src="https://user-gold-cdn.xitu.io/2018/7/4/1646397a223e2019?imageslim" alt="IMAGE"></p><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><blockquote><p>将经纬度转换成二进制编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void convert(double min, double max, double value, List&lt;Character&gt; list) &#123;</span><br><span class="line">        if (list.size() &gt; (length - 1)) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        double mid = (max + min) / 2;</span><br><span class="line">        if (value &lt; mid) &#123;</span><br><span class="line">            list.add(&apos;0&apos;);</span><br><span class="line">            convert(min, mid, value, list);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            list.add(&apos;1&apos;);</span><br><span class="line">            convert(mid, max, value, list);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p></blockquote><a id="more"></a><blockquote><p>合并经纬度的二进制编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Character&gt; latList = new ArrayList&lt;Character&gt;();</span><br><span class="line">List&lt;Character&gt; lngList = new ArrayList&lt;Character&gt;();</span><br><span class="line">convert(Min_Lat, Max_Lat, lat, latList);</span><br><span class="line">convert(Min_Lng, Max_Lng, lng, lngList);</span><br><span class="line">StringBuilder sb = new StringBuilder();</span><br><span class="line">for (int index = 0; index &lt; latList.size(); index++) &#123;</span><br><span class="line">    sb.append(lngList.get(index)).append(latList.get(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p></blockquote><blockquote><p>base32编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private final String[] base32Lookup =</span><br><span class="line">            &#123;&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;,</span><br><span class="line">                    &quot;j&quot;, &quot;k&quot;, &quot;m&quot;, &quot;n&quot;, &quot;p&quot;, &quot;q&quot;, &quot;r&quot;, &quot;s&quot;, &quot;t&quot;, &quot;u&quot;, &quot;v&quot;, &quot;w&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;&#125;;</span><br><span class="line">    private String base32Encode(final String str) &#123;</span><br><span class="line">        String unit = &quot;&quot;;</span><br><span class="line">        StringBuilder sb = new StringBuilder();</span><br><span class="line">        for (int start = 0; start &lt; str.length(); start = start + 5) &#123;</span><br><span class="line">            unit = str.substring(start, start + 5);</span><br><span class="line">            sb.append(base32Lookup[convertToIndex(unit.split(&quot;&quot;))]);</span><br><span class="line">        &#125;</span><br><span class="line">        return sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    private int convertToIndex(String str) &#123;</span><br><span class="line">        int length = str.length();</span><br><span class="line">        int result = 0;</span><br><span class="line">        for (int index = 0; index &lt; length; index++) &#123;</span><br><span class="line">            result += str.charAt(index) == &apos;0&apos; ? 0 : 1 &lt;&lt; (length - 1 - index);</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p></blockquote><h2 id="Redis中的Geo使用"><a href="#Redis中的Geo使用" class="headerlink" title="Redis中的Geo使用"></a>Redis中的Geo使用</h2><p>在Redis中，Geo的内部结构实际上是一个zset。<br>Redis提供给Geo指定只有6个，但是它可以使用zset的所有指令。</p><h3 id="增加-geoadd"><a href="#增加-geoadd" class="headerlink" title="增加-geoadd"></a>增加-geoadd</h3><p>geoadd指令传入多个经纬度名称三元组，Redis内存会调用函数计算出相应的geohash字符串。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geoadd company 116.48105 39.996794 juejin</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd company 116.514203 39.905409 ireader</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd company 116.489033 40.007669 meituan</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd company 116.562108 39.787602 jd 116.334255 40.027400 xiaomi</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure></p><h3 id="距离-geodist"><a href="#距离-geodist" class="headerlink" title="距离-geodist"></a>距离-geodist</h3><p>geodist 指令可以用来计算两个元素之间的距离，携带集合名称、2 个名称和距离单位。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geodist company juejin ireader km</span><br><span class="line">&quot;10.5501&quot;</span><br><span class="line">127.0.0.1:6379&gt; geodist company juejin meituan km</span><br><span class="line">&quot;1.3878&quot;</span><br><span class="line">127.0.0.1:6379&gt; geodist company juejin jd km</span><br><span class="line">&quot;24.2739&quot;</span><br><span class="line">127.0.0.1:6379&gt; geodist company juejin xiaomi km</span><br><span class="line">&quot;12.9606&quot;</span><br><span class="line">127.0.0.1:6379&gt; geodist company juejin juejin km</span><br><span class="line">&quot;0.0000&quot;</span><br></pre></td></tr></table></figure></p><h3 id="获取元素位置-geopos"><a href="#获取元素位置-geopos" class="headerlink" title="获取元素位置-geopos"></a>获取元素位置-geopos</h3><p>geopos 指令可以获取集合中任意元素的经纬度坐标，可以一次获取多个。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geopos company juejin</span><br><span class="line">1) 1) &quot;116.48104995489120483&quot;</span><br><span class="line">   2) &quot;39.99679348858259686&quot;</span><br><span class="line">127.0.0.1:6379&gt; geopos company ireader</span><br><span class="line">1) 1) &quot;116.5142020583152771&quot;</span><br><span class="line">   2) &quot;39.90540918662494363&quot;</span><br><span class="line">127.0.0.1:6379&gt; geopos company juejin ireader</span><br><span class="line">1) 1) &quot;116.48104995489120483&quot;</span><br><span class="line">   2) &quot;39.99679348858259686&quot;</span><br><span class="line">2) 1) &quot;116.5142020583152771&quot;</span><br><span class="line">   2) &quot;39.90540918662494363&quot;</span><br></pre></td></tr></table></figure></p><h3 id="获取元素的-hash-值-geohash"><a href="#获取元素的-hash-值-geohash" class="headerlink" title="获取元素的 hash 值-geohash"></a>获取元素的 hash 值-geohash</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geohash company ireader</span><br><span class="line">1) &quot;wx4g52e1ce0&quot;</span><br><span class="line">127.0.0.1:6379&gt; geohash company juejin</span><br><span class="line">1) &quot;wx4gd94yjn0&quot;</span><br></pre></td></tr></table></figure><h3 id="附近元素-georadiusbymember"><a href="#附近元素-georadiusbymember" class="headerlink" title="附近元素-georadiusbymember"></a>附近元素-georadiusbymember</h3><p>georadiusbymember 指令是最为关键的指令，它可以用来查询指定元素附近的其它元素，它的参数非常复杂。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 范围 20 公里以内最多 3 个元素按距离正排，它不会排除自身</span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember company ireader 20 km count 3 asc</span><br><span class="line">1) &quot;ireader&quot;</span><br><span class="line">2) &quot;juejin&quot;</span><br><span class="line">3) &quot;meituan&quot;</span><br><span class="line"># 范围 20 公里以内最多 3 个元素按距离倒排</span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember company ireader 20 km count 3 desc</span><br><span class="line">1) &quot;jd&quot;</span><br><span class="line">2) &quot;meituan&quot;</span><br><span class="line">3) &quot;juejin&quot;</span><br><span class="line"># 三个可选参数 withcoord withdist withhash 用来携带附加参数</span><br><span class="line"># withdist 很有用，它可以用来显示距离</span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember company ireader 20 km withcoord withdist withhash count 3 asc</span><br><span class="line">1) 1) &quot;ireader&quot;</span><br><span class="line">   2) &quot;0.0000&quot;</span><br><span class="line">   3) (integer) 4069886008361398</span><br><span class="line">   4) 1) &quot;116.5142020583152771&quot;</span><br><span class="line">      2) &quot;39.90540918662494363&quot;</span><br><span class="line">2) 1) &quot;juejin&quot;</span><br><span class="line">   2) &quot;10.5501&quot;</span><br><span class="line">   3) (integer) 4069887154388167</span><br><span class="line">   4) 1) &quot;116.48104995489120483&quot;</span><br><span class="line">      2) &quot;39.99679348858259686&quot;</span><br><span class="line">3) 1) &quot;meituan&quot;</span><br><span class="line">   2) &quot;11.5748&quot;</span><br><span class="line">   3) (integer) 4069887179083478</span><br><span class="line">   4) 1) &quot;116.48903220891952515&quot;</span><br><span class="line">      2) &quot;40.00766997707732031&quot;</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;GeoHash算法能够将二维的经纬度转换成字符串。主要有以下几个特性:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;每一个字符串代表了某一矩形区域.&lt;/li&gt;
-&lt;li&gt;字符串的长度越长，所表示的位置越精确。&lt;/li&gt;
-&lt;li&gt;字符串越相近的表示的举例越接近.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h2&gt;&lt;p&gt;GeoHash将经纬度转换为hash字符串主要分为三步：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;将纬度(-90, 90)平均分成两个区间(-90, 0)、(0, 90)，如果坐标位置的纬度值在第一区间，则编码是0，否则编码为1&lt;/li&gt;
-&lt;li&gt;经纬度的编码合并，从0开始，奇数为是纬度，偶数为是经度&lt;/li&gt;
-&lt;li&gt;对经纬度合并后的编码，进行base32编码&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;大概过程如下图，不断的对经纬度进行切割，直到精准度达到要求。&lt;br&gt;&lt;img src=&quot;https://user-gold-cdn.xitu.io/2018/7/4/1646397a223e2019?imageslim&quot; alt=&quot;IMAGE&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;代码实现&quot;&gt;&lt;a href=&quot;#代码实现&quot; class=&quot;headerlink&quot; title=&quot;代码实现&quot;&gt;&lt;/a&gt;代码实现&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;将经纬度转换成二进制编码&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private void convert(double min, double max, double value, List&amp;lt;Character&amp;gt; list) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (list.size() &amp;gt; (length - 1)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            return;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        double mid = (max + min) / 2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (value &amp;lt; mid) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            list.add(&amp;apos;0&amp;apos;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            convert(min, mid, value, list);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; else &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            list.add(&amp;apos;1&amp;apos;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            convert(mid, max, value, list);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
-    
-    
-      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
     
   </entry>
   

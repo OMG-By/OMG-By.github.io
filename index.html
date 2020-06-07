@@ -307,6 +307,330 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/07/new/MySQL/MySQL机制之Double-Write/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/" itemprop="url">MySQL机制之Double Write</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-07T17:11:55+08:00">
+                2020-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。<br>一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为<code>页断裂</code> 。在这种情况下，我们并不知道会出现什么未知的现象。<br>为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了<code>两次写（Double Write）</code>机制。</p>
+<h2 id="什么是两次写"><a href="#什么是两次写" class="headerlink" title="什么是两次写"></a>什么是两次写</h2><p>简单来说，就是在对数据页刷盘操作之前，先将该数据页写到一块独立的物理文件位置(ibdata)中。然后再将数据页进行刷盘操作。这样在宕机时，如果出现物理文件损坏，就能够利用ibdata中的副本文件进行修复行为。</p>
+<p>Double Write由两部分组成；一部分是内存中的double write buffer，其大小为2M。另一部分由共享表空间(ibdata)中连续的128页，即2个区组成，大小也是2M。<br>其刷盘流程为：</p>
+<ol>
+<li>当多个数据页需要进行刷盘时，并不直接写入到磁盘的物理文件中，而是先拷贝到内存中的double write buffer中。</li>
+<li>接着从double write buffer中分两次写入到磁盘的共享表空间中(连续存储，顺序写，性能很高)，每次写1M。</li>
+<li>等第二步完成后，再将double write buffer中的脏页数据写入到实际的各个表空间中(离散写)</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/06/new/MySQL/MySQL参数之innodb-fast-shutdown、innodb-force-recovery/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/06/new/MySQL/MySQL参数之innodb-fast-shutdown、innodb-force-recovery/" itemprop="url">MySQL参数之innodb_fast_shutdown、innodb_force_recovery</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-06T16:37:49+08:00">
+                2020-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="innodb-fast-shutdown"><a href="#innodb-fast-shutdown" class="headerlink" title="innodb_fast_shutdown"></a>innodb_fast_shutdown</h2><p>MySQL在平时工作时，会将大量的数据都保存在内存当中。那么在关闭的时候，什么东西需要持久化？什么东西不需要持久化呢？<br>在MySQL中，<code>innodb_fast_shutdown</code>参数控制着关闭行为。它的可取值有0、1、2。</p>
+<p>顾名思义，fast_shutdown，0表示不需要快速关闭、1需要快速关闭。</p>
+<ul>
+<li>0：在关闭时需要将内存与磁盘中数据不一致的数据页都进行刷盘行为。主要包含有：<ul>
+<li>删除无用的undo页。</li>
+<li>将log buffer中的日志都flush到log files。</li>
+<li>merge change buffer。</li>
+<li>flush dirty page</li>
+</ul>
+</li>
+<li>1：在关闭时，只进行刷新脏页行为。不需要purge all、merge change buffer。</li>
+<li>2：在关闭时，只进行flush log buffer。不需要purge all、merge change buffer、flush dirty。</li>
+</ul>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
+<li>在进行大版本升级时，需要将该参数设置为0</li>
+<li>该参数默认值为1</li>
+<li>该参数设置为2时，下次重启将会做<code>crash recovery</code>行为</li>
+</ol>
+<h2 id="innodb-force-recovery"><a href="#innodb-force-recovery" class="headerlink" title="innodb_force_recovery"></a>innodb_force_recovery</h2><p>有的时候由于MySQL在关闭前存在一些重操作行为，导致MySQL启动需要消耗大量的时间，但是我们需要能够尽可能快速的启动MySQL服务。<br>MySQL提供了参数<code>innodb_force_recovery</code>来规定MySQL启动过程中需要做的行为动作。</p>
+<p>该参数可选值为0~6，当该参数设置值大于0时，可以对表执行select、create、drop操作，但insert、update或者delete这类操作是不允许的。</p>
+<ul>
+<li>0：表示恢复时执行所有的恢复操作。</li>
+<li>1：（SRV_FORCE_IGNORE_CORRUPT）忽略检查到的corrupt页</li>
+<li>2：（SRV_FORCE_NO_BACKGROUND）阻止主线程的运行，如主线程需要执行full purge操作，会导致crash</li>
+<li>3：（SRV_FORCE_NO_TRX_UNDO）不执行事务回滚操作</li>
+<li>4：（SRV_FORCE_NO_IBUF_MERGE）不执行插入缓冲的合并操作</li>
+<li>5：（SRV_FORCE_NO_UNDO_LOG_SCAN）不查看撤销日志（Undo Log），InnoDB存储引擎会将未提交的事务视为已提交</li>
+<li>6：（SRV_FORCE_NO_LOG_REDO）不执行前滚的操作</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1545,299 +1869,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/17/new/Redis/redis_BUG记录一则/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/17/new/Redis/redis_BUG记录一则/" itemprop="url">Redis哨兵client-reconfig-script脚本bug记录一则</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-17T00:00:47+08:00">
-                2020-05-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>前一阵子一直在做自建机房Redis主从的环境搭建。了解到哨兵高可用切换后的会调用<code>client-reconfig-script</code>参数配置的脚本。<br>但是遇到了一个从2.8版本一直存在至今的BUG。我已经提了一个PR给官方，并被meger了。<a href="https://github.com/antirez/redis/pull/7113" target="_blank" rel="noopener">https://github.com/antirez/redis/pull/7113</a><br>特此记录一下。</p>
-<h2 id="BUG场景"><a href="#BUG场景" class="headerlink" title="BUG场景"></a>BUG场景</h2><p>手动将主实例kill掉，模拟宕机情况。在某些情况下，<font color="red">哨兵已经触发了高可用切换</font>行为（主从状态、日志均有）。但是并<font color="red">没有调用</font>配置的脚本（非必现，但是落到同一台机器调用时并不会调用）<br>重启该机器上的哨兵节点又恢复正常。（重启大法好）</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/17/new/Redis/redis_BUG记录一则/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/26/new/Redis/Redis_INFO/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/26/new/Redis/Redis_INFO/" itemprop="url">Redis指标说明</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-26T10:30:47+08:00">
-                2020-04-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文基于Redis最新unstable版本下，执行info命令后，返回的各项指标进行解释。并对其中需要特别注意的指标进行指出说明。<br>并会对阿里云info进行简单对比。区分阿里云对info进行了哪些方面的改造。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/26/new/Redis/Redis_INFO/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1890,7 +1921,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">138</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
