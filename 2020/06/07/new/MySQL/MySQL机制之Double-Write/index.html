@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio31sa8aj30il0bhjsr.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfjtvjy3c0j30fa09k75f.jpg">
-<meta property="og:updated_time" content="2020-06-07T09:12:51.439Z">
+<meta property="og:updated_time" content="2020-06-11T09:37:51.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL机制之Double Write">
 <meta name="twitter:description" content="背景我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为页断裂 。在这种情况下，我们并不知道会出现什么未知的现象。为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了两次">
@@ -420,7 +420,7 @@
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg" alt=""></p>
 <a id="more"></a>
 <h2 id="如何修复"><a href="#如何修复" class="headerlink" title="如何修复"></a>如何修复</h2><p>在发生故障时，如何进行修复操作？<br>1、如果是写doublewrite buffer本身失败,那么这些数据不会被写到磁盘,InnoDB此时会从磁盘载入原始的数据,然后通过InnoDB的事务日志来计算出正确的数据,重新 写入到doublewrite buffer。<br>2、如果 doublewrite buffer写成功的话,但是写磁盘失败,InnoDB就不用通过事务日志来计算了,而是直接用double write buffer的数据再写一遍。<br>3、在恢复的时候,InnoDB直接比较页面的checksum,如果不对的话,就从硬盘载入原始数据,再由事务日志 开始推演出正确的数据.所以InnoDB的恢复通常需要较长的时间.<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio31sa8aj30il0bhjsr.jpg" alt=""></p>
-<h2 id="5-7优化"><a href="#5-7优化" class="headerlink" title="5.7优化"></a>5.7优化</h2><p>在《MySQL运维内参》一书中，提到了在5.7中，对double write进行了优化<code>批量刷盘</code>。但是我在5.7.18版本中，并没有看到有那个参数<code>innodb_doublewrite_batch_size</code>。</p>
+<h2 id="5-7优化"><a href="#5-7优化" class="headerlink" title="5.7优化"></a>5.7优化</h2><p>在《MySQL运维内参》一书中，提到了在5.7中，对double write进行了优化<code>批量刷盘</code>。但是我在5.7.18版本中，并没有看到有那个参数<code>innodb_doublewrite_batch_size</code>（为MySQL 8.0.20引入）。</p>
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfjtvjy3c0j30fa09k75f.jpg" alt=""></p>
 <p>批量刷盘包括两种方式，分别是LRU(Least Recently Used,最近最少使用)方式和LIST方式。当Buffer Pool空间不足时，再载入新的页面就必须要将一些不怎么用到的、旧的页面淘汰出去，此时系统就会从LRU链表中找到最老的页面，进行批量刷盘，将释放的空间加入到空闲空间中去，这种情况就是LRU刷盘。当日志空间不足，或者是后台MASTER线程在定时刷盘时，不需要区分页面的新旧状态，只需要选择LSN最小的那些页面，从前到后刷一批页面到文件中，此时所用的策略就是LIST方式。  </p>
 <p>在批量刷盘的两次写中，这两种刷盘方法对应的两次写空间互不干涉。  </p>
@@ -431,7 +431,7 @@
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double-write？"><a href="#发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double-write？" class="headerlink" title="发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double write？"></a>发生页断裂时，理论上通过redo就应该能够进行恢复了，为什么还需要double write？</h3><p>这个就得从redo log保存的记录格式说起了。<br>redo日志主要采用的是物理日志和逻辑日志两种方式。<br>对于能够唯一确定数据存储在磁盘位置时，使用的是物理日志，通过(group_id,file_id,page_no,offset)4元组来确定位置，并记录数据页变更。在这种记录格式下，能够通过redo log进行问题修复。<br>但是，对于一个操作记录产生的日志跨越了多个数据页时，那么会产生多个物理页面的日志，但对于每个物理页面日志，里面记录则是逻辑信息。在这种情况下，就无法单靠redo log进行问题修复</p>
 <h3 id="性能损耗"><a href="#性能损耗" class="headerlink" title="性能损耗"></a>性能损耗</h3><p>如果开启了double write机制。那么每次刷盘都会多一次内存复制和持久化操作。那么会对性能造成多大的影响呢？<br>由于持久化刷盘过程是顺序写，性能很高。据官方介绍，可能会有10%的性能损耗，但是为了数据得到完整性，这点损耗还是很有必要的。</p>
 <blockquote>
-<p><a href="https://www.cnblogs.com/xuliuzai/p/10290196.html" target="_blank" rel="noopener">https://www.cnblogs.com/xuliuzai/p/10290196.html</a></p>
+<p><a href="https://www.cnblogs.com/xuliuzai/p/10290196.html" target="_blank" rel="noopener">https://www.cnblogs.com/xuliuzai/p/10290196.html</a><br><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ</a> （推荐）</p>
 </blockquote>
 
       
@@ -472,6 +472,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/13/Docker-环境下搭建MySQL-8-0-20-组复制/" rel="prev" title="Docker 环境下搭建MySQL 8.0.20 组复制">
+                Docker 环境下搭建MySQL 8.0.20 组复制 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -555,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">141</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -577,7 +581,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
