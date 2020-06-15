@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/Docker-环境下搭建MySQL-8-0-20-组复制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -326,7 +326,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/06/13/Docker-环境下搭建MySQL-8-0-20-组复制/" itemprop="url">Docker 环境下搭建MySQL 8.0.20 组复制</a></h1>
+                <a class="post-title-link" href="/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/" itemprop="url">Docker 环境下搭建MySQL 8.0.20 组复制</a></h1>
         
 
         <div class="post-meta">
@@ -400,12 +400,12 @@
       
         
           <p>最近在学习MySQL 8.0 新特性，以及MGR。于是想在搭建一套环境来测试。<br>本来在买的阿里云服务器上进行搭建，结果好像是一台机器搭建不了，至少需要三台，于是就放弃了。<br>正好小伙伴分享了docker，于是就利用docker在本地搭建了一套8.0的MGR环境。</p>
-<h2 id="准备docker镜像"><a href="#准备docker镜像" class="headerlink" title="准备docker镜像"></a>准备docker镜像</h2><p>运行一个test名称的centos系统镜像<br><code>➜  ~ docker run -d -it --name test centos</code><br>进入容器<br><code>➜  ~ docker exec -it test bash</code><br>在容器内安装MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@c610b533f3dc /]# yum install yum-utils wget -y</span><br><span class="line">[root@c610b533f3dc /]# wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# rpm -ivh mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# yum install mysql-server –y</span><br></pre></td></tr></table></figure></p>
+<h2 id="准备docker镜像"><a href="#准备docker镜像" class="headerlink" title="准备docker镜像"></a>准备docker镜像</h2><p>运行一个test名称的centos系统镜像<br><code>➜  ~ docker run -d -it --name test centos</code><br>进入容器<br><code>➜  ~ docker exec -it test bash</code><br>在容器内安装MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@c610b533f3dc /]# yum install yum-utils wget -y</span><br><span class="line">[root@c610b533f3dc /]# wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# rpm -ivh mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# yum install -y mysql-server</span><br></pre></td></tr></table></figure></p>
 <p>安装完后退出容器，并生成镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@c610b533f3dc /]# exit</span><br><span class="line">➜  ~ docker commit 容器ID mysql8.0.20</span><br></pre></td></tr></table></figure></p>
 <h2 id="启动MySQL容器"><a href="#启动MySQL容器" class="headerlink" title="启动MySQL容器"></a>启动MySQL容器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -it --privileged --name=mysql-mgr-node1 mysql8.0.20 /usr/sbin/init</span><br><span class="line">docker run -d -it --privileged --name=mysql-mgr-node2 mysql8.0.20 /usr/sbin/init</span><br><span class="line">docker run -d -it --privileged --name=mysql-mgr-node3 mysql8.0.20 /usr/sbin/init</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/06/13/Docker-环境下搭建MySQL-8-0-20-组复制/#more" rel="contents">
+            <a class="btn" href="/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -780,7 +780,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -799,7 +799,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/" itemprop="url">MySQL参数之innodb_autoinc_lock_mode</a></h1>
+                <a class="post-title-link" href="/2020/06/05/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/" itemprop="url">MySQL参数之innodb_autoinc_lock_mode</a></h1>
         
 
         <div class="post-meta">
@@ -883,7 +883,7 @@
 <p>这种模式性能最差，它会对所有的insert模式操作都去获取一个特殊的<code>table-level auto-inc</code>。这种锁会持续到语句结束，以确保执行的insert语句以可预测且可重复的顺序分配自动递增值。这种模式更多是为了兼容老版本的MySQL运行。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/06/05/MySQL参数之innodb-autoinc-lock-mode/#more" rel="contents">
+            <a class="btn" href="/2020/06/05/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
