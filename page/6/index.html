@@ -307,1373 +307,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/22/MySQL/mysqldump遇到DDL/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/22/MySQL/mysqldump遇到DDL/" itemprop="url">当执行-single-transaction做逻辑备份时，遇到DDL</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-22T20:54:48+08:00">
-                2019-01-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>当使用-single-transaction做逻辑备份的时候，遇到一个DDL语句会怎样？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Q1:SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span><br><span class="line">Q2:START TRANSACTION  WITH CONSISTENT SNAPSHOT；</span><br><span class="line">/* other tables */</span><br><span class="line">Q3:SAVEPOINT sp;</span><br><span class="line">/* 时刻 1 */</span><br><span class="line">Q4:show create table `t1`;</span><br><span class="line">/* 时刻 2 */</span><br><span class="line">Q5:SELECT * FROM `t1`;</span><br><span class="line">/* 时刻 3 */</span><br><span class="line">Q6:ROLLBACK TO SAVEPOINT sp;</span><br><span class="line">/* 时刻 4 */</span><br><span class="line">/* other tables */</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/22/MySQL/mysqldump遇到DDL/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/21/MySQL/索引/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/21/MySQL/索引/" itemprop="url">索引</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-21T22:21:45+08:00">
-                2019-01-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <font color="red">索引的出现其实就是为了提高数据查询的效率，就像书的目录一样。</font>
-
-<h3 id="索引的常见模型"><a href="#索引的常见模型" class="headerlink" title="索引的常见模型"></a>索引的常见模型</h3><p>索引的出现时为了提高查询效率，但是实现索引的方式有很多种，所以这里也就引入了索引模型的概念。可以用来提高读写操作的数据结构有很多，这里先介绍比较简单的数据结构：哈希表和搜索树。</p>
-<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表是一种以K-V存储的数据结构，我们只要输入待查找的值，就可以找到其对应的值。哈希的思路很简单，把值放在数组里，用一个哈希函数把Key换算成一个确认的位置，然后把value放在数组的这个位置。遇到同一个位置上有很多value时，就用一个链表串起来。</p>
-<p>哈希链表适用于只有等值查询的场景</p>
-<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><p>二叉搜索树的特点是：每个节点的左儿子小于父节点，父节点又小于右儿子。查询的平均复杂度是O(log(N))。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/21/MySQL/索引/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/MySQL/事务隔离/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/16/MySQL/事务隔离/" itemprop="url">事务隔离</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-16T22:32:26+08:00">
-                2019-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>简单来说：事务就是保证一组数据库操作，要么全部成功，要么全部是失败。在MySQL中，事务支持是在引擎层实现的。MySQL是一个支持多引擎的系统，并不是所有的引擎都支持事务。比如MySQL原生的MyISAM引擎就不支持事务。</p>
-<h3 id="隔离性和隔离级别"><a href="#隔离性和隔离级别" class="headerlink" title="隔离性和隔离级别"></a>隔离性和隔离级别</h3><p>提到事务，肯定会想到ACID（即原子性、一致性、隔离性、持久性），这里就讨论一下隔离性。<br>当数据库上有多个事务同时执行的时候，就可能出现脏读、不可重复读、幻读的问题，为了解决这些问题，就有了“隔离级别”的概念。</p>
-<ul>
-<li>读未提交：一个事务还没提交时，它做的变更就能被别的事务看到。</li>
-<li>读已提交：一个事务提交后，它做的变更才会被其他事务看到</li>
-<li>可重复读：一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。</li>
-<li>串行化：后访问的事务必须等前一个事务完成后，才能继续执行。</li>
-</ul>
-<p>假设数据表T中只有一列，其中一行的值为1。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(c int) engine=InnoDB;</span><br><span class="line">insert into T(c) values(1);</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://m.qpic.cn/psb?/V140pON30woojR/N34*jAP61rjm0uHLDCigAi2GlkgbvdMqoW4J9gqGBok!/b/dL8AAAAAAAAA&amp;bo=OAT.BAAAAAADB.Q!&amp;rf=viewer_4" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/16/MySQL/事务隔离/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/MySQL/一个更新语句的执行过程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/14/MySQL/一个更新语句的执行过程/" itemprop="url">一条更新语句的执行过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T22:32:26+08:00">
-                2019-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>下面我们以下面这个表和更新语句来进行分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create table T(ID int primary key, c int);</span><br><span class="line">update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure></p>
-<p>对于更新语句，查询语句的那一套流程，更新语句同样是会走一遍。</p>
-<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>如果每一次更新操作都要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新；整个过程IO成本、查找成本都很高。为了解决这个问题，MySQL采用了WAL技术来提升更新效率。WAL的全称是write-Ahead Logging。它的关键点在于<font color="red">先写日志，再写磁盘</font>。</p>
-<p>具体来说，就是当有一条记录需要更新的时候，innodb引擎就会先把记录写到redo log里面，并更新内存，这个时候更新就算完成了。同时，innodb引擎会在适当的时候，将这个操作记录更新到次磁盘里面，而这个更新往往是在系统比较空闲的时候做。</p>
-<p>innodb的redo log是固定大小的，比如可以配置为一组4个文件，每个文件大小是1GB，那么redo log总共就可以记录4GB的操作，从头开始写，写到末尾就又回到开头循环写。<br><img src="https://m.qpic.cn/psb?/V140pON30woojR/cO8DivjlNOs4*4J.jc9sWkTtPIM5APzdpDE8aPjQews!/b/dLYAAAAAAAAA&amp;bo=hAUyAwAAAAADB5I!&amp;rf=viewer_4" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/14/MySQL/一个更新语句的执行过程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/MySQL/MySQL基本架构/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/13/MySQL/MySQL基本架构/" itemprop="url">一条查询语句的执行过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-13T22:32:26+08:00">
-                2019-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="MySQL基本架构"><a href="#MySQL基本架构" class="headerlink" title="MySQL基本架构"></a>MySQL基本架构</h2><p><img src="https://m.qpic.cn/psb?/V140pON30woojR/ussYTDB3vJmBbUYn8*kQP.aOU4fUXs6XhkExUtrBwWA!/b/dMMAAAAAAAAA&amp;bo=oAU4BAAAAAARB6k!&amp;rf=viewer_4" alt=""><br>MySQL基本架构可以分为Server层和存储引擎层两部分。</p>
-<p>Server层包括连接器、查询缓存、分析器、优化器、执行器等，覆盖MySQL大多数核心服务功能，以及<font color="red">所有的内置函数</font>（如日期、时间、数学等），所有的跨存储引擎的功能都在这一层实现，如存储过程、触发器、视图等。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/13/MySQL/MySQL基本架构/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Linux/记一次磁盘空间不足，找不到什么文件导致的解决方法/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/29/Linux/记一次磁盘空间不足，找不到什么文件导致的解决方法/" itemprop="url">记一次磁盘空间不足</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-29T11:06:28+08:00">
-                2018-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>在一台虚拟机机器上发现磁盘空间不足的情况，通过登录上去查看，发现是挂载盘占用磁盘资源太多，通过df命令查看，但是并找不到具体是哪个文件占用过多。<br>通过以下查找大文件命令也没有找到相应的大文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -type f -size +100M</span><br></pre></td></tr></table></figure></p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>文件被删除后，并没有及时的释放磁盘资源，导致磁盘空间不足的情况。<br>通过以下命令，查看已经标记为删除但是没有释放的文件。对相应程序进行重启后解决<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof|grep -i delete|less</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/MySQL/MySQL问答/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/29/MySQL/MySQL问答/" itemprop="url">MySQL问答</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-29T19:51:25+08:00">
-                2018-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="导致主从不一致的原因"><a href="#导致主从不一致的原因" class="headerlink" title="导致主从不一致的原因"></a>导致主从不一致的原因</h2><ol>
-<li>人为原因（从库写入）</li>
-<li>主库异常宕机</li>
-<li>设置了ignore/do/rewrite等replication等规则</li>
-<li>binlog使用了非row格式</li>
-<li>从库中断</li>
-<li>从库启用了存储过程</li>
-<li>主从数据库版本不一致</li>
-<li>重做时，mysqldump备份没有指定参数</li>
-<li>主从sql_mode不一致</li>
-<li>采用5.6的after_commit方式半同步，主库宕机可能会引起主从不一致。</li>
-<li>启用了增强半同步，但是从库延迟超时自动切换成了异步复制</li>
-</ol>
-<h3 id="预防和解决的方案"><a href="#预防和解决的方案" class="headerlink" title="预防和解决的方案"></a>预防和解决的方案</h3><ol>
-<li>master:innodb_flush_log_at_trx_commit=1&amp;sync_binlog=1</li>
-<li>slave:master_info_repository=”TABLE”&amp;relay_log_info_repository=”TABLE”&amp;relay_log_recovery=1</li>
-<li>设置从库库为只读模式</li>
-<li>可以使用5.7增强半同步避免数据丢失等</li>
-<li>binlog row格式</li>
-<li>必须引定期的数据校验机制</li>
-<li>当使用延迟复制的时候，此时主从数据也是不一致的（计划内），但在切换中，不要把延迟从提升为主库哦~</li>
-<li>mha在主从切换的过程中，因主库系统宕机，可能造成主从不一致（mha本身机制导致这个问题）</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/29/MySQL/MySQL问答/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/15/Redis/Redis源码阅读(启动过程)/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/Redis/Redis源码阅读(启动过程)/" itemprop="url">Redis源码阅读(启动过程)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T14:12:13+08:00">
-                2018-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Redis的启动函数main()在redis.c文件中。 </p>
-<h3 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h3><p>在启动时会使用initServerConfig()函数进行初始化服务器配置工作，redisServer(redis.h)作为保存服务器配置的结构。 redisServer包含以下的一些Redis服务器的信息：  </p>
-<ul>
-<li>一般服务器状态。</li>
-<li>一些服务器统计信息。</li>
-<li>各种链表结构，如保存客户端的链表等。</li>
-<li>配置文件及启动参数中的配置。</li>
-<li>主从复制的状态。</li>
-<li>持久化文件的参数和状态。</li>
-</ul>
-<p><img src="https://i.imgur.com/IXG8CwE.png" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/15/Redis/Redis源码阅读(启动过程)/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/Redis/Redis对象/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/10/Redis/Redis对象/" itemprop="url">Redis对象结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T21:34:13+08:00">
-                2018-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="object-c"><a href="#object-c" class="headerlink" title="object.c"></a>object.c</h1><p>object.c文件主要记录了Redis对象的创建和释放方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">robj *createEmbeddedStringObject(char *ptr, size_t len) &#123;</span><br><span class="line">    robj *o = zmalloc(sizeof(robj)+sizeof(struct sdshdr)+len+1);</span><br><span class="line">    struct sdshdr *sh = (void*)(o+1);</span><br><span class="line"></span><br><span class="line">    o-&gt;type = REDIS_STRING;</span><br><span class="line">    o-&gt;encoding = REDIS_ENCODING_EMBSTR;</span><br><span class="line">    o-&gt;ptr = sh+1;</span><br><span class="line">    o-&gt;refcount = 1;</span><br><span class="line">    o-&gt;lru = LRU_CLOCK();</span><br><span class="line"></span><br><span class="line">    sh-&gt;len = len;</span><br><span class="line">    sh-&gt;free = 0;</span><br><span class="line">    if (ptr) &#123;</span><br><span class="line">        memcpy(sh-&gt;buf,ptr,len);</span><br><span class="line">        sh-&gt;buf[len] = &apos;\0&apos;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        memset(sh-&gt;buf,0,len+1);</span><br><span class="line">    &#125;</span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>从这个函数中，我们可以看出Redis在创建一个REDIS_ENCODING_EMBSTR编码的字符串对象时，是SDS连同redisObject一同创建的。也就是说这个字符串是不可以修改的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">robj *createStringObjectFromLongLong(long long value) &#123;</span><br><span class="line"></span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // value 的大小符合 REDIS 共享整数的范围</span><br><span class="line">    // 那么返回一个共享对象</span><br><span class="line">    if (value &gt;= 0 &amp;&amp; value &lt; REDIS_SHARED_INTEGERS) &#123;</span><br><span class="line">        incrRefCount(shared.integers[value]);</span><br><span class="line">        o = shared.integers[value];</span><br><span class="line"></span><br><span class="line">    // 不符合共享范围，创建一个新的整数对象</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 值可以用 long 类型保存，</span><br><span class="line">        // 创建一个 REDIS_ENCODING_INT 编码的字符串对象</span><br><span class="line">        if (value &gt;= LONG_MIN &amp;&amp; value &lt;= LONG_MAX) &#123;</span><br><span class="line">            o = createObject(REDIS_STRING, NULL);</span><br><span class="line">            o-&gt;encoding = REDIS_ENCODING_INT;</span><br><span class="line">            o-&gt;ptr = (void*)((long)value);</span><br><span class="line"></span><br><span class="line">        // 值不能用 long 类型保存（long long 类型），将值转换为字符串，</span><br><span class="line">        // 并创建一个 REDIS_ENCODING_RAW 的字符串对象来保存值</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            o = createObject(REDIS_STRING,sdsfromlonglong(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个函数是根据传入的整数值来创建一个字符串对象。从这里可以看到主要有三个判断：</p>
-<ol>
-<li>如果设置的值符合Redis共享整数对象的范围时，是直接复用共享对象，并不会去创建一个新的对象。</li>
-<li>如果传入的值是long类型的，这创建一个REDIS_ENCODING_INT编码类型的字符串对象。</li>
-<li>如果传入的值为long long类型的，则创建REDIS_ENCODING_RAW编码类型的字符串对象。</li>
-</ol>
-<p>debug命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/* Object command allows to inspect the internals of an Redis Object.</span><br><span class="line"> * Usage: OBJECT &lt;verb&gt; ... arguments ... */</span><br><span class="line">void objectCommand(redisClient *c) &#123;</span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // 返回对戏哪个的引用计数</span><br><span class="line">    if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;refcount&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,o-&gt;refcount);</span><br><span class="line"></span><br><span class="line">    // 返回对象的编码</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;encoding&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyBulkCString(c,strEncoding(o-&gt;encoding));</span><br><span class="line">    </span><br><span class="line">    // 返回对象的空闲时间</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;idletime&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,estimateObjectIdleTime(o)/1000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        addReplyError(c,&quot;Syntax error. Try OBJECT (refcount|encoding|idletime)&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/26/Redis/Redis原理----主从复制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1815,11 +448,1606 @@
 
 
     
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/Redis/Redis原理----事务/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Redis/Redis原理----事务/" itemprop="url">Redis原理----事务</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T21:34:13+08:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>为了确保连续多个操作的原子性，一个成熟的数据库通常都会有事务支持，Redis也不例外。Redis的事务使用非常简单，不同于关系数据库，我们无需理解那么多复杂的事务模型了，就可以直接使用。不过也正是因为这种简单性，它的事务模型很不严格，这要求我们不能像使用关系数据库的事务一样使用Redis。</p>
+<h2 id="Redis事务的基本使用"><a href="#Redis事务的基本使用" class="headerlink" title="Redis事务的基本使用"></a>Redis事务的基本使用</h2><p>每个事务的操作都有begin、commit、和rollback、begin指示事务的开始，commit指示事务的提交，rollback指示事务的回滚。</p>
+<p>Redis与其差不多，对应的分别是multi/exec/discard。multi指示事务的开始，exec指示事务的执行，discard指示事务的丢弃。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;multi  </span><br><span class="line">OK  </span><br><span class="line">&gt;incr books  </span><br><span class="line">QUEUED  </span><br><span class="line">&gt;incr books  </span><br><span class="line">QUEUED  </span><br><span class="line">&gt;exec  </span><br><span class="line">(integer) 1</span><br><span class="line">(integer）2</span><br></pre></td></tr></table></figure>
+<p>上面的指令演示了一个完整的事务过程，所有的指令在exec之前不执行，而是<font color="red">缓存在服务器的一个事务队列中</font>，服务器一旦受到exec指令，就开始执行整个事务队列，执行完毕后一次性返回所有指令的运行结果。因为Redis的单线程特性，它不用担心自己在执行队列的时候被其他指令打搅，可以保证他们得到的[原子性]执行。<br><img src="https://i.imgur.com/l8Awrjs.jpg" alt=""><br>上图显示了以上事务过程完整的交互结果。QUEUED是一个简单字符串，同OK是一个形式，它表示指令已经被服务器缓存到队列里了。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/25/Redis/Redis原理----事务/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/24/Redis/Redis原理----管道/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/24/Redis/Redis原理----管道/" itemprop="url">Redis原理----管道</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T21:34:13+08:00">
+                2018-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>大多数人一直对Redis管道有一个误解，他们以为这是Redis服务器提供的一种特别的技术，有了这种技术就可以加速Redis的存取效率。但是实际上Redis管道（Pipeline）本身并不是Redis服务器直接提供的技术，这个技术本质上是由客户端提供的，跟服务器没有什么直接的关系。</p>
+<h2 id="Redis的消息交互"><a href="#Redis的消息交互" class="headerlink" title="Redis的消息交互"></a>Redis的消息交互</h2><p>当我们使用客户端对Redis进行一次操作时，如下图所示，客户端将请求传送给服务器，服务器处理完毕后，再将响应回复给客户端。这要花费一个网络数据包的来回时间。  </p>
+<p><img src="https://i.imgur.com/ulCYBhP.jpg" alt=""><br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/24/Redis/Redis原理----管道/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </p></div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Redis/Redis原理----持久化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/22/Redis/Redis原理----持久化/" itemprop="url">Redis原理----持久化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-22T21:30:13+08:00">
+                2018-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis的数据全部在内存里，如果突然宕机，数据就会全部丢失，因此必须有一种机制来保证Redis的数据不会因为故障而丢失，这种机制就是Redis的持久化机制。  </p>
+<p>Redis的持久化机制有两种，第一种就是快照（RDB文件），第二种就是AOF日志。快照是一次全量备份，AOF日志是连续的增量备份。快照是内存数据的二进制序列化形式，在存储上非常紧凑，而AOF日志记录的是内存数据修改的指令记录文本。AOF日志在长期的运行过程中会变得非常大，数据库重启时需要加载AOF日志进行指令重放，这个时间会变得无比漫长。所以需要定期进行AOF重写，给AOF文件瘦身。</p>
+<h2 id="快照原理"><a href="#快照原理" class="headerlink" title="快照原理"></a>快照原理</h2><p>我们知道Redis是单线程程序，这个线程要同时负责多个客户端套接字的并发读写操作和内存数据结构的逻辑读写。  </p>
+<p>在服务线上请求的同时，Redis还需要进行内存快照，内存快照要求Redis必须进行文件IO操作，可文件IO操作是不能使用多路复用API。  </p>
+<p>这意味着单线程同时在服务线上的请求和吉林文件IO操作，文件IO操作会严重拖垮服务器请求的性能。还有个<b>重要的问题就是为了不阻塞线上的业务，就需要边持久化边响应客户端请求</b>。持久化的同时，内存数据结构还在变化，比如一个大型的hash字典正在持久化，结果一个请求过来把它给删除了，还没持久化，这该怎么办？  </p>
+<font color="red">Redis使用操作系统的多进程COW（copy On Write）机制来实现快照持久化。</font>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/22/Redis/Redis原理----持久化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis源码阅读/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/21/Redis/Redis源码阅读/" itemprop="url">Redis源码阅读目录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T21:34:13+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>adlist.c 、 adlist.h</td>
+<td style="text-align:center">双端链表数据结构的实现。</td>
+</tr>
+<tr>
+<td>ae.c 、 ae.h 、 ae_epoll.c 、 ae_evport.c 、 ae_kqueue.c 、 ae_select.c</td>
+<td style="text-align:center">事件处理器，以及各个具体实现。</td>
+</tr>
+<tr>
+<td>anet.c 、 anet.h</td>
+<td style="text-align:center">Redis 的异步网络框架，内容主要为对 socket 库的包装。</td>
+</tr>
+<tr>
+<td>aof.c</td>
+<td style="text-align:center">AOF 功能的实现。</td>
+</tr>
+<tr>
+<td>asciilogo.h</td>
+<td style="text-align:center">保存了 Redis 的 ASCII LOGO 。</td>
+</tr>
+<tr>
+<td>bio.c 、 bio.h</td>
+<td style="text-align:center">Redis 的后台 I/O 程序，用于将 I/O 操作放到子线程里面执行， 减少 I/O 操作对主线程的阻塞。</td>
+</tr>
+<tr>
+<td>bitops.c</td>
+<td style="text-align:center">二进制位操作命令的实现文件。</td>
+</tr>
+<tr>
+<td>blocked.c</td>
+<td style="text-align:center">用于实现 BLPOP 命令和 WAIT 命令的阻塞效果。</td>
+</tr>
+<tr>
+<td>cluster.c 、 cluster.h</td>
+<td style="text-align:center">Redis 的集群实现。</td>
+</tr>
+<tr>
+<td>config.c 、 config.h</td>
+<td style="text-align:center">Redis 的配置管理实现，负责读取并分析配置文件， 然后根据这些配置修改 Redis 服务器的各个选项。</td>
+</tr>
+<tr>
+<td>crc16.c 、 crc64.c 、 crc64.h</td>
+<td style="text-align:center">计算 CRC 校验和。</td>
+</tr>
+<tr>
+<td>db.c</td>
+<td style="text-align:center">数据库实现。</td>
+</tr>
+<tr>
+<td>debug.c</td>
+<td style="text-align:center">调试实现。</td>
+</tr>
+<tr>
+<td>dict.c 、 dict.h</td>
+<td style="text-align:center">字典数据结构的实现。</td>
+</tr>
+<tr>
+<td>endianconv.c 、 endianconv.h</td>
+<td style="text-align:center">二进制的大端、小端转换函数。</td>
+</tr>
+<tr>
+<td>fmacros.h</td>
+<td style="text-align:center">一些移植性方面的宏。</td>
+</tr>
+<tr>
+<td>help.h</td>
+<td style="text-align:center">utils/generate-command-help.rb 程序自动生成的命令帮助信息。</td>
+</tr>
+<tr>
+<td>hyperloglog.c</td>
+<td style="text-align:center">HyperLogLog 数据结构的实现。</td>
+</tr>
+<tr>
+<td>intset.c 、 intset.h</td>
+<td style="text-align:center">整数集合数据结构的实现，用于优化 SET 类型。</td>
+</tr>
+<tr>
+<td>lzf_c.c 、 lzf_d.c 、 lzf.h 、 lzfP.h</td>
+<td style="text-align:center">Redis 对字符串和 RDB 文件进行压缩时使用的 LZF 压缩算法的实现。</td>
+</tr>
+<tr>
+<td>Makefile 、 Makefile.dep</td>
+<td style="text-align:center">构建文件。</td>
+</tr>
+<tr>
+<td>memtest.c</td>
+<td style="text-align:center">内存测试。</td>
+</tr>
+<tr>
+<td>mkreleasehdr.sh</td>
+<td style="text-align:center">用于生成释出信息的脚本。</td>
+</tr>
+<tr>
+<td>multi.c</td>
+<td style="text-align:center">Redis 的事务实现。</td>
+</tr>
+<tr>
+<td>networking.c</td>
+<td style="text-align:center">Redis 的客户端网络操作库， 用于实现命令请求接收、发送命令回复等工作， 文件中的函数大多为 write 、 read 、 close 等函数的包装， 以及各种协议的分析和构建函数。</td>
+</tr>
+<tr>
+<td>notify.c</td>
+<td style="text-align:center">Redis 的数据库通知实现。</td>
+</tr>
+<tr>
+<td>object.c</td>
+<td style="text-align:center">Redis 的对象系统实现。</td>
+</tr>
+<tr>
+<td>pqsort.c 、 pqsort.h</td>
+<td style="text-align:center">快速排序（QuickSort）算法的实现。</td>
+</tr>
+<tr>
+<td>pubsub.c</td>
+<td style="text-align:center">发布与订阅功能的实现。</td>
+</tr>
+<tr>
+<td>rand.c 、 rand.h</td>
+<td style="text-align:center">伪随机数生成器。</td>
+</tr>
+<tr>
+<td>rdb.c 、 rdb.h</td>
+<td style="text-align:center">RDB 持久化功能的实现。</td>
+</tr>
+<tr>
+<td>redisassert.h</td>
+<td style="text-align:center">Redis 自建的断言系统。</td>
+</tr>
+<tr>
+<td>redis-benchmark.c</td>
+<td style="text-align:center">Redis 的性能测试程序。</td>
+</tr>
+<tr>
+<td>redis.c</td>
+<td style="text-align:center">负责服务器的启动、维护和关闭等事项。</td>
+</tr>
+<tr>
+<td>redis-check-aof.c 、 redis-check-dump.c</td>
+<td style="text-align:center">RDB 文件和 AOF 文件的合法性检查程序。</td>
+</tr>
+<tr>
+<td>redis-cli.c</td>
+<td style="text-align:center">Redis 客户端的实现。</td>
+</tr>
+<tr>
+<td>redis.h</td>
+<td style="text-align:center">Redis 的主要头文件，记录了 Redis 中的大部分数据结构， 包括服务器状态和客户端状态。</td>
+</tr>
+<tr>
+<td>redis-trib.rb</td>
+<td style="text-align:center">Redis 集群的管理程序。</td>
+</tr>
+<tr>
+<td>release.c 、 release.h</td>
+<td style="text-align:center">记录和生成 Redis 的释出版本信息。</td>
+</tr>
+<tr>
+<td>replication.c</td>
+<td style="text-align:center">复制功能的实现。</td>
+</tr>
+<tr>
+<td>rio.c 、 rio.h</td>
+<td style="text-align:center">Redis 对文件 I/O 函数的包装， 在普通 I/O 函数的基础上增加了显式缓存、以及计算校验和等功能。</td>
+</tr>
+<tr>
+<td>scripting.c</td>
+<td style="text-align:center">脚本功能的实现。</td>
+</tr>
+<tr>
+<td>sds.c 、 sds.h</td>
+<td style="text-align:center">SDS 数据结构的实现，SDS 为 Redis 的默认字符串表示。</td>
+</tr>
+<tr>
+<td>sentinel.c</td>
+<td style="text-align:center">Redis Sentinel 的实现。</td>
+</tr>
+<tr>
+<td>setproctitle.c</td>
+<td style="text-align:center">进程环境设置函数。</td>
+</tr>
+<tr>
+<td>sha1.c 、 sha1.h</td>
+<td style="text-align:center">SHA1 校验和计算函数。</td>
+</tr>
+<tr>
+<td>slowlog.c 、 slowlog.h</td>
+<td style="text-align:center">慢查询功能的实现。</td>
+</tr>
+<tr>
+<td>solarisfixes.h</td>
+<td style="text-align:center">针对 Solaris 系统的补丁。</td>
+</tr>
+<tr>
+<td>sort.c</td>
+<td style="text-align:center">SORT 命令的实现。</td>
+</tr>
+<tr>
+<td>syncio.c</td>
+<td style="text-align:center">同步 I/O 操作。</td>
+</tr>
+<tr>
+<td>testhelp.h</td>
+<td style="text-align:center">测试辅助宏。</td>
+</tr>
+<tr>
+<td>t_hash.c 、 t_list.c 、 t_set.c、 t_string.c 、 t_zset.c</td>
+<td style="text-align:center">定义了 Redis 的各种数据类型，以及这些数据类型的命令。</td>
+</tr>
+<tr>
+<td>util.c 、 util.h</td>
+<td style="text-align:center">各种辅助函数。</td>
+</tr>
+<tr>
+<td>valgrind.sup</td>
+<td style="text-align:center">valgrind 的suppression文件。</td>
+</tr>
+<tr>
+<td>version.h</td>
+<td style="text-align:center">记录了 Redis 的版本号。</td>
+</tr>
+<tr>
+<td>ziplist.c 、 ziplist.h</td>
+<td style="text-align:center">ZIPLIST 数据结构的实现，用于优化 LIST 类型。</td>
+</tr>
+<tr>
+<td>zipmap.c 、 zipmap.h</td>
+<td style="text-align:center">ZIPMAP 数据结构的实现，在 Redis 2.6 以前用与优化 HASH 类型， Redis 2.6 开始已经废弃。</td>
+</tr>
+<tr>
+<td>zmalloc.c 、 zmalloc.h</td>
+<td style="text-align:center">内存管理程序。</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/Redis/Redis原理----通信协议/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/21/Redis/Redis原理----通信协议/" itemprop="url">Redis原理----通信协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T19:34:13+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis的作者认为数据库系统的瓶颈一般不在于网络流量，而是数据库自身内部逻辑处理上。所以即使Redis使用了浪费流量的文本协议，依然可以取得极高的访问性能。Redis将所有数据都放在内存，用一个单线程对外提供服务，单个节点在跑满一个CPU核心的情况下可以达到10w/s的超高QPS。</p>
+<h2 id="RESP"><a href="#RESP" class="headerlink" title="RESP"></a>RESP</h2><p>RESP（Redis Serialization Protocol）是Redis序列化协议的简写。它是一种直观的文本协议，优势在于实现异常简单，解析性能极好。</p>
+<p>Redis歇息将传输的数据结构分为5种最小单元类型，单元结束时统一加上回车换行符号\r\n。  </p>
+<ul>
+<li>单行字符以<font color="red">+</font>符号开头</li>
+<li>多行字符以<font color="red">$</font>符号开头，后跟字符串长度</li>
+<li>整数值以<font color="red">：</font>符号开头，后跟整数的字符串形式</li>
+<li>错误消息以<font color="red">-</font>符号开头</li>
+<li>数组以<font color="red">*</font>符号开头，后跟数组的长度</li>
+</ul>
+<p>单行字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+hello world\r\n</span><br></pre></td></tr></table></figure></p>
+<p>多行字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$11\r\n  </span><br><span class="line">hello world\r\n</span><br></pre></td></tr></table></figure></p>
+<p>整数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:1024\r\n</span><br></pre></td></tr></table></figure></p>
+<p>错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-WRONGTYPE Operation ....</span><br></pre></td></tr></table></figure></p>
+<p>数组[1,2,3]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*3\r\n  </span><br><span class="line">:1\r\n</span><br><span class="line">:2\r\n  </span><br><span class="line">:3\r\n</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/21/Redis/Redis原理----通信协议/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/Redis/Redis原理----线程IO模型/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/20/Redis/Redis原理----线程IO模型/" itemprop="url">Redis原理----线程IO模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-20T19:34:13+08:00">
+                2018-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><b>Redis是一个单线程程序</b></p>
+<h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>当我们调用套接字的读写方法，默认他们是阻塞的，比如read方法要传递一个参数n，表示最多读取这门多字节后返回，如果一个字节都没有，那么线程就会卡在那里，直到新的数据到来或者连接关闭，read方法才可以返回，线程才能够继续处理。而write方法一般来说不会阻塞，除非内核为套接字分配的写缓冲区已经写满了，write方法才会阻塞，直到缓冲区有空闲空间。<img src="https://i.imgur.com/0sE9kXD.png" alt=""><br>非阻塞IO在套接字对象上提供了一个选项Non_Blocking,当这个选项打开时，读写方法不会阻塞。能读多少取决于内核为套接字分配的读缓冲区的空闲空间字节数，能写多少取决于内核为套接字分配的写缓冲区的空闲空间字节数。读方法和写方法都会通过返回值来告知程序实际读写了多少字节。</p>
+<h2 id="事件轮询（多路复用）"><a href="#事件轮询（多路复用）" class="headerlink" title="事件轮询（多路复用）"></a>事件轮询（多路复用）</h2><p>非阻塞IO有个问题，就是线程要读数据，但是读了一部分就返回了，线程如何知道什么时候应该继续读，也就是当数据到来时，线程如何得到通知。写也是一样。<img src="https://i.imgur.com/bxF8jbN.png" alt=""><br>事件轮询API就是用来解决这个问题的，最简单的时间轮询API是select函数，它是操作系统提供给用户程序的API。输入时读写描述符列表read_fds &amp; write_fds，输出是与之对应的可读可写时间。同时还提供了一个timeout参数，如果没有任何事件的到来，那么最多等待timeout时间，线程处于阻塞状态。一旦期间有事件到来，就可以立即返回。线程就可以继续挨个处理相应的事件。处理完了继续过来轮询。于是线程就进入了一个死循环。我们把这个死循环称为事件轮询，一个循环为一个周期。<br><b>事件轮询API就是Java语言中的NIO技术</b></p>
+<h2 id="指令队列"><a href="#指令队列" class="headerlink" title="指令队列"></a>指令队列</h2><p>Redis会将每个客户端套接字都关联一个指令队列。客户端的指令通过队列来排队进行顺序处理，先到先服务。</p>
+<h2 id="响应队列"><a href="#响应队列" class="headerlink" title="响应队列"></a>响应队列</h2><p>Redis同样会为每个客户端套接字关联一个响应队列。<br>Redis服务器通过响应队列来将指令的返回结果回复给客户端。如果队列为空，那么以为这连接暂时处于空闲状态，不需要去获取写事件，也就是可以将当前的客户端描述符从write_fds里面移除。等到队列有数据了，再将描述符放进去。避免select系统调用立即返回写事件，结果发现没什么数据可以写。<b>出现这种情况的线程会飙高CPU</b></p>
+<h2 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h2><p>服务器处理要响应的IO事件外，还要处理其他事情。比如定时任务。<br>如果线程阻塞在select系统调用上，定时任务将无法得到准时调度。那么Redis是如何解决这个问题的呢？  </p>
+<p>Redis的定时任务会记录在一个最小堆的数据结构中。这个堆中，最快要执行的任务排在堆的最上方。在每个循环周期，Redis都会将最小堆里面已经到点的任务立即进行处理。处理完毕后，将最快要执行的任务还需要的时间记录下来，这个时间就是select系统调用的timeout参数。因为Redis知道未来timeout时间内，没有其他定时任务需要处理，所以可以安心睡眠timeout时间。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/new/python/python装饰器/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/19/new/python/python装饰器/" itemprop="url">python装饰器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T21:40:56+08:00">
+                2018-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>python装饰器就是用于<font color="red">扩展原来函数功能的一种函数</font>，这个函数的特殊之处在于它的返回值也是一个函数。使用python装饰器的好处就是在不用更改原函数的代码前提下给函数增加新的功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原函数</span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>要想扩展一个函数的功能，最简单的方法就是直接修改原函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def func():</span><br><span class="line">	print(&quot;before&quot;)</span><br><span class="line">	print(&quot;hello&quot;)</span><br><span class="line">	print(&quot;after&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>如果不想修改原函数，还是想增强函数的功能时，可以另外定义一个函数调用原函数。（类似于设计模式中的装饰模式，有组合和代理两种方式）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def deco(func):</span><br><span class="line">	print(&quot;before&quot;)</span><br><span class="line">	func()</span><br><span class="line">	print(&quot;after&quot;)</span><br><span class="line"></span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    f = func</span><br><span class="line">    deco(f)#只有把func()或者f()作为参数执行，新加入功能才会生效</span><br><span class="line">    print(&quot;f.__name__ is&quot;,f.__name__)#f的name就是func()</span><br><span class="line">    print()</span><br><span class="line">    #func()</span><br></pre></td></tr></table></figure></p>
+<p>但是如果存在很多个类似于func的函数需要相同的扩展，那岂不是要执行deco函数许多次？<br>下面我们实现一个最简陋的装饰器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def deco(func):</span><br><span class="line">	def wrapper(*args, **kwargs):</span><br><span class="line">		print(&quot;before&quot;)</span><br><span class="line">		func(*args, **kwargs)</span><br><span class="line">		print(&quot;after&quot;)</span><br><span class="line">	return wrapper</span><br><span class="line"></span><br><span class="line">@deco</span><br><span class="line">def func():</span><br><span class="line">	print(&quot;hello&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>这里的deco函数就是最原始的装饰器，它的参数是一个函数，然后返回值也是一个函数。其中作为参数的这个函数func()就在返回函数wrapper()的内部执行。然后在函数func()前面加上@deco。<br>所以这里装饰器就像一个注入符号：有了它，拓展了原来函数的功能既不需要侵入函数内更改代码，也不需要重复执行原函数。<br>在func函数前还可以使用多个@的方式来执行多个装饰器，多个装饰器的执行顺序就是从最后一个装饰器开始执行到第一个装饰器，在执行函数本身。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">def dec1(func):  </span><br><span class="line">    print(&quot;1111&quot;)  </span><br><span class="line">    def one():  </span><br><span class="line">        print(&quot;2222&quot;)  </span><br><span class="line">        func()  </span><br><span class="line">        print(&quot;3333&quot;)  </span><br><span class="line">    return one  </span><br><span class="line"></span><br><span class="line">def dec2(func):  </span><br><span class="line">    print(&quot;aaaa&quot;)  </span><br><span class="line">    def two():  </span><br><span class="line">        print(&quot;bbbb&quot;)  </span><br><span class="line">        func()  </span><br><span class="line">        print(&quot;cccc&quot;)  </span><br><span class="line">    return two  </span><br><span class="line"></span><br><span class="line">@dec1  </span><br><span class="line">@dec2  </span><br><span class="line">def test():  </span><br><span class="line">    print(&quot;test test&quot;)  </span><br><span class="line"></span><br><span class="line">test()  </span><br><span class="line"></span><br><span class="line">aaaa  </span><br><span class="line">1111  </span><br><span class="line">2222  </span><br><span class="line">bbbb  </span><br><span class="line">test test  </span><br><span class="line">cccc  </span><br><span class="line">3333</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/new/python/获取本机IP/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/new/python/获取本机IP/" itemprop="url">python获取本机IP</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-21T16:28:05+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span><span class="params">()</span>:</span></span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">      s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">      s.connect((<span class="string">'8.8.8.8'</span>, <span class="number">80</span>))</span><br><span class="line">      ip = s.getsockname()[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">finally</span>:</span><br><span class="line">      s.close()</span><br><span class="line">  <span class="keyword">return</span> ip</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/Redis/Redis设计与实现-数据结构篇（6）--压缩列表/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/12/Redis/Redis设计与实现-数据结构篇（6）--压缩列表/" itemprop="url">Redis设计与实现-数据结构篇（6）-压缩列表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T19:41:38+08:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>压缩列表：压缩列表是列表键和哈希键的底层实现之一。为了提高内存存储效率而升级的。<br>当一个列表键只包含少量列表项，并且每个列表项要么就是小整数值，要么就是长度比较短的字符串，那么Redis会使用压缩列表来做列表键的底层实现。</p>
+<p><code>注：redis 3.2以后，quicklist作为列表键的底层实现之一，代替了压缩列表。</code></p>
+<h2 id="压缩列表的组成"><a href="#压缩列表的组成" class="headerlink" title="压缩列表的组成"></a>压缩列表的组成</h2><p><a href="https://imgchr.com/i/V73HxI" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V73HxI.md.jpg" alt="V73HxI.md.jpg"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 保存 ziplist 节点信息的结构</span><br><span class="line"> */</span><br><span class="line">typedef struct zlentry &#123;</span><br><span class="line"></span><br><span class="line">    // prevrawlen ：前置节点的长度</span><br><span class="line">    // prevrawlensize ：编码 prevrawlen 所需的字节大小</span><br><span class="line">    unsigned int prevrawlensize, prevrawlen;</span><br><span class="line"></span><br><span class="line">    // len ：当前节点值的长度</span><br><span class="line">    // lensize ：编码 len 所需的字节大小</span><br><span class="line">    unsigned int lensize, len;</span><br><span class="line"></span><br><span class="line">    // 当前节点 header 的大小</span><br><span class="line">    // 等于 prevrawlensize + lensize</span><br><span class="line">    unsigned int headersize;</span><br><span class="line"></span><br><span class="line">    // 当前节点值所使用的编码类型</span><br><span class="line">    unsigned char encoding;</span><br><span class="line"></span><br><span class="line">    // 指向当前节点的指针</span><br><span class="line">    unsigned char *p;</span><br><span class="line"></span><br><span class="line">&#125; zlentry;</span><br></pre></td></tr></table></figure>
+<p>虽然定义了这个结构体，但是根本就没有使用zlentry结构来作为压缩列表中用来存储数据节点中的结构。<br>因为这个结构存小整数或短字符是在太浪费空间了。这个结构总共在32位机占用28个字节，64位机占用32个字节。这不符合压缩列表的设计目的。<br>压缩列表的节点真正结构如下图：<br><a href="https://imgchr.com/i/V73TGd" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/06/16/V73TGd.md.jpg" alt="V73TGd.md.jpg"></a></p>
+<ul>
+<li>prev_entry_len：记录前驱节点的长度</li>
+<li>encoding：记录当前节点的value成员的数据类型以及长度</li>
+<li>value：根据encoding保存字节数组或整数</li>
+</ul>
+<h2 id="prev-entry-len"><a href="#prev-entry-len" class="headerlink" title="prev_entry_len"></a>prev_entry_len</h2><p>prev_entry_len成员实际上就是zlentry结构中prevrawlensize,和prevrawlen这两个成员的压缩版。<br>这两个成员都是int类型，因此将两者压缩为一个成员prev_entry_len。分别对不同长度的前驱节点使用不同的字节数表示：<br>1) 如果前置节点的长度小于 254 字节，那么程序将使用 1 个字节来保存这个长度值。<br>2) 如果前置节点的长度大于等于 254 字节，那么程序将使用 5 个字节来保存这个长度值：<br>    a) 第 1 个字节的值将被设为 254 ，用于标识这是一个 5 字节长的长度值。<br>    b) 之后的 4 个字节则用于保存前置节点的实际长度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/* Encode the length of the previous entry and write it to &quot;p&quot;. Return the</span><br><span class="line"> * number of bytes needed to encode this length if &quot;p&quot; is NULL. </span><br><span class="line"> *</span><br><span class="line"> * 对前置节点的长度 len 进行编码，并将它写入到 p 中，</span><br><span class="line"> * 然后返回编码 len 所需的字节数量。</span><br><span class="line"> *</span><br><span class="line"> * 如果 p 为 NULL ，那么不进行写入，仅返回编码 len 所需的字节数量。</span><br><span class="line"> *</span><br><span class="line"> * T = O(1)</span><br><span class="line"> */</span><br><span class="line">static unsigned int zipPrevEncodeLength(unsigned char *p, unsigned int len) &#123;</span><br><span class="line"></span><br><span class="line">    // 仅返回编码 len 所需的字节数量</span><br><span class="line">    if (p == NULL) &#123;</span><br><span class="line">        return (len &lt; ZIP_BIGLEN) ? 1 : sizeof(len)+1;</span><br><span class="line"></span><br><span class="line">    // 写入并返回编码 len 所需的字节数量</span><br><span class="line">    &#125; else &#123;</span><br><span class="line"></span><br><span class="line">        // 1 字节</span><br><span class="line">        if (len &lt; ZIP_BIGLEN) &#123;</span><br><span class="line">            p[0] = len;</span><br><span class="line">            return 1;</span><br><span class="line"></span><br><span class="line">        // 5 字节</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 添加 5 字节长度标识</span><br><span class="line">            p[0] = ZIP_BIGLEN;</span><br><span class="line">            // 写入编码</span><br><span class="line">            memcpy(p+1,&amp;len,sizeof(len));</span><br><span class="line">            // 如果有必要的话，进行大小端转换</span><br><span class="line">            memrev32ifbe(p+1);</span><br><span class="line">            // 返回编码长度</span><br><span class="line">            return 1+sizeof(len);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="encoding"><a href="#encoding" class="headerlink" title="encoding"></a>encoding</h2><p>和prev_entry_len一样，encoding成员同样可以看做成zlentry结构中lensize和len的压缩版。<br>同样的lensize和len都是占4个字节的，因此将两者压缩为一个成员encoding，只要encoding能够同时具有lensize和len成员的功能，而且对当前节点保存的是字节数组还是整数分别编码。</p>
+<p>zlentry中len字段配合encoding字段进行了编码, 尽量压缩字段长度, 减少内存使用。<br>1）如果节点保存的是字符串，那么使用两个字节来保存编码字符串长度所使用的类型。之后的跟着的内容为字符串的实际长度。</p>
+<pre><code>1. |00pppppp| 字符串长度小于等于63字节（6bit)
+2. |01pppppp|qqqqqqqq| 字符串长度小于等于16383字节(14bit)
+3. |10______|qqqqqqqq|rrrrrrrr|ssssssss|tttttttt| 字符串大于等于16384字节；
+</code></pre><p>2）如果节点保存的是征收值，则头两位设置为1，紧跟着的两位用于标识节点所保存的整数类型。</p>
+<pre><code>1. |11000000| 节点的值为 int16_t 类型的整数，长度为 2 字节。
+2. |11010000| 节点的值为 int32_t 类型的整数，长度为 4 字节。
+3. |11100000| 节点的值为 int64_t 类型的整数，长度为 8 字节。
+4. |11110000| 节点的值为 24 位（3 字节）长的整数。
+5. |11111110| 节点的值为 8 位（1 字节）长的整数。
+6. |1111xxxx| 节点的值为介于 0 至 12 之间的无符号整数。取出来的值还得减一。
+7. |11111111| ziplist 的结尾标识
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">/*字符串编码标识使用了最高2bit位 */</span><br><span class="line">#define ZIP_STR_06B (0 &lt;&lt; 6)  //6bit</span><br><span class="line">#define ZIP_STR_14B (1 &lt;&lt; 6)  //14bit</span><br><span class="line">#define ZIP_STR_32B (2 &lt;&lt; 6)  //32bit</span><br><span class="line"></span><br><span class="line">/*zlentry中len字段进行编码过程*/</span><br><span class="line">static unsigned int zipEncodeLength(unsigned char *p, unsigned char encoding, unsigned int rawlen) &#123;</span><br><span class="line">    unsigned char len = 1, buf[5];</span><br><span class="line"></span><br><span class="line">    if (ZIP_IS_STR(encoding)) &#123;</span><br><span class="line">        /*</span><br><span class="line">          *6bit可以存储, 占用空间为1个字节, 值存储在字节后6bit中.</span><br><span class="line">          */</span><br><span class="line">        if (rawlen &lt;= 0x3f) &#123;</span><br><span class="line">            if (!p) return len;</span><br><span class="line">            buf[0] = ZIP_STR_06B | rawlen;</span><br><span class="line">        &#125; else if (rawlen &lt;= 0x3fff) &#123;</span><br><span class="line">            len += 1;</span><br><span class="line">            if (!p) return len;</span><br><span class="line">               /*14bit可以存储, 置前两个bit位为ZIP_STR_14B标志 */</span><br><span class="line">            buf[0] = ZIP_STR_14B | ((rawlen &gt;&gt; 8) &amp; 0x3f);</span><br><span class="line">            buf[1] = rawlen &amp; 0xff;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            len += 4;</span><br><span class="line">            if (!p) return len;</span><br><span class="line">            buf[0] = ZIP_STR_32B;</span><br><span class="line">            buf[1] = (rawlen &gt;&gt; 24) &amp; 0xff;</span><br><span class="line">            buf[2] = (rawlen &gt;&gt; 16) &amp; 0xff;</span><br><span class="line">            buf[3] = (rawlen &gt;&gt; 8) &amp; 0xff;</span><br><span class="line">            buf[4] = rawlen &amp; 0xff;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        /* 内容编码为整型, 长度默认为1*/</span><br><span class="line">        if (!p) return len;</span><br><span class="line">        buf[0] = encoding;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Store this length at p */</span><br><span class="line">    memcpy(p,buf,len);</span><br><span class="line">    return len;</span><br><span class="line">&#125;</span><br><span class="line">2.3 zlentry之encoding和p编码</span><br><span class="line">zlentry中encoding和p表示元素编码和内容, 下面分析下具体编码规则, 可以看到这里对内存节省真是到了魔性的地步. encoding是保存在len字段第一个字节中, 第一个字节最高2bit标识字符串编码, 5和6bit位标识是整数编码, 解码时直接从第一个字节中获取编码信息.</span><br><span class="line"></span><br><span class="line">/* 整数编码标识使用了5和6bit位 */</span><br><span class="line">#define ZIP_INT_16B (0xc0 | 0&lt;&lt;4)  //16bit整数</span><br><span class="line">#define ZIP_INT_32B (0xc0 | 1&lt;&lt;4)  //32bit整数</span><br><span class="line">#define ZIP_INT_64B (0xc0 | 2&lt;&lt;4)  //64bit整数</span><br><span class="line">#define ZIP_INT_24B (0xc0 | 3&lt;&lt;4)  //24bit整数</span><br><span class="line">#define ZIP_INT_8B 0xfe            //8bit整数</span><br><span class="line"></span><br><span class="line">#define ZIP_INT_IMM_MASK 0x0f</span><br><span class="line">#define ZIP_INT_IMM_MIN 0xf1    /* 11110001 */</span><br><span class="line">#define ZIP_INT_IMM_MAX 0xfd    /* 11111101 */</span><br><span class="line"></span><br><span class="line">static int zipTryEncoding(unsigned char *entry, unsigned int entrylen, long long *v, unsigned char *encoding) &#123;</span><br><span class="line">    long long value;</span><br><span class="line">    if (entrylen &gt;= 32 || entrylen == 0) return 0;</span><br><span class="line">   </span><br><span class="line">    if (string2ll((char*)entry,entrylen,&amp;value)) &#123;</span><br><span class="line">        /* 0-12之间的值, 直接在保存在了encoding字段中, 其他根据值大小, 直接设置为相应的编码*/</span><br><span class="line">        if (value &gt;= 0 &amp;&amp; value &lt;= 12) &#123;</span><br><span class="line">            *encoding = ZIP_INT_IMM_MIN+value;</span><br><span class="line">        &#125; else if (value &gt;= INT8_MIN &amp;&amp; value &lt;= INT8_MAX) &#123;</span><br><span class="line">            *encoding = ZIP_INT_8B;</span><br><span class="line">        &#125; else if (value &gt;= INT16_MIN &amp;&amp; value &lt;= INT16_MAX) &#123;</span><br><span class="line">            *encoding = ZIP_INT_16B;</span><br><span class="line">        &#125; else if (value &gt;= INT24_MIN &amp;&amp; value &lt;= INT24_MAX) &#123;</span><br><span class="line">            *encoding = ZIP_INT_24B;</span><br><span class="line">        &#125; else if (value &gt;= INT32_MIN &amp;&amp; value &lt;= INT32_MAX) &#123;</span><br><span class="line">            *encoding = ZIP_INT_32B;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            *encoding = ZIP_INT_64B;</span><br><span class="line">        &#125;</span><br><span class="line">        *v = value;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="连锁更新"><a href="#连锁更新" class="headerlink" title="连锁更新"></a>连锁更新</h2><p>当将一个新节点添加到某个节点之前时，如果原节点的header空间不足以保存新节点的长度，那么就需要对原节点的header空间进行扩展（从1字节扩展到5字节）。但是当对这个节点进行扩展后，可能又会引起后续节点的扩展，这就会引起连锁更新。这种情况在多个连续节点的长度都接近 ZIP_BIGLEN 时可能发生。</p>
+<p>反过来说，因为节点的长度变小而引起的连续缩小也是可能出现的，为了避免扩展-缩小-扩展-缩小这样的情况反复出现（flapping，抖动），我们不处理这种情况，而是任由 prevlen 比所需的长度更长。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1867,7 +2095,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">142</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

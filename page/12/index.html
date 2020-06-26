@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/小软件/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/31/new/ACM/51nod1134 最长递增子序列/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -326,7 +326,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/小软件/" itemprop="url">软件</a></h1>
+                <a class="post-title-link" href="/2016/03/31/new/ACM/51nod1134 最长递增子序列/" itemprop="url">51nod1134 最长递增子序列</a></h1>
         
 
         <div class="post-meta">
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:46:12+08:00">
-                2017-10-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T20:14:16+08:00">
+                2016-03-31
               </time>
             
 
@@ -361,8 +361,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/软件/" itemprop="url" rel="index">
-                    <span itemprop="name">软件</span>
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
                   </a>
                 </span>
 
@@ -400,16 +400,9 @@
       
         
           
-            <p>各种杂七杂八的软件：</p>
-<ul>
-<li><a href="http://pan.baidu.com/s/1pLSfj9x" target="_blank" rel="noopener">Windows FX</a></li>
-<li><a href="http://pan.baidu.com/s/1hrJVDU8" target="_blank" rel="noopener">Myeclipse</a></li>
-<li><a href="http://pan.baidu.com/s/1hrDQbAW" target="_blank" rel="noopener">Kali系统</a></li>
-<li><a href="http://pan.baidu.com/s/1dFni0Jv" target="_blank" rel="noopener">JDK压缩包</a></li>
-<li><a href="http://pan.baidu.com/s/1i49KJlj" target="_blank" rel="noopener">zookeeper</a></li>
-<li><a href="http://pan.baidu.com/s/1kVvJKKv" target="_blank" rel="noopener">tomcat</a></li>
-<li></li>
-</ul>
+            <p>给出长度为N的数组，找出这个数组的最长递增子序列。(递增子序列是指，子序列的元素是递增的）<br>例如：5 1 6 8 2 4 5 10，最长递增子序列是1 2 4 5 10。</p>
+<p>Input<br>第1行：1个数N，N为序列的长度(2 &lt;= N &lt;= 50000)<br>第2 - N + 1行：每行1个数，对应序列的元素(-10^9 &lt;= S[i] &lt;= 10^9)<br>Output<br>输出最长递增子序列的长度。<br>Input示例<br>8<br>5<br>1<br>6<br>8<br>2<br>4<br>5<br>10<br>Output示例<br>5<br>刚开始我想到的也是动态规划，然后自己写。提交发现超时了=.=<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="comment">// freopen("C://Users//Administrator//Desktop//duipai2//1.txt","r",stdin);</span></span><br><span class="line"><span class="comment">//freopen("C://Users//Administrator//Desktop//duipai2//out1.txt","w",stdout);</span></span><br><span class="line">    <span class="keyword">int</span> n,i,j,ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> dp[<span class="number">50005</span>];</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> str[<span class="number">50005</span>];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">50005</span>;i++)</span><br><span class="line">        dp[i]=<span class="number">1</span>;</span><br><span class="line">   <span class="comment">// memset(dp,1,sizeof(dp));</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lld"</span>,&amp;str[i]);</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;i;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(str[j]&lt;str[i]&amp;&amp;dp[j]&gt;=dp[i])</span><br><span class="line">                dp[i]=dp[j]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="comment">// for(i=1;i&lt;=n;i++)</span></span><br><span class="line">   <span class="comment">//     printf("%d  ",dp[i]);</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">         ans=max(ans,dp[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后参考了网上大神的代码也是动态规划=.=但是优化了，所以AC了~~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"algorithm"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1e5</span>;</span><br><span class="line"><span class="keyword">int</span> dp[maxn];<span class="comment">//dp[i]表示递增数量i的最小值</span></span><br><span class="line"><span class="keyword">int</span> a[maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,len=<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a[i]);</span><br><span class="line">    dp[len]=a[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]&gt;dp[len])</span><br><span class="line">          dp[++len]=a[i];</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> pos=lower_bound(dp+<span class="number">1</span>,dp+len,a[i])-dp;</span><br><span class="line">            <span class="comment">//在dp[]找第一个&gt;=a[i]下标</span></span><br><span class="line">            dp[pos]=a[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="comment">//   for(int i=1;i&lt;=n;i++)</span></span><br><span class="line">      <span class="comment">//printf("%d  ",dp[i]);</span></span><br><span class="line">    <span class="comment">//printf("\n");</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,len);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -458,7 +451,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/虚函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/28/new/ACM/51nod1057N的阶乘/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -477,7 +470,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/虚函数/" itemprop="url">虚函数</a></h1>
+                <a class="post-title-link" href="/2016/03/28/new/ACM/51nod1057N的阶乘/" itemprop="url">51nod1057N的阶乘</a></h1>
         
 
         <div class="post-meta">
@@ -489,8 +482,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:46:12+08:00">
-                2017-10-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-28T20:14:16+08:00">
+                2016-03-28
               </time>
             
 
@@ -512,8 +505,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-基础知识/" itemprop="url" rel="index">
-                    <span itemprop="name">C++基础知识</span>
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
                   </a>
                 </span>
 
@@ -550,12 +543,738 @@
 
       
         
-          <p>引入原因：为了方便使用多态特性，我们常常需要在基类中定于虚函数。</p>
-<p>关于多态，简而言之就是用父类型别的指针指向其子类的实例，然后通过父类的指针调用实际子类的成员函数。这种技术可以让父类的指针有“多种形态”，这是一种泛型技术。所谓泛型技术，说白了就是试图使用不变的代码来实现可变的算法。比如：模板技术，RTTI技术，虚函数技术，要么是试图做到在编译时决议，要么试图做到运行时决议。</p>
-<p><strong>虚函数表</strong><br>
+          
+            <p>输入N求N的阶乘的准确值。</p>
+<p>Input<br>输入N(1 &lt;= N &lt;= 10000)<br>Output<br>输出N的阶乘<br>Input示例<br>5<br>Output示例<br>120<br>参考博客：blog.csdn.net/qq_33850438/article/details/50631619<br>大数乘法问题~<br>大神代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">9999</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,n,i,c,len,j;   </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>    </span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);  </span><br><span class="line">    <span class="keyword">for</span> ( len=<span class="number">1</span>,j=<span class="number">2</span>;j&lt;=n; ++j)   </span><br><span class="line">    &#123;   </span><br><span class="line">        <span class="keyword">for</span> (c=<span class="number">0</span>,i=<span class="number">0</span>; i&lt;len;++i)   </span><br><span class="line">        &#123;   </span><br><span class="line">            a[i]= ( c+= a[i]*j ) % <span class="number">100000</span>; c/=<span class="number">100000</span>;   </span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">if</span>((a[i]=c)&gt;<span class="number">0</span>)++len;  </span><br><span class="line">    &#125;      </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,a[--len]);  </span><br><span class="line">    <span class="keyword">for</span>(;len;)  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%05d"</span>, a[--len]);  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/27/new/ACM/51nod1085-----01背包/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/27/new/ACM/51nod1085-----01背包/" itemprop="url">51nod1085-----01背包</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-27T20:14:16+08:00">
+                2016-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在N件物品取出若干件放在容量为W的背包里，每件物品的体积为W1，W2……Wn（Wi为整数），与之相对应的价值为P1,P2……Pn（Pi为整数）。求背包能够容纳的最大价值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> dp[<span class="number">101</span>][<span class="number">10001</span>];</span><br><span class="line"><span class="keyword">int</span> w[<span class="number">101</span>],p[<span class="number">101</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,W,i,j;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;W);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>,&amp;w[i],&amp;p[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=W;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(j&lt;w[i])</span><br><span class="line">                dp[i][j]=dp[i<span class="number">-1</span>][j];</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                dp[i][j]=max(dp[i<span class="number">-1</span>][j],dp[i<span class="number">-1</span>][j-w[i]]+p[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[n][W]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/26/new/ACM/51nod1046快速幂取余/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/26/new/ACM/51nod1046快速幂取余/" itemprop="url">51nod1046快速幂取余</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-26T20:14:16+08:00">
+                2016-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>给出3个正整数A B C，求A^B Mod C。</p>
+<p>例如，3 5 8，3^5 Mod 8 = 3。<br>Input<br>3个正整数A B C，中间用空格分隔。(1 &lt;= A,B,C &lt;= 10^9)<br>Output<br>输出计算结果<br>Input示例<br>3 5 8<br>Output示例<br>3</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span>  <span class="title">quickmod</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a,<span class="keyword">long</span> <span class="keyword">long</span> b,<span class="keyword">long</span> <span class="keyword">long</span> m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>)&#123;</span><br><span class="line">            ans=(ans*a)%m;<span class="comment">//这里a是a^(2^i)%m</span></span><br><span class="line">            b--;</span><br><span class="line">        &#125;</span><br><span class="line">        b/=<span class="number">2</span>;</span><br><span class="line">        a=a*a%m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a,b,m;</span><br><span class="line">    <span class="keyword">while</span>(scanf(<span class="string">"%d%d%d"</span>,&amp;a,&amp;b,&amp;m)!=EOF)&#123;</span><br><span class="line">      <span class="keyword">long</span> <span class="keyword">long</span>   ans=quickmod(a,b,m);</span><br><span class="line">        printf(<span class="string">"%lld"</span>,ans);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/21/new/ACM/51nod贪心算法入门-任务分配问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/21/new/ACM/51nod贪心算法入门-任务分配问题/" itemprop="url">51nod贪心算法入门-----任务分配问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T22:30:07+08:00">
+                2016-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>任务执行顺序</p>
+<p>有N个任务需要执行，第i个任务计算时占R[i]个空间，而后会释放一部分，最后储存计算结果需要占据O[i]个空间（O[i] &lt; R[i]）。</p>
+<p>分析：可以抽象成，从一个整数开始，每次减去a，再加上b (a,b都是正数)，要求每次操作都不产生负数。令a[i] = R[i], b[i] = R[i] – O[i]，O[i] &lt; R[i],有0&lt;b[i]&lt;a[i]。 所以尽管每次有减有加，但是加的没有减的多，总数在不断减小。所以——按照b[i]递增的顺序排序，是最“有利”的。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/18/虚函数/#more" rel="contents">
+            <a class="btn" href="/2016/03/21/new/ACM/51nod贪心算法入门-任务分配问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/21/new/ACM/51nod动态规划-矩阵取数/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/21/new/ACM/51nod动态规划-矩阵取数/" itemprop="url">51nod动态规划-----矩阵取数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T22:27:36+08:00">
+                2016-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一个N<em>N矩阵中有不同的正整数，经过这个格子，就能获得相应价值的奖励，从左上走到右下，只能向下向右走，求能够获得的最大价值。<br>例如：3 </em> 3的方格。</p>
+<p>1 3 3</p>
+<p>2 1 3</p>
+<p>2 2 1</p>
+<p>能够获得的最大价值为：11。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/21/new/ACM/51nod动态规划-矩阵取数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/20/new/ACM/51nod贪心算法入门-独木舟问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/20/new/ACM/51nod贪心算法入门-独木舟问题/" itemprop="url">51nod贪心算法入门-----独木舟问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T22:25:23+08:00">
+                2016-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>独木舟问题</p>
+<p>n个人，已知每个人体重，独木舟承重固定，每只独木舟最多坐两个人，可以坐一个人或者两个人。显然要求总重量不超过独木舟承重，假设每个人体重也不超过独木舟承重，问最少需要几只独木舟？</p>
+<p>分析：按照人的体重排序，最轻的人跟最重的人尽量安排在一条船上，如果超过就安排最重的.<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/20/new/ACM/51nod贪心算法入门-独木舟问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -606,7 +1325,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/深复制和浅复制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/20/new/ACM/51nod1079/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -625,7 +1344,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/深复制和浅复制/" itemprop="url">深复制和浅复制</a></h1>
+                <a class="post-title-link" href="/2016/03/20/new/ACM/51nod1079/" itemprop="url">51nod1079中国剩余定理</a></h1>
         
 
         <div class="post-meta">
@@ -637,8 +1356,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:19:09+08:00">
-                2017-10-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T20:14:16+08:00">
+                2016-03-20
               </time>
             
 
@@ -660,8 +1379,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-基础知识/" itemprop="url" rel="index">
-                    <span itemprop="name">C++基础知识</span>
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
                   </a>
                 </span>
 
@@ -699,12 +1418,7 @@
       
         
           
-            <p>浅复制：被复制对象的所有变量都含有与原来对象相同的值，而所有的对其他对象的引用仍然指向原来的对象。换言之，浅复制仅仅复制所考虑的对象，而不复制它所引用的对象。</p>
-<p>深复制：被复制对象的所有变量都含有与原来的对象相同的值，除去那些引用其他对象的变量。那些引用其他对象的变量将指向被复制过的新对象，而不再是原有的那些被引用的对象。换言之，深复制把要复制的对象所引用的对象都复制了一遍。</p>
-<p>举例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> *ptr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shallow_copy</span><span class="params">(Test &amp; src,Test &amp; dest)</span></span>&#123;</span><br><span class="line">	dest.ptr = src.ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deep_copy</span><span class="params">(Test &amp; src,Test &amp; dest)</span></span>&#123;</span><br><span class="line">	dest.ptr=<span class="built_in">malloc</span>(<span class="built_in">strlen</span>(src.ptr)+<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">memcpy</span>(dest.ptr,src.ptr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>浅复制可能会导致运行时错误，特别是在对象的创建和删除过程中。</p>
-
+            <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *中国剩余定理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cctype&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  LL __int64</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *gcd(a,b)=d;则存在x,y,使d=ax+by</span></span><br><span class="line"><span class="comment"> *extended_euclid(a,b)=ax+by</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">LL <span class="title">extended_euclid</span><span class="params">(LL a,LL b,LL &amp;x,LL &amp;y)</span></span>&#123;<span class="comment">//扩张欧几里的算法</span></span><br><span class="line">    <span class="keyword">int</span> d;</span><br><span class="line">    <span class="keyword">if</span>(b==<span class="number">0</span>)&#123;</span><br><span class="line">        x=<span class="number">1</span>; y=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    d=extended_euclid(b,a%b,y,x);</span><br><span class="line">    y=y-a/b*x;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *x=b[i](modw[i]) o&lt;i&lt;len</span></span><br><span class="line"><span class="comment"> *w[i]&gt;0,且w[]中任意两个数互质</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">LL <span class="title">chinese_remainder</span><span class="params">(<span class="keyword">int</span> b[],<span class="keyword">int</span> w[],<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    LL res,i,d,x,y,n,m;</span><br><span class="line">    res=<span class="number">0</span>; n=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++) n*=w[i];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        m=n/w[i];</span><br><span class="line">        extended_euclid(w[i],m,x,y);</span><br><span class="line">        res=(res+y*m*b[i])%n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (n+res%n)%n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> len,b[<span class="number">12</span>],w[<span class="number">12</span>];</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span>&gt;&gt;len)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="built_in">cin</span>&gt;&gt;w[i]&gt;&gt;b[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;chinese_remainder(b,w,len)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           
         
       
@@ -752,7 +1466,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/内存泄露和缓冲区溢出/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/17/new/ACM/51nod贪心算法入门-活动安排问题2/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -771,7 +1485,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/内存泄露和缓冲区溢出/" itemprop="url">内存泄露和缓冲区溢出</a></h1>
+                <a class="post-title-link" href="/2016/03/17/new/ACM/51nod贪心算法入门-活动安排问题2/" itemprop="url">51nod贪心算法入门-----活动安排问题2</a></h1>
         
 
         <div class="post-meta">
@@ -783,8 +1497,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T20:38:09+08:00">
-                2017-10-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-17T22:22:10+08:00">
+                2016-03-17
               </time>
             
 
@@ -806,8 +1520,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-基础知识/" itemprop="url" rel="index">
-                    <span itemprop="name">C++基础知识</span>
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
                   </a>
                 </span>
 
@@ -844,167 +1558,18 @@
 
       
         
-          
-            <p>什么是内存泄露？</p>
-<ul>
-<li>一般我们常说的内存泄露是指堆内存的泄露。堆内存是指程序从堆中分配的，大小任意的内存块，使用完后必须显示释放的内存。应用程序一般使用malloc、realloc、new等函数从堆中分配到一块内存，使用完后，程序必须负责相应的调用free或delete释放该内存块，否则，这块内存就不能再被使用，我们就说这块内存泄露了。</li>
-</ul>
-<hr>
-<p>什么是缓冲区溢出？</p>
-<ul>
-<li>缓冲区溢出是指向缓冲区内填充数据位数超过了缓冲区本身的容量限制，导致溢出的数据覆盖在合法数据上的情况。理想的情况是程序检查数据长度并不允许输出超出缓冲区长度的字符，但是绝大多数程序都会假设数据长度总是与所分配的存储空间相匹配，这九尾缓冲区溢出埋下了隐患。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/kuangjia/SpringMVC/SpringMVC工作流程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/kuangjia/SpringMVC/SpringMVC工作流程/" itemprop="url">SpringMVC工作流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T16:43:38+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/框架/" itemprop="url" rel="index">
-                    <span itemprop="name">框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Spring_Running_1.png" alt=""></p>
+          <p>题目大意就是给几个活动，问要几个教室能够弄完。</p>
+<p>这个题目的想法就是把活动的开始——结束的时间看做是数轴上的一段线段，教室的个数就是在某点的时间厚度，求最大的时间厚度就是所需要的教室个数。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/18/kuangjia/SpringMVC/SpringMVC工作流程/#more" rel="contents">
+            <a class="btn" href="/2016/03/17/new/ACM/51nod贪心算法入门-活动安排问题2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     
@@ -1048,7 +1613,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/17/四种线程池/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/05/new/ACM/51nod贪心算法入门-活动安排问题/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -1067,7 +1632,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/17/四种线程池/" itemprop="url">Java的四种线程池</a></h1>
+                <a class="post-title-link" href="/2016/03/05/new/ACM/51nod贪心算法入门-活动安排问题/" itemprop="url">51nod贪心算法入门-----活动安排问题</a></h1>
         
 
         <div class="post-meta">
@@ -1079,8 +1644,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T12:42:31+08:00">
-                2017-10-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-05T23:18:12+08:00">
+                2016-03-05
               </time>
             
 
@@ -1102,8 +1667,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/acm/" itemprop="url" rel="index">
+                    <span itemprop="name">acm</span>
                   </a>
                 </span>
 
@@ -1140,598 +1705,16 @@
 
       
         
-          <p>Java通过Executors提供了四种线程池：</p>
-<ul>
-<li>newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
+          <p>有若干个活动，第i个开始时间和结束时间是[Si,fi)，只有一个教室，活动之间不能交叠，求最多安排多少个活动？</p>
+<p>输入</p>
+<p>第1行：1个数N，线段的数量(2 &lt;= N &lt;= 10000)<br>第2 - N + 1行：每行2个数，线段的起点和终点(-10^9 &lt;= S,E &lt;= 10^9)<br>输出</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/17/四种线程池/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/new/ACM/51nod贪心算法入门-活动安排问题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
-        
-      
-    </li></ul></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/27/ACM/51nod1269 B君的圆锥/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/27/ACM/51nod1269 B君的圆锥/" itemprop="url">51nod1269 B君的圆锥</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-27T20:14:16+08:00">
-                2016-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1629 B君的圆锥<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 10 难度：2级算法题<br> 收藏<br> 关注<br>B君要用一个表面积为S的圆锥将白山云包起来。</p>
-<p>B君希望包住的白山云体积尽量大，B君想知道体积最大可以是多少。</p>
-<p>注意圆锥的表面积包括底面和侧面。<br>Input<br>一行一个整数，表示表面积S。(1 &lt;= S &lt;= 10^9)<br>Output<br>一行一个实数，表示体积。<br>Input示例<br>8<br>Output示例<br>1.504506<br>wwwwodddd (题目提供者)<br>拿到这道题的第一想法就是写出面积体积关系，然后再找关系。<br>大神们说这道题的标准做法是用三分法~可以作为渣渣的我并不会—-以后学了再来补上。<br>不过群巨给了另一种数学建模的思想：<br>  　　 要达成面积/体积最佳比，则模型样式是一致的。可以按比例缩放的。以放大2倍为例：<br>　　   R=r<em>2<br>　　　S=S底+S侧=2^2</em>s底+2^2<em>s底=2^2s<br>　　　V=1/3</em>S底<em>H=1/3</em>2^2s底<em>2</em>h=2^3v<br>~简直奇妙~~又让渣渣我学到一招~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">pow</span><span class="params">(<span class="keyword">double</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>(n*n*n);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;s))&#123;</span><br><span class="line">        <span class="keyword">double</span> v;</span><br><span class="line">        v = (<span class="keyword">double</span>)<span class="number">1.504506</span>*<span class="built_in">pow</span>(s/<span class="number">8.0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%lf\n"</span>,v);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/16/ACM/51nod 1021 石头归并/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/16/ACM/51nod 1021 石头归并/" itemprop="url">51nod 1021 石头归并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-16T20:14:16+08:00">
-                2016-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1021 石子归并<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 20 难度：3级算法题<br> 收藏<br> 关注<br>N堆石子摆成一条线。现要将石子有次序地合并成一堆。规定每次只能选相邻的2堆石子合并成新的一堆，并将新的一堆石子数记为该次合并的代价。计算将N堆石子合并成一堆的最小代价。</p>
-<p>例如： 1 2 3 4，有不少合并方法<br>1 2 3 4 =&gt; 3 3 4(3) =&gt; 6 4(9) =&gt; 10(19)<br>1 2 3 4 =&gt; 1 5 4(5) =&gt; 1 9(14) =&gt; 10(24)<br>1 2 3 4 =&gt; 1 2 7(7) =&gt; 3 7(10) =&gt; 10(20)</p>
-<p>括号里面为总代价可以看出，第一种方法的代价最低，现在给出n堆石子的数量，计算最小合并代价。</p>
-<p>Input<br>第1行：N（2 &lt;= N &lt;= 100)<br>第2 - N + 1：N堆石子的数量（1 &lt;= A[i] &lt;= 10000)<br>Output<br>输出最小合并代价<br>Input示例<br>4<br>1<br>2<br>3<br>4<br>Output示例<br>19<br>这道题初一看很容易往贪心方向想，后来看了提示才知道是dp，可是并不知道怎么dp。。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;</span><br><span class="line"><span class="keyword">int</span> sum[<span class="number">1005</span>];</span><br><span class="line"><span class="keyword">int</span> vis[<span class="number">1005</span>];</span><br><span class="line"><span class="keyword">int</span> dp[<span class="number">1005</span>][<span class="number">1005</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n))&#123;</span><br><span class="line">        <span class="keyword">int</span> i,len,temp;</span><br><span class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));</span><br><span class="line">        <span class="built_in">memset</span>(sum,<span class="number">0</span>,<span class="keyword">sizeof</span>(sum));</span><br><span class="line">        <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</span><br><span class="line">        <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;vis[i]);</span><br><span class="line">            sum[i]=sum[i<span class="number">-1</span>]+vis[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(len=<span class="number">1</span>;len&lt;n;len++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(i=<span class="number">1</span>;i+len&lt;=n;i++)&#123;</span><br><span class="line">                dp[i][i + len] = INF;</span><br><span class="line">                temp=sum[i+len]-sum[i<span class="number">-1</span>];</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k=i;k&lt;i+len;k++)</span><br><span class="line">                    dp[i][i+len]=min(dp[i][i+len],dp[i][k]+dp[k+<span class="number">1</span>][i+len]+temp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dp[<span class="number">1</span>][n]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/09/ACM/51nod1417 天堂里的游戏/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/09/ACM/51nod1417 天堂里的游戏/" itemprop="url">51nod1417 天堂里的游戏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T20:14:16+08:00">
-                2016-05-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1417 天堂里的游戏<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 10 难度：2级算法题<br> 收藏<br> 关注<br>多年后，每当Noder看到吉普赛人，就会想起那个遥远的下午。</p>
-<p>Noder躺在草地上漫无目的的张望，二楼的咖啡馆在日光下闪着亮，像是要进化成一颗巨大的咖啡豆。天气稍有些冷，但草还算暖和。不远的地方坐着一个吉普赛姑娘，手里拿着塔罗牌，带着耳机，边上是她的狗。狗看起来有点凶，姑娘却漂亮。Noder开始计算各种搭讪方式的成功概率，然而狗的存在……。</p>
-<p>奇怪的事情发生了，姑娘自己走了过来，把耳机戴在Noder的耳朵上，里面播放着：“……Knock-knock-knockin’ on heaven’s door ……”。姑娘冲他诡异的一笑，Noder只觉得自己眼前一阵眩晕，然后就站在了天堂的门口。</p>
-<p>正当Noder惊魂未定的时候，走来一个美女，要求和他一起玩个数学游戏。美女提议：“让我们各自亮出硬币的一面，或正或反。如果我们都是正面，那么我给你A元，如果我们都是反面，我给你B元（A + B为偶数）。剩下的情况你给我（A + B） / 2元就可以了。</p>
-<p>Noder知道这个游戏他多半要输，可他并不在乎，他只想让自己输的慢一点。</p>
-<p>那么你来帮美女计算一下，她选择出正面的概率应该是多少（以最简分数形式输出）？</p>
-<p>当Noder输光了钱后从草地上醒来，吉普赛姑娘已经不见了，只留下了这样一张塔罗牌，上面印有那个美女的照片。<br><img src="http://img.51nod.com/upload/000FBECA/08D271A9F742E9BE0000000000000008.jpeg?_=5474275" alt=""></p>
-<p>关于样例的解释：</p>
-<p>美女采取了(3/8,5/8)这个方案，不论Noder采用什么方案，都是不能改变局面的。如果全部出正面，每次的期望收益是 (3+3+3-2-2-2-2-2)/8=-1/8元；如果全部出反面，每次的期望收益也是(-2-2-2+1+1+1+1+1)/8=-1/8元。而任何策略无非只是上面两种策略的线性组合，所以期望还是-1/8元。</p>
-<p>Input<br>第1行：一个数T，表示后面用作输入测试的数的数量（1 &lt;= T &lt;= 20)。<br>第2 - T + 1行：每行2个数A, B中间用空格分隔。(1 &lt;= A, B &lt;= 10^9，且A + B为偶数)。<br>Output<br>输出共T行，对应美女选择正面的概率，以最简分数形式输出，具体请参看输出样例。<br>Input示例<br>2<br>3 1<br>1 3<br>Output示例<br>3/8<br>5/8<br>PS: 给的提示标签是博弈论，结果是个数学问题；<br> 不管是正是反，女的赢的几率都是一样的，所以左边的式子设正面为x，右边的式子设反面为x，写出期望，然后两边相等，就可以列方程了，然后最大公约数用辗转相乘法弄一下就出来了<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"><span class="function">LL <span class="title">gcd</span><span class="params">(LL a,LL b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b==<span class="number">0</span> ? a : gcd(b,a%b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t))&#123;</span><br><span class="line">        <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">            LL a,b;</span><br><span class="line">            LL x,y;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%I64d%I64d"</span>,&amp;a,&amp;b);</span><br><span class="line">            x=a+<span class="number">3</span>*b;</span><br><span class="line">            y=<span class="number">4</span>*(a+b);</span><br><span class="line">            LL t=gcd(x,y);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%I64d/%I64d\n"</span>,x/t,y/t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/11/ACM/51nod1265四点共面/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/04/11/ACM/51nod1265四点共面/" itemprop="url">51nod1265四点共面</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T20:14:16+08:00">
-                2016-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/acm/" itemprop="url" rel="index">
-                    <span itemprop="name">acm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1265 四点共面<br>基准时间限制：1 秒 空间限制：131072 KB 分值: 0 难度：基础题<br>给出三维空间上的四个点（点与点的位置均不相同），判断这4个点是否在同一个平面内（4点共线也算共面）。如果共面，输出”Yes”，否则输出”No”。<br>Input<br>第1行：一个数T，表示输入的测试数量(1 &lt;= T &lt;= 1000)<br>第2 - 4T + 1行：每行4行表示一组数据，每行3个数，x, y, z, 表示该点的位置坐标(-1000 &lt;= x, y, z &lt;= 1000)。<br>Output<br>输出共T行，如果共面输出”Yes”，否则输出”No”。<br>Input示例<br>1<br>1 2 0<br>2 3 0<br>4 0 0<br>0 0 0<br>Output示例<br>Yes<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*利用四点组成构成的三个向量的混合积为0来判断是否共面*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></span><br><span class="line">    <span class="keyword">double</span> x,y,z;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    point a,b,c,d;</span><br><span class="line">    <span class="keyword">double</span> r1,r2,r3,r4,r5,r6,r7,r8,r9;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;a.x,&amp;a.y,&amp;a.z);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;b.x,&amp;b.y,&amp;b.z);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;c.x,&amp;c.y,&amp;c.z);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf"</span>,&amp;d.x,&amp;d.y,&amp;d.z);</span><br><span class="line">        r1=a.x-b.x; r2=a.y-b.y; r3=a.z-b.z;</span><br><span class="line">        r4=a.x-c.x; r5=a.y-c.y; r6=a.z-c.z;</span><br><span class="line">        r7=a.x-d.x; r8=a.y-d.y; r9=a.z-d.z;</span><br><span class="line">        <span class="keyword">double</span> n=r1*r5*r9+r2*r6*r7+r3*r4*r8-r3*r5*r7-r2*r4*r9-r1*r6*r8;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
         
       
     </div>
@@ -1769,7 +1752,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1817,7 +1800,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">142</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
