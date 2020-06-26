@@ -3,6 +3,119 @@
   
     
     <entry>
+      <title><![CDATA[Go学习之Module介绍]]></title>
+      <url>/2020/06/26/new/Go/Go%E5%AD%A6%E4%B9%A0%E4%B9%8BModule%E4%BB%8B%E7%BB%8D/</url>
+      <content type="html"><![CDATA[<h2 id="最古老的GOPATH"><a href="#最古老的GOPATH" class="headerlink" title="最古老的GOPATH"></a>最古老的GOPATH</h2><p>Go的包管理方式是逐渐演进的，最初所有的包都放在GOPATH中，使用类似命名空间的包路径来区分包。<br>你可以将其理解为工作目录，在这个工作目录下，通常有如下的目录结构：</p>
+<ul>
+<li>bin：存放编译生成的二进制文件</li>
+<li>pkg：存放编译后的.a文件</li>
+<li>src：存放项目的源代码，可以是自己写的代码。也可以是go get下载的包</li>
+</ul>
+<p>在这种模式下，最严重的问题就是<font color="red">版本管理问题</font>，因为GOPATH没有版本的概念，所以可能会遇到以下的问题：</p>
+<ul>
+<li>无法在项目中使用指定版本的包，因为不同版本的包的导入方法是一样的。</li>
+<li>其他人运行你开发的程序时，无法保证他下载的包版本是你所期望的版本。当其他人</li>
+<li>本地中，一个包只能保留一个版本，意味着你在本地开发的所有项目都是一个版本的包</li>
+</ul>
+<a id="more"></a>
+<h2 id="vendor模式"><a href="#vendor模式" class="headerlink" title="vendor模式"></a>vendor模式</h2><p>为了解决GOPATH方案下不同项目下无法使用多个版本库的问题，GO1.5开始支持vendor。</p>
+<p>以前使用GOPATH的时候，所有项目都共享一个GOPATH，需要导入依赖的时候，都来这里找。在GOPATH模式下，第三方库都只能有一个版本。</p>
+<p>解决的思路是：在每个项目下都创建一个vendor目录，每个项目所需要的依赖都只会下载到自己的vendor目录下，项目之间的依赖包互不影响。在编译时，v1.5的GO在设置了开启<code>GO15VENDOREXPERIMENT=1</code>。<br>（注：这个变量在 v1.6 版本默认为1，但是在 v1.7 后，已去掉该环境变量，默认开启 vendor 特性，无需你手动设置）后，会提升 vendor 目录的依赖包搜索路径的优先级（相较于 GOPATH）。</p>
+<p>其搜索包的优先顺序为：</p>
+<ul>
+<li>当前包下的 vendor 目录</li>
+<li>向上级目录查找，直到找到 src 下的 vendor 目录</li>
+<li>在 GOROOT 目录下查找</li>
+<li>在 GOPATH 下面查找依赖包</li>
+</ul>
+<p>虽然这个方案解决了一些问题，但是解决得并不完美。</p>
+<ul>
+<li>如果多个项目用到了同一个包的同一个版本，这个包会存在于该机器上的不同目录下，不仅对磁盘空间是一种浪费，而且没法对第三方包进行集中式的管理（分散在各个角落）。</li>
+<li>并且如果要分享开源你的项目，你需要将你的所有的依赖包悉数上传，别人使用的时候，除了你的项目源码外，还有所有的依赖包全部下载下来，才能保证别人使用的时候，不会因为版本问题导致项目不能如你预期那样正常运行。</li>
+</ul>
+<h2 id="Go-Modules"><a href="#Go-Modules" class="headerlink" title="Go Modules"></a>Go Modules</h2><p>Go Modules在v1.11版本正式推出，在v1.14版本中，官方正式发话，称其已经足够成熟，可以应用于生产上。</p>
+<p>从 v1.11 开始，go env 多了个环境变量：GO111MODULE ，这里的 111，其实就是 v1.11 的象征标志， go 里好像很喜欢这样的命名方式，比如当初 vendor 出现的时候，也多了个 GO15VENDOREXPERIMENT环境变量，其中 15，表示的vendor 是在 v1.5 时才诞生的。</p>
+<p>GO111MODULE 是一个开关，通过它可以开启或关闭 go mod 模式。它有三个可选值：off、on、auto，默认值是auto。</p>
+<ul>
+<li>GO111MODULE=off禁用模块支持，编译时会从GOPATH和vendor文件夹中查找包。</li>
+<li>GO111MODULE=on启用模块支持，编译时会忽略GOPATH和vendor文件夹，只根据 go.mod下载依赖。</li>
+<li>GO111MODULE=auto，当项目在$GOPATH/src外且项目根目录有go.mod文件时，自动开启模块支持。</li>
+</ul>
+<h3 id="go-mod"><a href="#go-mod" class="headerlink" title="go mod"></a>go mod</h3><p>golang提供<code>go mod</code>命令来管理Modules包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">➜  test go mod</span><br><span class="line">Go mod provides access to operations on modules.</span><br><span class="line"></span><br><span class="line">Note that support for modules is built into all the go commands,</span><br><span class="line">not just &apos;go mod&apos;. For example, day-to-day adding, removing, upgrading,</span><br><span class="line">and downgrading of dependencies should be done using &apos;go get&apos;.</span><br><span class="line">See &apos;go help modules&apos; for an overview of module functionality.</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">	go mod &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">The commands are:</span><br><span class="line"></span><br><span class="line">	download    download modules to local cache</span><br><span class="line">	edit        edit go.mod from tools or scripts</span><br><span class="line">	graph       print module requirement graph</span><br><span class="line">	init        initialize new module in current directory</span><br><span class="line">	tidy        add missing and remove unused modules</span><br><span class="line">	vendor      make vendored copy of dependencies</span><br><span class="line">	verify      verify dependencies have expected content</span><br><span class="line">	why         explain why packages or modules are needed</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">download</td>
+<td style="text-align:center">下载依赖包</td>
+</tr>
+<tr>
+<td style="text-align:center">edit</td>
+<td style="text-align:center">下载依赖包</td>
+</tr>
+<tr>
+<td style="text-align:center">graph</td>
+<td style="text-align:center">编辑go.mod</td>
+</tr>
+<tr>
+<td style="text-align:center">init</td>
+<td style="text-align:center">打印模块依赖图</td>
+</tr>
+<tr>
+<td style="text-align:center">tidy</td>
+<td style="text-align:center">在当前目录初始化mod</td>
+</tr>
+<tr>
+<td style="text-align:center">vendor</td>
+<td style="text-align:center">拉取缺少的模块，移除不用的模块</td>
+</tr>
+<tr>
+<td style="text-align:center">verify</td>
+<td style="text-align:center">验证依赖是否正确</td>
+</tr>
+<tr>
+<td style="text-align:center">why</td>
+<td style="text-align:center">解释为什么需要依赖</td>
+</tr>
+</tbody>
+</table>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="创建一个新项目"><a href="#创建一个新项目" class="headerlink" title="创建一个新项目"></a>创建一个新项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  test go mod init test</span><br><span class="line">go: creating new go.mod: module test</span><br><span class="line">➜  test ls</span><br><span class="line">go.mod</span><br><span class="line">➜  test cat go.mod</span><br><span class="line">module test</span><br></pre></td></tr></table></figure>
+<p>go.mod文件一旦创建后，它的内容将会被go toolchain全面掌控。go toolchain会在各类命令执行时，比如go get、go build、go mod等修改和维护go.mod文件。</p>
+<p>go.mod 提供了以下四个命令：</p>
+<ul>
+<li>module 语句指定包的名字（路径）</li>
+<li>require 语句指定的依赖项模块</li>
+<li>replace 语句可以替换依赖项模块</li>
+<li>exclude 语句可以忽略依赖项模块</li>
+</ul>
+<h4 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h4><p>新建一个 server.go 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	</span><br><span class="line">	&quot;github.com/labstack/echo&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	e := echo.New()</span><br><span class="line">	e.GET(&quot;/&quot;, func(c echo.Context) error &#123;</span><br><span class="line">		return c.String(http.StatusOK, &quot;Hello, World!&quot;)</span><br><span class="line">	&#125;)</span><br><span class="line">	e.Logger.Fatal(e.Start(&quot;:1323&quot;))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>go run server.go</code>运行代码会发现 go mod 会自动查找依赖自动下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">➜  test go run server.go</span><br><span class="line">go: finding github.com/labstack/echo v3.3.10+incompatible</span><br><span class="line">go: downloading github.com/labstack/echo v3.3.10+incompatible</span><br><span class="line">go: finding github.com/labstack/gommon/color latest</span><br><span class="line">go: finding github.com/labstack/gommon/log latest</span><br><span class="line">go: finding github.com/labstack/gommon v0.3.0</span><br><span class="line">go: downloading github.com/labstack/gommon v0.3.0</span><br><span class="line">go: finding golang.org/x/crypto/acme/autocert latest</span><br><span class="line">go: finding golang.org/x/crypto/acme latest</span><br><span class="line">go: finding golang.org/x/crypto latest</span><br><span class="line">go: downloading golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9</span><br><span class="line">go: finding github.com/mattn/go-isatty v0.0.9</span><br><span class="line">go: finding github.com/mattn/go-colorable v0.1.2</span><br><span class="line">go: finding github.com/valyala/fasttemplate v1.0.1</span><br><span class="line">go: finding github.com/mattn/go-isatty v0.0.8</span><br><span class="line">go: finding golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a</span><br><span class="line">go: finding github.com/valyala/bytebufferpool v1.0.0</span><br><span class="line">go: finding golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223</span><br><span class="line">go: downloading github.com/mattn/go-isatty v0.0.9</span><br><span class="line">go: downloading github.com/mattn/go-colorable v0.1.2</span><br><span class="line">go: downloading github.com/valyala/fasttemplate v1.0.1</span><br><span class="line">go: downloading golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3</span><br><span class="line">go: downloading github.com/valyala/bytebufferpool v1.0.0</span><br></pre></td></tr></table></figure></p>
+<p>查看目录，发现多了<code>go.sum</code>文件。该文件主要用来记录 dependency tree。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">➜  test ls</span><br><span class="line">go.mod    go.sum    server.go</span><br><span class="line">➜  test cat go.mod</span><br><span class="line">module test</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	github.com/labstack/echo v3.3.10+incompatible // indirect</span><br><span class="line">	github.com/labstack/gommon v0.3.0 // indirect</span><br><span class="line">	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect</span><br><span class="line">)</span><br><span class="line">➜  test cat go go.sum</span><br><span class="line">cat: go: No such file or directory</span><br><span class="line">github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=</span><br><span class="line">github.com/labstack/echo v3.3.10+incompatible h1:pGRcYk231ExFAyoAjAfD85kQzRJCRI8bbnE7CX5OEgg=</span><br><span class="line">github.com/labstack/echo v3.3.10+incompatible/go.mod h1:0INS7j/VjnFxD4E2wkz67b8cVwCLbBmJyDaka6Cmk1s=</span><br><span class="line">github.com/labstack/gommon v0.3.0 h1:JEeO0bvc78PKdyHxloTKiF8BD5iGrH8T6MSeGvSgob0=</span><br><span class="line">github.com/labstack/gommon v0.3.0/go.mod h1:MULnywXg0yavhxWKc+lOruYdAhDwPK9wf0OL7NoOu+k=</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>当依赖都存在时，就会跳过下载的步骤。<br>可以使用命令<code>go list -m -u all</code>来检查可以升级的package，使用<code>go get -u need-upgrade-package</code>升级后会将新的依赖版本更新到go.mod * 也可以使用<code>go get -u</code>升级所有依赖</p>
+<p>现在很少用GO，所以也没了解更深，这篇文章作为记录吧。剩下的后面在使用过程中再补充。。。。。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> GO </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> GO </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Docker 环境下搭建MySQL 8.0.20 组复制]]></title>
       <url>/2020/06/13/new/MySQL/Docker-%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAMySQL-8-0-20-%E7%BB%84%E5%A4%8D%E5%88%B6/</url>
       <content type="html"><![CDATA[<p>最近在学习MySQL 8.0 新特性，以及MGR。于是想在搭建一套环境来测试。<br>本来在买的阿里云服务器上进行搭建，结果好像是一台机器搭建不了，至少需要三台，于是就放弃了。<br>正好小伙伴分享了docker，于是就利用docker在本地搭建了一套8.0的MGR环境。</p>
