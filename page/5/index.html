@@ -307,6 +307,301 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/13/new/other/mac安装多版本JDK/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/13/new/other/mac安装多版本JDK/" itemprop="url">mac安装多版本JDK</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-13T17:55:42+08:00">
+                2019-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/一些奇淫技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">一些奇淫技巧</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随着JDK版本的快速迭代，作为优秀(kubi)的Java拥护者，为了跟随时代的潮流，也开始使用1.8版本。</p>
+<p>但是，某一天。。。。苦逼的事情发生了，一个项目原本是好好的，突然报错起不来了。最终查到的原因是某个项目的Jar包使用的JDK为1.7….于是就有了这篇记录。</p>
+<p>在终端下面使用<code>java -version</code>查看就可以查看使用的JDK版本了。<br>使用<code>/usr/libexec/java_home -V</code>可以查看本地已经安装的JDK</p>
+<p>关于JDK1.x for mac的安装略过，网上有大把的教程。<br>我这里以安装3个版本1.6/1.7/1.8为例。</p>
+<p>一、编辑.bash_profile<br><code>vim ~/.bash_profile</code></p>
+<p>二、在.bash_profile中添加下面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_6_HOME=`/usr/libexec/java_home -v 1.6`</span><br><span class="line">export JAVA_7_HOME=`/usr/libexec/java_home -v 1.7`</span><br><span class="line">export JAVA_8_HOME=`/usr/libexec/java_home -v 1.8`</span><br><span class="line"></span><br><span class="line">#默认设为JDK1.7</span><br><span class="line">export JAVA_HOME=$JAVA_7_HOME</span><br><span class="line"></span><br><span class="line">#alias命令动态切换JDK版本</span><br><span class="line">alias jdk6=&quot;export JAVA_HOME=$JAVA_6_HOME&quot;</span><br><span class="line">alias jdk7=&quot;export JAVA_HOME=$JAVA_7_HOME&quot;</span><br><span class="line">alias jdk8=&quot;export JAVA_HOME=$JAVA_8_HOME&quot;</span><br></pre></td></tr></table></figure></p>
+<p>三、刷新环境<br><code>source ~/.bash_profile</code></p>
+<p>四、测试<br>执行：<code>jdk8</code>，再执行<code>java -version</code>，看看是不是1.8版本？<br>执行：<code>jdk6</code>，再执行<code>java -version</code>，看看是不是1.6版本？</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/new/面试准备/Cloneable实现原理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/04/new/面试准备/Cloneable实现原理/" itemprop="url">Cloneable接口实现原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-04T22:41:31+08:00">
+                2019-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Cloneable接口是Java开发中常用的一个接口，它的作用是使一个类的实例能够将自身拷贝到另一个新的实例当中。</p>
+<p>在开发过程中，如果一个类中的字段比较多，而我们如果采用在客户端中逐字段复制的方法来进行拷贝操作的话，将不可避免的造成客户端代码繁杂，而且也无法对类中的私有对象进行复制，而如果让需要具备拷贝功能的类实现<code>Cloneable</code>接口，并重写<code>clone()</code>方法的方式来简洁地实现实例拷贝功能。</p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p><code>private class Demo implements Cloneable{}</code><br>我们创建一个Demo类，并让他实现Cloneable接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public interface Cloneable &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们发现<code>Cloneable</code>几口里面并没有定义任何接口方法。<br>这是因为在<code>Object</code>类中已经将<code>clone()</code>方法定义为所有类都应该具有的基本功能，只是将该方法声明为了<code>protected</code>类型。它是一个<code>native</code>本地方法。</p>
+<p>如果一个类不实现该接口就直接调用<code>clone()</code>方法的话，就会抛出“不支持拷贝”异常。<br>所以如果要让一个类具有拷贝实例的功能，那么除了要重写<code>Object</code>类中<code>clone()</code>方法外，还必须实现Cloneable接口。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/new/面试准备/单例模式/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1476,313 +1771,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/15/Redis/Redis源码阅读(启动过程)/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/Redis/Redis源码阅读(启动过程)/" itemprop="url">Redis源码阅读(启动过程)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T14:12:13+08:00">
-                2018-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Redis的启动函数main()在redis.c文件中。 </p>
-<h3 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h3><p>在启动时会使用initServerConfig()函数进行初始化服务器配置工作，redisServer(redis.h)作为保存服务器配置的结构。 redisServer包含以下的一些Redis服务器的信息：  </p>
-<ul>
-<li>一般服务器状态。</li>
-<li>一些服务器统计信息。</li>
-<li>各种链表结构，如保存客户端的链表等。</li>
-<li>配置文件及启动参数中的配置。</li>
-<li>主从复制的状态。</li>
-<li>持久化文件的参数和状态。</li>
-</ul>
-<p><img src="https://i.imgur.com/IXG8CwE.png" alt=""><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/15/Redis/Redis源码阅读(启动过程)/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/10/Redis/Redis对象/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/10/Redis/Redis对象/" itemprop="url">Redis对象结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T21:34:13+08:00">
-                2018-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="object-c"><a href="#object-c" class="headerlink" title="object.c"></a>object.c</h1><p>object.c文件主要记录了Redis对象的创建和释放方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">robj *createEmbeddedStringObject(char *ptr, size_t len) &#123;</span><br><span class="line">    robj *o = zmalloc(sizeof(robj)+sizeof(struct sdshdr)+len+1);</span><br><span class="line">    struct sdshdr *sh = (void*)(o+1);</span><br><span class="line"></span><br><span class="line">    o-&gt;type = REDIS_STRING;</span><br><span class="line">    o-&gt;encoding = REDIS_ENCODING_EMBSTR;</span><br><span class="line">    o-&gt;ptr = sh+1;</span><br><span class="line">    o-&gt;refcount = 1;</span><br><span class="line">    o-&gt;lru = LRU_CLOCK();</span><br><span class="line"></span><br><span class="line">    sh-&gt;len = len;</span><br><span class="line">    sh-&gt;free = 0;</span><br><span class="line">    if (ptr) &#123;</span><br><span class="line">        memcpy(sh-&gt;buf,ptr,len);</span><br><span class="line">        sh-&gt;buf[len] = &apos;\0&apos;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        memset(sh-&gt;buf,0,len+1);</span><br><span class="line">    &#125;</span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>从这个函数中，我们可以看出Redis在创建一个REDIS_ENCODING_EMBSTR编码的字符串对象时，是SDS连同redisObject一同创建的。也就是说这个字符串是不可以修改的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">robj *createStringObjectFromLongLong(long long value) &#123;</span><br><span class="line"></span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // value 的大小符合 REDIS 共享整数的范围</span><br><span class="line">    // 那么返回一个共享对象</span><br><span class="line">    if (value &gt;= 0 &amp;&amp; value &lt; REDIS_SHARED_INTEGERS) &#123;</span><br><span class="line">        incrRefCount(shared.integers[value]);</span><br><span class="line">        o = shared.integers[value];</span><br><span class="line"></span><br><span class="line">    // 不符合共享范围，创建一个新的整数对象</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 值可以用 long 类型保存，</span><br><span class="line">        // 创建一个 REDIS_ENCODING_INT 编码的字符串对象</span><br><span class="line">        if (value &gt;= LONG_MIN &amp;&amp; value &lt;= LONG_MAX) &#123;</span><br><span class="line">            o = createObject(REDIS_STRING, NULL);</span><br><span class="line">            o-&gt;encoding = REDIS_ENCODING_INT;</span><br><span class="line">            o-&gt;ptr = (void*)((long)value);</span><br><span class="line"></span><br><span class="line">        // 值不能用 long 类型保存（long long 类型），将值转换为字符串，</span><br><span class="line">        // 并创建一个 REDIS_ENCODING_RAW 的字符串对象来保存值</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            o = createObject(REDIS_STRING,sdsfromlonglong(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个函数是根据传入的整数值来创建一个字符串对象。从这里可以看到主要有三个判断：</p>
-<ol>
-<li>如果设置的值符合Redis共享整数对象的范围时，是直接复用共享对象，并不会去创建一个新的对象。</li>
-<li>如果传入的值是long类型的，这创建一个REDIS_ENCODING_INT编码类型的字符串对象。</li>
-<li>如果传入的值为long long类型的，则创建REDIS_ENCODING_RAW编码类型的字符串对象。</li>
-</ol>
-<p>debug命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/* Object command allows to inspect the internals of an Redis Object.</span><br><span class="line"> * Usage: OBJECT &lt;verb&gt; ... arguments ... */</span><br><span class="line">void objectCommand(redisClient *c) &#123;</span><br><span class="line">    robj *o;</span><br><span class="line"></span><br><span class="line">    // 返回对戏哪个的引用计数</span><br><span class="line">    if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;refcount&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,o-&gt;refcount);</span><br><span class="line"></span><br><span class="line">    // 返回对象的编码</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;encoding&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyBulkCString(c,strEncoding(o-&gt;encoding));</span><br><span class="line">    </span><br><span class="line">    // 返回对象的空闲时间</span><br><span class="line">    &#125; else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;idletime&quot;) &amp;&amp; c-&gt;argc == 3) &#123;</span><br><span class="line">        if ((o = objectCommandLookupOrReply(c,c-&gt;argv[2],shared.nullbulk))</span><br><span class="line">                == NULL) return;</span><br><span class="line">        addReplyLongLong(c,estimateObjectIdleTime(o)/1000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        addReplyError(c,&quot;Syntax error. Try OBJECT (refcount|encoding|idletime)&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1835,7 +1823,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1857,7 +1845,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
