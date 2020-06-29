@@ -307,6 +307,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/new/other/Bitmap、Bloom-Filter、Cuckoo-Filter/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/15/new/other/Bitmap、Bloom-Filter、Cuckoo-Filter/" itemprop="url">Bitmap、Bloom Filter、Cuckoo Filter</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-15T12:11:26+08:00">
+                2019-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/一些奇淫技巧/" itemprop="url" rel="index">
+                    <span itemprop="name">一些奇淫技巧</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>昨天，在跟同学&amp;同事谈人生谈理想的时候。他告诉我他学长面试头条，其中一道题是如何判断一个整数在不在40亿整数集中；他说他学长竟然不知道<code>bitmap</code>(<a href="https://mp.weixin.qq.com/s/pUq213AJDpTGdGw4ywIS7g" target="_blank" rel="noopener">原题链接</a>)!!!然后我又给他科普了一下<code>布隆过滤器</code>和<code>布谷鸟过滤器</code>。<br>所以借此文章来记录一下这些知识，并巩固一下。</p>
+<h1 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h1><p>Bitmap，直译就叫位图。可以理解为通过一个bit数组存储特定数据的一种数据结构；由于bit是数据的最小单位，所以这种数据结构往往是非常节省存储空间的。在Java和Redis中都存在同名实现结构。<br>在一个记录只有两种状态，是或不是的场景下，如果使用其他数据结构存储则会存在大量空间空间的浪费。即使存在海量的数据，我们也只需要为每个数据分配<code>1byte</code>的空间就可以记录了。比如：用户画像<br>Bitmap可以<font color="red">节省大量的存储空间</font>，所以可以很容易的倍一次性加载到内存中。Bitmap结构还有一个很重要的特点:<font color="red">可以很方便的进行位运算</font><br>比如我们需要统计用户满足以下条件的用户：程序员、带眼镜、长头发。。。。那么我们可以将对相应条件的用户画像的<code>Bitmap</code>结构做<code>AND</code>操作，就可以方便的过滤出满足条件的对象了。</p>
+<h2 id="Bitmap的优化"><a href="#Bitmap的优化" class="headerlink" title="Bitmap的优化"></a>Bitmap的优化</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/15/new/other/Bitmap、Bloom-Filter、Cuckoo-Filter/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/13/new/other/mac安装多版本JDK/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1628,149 +1776,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/new/other/记一次磁盘空间不足，找不到什么文件导致的解决方法/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/29/new/other/记一次磁盘空间不足，找不到什么文件导致的解决方法/" itemprop="url">记一次磁盘空间不足</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-29T11:06:28+08:00">
-                2018-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>在一台虚拟机机器上发现磁盘空间不足的情况，通过登录上去查看，发现是挂载盘占用磁盘资源太多，通过df命令查看，但是并找不到具体是哪个文件占用过多。<br>通过以下查找大文件命令也没有找到相应的大文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -type f -size +100M</span><br></pre></td></tr></table></figure></p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>文件被删除后，并没有及时的释放磁盘资源，导致磁盘空间不足的情况。<br>通过以下命令，查看已经标记为删除但是没有释放的文件。对相应程序进行重启后解决<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof|grep -i delete|less</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1823,7 +1828,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1845,7 +1850,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

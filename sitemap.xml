@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/06/29/new/MySQL/Xtrabackup-%E6%81%A2%E5%A4%8D%E5%A4%B1%E8%B4%A5%E8%AE%B0%E5%BD%95%E4%B8%80%E5%88%99/</loc>
+    
+    <lastmod>2020-06-29T12:15:32.422Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/06/27/MySQL%E6%9C%BA%E5%88%B6%E4%B9%8B%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</loc>
     
     <lastmod>2020-06-27T10:48:13.591Z</lastmod>
@@ -317,14 +324,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/07/21/new/python/%E8%8E%B7%E5%8F%96%E6%9C%AC%E6%9C%BAIP/</loc>
+    <loc>http://yoursite.com/2018/08/19/new/python/python%E8%A3%85%E9%A5%B0%E5%99%A8/</loc>
     
     <lastmod>2019-12-18T17:21:15.110Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/19/new/python/python%E8%A3%85%E9%A5%B0%E5%99%A8/</loc>
+    <loc>http://yoursite.com/2018/07/21/new/python/%E8%8E%B7%E5%8F%96%E6%9C%AC%E6%9C%BAIP/</loc>
     
     <lastmod>2019-12-18T17:21:15.110Z</lastmod>
     
@@ -401,14 +408,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2019/07/21/new/SpringBoot/SpringBoot%E6%95%B4%E5%90%88Redis/</loc>
+    <loc>http://yoursite.com/2019/07/18/new/SpringBoot/Spring-boot%E6%95%B4%E5%90%88MyBatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
     
     <lastmod>2019-12-18T17:21:15.102Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2019/07/18/new/SpringBoot/Spring-boot%E6%95%B4%E5%90%88MyBatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/</loc>
+    <loc>http://yoursite.com/2019/07/21/new/SpringBoot/SpringBoot%E6%95%B4%E5%90%88Redis/</loc>
     
     <lastmod>2019-12-18T17:21:15.102Z</lastmod>
     
@@ -520,14 +527,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/11/14/Redis/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
+    <loc>http://yoursite.com/2018/10/26/Redis/Redis%E5%8E%9F%E7%90%86----%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</loc>
     
     <lastmod>2019-12-18T17:21:15.091Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/10/26/Redis/Redis%E5%8E%9F%E7%90%86----%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</loc>
+    <loc>http://yoursite.com/2017/11/14/Redis/CentOS%E4%B8%AD%E6%90%AD%E5%BB%BAredis%E9%9B%86%E7%BE%A4/</loc>
     
     <lastmod>2019-12-18T17:21:15.091Z</lastmod>
     
@@ -590,14 +597,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/04/17/new/Mybatis/Mybatis%E6%A6%82%E8%BF%B0/</loc>
+    <loc>http://yoursite.com/2018/04/20/new/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
     
     <lastmod>2019-12-18T17:21:15.084Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/04/20/new/Mybatis/Mybatis-%E5%8E%9F%E5%A7%8Bdao%E5%92%8Cmapper%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95/</loc>
+    <loc>http://yoursite.com/2018/04/17/new/Mybatis/Mybatis%E6%A6%82%E8%BF%B0/</loc>
     
     <lastmod>2019-12-18T17:21:15.084Z</lastmod>
     

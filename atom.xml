@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-27T10:48:13.591Z</updated>
+  <updated>2020-06-29T12:15:32.422Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Xtrabackup 恢复失败记录一则</title>
+    <link href="http://yoursite.com/2020/06/29/new/MySQL/Xtrabackup-%E6%81%A2%E5%A4%8D%E5%A4%B1%E8%B4%A5%E8%AE%B0%E5%BD%95%E4%B8%80%E5%88%99/"/>
+    <id>http://yoursite.com/2020/06/29/new/MySQL/Xtrabackup-恢复失败记录一则/</id>
+    <published>2020-06-29T12:14:57.000Z</published>
+    <updated>2020-06-29T12:15:32.422Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近基于MySQL自动恢复脚本做集群实例功能，发现在部分机器上触发时会存在扩展失败的情况。<br>具体表现为：</p><ol><li>恢复失败机器为MySQL使用机器，此前是能够恢复成功。</li><li>通用备份机器仍然能够恢复成功。</li></ol><p>通过查看恢复日志发现报以下错误：<br><code>/bin/sh: line 1: 362302 Segmentation fault      (core dumped)</code></p><p>注：MySQL自动恢复脚本是本人开发的一套自动备份恢复体系中的恢复模块，主要是利用<code>innobackupex</code>工具+传入参数能够进行一键化进行MySQL实例恢复操作。能够只恢复指定库表数据、指定GTID位点等。</p><h2 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h2><p>根据报错描述，段异常。感觉是在MySQL实例恢复过程中，访问了非法地址，类似于内存溢出场景。</p><p>第一想法是<code>innobackupex</code>二进制文件损坏，于是通过对比不同机器上<code>innobackupex</code>工具的版本以及md5值，发现并没有区别。所以排除工具问题。</p><p>接着，怀疑是机器某些配置被修改导致的，于是询问组内伙伴和OPS团队。均得到未修改的回答。。。。此处陷入没有头绪的情况。</p><p>但是我还是肯定是机器层面的问题，于是就开始了瞎猫碰死耗子的试探之路。不断的对比成功机器和失败机器之间的系统参数区别。<br>在<code>ulimit -a</code>时发现存在多个配置不同，于是通过一个一个修改尝试，最终确定是以下参数导致的：<br>失败机器：<code>stack size              (kbytes, -s) 1024</code><br>成功机器：<code>stack size              (kbytes, -s) 8192</code></p><p>问题原因确定，于是拿着这个参数询问。得到老大的回答，为了使DB机器配置标椎化，最近对MySQL机器的此参数进行了批量修改的操作。（此前Mongo机器都是1024）</p><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这个参数有什么用？为什么会导致MySQL恢复失败呢？</p><p>百度对<code>stack size</code>的表述是：进程的栈的最大值<br>在程序运行时，如果程序比较大，那么就会遇到“段错误”(segmentation fault)，主要就是收到了这个参数的限制。</p><p>PS：为什么不将这个值设置成默认值，而是调小呢？我老大说DB都是属于并发多的服务，这个值如果设置的太大的话，会导致存在大量无用内存的损耗。虽然没搞懂，我还是认为不应该修改这个值，当前太菜了，后面有机会再深入研究吧。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;最近基于MySQL自动恢复脚本做集群实例功能，发现在部分机器上触发时会存在扩展失败的情况。&lt;br&gt;具体表现为：&lt;/p&gt;
+&lt;o
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="http://yoursite.com/categories/MySQL/"/>
+    
+    
+      <category term="MySQL问题记录" scheme="http://yoursite.com/tags/MySQL%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL机制之排序算法</title>
@@ -553,46 +579,6 @@
     
     
       <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>pika学习之同步篇</title>
-    <link href="http://yoursite.com/2020/01/05/new/pika/pika%E5%A4%8D%E5%88%B6%E6%A8%A1%E5%9D%97/"/>
-    <id>http://yoursite.com/2020/01/05/new/pika/pika复制模块/</id>
-    <published>2020-01-05T14:08:29.000Z</published>
-    <updated>2020-01-05T14:11:12.720Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。</li><li>slave的trysync线程向master发起trysync，同时将同步位点信息发送给master</li><li>master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步</li></ul><h1 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h1><p>pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。</p><h2 id="实现逻辑"><a href="#实现逻辑" class="headerlink" title="实现逻辑"></a>实现逻辑</h2><ol><li>slave在trysnc前启动rsync进程启动rsync服务</li><li>master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份</li><li>master通过rsync向slave发送dump出的文件</li><li>slave用收到的文件替换自己的db</li><li>slave用最新的偏移量再次发起trysnc</li><li>完成同步 </li></ol><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg" alt=""></p><center>slave同步流程</center><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg" alt=""></p><center>master同步流程</center><a id="more"></a><p>slave连接状态：</p><ul><li>No Connect：不尝试成为任何其他节点的slave</li><li>Connect：Slaveof后尝试成为某个节点的slave，发送trysnc命令和同步点</li><li>Connecting：收到master回复可以slaveof，尝试跟master建立心跳</li><li>Connected: 心跳建立成功</li><li>WaitSync：不断检测是否DBSync完成，完成后更新DB并发起新的slaveof<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0h9q8ulj30hn0dr0tm.jpg" alt=""></li></ul><h1 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h1><p>Pika的主从同步是通过Binlog来完成的，在一主多从的结构中，master节点也可以给多个slave复用一个Binlog，不同的slave拥有不同的偏移量。</p><h2 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h2><ol><li>当WorkerThread接收到客户端的命令，按照执行顺序，添加到Binlog里</li><li>BinglogSenderThread判断它所负责的从节点在主节点的Binlog里是否有需要同步的命令，若有则发送给从节点</li><li>BinglogReceiverModule模块则做以下三件事情：接收主节点的BinlogSenderThread发送过来的同步命令；把接收到的命令应用到本地的数据上；把接收到的命令添加到本地Binlog里 至此，一条命令从主节点到从节点的同步过程完成<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0spmbugj30i20en75l.jpg" alt=""></li></ol><ul><li>WorkerThread：接受和处理用户的命令</li><li>BinlogSenderThread：负责顺序地向对应的从节点发送在需要同步的命令</li><li>BinlogReceiverModule: 负责接受主节点发送过来的同步命令</li><li>Binglog：用于顺序的记录需要同步的命令</li></ul><p>上图中的<code>BinLogReceiverModule</code>是为了更好的说明方便而抽象出来的一个对象，从图中可以看出<code>BinLogReceiverModule</code>是由一个<code>BinlogReceiverThread</code>和多个<code>BinlogBGWorker</code>组成。</p><ul><li>BinlogReceiverThread: 负责接受由主节点传送过来的命令，并分发给各个BinlogBGWorker，若当前的节点是只读状态（不能接受客户端的同步命令），则在这个阶段写Binlog</li><li>BinlogBGWorker：负责执行同步命令；若该节点不是只读状态（还能接受客户端的同步命令），则在这个阶段写Binlog（在命令执行之前写）</li></ul><p>BinlogReceiverThread接收到一个同步命令后，它会给这个命令赋予一个唯一的序列号（这个序列号是递增的），并把它分发给一个BinlogBGWorker；而各个BinlogBGWorker则会根据各个命令的所对应的序列号的顺序来执行各个命令，这样也就保证了命令执行的顺序和主节点执行的顺序一致了 之所以这么设计主要原因是：</p><ol><li>配备多个BinlogBGWorker是可以提高主从同步的效率，减少主从同步的滞后延迟</li><li>BinlogBGWorker在执行执行之前写Binlog可以提高命令执行的并行度</li><li>在当前节点是非只读状态，让BinglogReceiverThread来写Binlog，是为了让Binglog里保存的命令顺序和命令的执行顺序保持一致</li></ol><h2 id="Binlog结构"><a href="#Binlog结构" class="headerlink" title="Binlog结构"></a>Binlog结构</h2><p>由于主从偏移量一样，所以一旦发生网络或节点故障需要重连主从时，slave只需要将当前的偏移量发送给master，master找到后从该偏移量开始同步后续命令。<br>理论上命令不做处理一条一条追加到Binlog文件中，这也就意味着如果文件写错一个字节就会导致整个文件不可用，所以pika采用了类似leveldb log的格式来进行存储。<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gam0rxhp2rj30i20att9m.jpg" alt=""></p><h3 id="leveldb-log"><a href="#leveldb-log" class="headerlink" title="leveldb log"></a>leveldb log</h3><p>在leveldb中，所有的写操作都必须先成功的append到操作日志中，然后再更新内存memtable</p><ol><li>可以将随机的写IO变成append，极大的提高写磁盘速度</li><li>防止在节点down机导致内存数据丢失，造成数据丢失<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The log file contents are a sequence of 32KB blocks.  The only</span><br><span class="line">exception is that the tail of the file may contain a partial block.</span><br><span class="line"></span><br><span class="line">Each block consists of a sequence of records:</span><br><span class="line">   block := record* trailer?</span><br><span class="line">   record :=</span><br><span class="line">    checksum: uint32    // crc32c of type and data[] ; little-endian</span><br><span class="line">    length: uint16      // little-endian</span><br><span class="line">    type: uint8     // One of FULL, FIRST, MIDDLE, LAST</span><br><span class="line">    data: uint8[length]</span><br><span class="line"></span><br><span class="line">A record never starts within the last six bytes of a block (since it</span><br><span class="line">won&apos;t fit).  Any leftover bytes here form the trailer, which must</span><br><span class="line">consist entirely of zero bytes and must be skipped by readers.</span><br></pre></td></tr></table></figure></li></ol><p>日志文件由连续的大小为32KB的block组成，block又由连续的record组成，record的格式为 | CRC(4 byte) | Length(2 byte) | type(1 byte) | data |</p><blockquote><p><a href="https://www.jianshu.com/p/223f0c73ddc2" target="_blank" rel="noopener">LevelDB 功能与架构</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;pika支持m-s的复制方式，跟redis主从复制命令一样，通过slave执行slaveof命令来触发。&lt;/li&gt;
-&lt;li&gt;slave的trysync线程向master发起trysync，同时将同步位点信息发送给master&lt;/li&gt;
-&lt;li&gt;master处理trysync命令，发起对slave的同步过程，从同步点开始顺序发送binlog或进行全同步&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;全量同步&quot;&gt;&lt;a href=&quot;#全量同步&quot; class=&quot;headerlink&quot; title=&quot;全量同步&quot;&gt;&lt;/a&gt;全量同步&lt;/h1&gt;&lt;p&gt;pika在需要进行全量同步的时候，会将数据文件进行dump后通过rsync的deamon模式发送给slave。&lt;/p&gt;
-&lt;h2 id=&quot;实现逻辑&quot;&gt;&lt;a href=&quot;#实现逻辑&quot; class=&quot;headerlink&quot; title=&quot;实现逻辑&quot;&gt;&lt;/a&gt;实现逻辑&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;slave在trysnc前启动rsync进程启动rsync服务&lt;/li&gt;
-&lt;li&gt;master发现需要全同步时，判断是否有备份文件可用，如果没有先dump一份&lt;/li&gt;
-&lt;li&gt;master通过rsync向slave发送dump出的文件&lt;/li&gt;
-&lt;li&gt;slave用收到的文件替换自己的db&lt;/li&gt;
-&lt;li&gt;slave用最新的偏移量再次发起trysnc&lt;/li&gt;
-&lt;li&gt;完成同步 &lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gam0g8e1iij30oq09q0th.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;center&gt;slave同步流程&lt;/center&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://tva1.sinaimg.cn/large/006tNbRwgy1gam0gae0huj30me08qt99.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;center&gt;master同步流程&lt;/center&gt;
-    
-    </summary>
-    
-      <category term="Pika" scheme="http://yoursite.com/categories/Pika/"/>
-    
-    
-      <category term="Pika" scheme="http://yoursite.com/tags/Pika/"/>
     
   </entry>
   
