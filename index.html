@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2222/07/06/Redis文章学习记录/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2222/07/06/new/MySQL/MySQL文章记录/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OMG_By">
@@ -326,7 +326,213 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2222/07/06/Redis文章学习记录/" itemprop="url">Redis文章学习记录</a></h1>
+                <a class="post-title-link" href="/2222/07/06/new/MySQL/MySQL文章记录/" itemprop="url">MySQL文章学习记录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2222-07-06T20:47:22+08:00">
+                2222-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MyQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇博文主用来记录读到的MySQL相关的文章</p>
+<h2 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/hYsxeevggxwkObJyOqy3iA" target="_blank" rel="noopener">引号错位引起的故障</a> （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …）</li>
+<li><a href="https://mp.weixin.qq.com/s/snJcudytuW4_BvgVk86IXw" target="_blank" rel="noopener">一个事务中调整语句顺序</a> （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。） </li>
+<li><a href="https://mp.weixin.qq.com/s/wFath89f3xXDR1Nxd5g-mw" target="_blank" rel="noopener">库表字符集修改后，老字段仍为原来字符集</a>   （修改库表字符集后，只会改变新增的字符集）</li>
+<li><a href="https://mp.weixin.qq.com/s/jMU1lGhBwuIPrERqeUFAVQ" target="_blank" rel="noopener">聊聊 隐式转换</a>    （真实遇到过其中的字符串转换成浮点型比较，查询结果不准确的问题。实测当长度为17位时会有问题）</li>
+<li><a href="https://mp.weixin.qq.com/s/tWDQUPG5PYaeZilz7dd73Q" target="_blank" rel="noopener">一个特殊的隐式转换问题</a> （5.6版本IN中包括多个类型的话，会存在不能走索引的情况。<a href="http://mysql.taobao.org/monthly/2017/12/06/" target="_blank" rel="noopener">相关阿里月报</a>）</li>
+<li><a href="https://mp.weixin.qq.com/s/f8ZQx3Iuz-BnJ05z8vN2GA" target="_blank" rel="noopener">Strace 解决性能问题案例一则</a>  （问题排查工具，用事实说话，DB不背锅）</li>
+<li><a href="https://mp.weixin.qq.com/s/MdfomhoKV4OBJ_jSv1d0Bg" target="_blank" rel="noopener">业务优化案例一则</a> (mysqlslap压测工具使用)</li>
+<li><a href="https://mp.weixin.qq.com/s/2hFm_hZgbNwi8GsE5MFrQg" target="_blank" rel="noopener">MySQL 案例一则</a> （explicit_defaults_for_timestamp参数解释）<ul>
+<li>explicit_defaults_for_timestamp</li>
+</ul>
+</li>
+<li><a href="https://mp.weixin.qq.com/s/w4qtB5Dz_ybbiY-WRr72-Q" target="_blank" rel="noopener">再说 order by 优化</a> （<font color="red">很精髓的order by案例总结和优化建议。</font>）</li>
+<li><a href="https://mp.weixin.qq.com/s/T6qeXpVoo-M9Iflsh-n1zA" target="_blank" rel="noopener">一次大量删除导致 MySQL 慢查的分析</a> （由于MVCC特性，如果存在长时间未提交的事务，会导致简单查询也可能会变得很慢）</li>
+<li><a href="https://mp.weixin.qq.com/s/0y20YxeSvgwJM7ZUho1C7Q" target="_blank" rel="noopener">MySQL 大量sleeping before entering InnoDB 故障诊断</a> （很详细的一次问题排查步骤，里面有很多有用的命令）</li>
+<li><a href="https://mp.weixin.qq.com/s/Edn_gPwcAHo5sYIzLJghzA" target="_blank" rel="noopener">哪些因素会导致慢查询？</a> （<font color="red">从应用到数据库，非常全面的列出了变慢的原因</font> 加一个：limit 时匹配不到数据会一直扫描。）</li>
+<li><a href="https://mp.weixin.qq.com/s/AC9CwpSUTW6fXA-5mHxPGQ" target="_blank" rel="noopener">由MySQL复制延迟说起</a>  （分析了复制延迟的主要原因和解决办法）</li>
+</ul>
+<p>SQL变慢的原因主要有：</p>
+<ol>
+<li>SQL执行过程走索引不合理，导致执行缓慢。</li>
+<li>使用合理索引，但是获取数据量比较多。(排序，临时表等)</li>
+<li>网络重传丢包导致SQL变慢。</li>
+<li>并发比较高的场景，请求排队处理，等待时间长。</li>
+</ol>
+<p>性能优化是一个老生常谈的问题，需要对相关流程和机制有很深入的研究才能对症下药。平时扩充、积累相关知识，在遇到问题后，才会有思路。经验很重要，但更多的是建立在平时的积累上。</p>
+<h2 id="死锁系列"><a href="#死锁系列" class="headerlink" title="死锁系列"></a>死锁系列</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/xUgzKPMZP777jdytrCL7oA" target="_blank" rel="noopener">漫谈死锁</a>    （1. RC级别下也会存在Next-key 2. RC级别下，获取到不符合记录时会释放锁）<ul>
+<li>innodb_print_all_deadlocks  (将死锁信息记录到errorlog中参数)</li>
+<li>innodb_status_output_locks  (标准监控开关参数)</li>
+</ul>
+</li>
+<li><a href="https://mp.weixin.qq.com/s/8XXimj2AIsRWj0fF-_iz3g" target="_blank" rel="noopener">如何阅读死锁日志</a>  （锁组合）</li>
+<li><a href="https://mp.weixin.qq.com/s/2GIrpSKHe3Y3KWMfDbA7jw" target="_blank" rel="noopener">MySQL 各种SQL语句加锁分析</a><ul>
+<li>innodb_locks_unsafe_for_binlog</li>
+</ul>
+</li>
+<li><a href="https://mp.weixin.qq.com/s/MywiDdffz13i8auSv4Xs9w" target="_blank" rel="noopener">死锁案例一</a>  （简单插入唯一索引插入意向锁案例）</li>
+<li><a href="https://mp.weixin.qq.com/s/7DehY-zQV1XHYufaII4oJg" target="_blank" rel="noopener">死锁案例二</a>  （delete操作会有锁区间行为。PS：删除已有记录会导致锁范围变大)</li>
+<li><a href="https://mp.weixin.qq.com/s/R1dJY4leZh5qRpUkvOsNBw" target="_blank" rel="noopener">死锁案例三</a>  （insert同一区间时，唯一索引的插入意向锁导致的死锁）</li>
+<li><a href="https://mp.weixin.qq.com/s/wXH9XFOK8wui7dDtR6Hzww" target="_blank" rel="noopener">死锁案例四</a>  （并发插入时，插入意向锁不同阶段死锁。<font color="red">注意跟案例三的区别：本案例为X锁等待，案例三为S锁等待</font>)</li>
+<li><a href="https://mp.weixin.qq.com/s/XCdLfyjSuWAEcWIjbcVfvg" target="_blank" rel="noopener">死锁案例五</a>  （repalce into插入死锁情况）</li>
+<li><a href="https://mp.weixin.qq.com/s/Lp7b2TGyFY-4uEN_M6Y8zg" target="_blank" rel="noopener">死锁案例六</a>  （不同事务加锁顺序不一样，导致锁资源交叉影响导致的死锁)</li>
+<li><a href="https://mp.weixin.qq.com/s/pC4XCpUOuNPMFj6UjuhWvw" target="_blank" rel="noopener">死锁案例七</a>  （RC级别下，update不存在记录会持有lock_S + GAP锁）</li>
+<li><a href="https://mp.weixin.qq.com/s/96CDhpgu5uUQ7qKYhKgt3w" target="_blank" rel="noopener">死锁案例八</a>  （多并发插入下的又一插入意向锁竞争导致的死锁案例）</li>
+<li><a href="https://mp.weixin.qq.com/s/h4Mwrowft2KKdTkqmRlYqw" target="_blank" rel="noopener">死锁案例九</a>  （并发批量插入，导致的死锁）</li>
+<li><a href="https://mp.weixin.qq.com/s/b9gNbdEHV3NNQrV9PKDPSw" target="_blank" rel="noopener">死锁案例十</a>  （并发更新普通二级索引造成的死锁。PS：<font color="red">另一程度上说明索引不是随便加就行</font>）</li>
+<li><a href="https://mp.weixin.qq.com/s/vMGlRtMQckJ1LUZaSBn5cw" target="_blank" rel="noopener">死锁案例十一</a>  （<font color="red">5.6升级到5.7后，INSERT INTO .. ON DUPLICATE KEY语句锁模式加强</font>）</li>
+<li><a href="https://mp.weixin.qq.com/s/SFdPDPhI270tnVI3uuOH0Q" target="_blank" rel="noopener">死锁案例十二</a>  （唯一索引，多插入,插入意向锁死锁情况）</li>
+<li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
+</ul>
+<p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
+<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a></li>
+</ul>
+<h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
+<li><a href="https://mp.weixin.qq.com/s/CjacOYs8gdkUPdnofktnXg" target="_blank" rel="noopener">show status和set gtid_mode 导致线程死锁案例</a>  （<font color="red">TODO：gdb和通过源码分析问题思路实操</font>）</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/YAE_DidgZwHOzQ4NSZPyUg" target="_blank" rel="noopener">MySQL centos 6 vs 7的性能对比</a></li>
+<li><font color="gray"><a href="https://mp.weixin.qq.com/s/HlAKday9K0D6AtCdg0uUtg" target="_blank" rel="noopener">xfs vs ext4 性能压测对比</a> (先mark，后面再细细品)</font></li>
+<li><a href="https://mp.weixin.qq.com/s/bOdwi_zYOghBHX-eHDb5-w" target="_blank" rel="noopener">使用innobackup 2.4遇到的问题</a>   （2.2是不能备份5.7 版本）</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2222/07/06/new/Redis/Redis文章学习记录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2222/07/06/new/Redis/Redis文章学习记录/" itemprop="url">Redis文章学习记录</a></h1>
         
 
         <div class="post-meta">
@@ -413,7 +619,15 @@
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4&amp;scene=1&amp;srcid=0807mSCBzip3ig1JuUGQtgj6&amp;key=8dcebf9e179c9f3a59d229b9afacf617d4d85b7d7fd4287ec96ab91fa88b7cc9e142462e65316bb97da66b0cd3dc09f5&amp;ascene=0&amp;uin=MzM4Njg2NDU1" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
 <li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547053&amp;idx=1&amp;sn=833fddbc83379d9cac8d7f757343412e" target="_blank" rel="noopener">Redis实战：如何构建类微博的亿级社交平台</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296996&amp;idx=2&amp;sn=5f4811d73e74e2a63b1cb0d3d532862a" target="_blank" rel="noopener">深入浅出 Redis Cluster 原理，来自一次干货分享</a>：Redis Cluster原理讲解</li>
+<li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
+<li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
+<li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a>  （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
 </ul>
+<blockquote>
+<p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a></p>
+</blockquote>
 
           
         
@@ -1699,154 +1913,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/" itemprop="url">MySQL机制介绍之NLJ、BNL、BKA</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-30T01:03:51+08:00">
-                2020-05-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>MySQL 5.5版本前，MySQL本身只支持一种表间关联方式，就是嵌套循环(Nested Loop)。如果关联表的数据量很大，则join关联的执行时间会非常长。<br>在5.5版本中，MySQL通过引入Block Nested-Loop Join(BNL)算法来优化嵌套执行。</p>
-<h2 id="NLJ"><a href="#NLJ" class="headerlink" title="NLJ"></a>NLJ</h2><p>将驱动表的结果集作为循环基础数据，然后循环从该结果集中每次一条获取数据作为下一个表的过滤条件查询数据，然后合并结果。<br>如果有多表join，则将前面的表的结果集作为循环数据，取到每行再到链接的下一个表循环匹配。</p>
-<h3 id="SNLJ"><a href="#SNLJ" class="headerlink" title="SNLJ"></a>SNLJ</h3><p>Simple Nested-Loops Join(SNLJ，简单嵌套循环联接)，该算法比较简单、直接。驱动表中的每一条记录都与被驱动表中的记录进行匹配判断。对于两表连接，驱动表只需要被访问一次，而被驱动表需要访问多次。这个算法的开销非常大，复杂度为笛卡尔积。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf9s7d0psuj307406mmxc.jpg" alt=""><br>其实现伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For each row r in R do                         -- 扫描R表（驱动表）</span><br><span class="line">    For each row s in S do                     -- 扫描S表（被驱动表）</span><br><span class="line">        If r and s satisfy the join condition  -- 如果r和s满足join条件</span><br><span class="line">            Then output the tuple &lt;r, s&gt;       -- 返回结果集</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1899,7 +1965,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1910,7 +1976,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

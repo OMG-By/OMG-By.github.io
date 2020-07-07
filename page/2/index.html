@@ -307,6 +307,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/" itemprop="url">MySQL机制介绍之NLJ、BNL、BKA</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-30T01:03:51+08:00">
+                2020-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>MySQL 5.5版本前，MySQL本身只支持一种表间关联方式，就是嵌套循环(Nested Loop)。如果关联表的数据量很大，则join关联的执行时间会非常长。<br>在5.5版本中，MySQL通过引入Block Nested-Loop Join(BNL)算法来优化嵌套执行。</p>
+<h2 id="NLJ"><a href="#NLJ" class="headerlink" title="NLJ"></a>NLJ</h2><p>将驱动表的结果集作为循环基础数据，然后循环从该结果集中每次一条获取数据作为下一个表的过滤条件查询数据，然后合并结果。<br>如果有多表join，则将前面的表的结果集作为循环数据，取到每行再到链接的下一个表循环匹配。</p>
+<h3 id="SNLJ"><a href="#SNLJ" class="headerlink" title="SNLJ"></a>SNLJ</h3><p>Simple Nested-Loops Join(SNLJ，简单嵌套循环联接)，该算法比较简单、直接。驱动表中的每一条记录都与被驱动表中的记录进行匹配判断。对于两表连接，驱动表只需要被访问一次，而被驱动表需要访问多次。这个算法的开销非常大，复杂度为笛卡尔积。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf9s7d0psuj307406mmxc.jpg" alt=""><br>其实现伪代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For each row r in R do                         -- 扫描R表（驱动表）</span><br><span class="line">    For each row s in S do                     -- 扫描S表（被驱动表）</span><br><span class="line">        If r and s satisfy the join condition  -- 如果r和s满足join条件</span><br><span class="line">            Then output the tuple &lt;r, s&gt;       -- 返回结果集</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/new/MySQL/MySQL机制介绍之ICP/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1700,164 +1848,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/new/MySQL/MySQL参数之slow相关/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/new/MySQL/MySQL参数之slow相关/" itemprop="url">MySQL参数之slow相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T00:16:43+08:00">
-                2020-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>MySQL的慢日志是MySQL提供的一种日志记录手段，能够将满足一定条件的语句给保存下来，能够很方便的进行针对化优化行为。</p>
-<p>在MySQL中，主要有以下一些参数能够进行控制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+----------------------------------------+-------+</span><br><span class="line">| Variable_name                          | Value |</span><br><span class="line">+----------------------------------------+-------+</span><br><span class="line">| log_slow_admin_statements              | OFF   |</span><br><span class="line">| log_slow_slave_statements              | OFF   |</span><br><span class="line">| slow_launch_time                       | 2     |</span><br><span class="line">| slow_query_log                         | ON    |</span><br><span class="line">| slow_query_log_file                    |       |</span><br><span class="line">| tokudb_disable_slow_alter              | OFF   |</span><br><span class="line">| tokudb_disable_slow_update             | OFF   |</span><br><span class="line">| tokudb_disable_slow_upsert             | OFF   |</span><br><span class="line">| min_examined_row_limit                 | 0     |</span><br><span class="line">| log_queries_not_using_indexes          | OFF   |</span><br><span class="line">| log_throttle_queries_not_using_indexes | 0     |</span><br><span class="line">| long_query_time                        | 10    |</span><br><span class="line">+-------------------------------+----------------+</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>slow_query_log：是否开启慢日志统计功能</li>
-<li>long_query_time：命令执行时间阈值。默认是10s，这个时间指的是具体执行时间，不包含等锁时间</li>
-<li>slow_query_log_file：慢语句记录文件名。默认为数据文件目录，hostname-slow.log</li>
-<li>min_examined_row_limit：扫描超过这个值的语句才被记录</li>
-<li>log_queries_not_using_indexes：是否记录未使用索引的语句</li>
-<li>log_throttle_queries_not_using_indexes：每秒钟记录未使用索引语句的条数上限</li>
-<li>log_slow_admin_statements：是否记录optimize table，analyze table和alter table语句</li>
-<li>log_slow_slave_statements：是否记录slave产生的慢查询</li>
-<li>slow_launch_time：如果创建线程的时间超过这个值，则服务器状态变量<code>Slow_launch_threads</code>增加1。与慢语句无关</li>
-<li>tokudb%：这些参数是tokudb引擎特有的一些参数，在阿里云RDS实例中会默认安装。</li>
-</ul>
-<blockquote>
-<p><a href="https://www.docs4dev.com/docs/zh/mysql/5.7/reference/slow-query-log.html" target="_blank" rel="noopener">https://www.docs4dev.com/docs/zh/mysql/5.7/reference/slow-query-log.html</a><br><a href="https://www.docs4dev.com/docs/zh/mysql/5.7/reference/server-system-variables.html" target="_blank" rel="noopener">https://www.docs4dev.com/docs/zh/mysql/5.7/reference/server-system-variables.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1910,7 +1900,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1921,7 +1911,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

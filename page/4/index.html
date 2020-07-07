@@ -307,6 +307,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/new/Redis/Redis4.0的大key发现和删除/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/19/new/Redis/Redis4.0的大key发现和删除/" itemprop="url">Redis4.0的大key发现和删除</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-19T01:22:47+08:00">
+                2019-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Redis4.0版本之后引入了memory usage命令和lazyfree机制。不管是对大key的发现，还是解决删除大key造成的阻塞问题都有了很大的提升。</p>
+<h3 id="大key发现"><a href="#大key发现" class="headerlink" title="大key发现"></a>大key发现</h3><p>memory usage的实现主要在<code>object.c-&gt;memoryCommand</code>方法中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;memory&quot;,memoryCommand,-2,</span><br><span class="line">     &quot;random read-only&quot;,</span><br><span class="line">     0,NULL,0,0,0,0,0,0&#125;,</span><br><span class="line">     </span><br><span class="line">else if (!strcasecmp(c-&gt;argv[1]-&gt;ptr,&quot;usage&quot;) &amp;&amp; c-&gt;argc &gt;= 3) &#123;</span><br><span class="line">        dictEntry *de;</span><br><span class="line">        long long samples = OBJ_COMPUTE_SIZE_DEF_SAMPLES;</span><br><span class="line">        for (int j = 3; j &lt; c-&gt;argc; j++) &#123;</span><br><span class="line">            if (!strcasecmp(c-&gt;argv[j]-&gt;ptr,&quot;samples&quot;) &amp;&amp;</span><br><span class="line">                j+1 &lt; c-&gt;argc)</span><br><span class="line">            &#123;</span><br><span class="line">                if (getLongLongFromObjectOrReply(c,c-&gt;argv[j+1],&amp;samples,NULL)</span><br><span class="line">                     == C_ERR) return;</span><br><span class="line">                if (samples &lt; 0) &#123;</span><br><span class="line">                    addReply(c,shared.syntaxerr);</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                if (samples == 0) samples = LLONG_MAX;;</span><br><span class="line">                j++; /* skip option argument. */</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                addReply(c,shared.syntaxerr);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if ((de = dictFind(c-&gt;db-&gt;dict,c-&gt;argv[2]-&gt;ptr)) == NULL) &#123;</span><br><span class="line">            addReplyNull(c);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        size_t usage = objectComputeSize(dictGetVal(de),samples);</span><br><span class="line">        usage += sdsAllocSize(dictGetKey(de));</span><br><span class="line">        usage += sizeof(dictEntry);</span><br><span class="line">        addReplyLongLong(c,usage);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/19/new/Redis/Redis4.0的大key发现和删除/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/15/new/Redis/Redis初始化启动过程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1706,157 +1853,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/new/Java/Arrays-sort和Collections-sort实现原理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/16/new/Java/Arrays-sort和Collections-sort实现原理/" itemprop="url">Arrays.sort和Collections.sort实现原理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-16T22:51:54+08:00">
-                2019-07-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>事实上，在使用<code>Collections.sort(list)</code>的时候，就调用list.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list) &#123;</span><br><span class="line">        list.sort(null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我们在深入进去后，发现其实调用的就是Array.sort()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;rawtypes&quot;&#125;)</span><br><span class="line">    default void sort(Comparator&lt;? super E&gt; c) &#123;</span><br><span class="line">        Object[] a = this.toArray();</span><br><span class="line">        Arrays.sort(a, (Comparator) c);</span><br><span class="line">        ListIterator&lt;E&gt; i = this.listIterator();</span><br><span class="line">        for (Object e : a) &#123;</span><br><span class="line">            i.next();</span><br><span class="line">            i.set((E) e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>而在Array.sort中，会根据该对象是否能够通过归并排序来选择不同的排序方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; void sort(T[] a, Comparator&lt;? super T&gt; c) &#123;</span><br><span class="line">        if (c == null) &#123;</span><br><span class="line">            sort(a);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (LegacyMergeSort.userRequested)</span><br><span class="line">                legacyMergeSort(a, c);</span><br><span class="line">            else</span><br><span class="line">                TimSort.sort(a, 0, a.length, c, null, 0, 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>legacyMergeSort：归并排序</li>
-<li><a href="https://blog.csdn.net/yangzhongblog/article/details/8184707" target="_blank" rel="noopener">TimSort</a><br>：结合归并排序和插入排序的一种排序算法</li>
-</ul>
-<blockquote>
-<p>TimSort 算法为了减少对升序部分的回溯和对降序部分的性能倒退，将输入按其升序和降序特点进行了分区。排序的输入的单位不是一个个单独的数字，而是一个个的块-分区。其中每一个分区叫一个run。针对这些 run 序列，每次拿一个 run 出来按规则进行合并。每次合并会将两个 run合并成一个 run。合并的结果保存到栈中。合并直到消耗掉所有的 run，这时将栈上剩余的 run合并到只剩一个 run 为止。这时这个仅剩的 run 便是排好序的结果。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1909,7 +1905,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1920,7 +1916,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
