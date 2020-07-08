@@ -307,6 +307,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/31/new/MySQL/MySQL机制之index-merge/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/31/new/MySQL/MySQL机制之index-merge/" itemprop="url">MySQL机制之index merge</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-31T22:50:20+08:00">
+                2020-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>查询时where后面可能会涉及到多个字段，它们之间进行AND或OR。在MySQL 5.0之前，一个表一次只能使用一个索引，无法同时使用多个索引分别进行条件扫描。从5.1开始引入了<code>index merge</code>技术。<br><code>index merge</code>技术就是<font color="red">对多个索引分别进行条件扫描，然后将他们各自的结果进行合并</font></p>
+<p>该特性主要会体现在以下场景：</p>
+<ol>
+<li>对OR语句求并集</li>
+<li>对AND语句求交集</li>
+<li>对AND和OR组合语句求结果</li>
+</ol>
+<p>在满足index merge条件下的查询计划中会出现<code>type:index_merge</code>。</p>
+<h2 id="AND取交集-union"><a href="#AND取交集-union" class="headerlink" title="AND取交集(union)"></a>AND取交集(union)</h2><p>union就是多个索引条件扫描，对得到的结果进行并集运算，显然是多个条件之间进行的是 OR 运算。<br>案例：<code>SELECT * FROM tmp_index_merge where key1_part1 = 2 and key2_part1 = 4\G</code></p>
+<h2 id="OR取并集-intersect"><a href="#OR取并集-intersect" class="headerlink" title="OR取并集(intersect)"></a>OR取并集(intersect)</h2><p>intersect就是多个索引条件扫描得到的结果进行交集运算。<br>案例：<code>SELECT * FROM tmp_index_merge where key1_part1 = 2 or key2_part1 = 4\G</code></p>
+<h2 id="AND和OR组合取并集-sort-union"><a href="#AND和OR组合取并集-sort-union" class="headerlink" title="AND和OR组合取并集(sort_union)"></a>AND和OR组合取并集(sort_union)</h2><p>多个条件扫描进行 OR 运算，但是不符合 index union merge算法的，此时可能会使用 sort_union算法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM tbl_name WHERE key_col1 &lt; 10 OR key_col2 &lt; 20;</span><br><span class="line">SELECT * FROM tbl_name WHERE (key_col1 &gt; 10 OR key_col2 = 20) AND nonkey_col=30;</span><br></pre></td></tr></table></figure></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>在MySQL5.6.7之前的版本中，存在<font color="red">range优先原则</font>。只要可以使用Range访问方式，那就不会再使用index merge。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>索引合并机制并不是什么新鲜东西，但是仍然存在很多人认为一条查询只能使用一个索引的观念。本篇文章只是简单的介绍MySQL存在这么一个机制，并未过深的研究。<br>简言之，索引合并会同时利用多个索引进行查询，尽可能得过滤掉不需要的数据行，然后再进行一次统一的回表行为。较少无谓的回表行为。</p>
+<blockquote>
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/index-merge-optimization.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.6/en/index-merge-optimization.html</a><br><a href="https://www.orczhou.com/index.php/2013/01/mysql-source-code-query-optimization-index-merge/" target="_blank" rel="noopener">https://www.orczhou.com/index.php/2013/01/mysql-source-code-query-optimization-index-merge/</a><br><a href="http://www.cnblogs.com/nocode/archive/2013/01/28/2880654.html" target="_blank" rel="noopener">http://www.cnblogs.com/nocode/archive/2013/01/28/2880654.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/30/new/MySQL/MySQL机制介绍之NLJ、BNL、BKA/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1694,160 +1851,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/" itemprop="url">MySQL参数之innodb_autoinc_lock_mode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T20:41:13+08:00">
-                2020-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="insert种类"><a href="#insert种类" class="headerlink" title="insert种类"></a>insert种类</h2><p>在讲<code>innodb_autoinc_lock_mode</code>参数之前，我们先来了解下MySQL insert的种类</p>
-<ul>
-<li>simple insert：插入的记录行数是确定的。比如：insert into、replace</li>
-<li>bulk insert：插入的记录行数不能马上确认的。比如：insert…select、replace…select、load data</li>
-<li>mixed-mode insert：也是’simple insert’，但是语句插入中存在没指定自增值的行。比如：INSERT INTO t1 (c1,c2) VALUES (1,’a’), (NULL,’b’), (5,’c’), (NULL,’d’)、INSERT … ON DUPLICATE KEY UPDATE</li>
-</ul>
-<h2 id="锁模式"><a href="#锁模式" class="headerlink" title="锁模式"></a>锁模式</h2><p>在了解了以上insert种类后。我们来对<code>innodb_autoinc_lock_mode</code>参数设置不同值时的表现进行描述。</p>
-<h3 id="传统模式"><a href="#传统模式" class="headerlink" title="传统模式"></a>传统模式</h3><p>innodb_autoinc_lock_mode=0</p>
-<p>这种模式性能最差，它会对所有的insert模式操作都去获取一个特殊的<code>table-level auto-inc</code>。这种锁会持续到语句结束，以确保执行的insert语句以可预测且可重复的顺序分配自动递增值。这种模式更多是为了兼容老版本的MySQL运行。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1900,7 +1903,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

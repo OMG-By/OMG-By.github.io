@@ -307,6 +307,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/" itemprop="url">MySQL参数之innodb_autoinc_lock_mode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T20:41:13+08:00">
+                2020-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="insert种类"><a href="#insert种类" class="headerlink" title="insert种类"></a>insert种类</h2><p>在讲<code>innodb_autoinc_lock_mode</code>参数之前，我们先来了解下MySQL insert的种类</p>
+<ul>
+<li>simple insert：插入的记录行数是确定的。比如：insert into、replace</li>
+<li>bulk insert：插入的记录行数不能马上确认的。比如：insert…select、replace…select、load data</li>
+<li>mixed-mode insert：也是’simple insert’，但是语句插入中存在没指定自增值的行。比如：INSERT INTO t1 (c1,c2) VALUES (1,’a’), (NULL,’b’), (5,’c’), (NULL,’d’)、INSERT … ON DUPLICATE KEY UPDATE</li>
+</ul>
+<h2 id="锁模式"><a href="#锁模式" class="headerlink" title="锁模式"></a>锁模式</h2><p>在了解了以上insert种类后。我们来对<code>innodb_autoinc_lock_mode</code>参数设置不同值时的表现进行描述。</p>
+<h3 id="传统模式"><a href="#传统模式" class="headerlink" title="传统模式"></a>传统模式</h3><p>innodb_autoinc_lock_mode=0</p>
+<p>这种模式性能最差，它会对所有的insert模式操作都去获取一个特殊的<code>table-level auto-inc</code>。这种锁会持续到语句结束，以确保执行的insert语句以可预测且可重复的顺序分配自动递增值。这种模式更多是为了兼容老版本的MySQL运行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/02/new/MySQL/MySQL参数之innodb-autoinc-lock-mode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/new/MySQL/MySQL参数之slow相关/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1718,167 +1872,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/26/new/Redis/浅析GeoHash/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/26/new/Redis/浅析GeoHash/" itemprop="url">浅析GeoHash</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-26T20:16:58+08:00">
-                2019-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>GeoHash算法能够将二维的经纬度转换成字符串。主要有以下几个特性:</p>
-<ol>
-<li>每一个字符串代表了某一矩形区域.</li>
-<li>字符串的长度越长，所表示的位置越精确。</li>
-<li>字符串越相近的表示的举例越接近.</li>
-</ol>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>GeoHash将经纬度转换为hash字符串主要分为三步：</p>
-<ol>
-<li>将纬度(-90, 90)平均分成两个区间(-90, 0)、(0, 90)，如果坐标位置的纬度值在第一区间，则编码是0，否则编码为1</li>
-<li>经纬度的编码合并，从0开始，奇数为是纬度，偶数为是经度</li>
-<li>对经纬度合并后的编码，进行base32编码</li>
-</ol>
-<p>大概过程如下图，不断的对经纬度进行切割，直到精准度达到要求。<br><img src="https://user-gold-cdn.xitu.io/2018/7/4/1646397a223e2019?imageslim" alt="IMAGE"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><blockquote>
-<p>将经纬度转换成二进制编码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void convert(double min, double max, double value, List&lt;Character&gt; list) &#123;</span><br><span class="line">        if (list.size() &gt; (length - 1)) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        double mid = (max + min) / 2;</span><br><span class="line">        if (value &lt; mid) &#123;</span><br><span class="line">            list.add(&apos;0&apos;);</span><br><span class="line">            convert(min, mid, value, list);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            list.add(&apos;1&apos;);</span><br><span class="line">            convert(mid, max, value, list);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/12/26/new/Redis/浅析GeoHash/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1931,7 +1924,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

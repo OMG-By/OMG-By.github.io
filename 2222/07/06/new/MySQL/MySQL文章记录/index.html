@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="这篇博文主用来记录读到的MySQL相关的文章 故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。）  库表字符集修改后，老字段仍为原来字符集   （修">
+<meta name="description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL文章学习记录">
 <meta property="og:url" content="http://yoursite.com/2222/07/06/new/MySQL/MySQL文章记录/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="这篇博文主用来记录读到的MySQL相关的文章 故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。）  库表字符集修改后，老字段仍为原来字符集   （修">
+<meta property="og:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-07T11:54:35.113Z">
+<meta property="og:updated_time" content="2020-07-08T06:41:02.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL文章学习记录">
-<meta name="twitter:description" content="这篇博文主用来记录读到的MySQL相关的文章 故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。）  库表字符集修改后，老字段仍为原来字符集   （修">
+<meta name="twitter:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
 
 
 
@@ -406,6 +406,10 @@
 
       
         <p>这篇博文主用来记录读到的MySQL相关的文章</p>
+<h2 id="机制系列"><a href="#机制系列" class="headerlink" title="机制系列"></a>机制系列</h2><ul>
+<li><a href="https://jin-yang.github.io/post/mysql-protocol.html" target="_blank" rel="noopener">MySQL 通讯协议</a>：客户端与服务端连接过程中，密码怎样传输</li>
+<li><a href="https://blog.csdn.net/n88Lpo/article/details/81187372" target="_blank" rel="noopener">图解MySQL MySQL组提交(group commit)</a></li>
+</ul>
 <h2 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/hYsxeevggxwkObJyOqy3iA" target="_blank" rel="noopener">引号错位引起的故障</a> （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …）</li>
 <li><a href="https://mp.weixin.qq.com/s/snJcudytuW4_BvgVk86IXw" target="_blank" rel="noopener">一个事务中调整语句顺序</a> （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。） </li>
@@ -458,8 +462,10 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
+<a id="more"></a>
 <h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a></li>
+<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>(使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章)</li>
+<li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a></li>
 </ul>
 <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
@@ -592,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -700,7 +706,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#故障及优化案例系列"><span class="nav-number">1.</span> <span class="nav-text">故障及优化案例系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁系列"><span class="nav-number">2.</span> <span class="nav-text">死锁系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL8-0系列"><span class="nav-number">3.</span> <span class="nav-text">MySQL8.0系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码解析"><span class="nav-number">4.</span> <span class="nav-text">源码解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#机制系列"><span class="nav-number">1.</span> <span class="nav-text">机制系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障及优化案例系列"><span class="nav-number">2.</span> <span class="nav-text">故障及优化案例系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁系列"><span class="nav-number">3.</span> <span class="nav-text">死锁系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL8-0系列"><span class="nav-number">4.</span> <span class="nav-text">MySQL8.0系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码解析"><span class="nav-number">5.</span> <span class="nav-text">源码解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>
