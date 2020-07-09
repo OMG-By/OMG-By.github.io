@@ -402,6 +402,7 @@
           <p>这篇博文主用来记录读到的MySQL相关的文章</p>
 <h2 id="机制系列"><a href="#机制系列" class="headerlink" title="机制系列"></a>机制系列</h2><ul>
 <li><a href="https://jin-yang.github.io/post/mysql-protocol.html" target="_blank" rel="noopener">MySQL 通讯协议</a>：客户端与服务端连接过程中，密码怎样传输</li>
+<li><a href="https://mp.weixin.qq.com/s/2jqPhy_6zefgrx0zqhgNCw" target="_blank" rel="noopener">活久见，为什么SHOW TABLE STATUS总是不更新</a></li>
 <li><a href="https://blog.csdn.net/n88Lpo/article/details/81187372" target="_blank" rel="noopener">图解MySQL MySQL组提交(group commit)</a></li>
 </ul>
 <h2 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h2><ul>
@@ -421,6 +422,8 @@
 <li><a href="https://mp.weixin.qq.com/s/0y20YxeSvgwJM7ZUho1C7Q" target="_blank" rel="noopener">MySQL 大量sleeping before entering InnoDB 故障诊断</a> （很详细的一次问题排查步骤，里面有很多有用的命令）</li>
 <li><a href="https://mp.weixin.qq.com/s/Edn_gPwcAHo5sYIzLJghzA" target="_blank" rel="noopener">哪些因素会导致慢查询？</a> （<font color="red">从应用到数据库，非常全面的列出了变慢的原因</font> 加一个：limit 时匹配不到数据会一直扫描。）</li>
 <li><a href="https://mp.weixin.qq.com/s/AC9CwpSUTW6fXA-5mHxPGQ" target="_blank" rel="noopener">由MySQL复制延迟说起</a>  （分析了复制延迟的主要原因和解决办法）</li>
+<li><a href="https://mp.weixin.qq.com/s/safm3DQh2zYO9Pdk9ZXbkA" target="_blank" rel="noopener">为何COUNT很慢却不写SLOW LOG</a>：slow log记录规则</li>
+<li><a href="https://mp.weixin.qq.com/s/7L-aBKmjORJ7Mg72Od47lw" target="_blank" rel="noopener">故障分析 | MySQL 优化案例 - select count(*)</a></li>
 </ul>
 <p>SQL变慢的原因主要有：</p>
 <ol>
@@ -603,23 +606,42 @@
         
           
             <p>这篇博文主用来记录读到的Redis相关的文章</p>
-<ul>
+<h2 id="实践案例"><a href="#实践案例" class="headerlink" title="实践案例"></a>实践案例</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547585&amp;idx=1&amp;sn=9a664b16f656f757632cd4eb29f9a5dc&amp;scene=1&amp;srcid=0726LGdy9zmneqsZyAekKukJ#rd" target="_blank" rel="noopener">近千节点的Redis Cluster高可用集群案例:优酷蓝鲸优化实战</a>：详细的介绍了Redis Cluster下心跳信息对带宽的影响。</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339&amp;scene=1&amp;srcid=0727YNxfwO2zzZlW7AVplGMN&amp;key=8dcebf9e179c9f3a7a34a51b0f07d506dbdf1c1ae28cc0442d989767a2f2950aa11e97ab9520b605645d5c50300a9a04&amp;ascene=0&amp;uin=MzM4Njg2NDU1" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a>：压缩列表实现</li>
 <li><a href="https://mp.weixin.qq.com/s/LeSSdT6bOEFzZyN26PRVzg" target="_blank" rel="noopener">干货 | 携程Redis海外机房数据同步实践</a>：携程开源 Redis 多数据中心复制管理系统 X-Pipe</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486458&amp;idx=1&amp;sn=5d69ab965d84c69516caecbb776f0799&amp;source=41#wechat_redirect" target="_blank" rel="noopener">优酷蓝鲸近千节点的Redis集群运维经验总结</a>：Redis Cluster运维时遇到的一些问题(<font color="red">实用</font>)</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc&amp;scene=1&amp;srcid=0731HDDs6lEuh8q2wMpmViy3&amp;pass_ticket=JiiNCOOLwCNJRHCGqmKYIgl9nnA0YZMert1gbyFdNh5ojmB5oqvqi0LgW0GSOSY%2F#rd" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MjExMDMzNQ==&amp;mid=2651113608&amp;idx=1&amp;sn=0d1ec5f7e1201c2fdea72ab2df091cec&amp;scene=1&amp;srcid=0711PZXDU2AiKpxyYRHgj5i7&amp;key=8dcebf9e179c9f3afe92530dd11458e69e5be406155baaac4921deaa441453a57f2cb9cc24f692e02ab4faf978774123&amp;ascene=0&amp;uin=MzM4Njg2NDU1" target="_blank" rel="noopener">Redis学习系列之八：Redis事务玩法</a>：Redis事务介绍和源码分析</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547622&amp;idx=1&amp;sn=199cd6d8e3dff7c839935a7613d43e76&amp;scene=1" target="_blank" rel="noopener">同程旅游缓存系统设计:如何打造Redis时代的完美体系</a>：携程Redis架构发展历程(<font color="red">推荐阅读</font>)</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzIwNzEzNDkxNQ==&amp;mid=2650967934&amp;idx=1&amp;sn=1abd598b740ec3b42f76d59a14e4b788" target="_blank" rel="noopener">源码分析redis的sentinel在master宕机时是如何选择新的master的</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4&amp;scene=1&amp;srcid=0807mSCBzip3ig1JuUGQtgj6&amp;key=8dcebf9e179c9f3a59d229b9afacf617d4d85b7d7fd4287ec96ab91fa88b7cc9e142462e65316bb97da66b0cd3dc09f5&amp;ascene=0&amp;uin=MzM4Njg2NDU1" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
-<li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547053&amp;idx=1&amp;sn=833fddbc83379d9cac8d7f757343412e" target="_blank" rel="noopener">Redis实战：如何构建类微博的亿级社交平台</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MTY5NTk4Ng==&amp;mid=2247489693&amp;idx=1&amp;sn=b3138663029f41744203acf174725feb&amp;source=41#wechat_redirect" target="_blank" rel="noopener">日请求量过亿，谈陌陌的Feed服务优化之路</a></li>
+<li><a href="https://www.infoq.cn/article/2016/06/redis-storage-practise/" target="_blank" rel="noopener">Redis 应用实践：小红书海量 Redis 存储之道</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTg2MDUyMw==&amp;mid=2247483661&amp;idx=1&amp;sn=c924b3a2b098c4211b0044de180a1c0e" target="_blank" rel="noopener">如何实现高可用的redis集群</a>：客户端分片模式的Redis集群方案</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4Nzg5Nzc5OA==&amp;mid=2651660079&amp;idx=1&amp;sn=bca50ad39792deadf167077308120264" target="_blank" rel="noopener">唯品会大规模 Redis Cluster 的生产实践</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296671&amp;idx=1&amp;sn=366de50a6787963517ff6e096c9d1643" target="_blank" rel="noopener">这可能是最全的 Redis 集群方案介绍了</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTEyOTQ5OQ==&amp;mid=402004912&amp;idx=1&amp;sn=7517696a86f54262e60e1b5636d6cbe0" target="_blank" rel="noopener">Redis 集群的合纵与连横</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5NzA0ODA1Nw==&amp;mid=2650513422&amp;idx=1&amp;sn=846550678e98d0ea1adb444579ba558f" target="_blank" rel="noopener">Redis时延问题分析及应对</a></li>
+<li><p><a href="https://developer.aliyun.com/article/46636#index_section" target="_blank" rel="noopener">干货来袭！Redis技术盛宴——阿里云Redis交流会火热召开</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</p>
+</li>
+<li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
+<li><a href="http://soft.dog/2016/04/28/redis-docker-config/" target="_blank" rel="noopener">Redis 容器与配置</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
+<li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a> （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
+</ul>
+<h2 id="机制、源码"><a href="#机制、源码" class="headerlink" title="机制、源码"></a>机制、源码</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MjExMDMzNQ==&amp;mid=2651113608&amp;idx=1&amp;sn=0d1ec5f7e1201c2fdea72ab2df091cec" target="_blank" rel="noopener">Redis学习系列之八：Redis事务玩法</a>：Redis事务介绍和源码分析</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIwNzEzNDkxNQ==&amp;mid=2650967934&amp;idx=1&amp;sn=1abd598b740ec3b42f76d59a14e4b788" target="_blank" rel="noopener">源码分析redis的sentinel在master宕机时是如何选择新的master的</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296996&amp;idx=2&amp;sn=5f4811d73e74e2a63b1cb0d3d532862a" target="_blank" rel="noopener">深入浅出 Redis Cluster 原理，来自一次干货分享</a>：Redis Cluster原理讲解</li>
 <li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
 <li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
-<li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a>  （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5ODM5MDU3MA==&amp;mid=2650861715&amp;idx=1&amp;sn=e30a388f897c8953842fb5e8843048e4" target="_blank" rel="noopener">Redis 缓存失效机制</a></li>
+<li><a href="https://blog.csdn.net/Xiejingfa/article/details/51553370" target="_blank" rel="noopener">Redis源码剖析 - Redis持久化之RDB</a></li>
+<li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
+</ul>
+<h2 id="版本特性"><a href="#版本特性" class="headerlink" title="版本特性"></a>版本特性</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/Gm1EzhbcZEWpw8eXmP_ibw" target="_blank" rel="noopener">Redis 6.0 新特性概览</a></li>
 </ul>
 <blockquote>
 <p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a></p>

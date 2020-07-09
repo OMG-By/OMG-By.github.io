@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
+<meta name="description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 活久见，为什么SHOW TABLE STATUS总是不更新 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL文章学习记录">
 <meta property="og:url" content="http://yoursite.com/2222/07/06/new/MySQL/MySQL文章记录/index.html">
 <meta property="og:site_name" content="OMG_By">
-<meta property="og:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
+<meta property="og:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 活久见，为什么SHOW TABLE STATUS总是不更新 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-08T06:41:02.219Z">
+<meta property="og:updated_time" content="2020-07-09T12:41:02.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL文章学习记录">
-<meta name="twitter:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中调整语句顺序 （MySQL45讲中也说过：一个事务中，只有需">
+<meta name="twitter:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 活久见，为什么SHOW TABLE STATUS总是不更新 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中">
 
 
 
@@ -408,6 +408,7 @@
         <p>这篇博文主用来记录读到的MySQL相关的文章</p>
 <h2 id="机制系列"><a href="#机制系列" class="headerlink" title="机制系列"></a>机制系列</h2><ul>
 <li><a href="https://jin-yang.github.io/post/mysql-protocol.html" target="_blank" rel="noopener">MySQL 通讯协议</a>：客户端与服务端连接过程中，密码怎样传输</li>
+<li><a href="https://mp.weixin.qq.com/s/2jqPhy_6zefgrx0zqhgNCw" target="_blank" rel="noopener">活久见，为什么SHOW TABLE STATUS总是不更新</a></li>
 <li><a href="https://blog.csdn.net/n88Lpo/article/details/81187372" target="_blank" rel="noopener">图解MySQL MySQL组提交(group commit)</a></li>
 </ul>
 <h2 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h2><ul>
@@ -427,6 +428,8 @@
 <li><a href="https://mp.weixin.qq.com/s/0y20YxeSvgwJM7ZUho1C7Q" target="_blank" rel="noopener">MySQL 大量sleeping before entering InnoDB 故障诊断</a> （很详细的一次问题排查步骤，里面有很多有用的命令）</li>
 <li><a href="https://mp.weixin.qq.com/s/Edn_gPwcAHo5sYIzLJghzA" target="_blank" rel="noopener">哪些因素会导致慢查询？</a> （<font color="red">从应用到数据库，非常全面的列出了变慢的原因</font> 加一个：limit 时匹配不到数据会一直扫描。）</li>
 <li><a href="https://mp.weixin.qq.com/s/AC9CwpSUTW6fXA-5mHxPGQ" target="_blank" rel="noopener">由MySQL复制延迟说起</a>  （分析了复制延迟的主要原因和解决办法）</li>
+<li><a href="https://mp.weixin.qq.com/s/safm3DQh2zYO9Pdk9ZXbkA" target="_blank" rel="noopener">为何COUNT很慢却不写SLOW LOG</a>：slow log记录规则</li>
+<li><a href="https://mp.weixin.qq.com/s/7L-aBKmjORJ7Mg72Od47lw" target="_blank" rel="noopener">故障分析 | MySQL 优化案例 - select count(*)</a></li>
 </ul>
 <p>SQL变慢的原因主要有：</p>
 <ol>
@@ -464,8 +467,13 @@
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
 <a id="more"></a>
 <h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/-k99IVJ8tjFYZ4C1V_3nAQ" target="_blank" rel="noopener">MySQL8.0到目前为止有哪些真香特性</a></li>
 <li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>(使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章)</li>
 <li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a></li>
+<li><a href="https://mp.weixin.qq.com/s/FDE31xEhl4hX6PidHChX0Q" target="_blank" rel="noopener">新特性解读 | 说说 MySQL 8 对于持久化变量的一些修改</a>：在命令行修改参数值的同时进行持久化，避免忘记修改配置文件导致实例重启后出现未知的问题。</li>
+<li><a href="https://www.cndba.cn/Expect-le/article/3135" target="_blank" rel="noopener">MySQL8.0中已移除的特性，功能</a></li>
+<li><a href="https://www.cndba.cn/Supreme_Aaron/article/4186" target="_blank" rel="noopener">MySQL 一个历史遗留“BUG”</a>：行锁多锁一条记录，MySQL45讲中提到过这个问题</li>
+<li><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">真香，MySQL 8.0.20，10倍性能提升</a>：doublewrite性能优化</li>
 </ul>
 <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
