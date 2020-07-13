@@ -65,15 +65,37 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
-<a id="more"></a>
-<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><ul>
+<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg" alt=""> <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmwiccwj30iq0bita5.jpg" alt=""><br><a id="more"></a></p>
+<ul>
 <li><a href="https://mp.weixin.qq.com/s/-k99IVJ8tjFYZ4C1V_3nAQ" target="_blank" rel="noopener">MySQL8.0到目前为止有哪些真香特性</a></li>
-<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>(使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章)</li>
-<li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a></li>
-<li><a href="https://mp.weixin.qq.com/s/FDE31xEhl4hX6PidHChX0Q" target="_blank" rel="noopener">新特性解读 | 说说 MySQL 8 对于持久化变量的一些修改</a>：在命令行修改参数值的同时进行持久化，避免忘记修改配置文件导致实例重启后出现未知的问题。</li>
+<li><a href="https://opensource.actionsky.com/category/%e6%8a%80%e6%9c%af%e5%b9%b2%e8%b4%a7/mysql-new/" target="_blank" rel="noopener">8.0 新特性</a></li>
 <li><a href="https://www.cndba.cn/Expect-le/article/3135" target="_blank" rel="noopener">MySQL8.0中已移除的特性，功能</a></li>
+<li><a href="https://mp.weixin.qq.com/s/C6129OaeeLaodzLeRhWbvw" target="_blank" rel="noopener">MySQL 8.0 clone plugin 完整版</a>：官方支持的一种全新的数据库备份恢复方式。</li>
+<li><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">真香，MySQL 8.0.20，10倍性能提升</a>：doublewrite性能优化，由全局锁减小为实例锁</li>
+<li><a href="https://opensource.actionsky.com/20191119-mysql/" target="_blank" rel="noopener">技术分享 | Hash join in MySQL 8</a></li>
+<li><a href="https://mp.weixin.qq.com/s/gYledARCZHvrlnCEmh2mtw" target="_blank" rel="noopener">MySQL 8.0 hash join有重大缺陷？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/7FI87f6t3UvbE9GGhw8iVA" target="_blank" rel="noopener">一文读懂MySQL 8.0直方图</a>：不用加索引的优化方式，需要手动更新</li>
+<li><a href="https://mp.weixin.qq.com/s/OYgWvJQr736rqpF1bsIJ-A" target="_blank" rel="noopener">MySQL 8.0中对EXISTS、NOT EXISTS的持续优化</a>：从8.0.16开始，增加对EXISTS的优化，和IN一样也支持自动转换成semi join</li>
+<li><a href="https://opensource.actionsky.com/20200420-mysql/" target="_blank" rel="noopener">新特性解读 | 趋近完美的 Undo 空间</a></li>
+<li><a href="https://opensource.actionsky.com/20200318-mysql/" target="_blank" rel="noopener">七个实验掌握 MySQL 8.0 角色功能</a></li>
+<li><a href="https://opensource.actionsky.com/20190528-mysql8-index4/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性4-不可见索引</a></li>
+<li><a href="https://opensource.actionsky.com/20190520-mysql8-0-index3/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性3 -倒序索引</a></li>
+<li><a href="https://opensource.actionsky.com/20190507-mysql8-0-index2/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性2-索引跳跃扫描</a></li>
+<li><a href="https://mp.weixin.qq.com/s/rQ7og6iXoOofFrnnz7vgbg" target="_blank" rel="noopener">MySQL 8.0 之Index Skip Scan</a></li>
+<li><p><a href="https://blog.csdn.net/vkingnew/article/details/81267320" target="_blank" rel="noopener">MySQL 8.0.12 instant add column 体验，亿级数据秒速增加字段</a></p>
+</li>
+<li><p><a href="https://opensource.actionsky.com/20200709-mysql/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 之原子 DDL</a></p>
+</li>
+<li><a href="https://opensource.actionsky.com/20200520-mysql/" target="_blank" rel="noopener">新特性解读 | binlog 压缩</a>：MySQL 从 8.0.20 开始集成 ZSTD 算法，推出binlog 压缩功能</li>
+<li><a href="https://mp.weixin.qq.com/s/FDE31xEhl4hX6PidHChX0Q" target="_blank" rel="noopener">新特性解读 | 说说 MySQL 8 对于持久化变量的一些修改</a>：在命令行修改参数值的同时进行持久化，避免忘记修改配置文件导致实例重启后出现未知的问题。</li>
+<li><a href="https://opensource.actionsky.com/20200325-mysql/" target="_blank" rel="noopener">新特性解读 | 8.0 新增 DML 语句（TABLE &amp; VALUES）</a></li>
+<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>：NOSQL机制集成的又一体现。使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章</li>
+<li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a>：新加密方式(caching_sha2_password)</li>
+<li><a href="https://mp.weixin.qq.com/s/jfoH6D8NfoaNN7eexbzKGA" target="_blank" rel="noopener">MySQL 8.0密码认证机制升级，不知道可能导致业务不可用</a>：客户端与服务端加密方式不一样导致连接失败。</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&amp;mid=2653933468&amp;idx=1&amp;sn=a6db84ebfedcf1c03a40d5351ae93be6&amp;chksm=bd3b55f68a4cdce0de76de7abc2266bdb2bfd7e7cdf8696ffecd481c0ae550458ac82cff9a68&amp;scene=158#rdZ" target="_blank" rel="noopener">解密MySQL 8.0 multi-valued indexes</a>：MySQL 8.0.17起，InnoDB引擎新增了对JSON数据类型的多值索引</li>
 <li><a href="https://www.cndba.cn/Supreme_Aaron/article/4186" target="_blank" rel="noopener">MySQL 一个历史遗留“BUG”</a>：行锁多锁一条记录，MySQL45讲中提到过这个问题</li>
-<li><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">真香，MySQL 8.0.20，10倍性能提升</a>：doublewrite性能优化</li>
+<li><a href="https://mp.weixin.qq.com/s/5xg-jy56u12Kq9BZjglULg" target="_blank" rel="noopener">MySQL 8.0 InnoDB压缩行格式性能测试</a>：新的压缩算法不会减少多少占用，在一定程度上影响了性能。需要根据业务场景谨慎选择</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&amp;mid=2653933464&amp;idx=1&amp;sn=82bd2d6ddbd103efe46a51a357e872de&amp;chksm=bd3b55f28a4cdce4b021b41457a188cbfa53544117de74cd7876b9ddd244f98e1bf9b4ab8be4&amp;scene=158#rd" target="_blank" rel="noopener">MySQL 8.0.19客户端的一个小变化</a>：默认当查询到的数据有二进制数据的话，就会用十六进制方式展示出来</li>
 </ul>
 <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
@@ -83,6 +105,8 @@
 <li><a href="https://mp.weixin.qq.com/s/YAE_DidgZwHOzQ4NSZPyUg" target="_blank" rel="noopener">MySQL centos 6 vs 7的性能对比</a></li>
 <li><font color="gray"><a href="https://mp.weixin.qq.com/s/HlAKday9K0D6AtCdg0uUtg" target="_blank" rel="noopener">xfs vs ext4 性能压测对比</a> (先mark，后面再细细品)</font></li>
 <li><a href="https://mp.weixin.qq.com/s/bOdwi_zYOghBHX-eHDb5-w" target="_blank" rel="noopener">使用innobackup 2.4遇到的问题</a>   （2.2是不能备份5.7 版本）</li>
+<li><a href="https://mp.weixin.qq.com/s/ubiyT62zG3NGxTMSJIoY0g" target="_blank" rel="noopener">MySQL DBA如何利用strace/pstack/gdb来定位问题</a></li>
+<li><a href="https://got.qq.com/webplat/info/news_version3/8616/8622/8625/8628/m7025/201407/271174.shtml" target="_blank" rel="noopener">MySQL在线加字段实现原理</a></li>
 </ul>
 ]]></content>
       
@@ -118,17 +142,22 @@
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296671&amp;idx=1&amp;sn=366de50a6787963517ff6e096c9d1643" target="_blank" rel="noopener">这可能是最全的 Redis 集群方案介绍了</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTEyOTQ5OQ==&amp;mid=402004912&amp;idx=1&amp;sn=7517696a86f54262e60e1b5636d6cbe0" target="_blank" rel="noopener">Redis 集群的合纵与连横</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzA5NzA0ODA1Nw==&amp;mid=2650513422&amp;idx=1&amp;sn=846550678e98d0ea1adb444579ba558f" target="_blank" rel="noopener">Redis时延问题分析及应对</a></li>
-<li><p><a href="https://developer.aliyun.com/article/46636#index_section" target="_blank" rel="noopener">干货来袭！Redis技术盛宴——阿里云Redis交流会火热召开</a></p>
-</li>
-<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</p>
-</li>
+<li><a href="https://developer.aliyun.com/article/46636#index_section" target="_blank" rel="noopener">干货来袭！Redis技术盛宴——阿里云Redis交流会火热召开</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547160&amp;idx=1&amp;sn=befd195e2aa788775aaf1cc3b6f6fab3" target="_blank" rel="noopener">首发丨360开源的类Redis存储系统:Pika</a></li>
+<li><a href="https://redislabs.com/blog/the-endless-redis-replication-loop-what-why-and-how-to-solve-it/" target="_blank" rel="noopener">The Endless Redis Replication Loop: What, Why and How to Solve It</a></li>
+<li><a href="https://redislabs.com/blog/top-redis-headaches-for-devops-replication-buffer/#.VxzASUC3PqB" target="_blank" rel="noopener">Top Redis Headaches for Devops – Replication Buffer</a></li>
+</ul>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
 <li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
 <li><a href="http://soft.dog/2016/04/28/redis-docker-config/" target="_blank" rel="noopener">Redis 容器与配置</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
+<li><a href="https://juejin.im/entry/579868e80a2b580061e352d2" target="_blank" rel="noopener">使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群</a></li>
 <li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a> （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
 </ul>
 <h2 id="机制、源码"><a href="#机制、源码" class="headerlink" title="机制、源码"></a>机制、源码</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a></li>
+<li><a href="http://antirez.com/news/109" target="_blank" rel="noopener">Random notes on improving the Redis LRU algorithm</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MjExMDMzNQ==&amp;mid=2651113608&amp;idx=1&amp;sn=0d1ec5f7e1201c2fdea72ab2df091cec" target="_blank" rel="noopener">Redis学习系列之八：Redis事务玩法</a>：Redis事务介绍和源码分析</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzIwNzEzNDkxNQ==&amp;mid=2650967934&amp;idx=1&amp;sn=1abd598b740ec3b42f76d59a14e4b788" target="_blank" rel="noopener">源码分析redis的sentinel在master宕机时是如何选择新的master的</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
@@ -137,13 +166,15 @@
 <li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzA5ODM5MDU3MA==&amp;mid=2650861715&amp;idx=1&amp;sn=e30a388f897c8953842fb5e8843048e4" target="_blank" rel="noopener">Redis 缓存失效机制</a></li>
 <li><a href="https://blog.csdn.net/Xiejingfa/article/details/51553370" target="_blank" rel="noopener">Redis源码剖析 - Redis持久化之RDB</a></li>
+<li><a href="https://developer.aliyun.com/article/58703" target="_blank" rel="noopener">Redis源码学习——BIO</a></li>
 <li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
 </ul>
 <h2 id="版本特性"><a href="#版本特性" class="headerlink" title="版本特性"></a>版本特性</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/Gm1EzhbcZEWpw8eXmP_ibw" target="_blank" rel="noopener">Redis 6.0 新特性概览</a></li>
+<li><a href="https://mp.weixin.qq.com/s/OGE2KivQzooNsWKJyvlgzQ" target="_blank" rel="noopener">客户端缓存功能</a>  </li>
 </ul>
 <blockquote>
-<p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a></p>
+<p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a><br><a href="https://github.com/huangz1990/redis-3.0-annotated" target="_blank" rel="noopener">https://github.com/huangz1990/redis-3.0-annotated</a></p>
 </blockquote>
 ]]></content>
       

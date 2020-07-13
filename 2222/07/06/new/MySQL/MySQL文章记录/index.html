@@ -103,10 +103,13 @@
 <meta property="og:site_name" content="OMG_By">
 <meta property="og:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 活久见，为什么SHOW TABLE STATUS总是不更新 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-09T12:41:02.311Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmwiccwj30iq0bita5.jpg">
+<meta property="og:updated_time" content="2020-07-13T14:40:30.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL文章学习记录">
 <meta name="twitter:description" content="这篇博文主用来记录读到的MySQL相关的文章 机制系列 MySQL 通讯协议：客户端与服务端连接过程中，密码怎样传输 活久见，为什么SHOW TABLE STATUS总是不更新 图解MySQL MySQL组提交(group commit)  故障及优化案例系列 引号错位引起的故障 （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …） 一个事务中">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg">
 
 
 
@@ -465,15 +468,37 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
-<a id="more"></a>
-<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><ul>
+<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg" alt=""> <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmwiccwj30iq0bita5.jpg" alt=""><br><a id="more"></a></p>
+<ul>
 <li><a href="https://mp.weixin.qq.com/s/-k99IVJ8tjFYZ4C1V_3nAQ" target="_blank" rel="noopener">MySQL8.0到目前为止有哪些真香特性</a></li>
-<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>(使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章)</li>
-<li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a></li>
-<li><a href="https://mp.weixin.qq.com/s/FDE31xEhl4hX6PidHChX0Q" target="_blank" rel="noopener">新特性解读 | 说说 MySQL 8 对于持久化变量的一些修改</a>：在命令行修改参数值的同时进行持久化，避免忘记修改配置文件导致实例重启后出现未知的问题。</li>
+<li><a href="https://opensource.actionsky.com/category/%e6%8a%80%e6%9c%af%e5%b9%b2%e8%b4%a7/mysql-new/" target="_blank" rel="noopener">8.0 新特性</a></li>
 <li><a href="https://www.cndba.cn/Expect-le/article/3135" target="_blank" rel="noopener">MySQL8.0中已移除的特性，功能</a></li>
+<li><a href="https://mp.weixin.qq.com/s/C6129OaeeLaodzLeRhWbvw" target="_blank" rel="noopener">MySQL 8.0 clone plugin 完整版</a>：官方支持的一种全新的数据库备份恢复方式。</li>
+<li><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">真香，MySQL 8.0.20，10倍性能提升</a>：doublewrite性能优化，由全局锁减小为实例锁</li>
+<li><a href="https://opensource.actionsky.com/20191119-mysql/" target="_blank" rel="noopener">技术分享 | Hash join in MySQL 8</a></li>
+<li><a href="https://mp.weixin.qq.com/s/gYledARCZHvrlnCEmh2mtw" target="_blank" rel="noopener">MySQL 8.0 hash join有重大缺陷？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/7FI87f6t3UvbE9GGhw8iVA" target="_blank" rel="noopener">一文读懂MySQL 8.0直方图</a>：不用加索引的优化方式，需要手动更新</li>
+<li><a href="https://mp.weixin.qq.com/s/OYgWvJQr736rqpF1bsIJ-A" target="_blank" rel="noopener">MySQL 8.0中对EXISTS、NOT EXISTS的持续优化</a>：从8.0.16开始，增加对EXISTS的优化，和IN一样也支持自动转换成semi join</li>
+<li><a href="https://opensource.actionsky.com/20200420-mysql/" target="_blank" rel="noopener">新特性解读 | 趋近完美的 Undo 空间</a></li>
+<li><a href="https://opensource.actionsky.com/20200318-mysql/" target="_blank" rel="noopener">七个实验掌握 MySQL 8.0 角色功能</a></li>
+<li><a href="https://opensource.actionsky.com/20190528-mysql8-index4/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性4-不可见索引</a></li>
+<li><a href="https://opensource.actionsky.com/20190520-mysql8-0-index3/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性3 -倒序索引</a></li>
+<li><a href="https://opensource.actionsky.com/20190507-mysql8-0-index2/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性2-索引跳跃扫描</a></li>
+<li><a href="https://mp.weixin.qq.com/s/rQ7og6iXoOofFrnnz7vgbg" target="_blank" rel="noopener">MySQL 8.0 之Index Skip Scan</a></li>
+<li><p><a href="https://blog.csdn.net/vkingnew/article/details/81267320" target="_blank" rel="noopener">MySQL 8.0.12 instant add column 体验，亿级数据秒速增加字段</a></p>
+</li>
+<li><p><a href="https://opensource.actionsky.com/20200709-mysql/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 之原子 DDL</a></p>
+</li>
+<li><a href="https://opensource.actionsky.com/20200520-mysql/" target="_blank" rel="noopener">新特性解读 | binlog 压缩</a>：MySQL 从 8.0.20 开始集成 ZSTD 算法，推出binlog 压缩功能</li>
+<li><a href="https://mp.weixin.qq.com/s/FDE31xEhl4hX6PidHChX0Q" target="_blank" rel="noopener">新特性解读 | 说说 MySQL 8 对于持久化变量的一些修改</a>：在命令行修改参数值的同时进行持久化，避免忘记修改配置文件导致实例重启后出现未知的问题。</li>
+<li><a href="https://opensource.actionsky.com/20200325-mysql/" target="_blank" rel="noopener">新特性解读 | 8.0 新增 DML 语句（TABLE &amp; VALUES）</a></li>
+<li><a href="https://mp.weixin.qq.com/s/bNiNsP0tC4_t0ahSANU4wg" target="_blank" rel="noopener">新特性解读 | mysql 8.0 memcached api 新特性</a>：NOSQL机制集成的又一体现。使用telnet连接MySQL时遇到问题，可能原因看下面这篇文章</li>
+<li><a href="https://www.cnblogs.com/yinzhengjie/p/10301516.html" target="_blank" rel="noopener">MySQL 8.0.14 新的密码认证方式和客户端链接</a>：新加密方式(caching_sha2_password)</li>
+<li><a href="https://mp.weixin.qq.com/s/jfoH6D8NfoaNN7eexbzKGA" target="_blank" rel="noopener">MySQL 8.0密码认证机制升级，不知道可能导致业务不可用</a>：客户端与服务端加密方式不一样导致连接失败。</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&amp;mid=2653933468&amp;idx=1&amp;sn=a6db84ebfedcf1c03a40d5351ae93be6&amp;chksm=bd3b55f68a4cdce0de76de7abc2266bdb2bfd7e7cdf8696ffecd481c0ae550458ac82cff9a68&amp;scene=158#rdZ" target="_blank" rel="noopener">解密MySQL 8.0 multi-valued indexes</a>：MySQL 8.0.17起，InnoDB引擎新增了对JSON数据类型的多值索引</li>
 <li><a href="https://www.cndba.cn/Supreme_Aaron/article/4186" target="_blank" rel="noopener">MySQL 一个历史遗留“BUG”</a>：行锁多锁一条记录，MySQL45讲中提到过这个问题</li>
-<li><a href="https://mp.weixin.qq.com/s/9GHIpT_YeUoZNJ2X6cS-YQ" target="_blank" rel="noopener">真香，MySQL 8.0.20，10倍性能提升</a>：doublewrite性能优化</li>
+<li><a href="https://mp.weixin.qq.com/s/5xg-jy56u12Kq9BZjglULg" target="_blank" rel="noopener">MySQL 8.0 InnoDB压缩行格式性能测试</a>：新的压缩算法不会减少多少占用，在一定程度上影响了性能。需要根据业务场景谨慎选择</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&amp;mid=2653933464&amp;idx=1&amp;sn=82bd2d6ddbd103efe46a51a357e872de&amp;chksm=bd3b55f28a4cdce4b021b41457a188cbfa53544117de74cd7876b9ddd244f98e1bf9b4ab8be4&amp;scene=158#rd" target="_blank" rel="noopener">MySQL 8.0.19客户端的一个小变化</a>：默认当查询到的数据有二进制数据的话，就会用十六进制方式展示出来</li>
 </ul>
 <h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/aR1fUQAkHdC0wAdJ5H6BHw" target="_blank" rel="noopener">主从替换之后的复制风暴</a>   （复制风暴、seconds_behind_master计算方式）</li>
@@ -483,6 +508,8 @@
 <li><a href="https://mp.weixin.qq.com/s/YAE_DidgZwHOzQ4NSZPyUg" target="_blank" rel="noopener">MySQL centos 6 vs 7的性能对比</a></li>
 <li><font color="gray"><a href="https://mp.weixin.qq.com/s/HlAKday9K0D6AtCdg0uUtg" target="_blank" rel="noopener">xfs vs ext4 性能压测对比</a> (先mark，后面再细细品)</font></li>
 <li><a href="https://mp.weixin.qq.com/s/bOdwi_zYOghBHX-eHDb5-w" target="_blank" rel="noopener">使用innobackup 2.4遇到的问题</a>   （2.2是不能备份5.7 版本）</li>
+<li><a href="https://mp.weixin.qq.com/s/ubiyT62zG3NGxTMSJIoY0g" target="_blank" rel="noopener">MySQL DBA如何利用strace/pstack/gdb来定位问题</a></li>
+<li><a href="https://got.qq.com/webplat/info/news_version3/8616/8622/8625/8628/m7025/201407/271174.shtml" target="_blank" rel="noopener">MySQL在线加字段实现原理</a></li>
 </ul>
 
       

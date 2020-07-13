@@ -4,30 +4,8 @@
 
     
   <url>
-    <loc>http://yoursite.com/2020/06/13/new/MySQL/Docker-%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAMySQL-8-0-20-%E7%BB%84%E5%A4%8D%E5%88%B6/</loc>
-    <lastmod>2020-07-13T02:31:58.515Z</lastmod>
-    <data>
-        <display>
-        <title>Docker 环境下搭建MySQL 8.0.20 组复制</title>
-        <pubTime>2020-06-12T16:57:03.000Z</pubTime>
-        
-        <tag>MySQL8.0</tag>
-         
-        <tag>Docker</tag>
-         
-         
-           
-             
-              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2222/07/06/new/MySQL/MySQL%E6%96%87%E7%AB%A0%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2020-07-09T12:41:02.311Z</lastmod>
+    <lastmod>2020-07-13T14:40:30.952Z</lastmod>
     <data>
         <display>
         <title>MySQL文章学习记录</title>
@@ -47,7 +25,7 @@
     
   <url>
     <loc>http://yoursite.com/2222/07/06/new/Redis/Redis%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2020-07-09T12:40:42.368Z</lastmod>
+    <lastmod>2020-07-13T14:40:04.368Z</lastmod>
     <data>
         <display>
         <title>Redis文章学习记录</title>
@@ -59,6 +37,28 @@
            
              
               <breadCrumb title="Redis" url="http://yoursite.com/categories/Redis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/06/13/new/MySQL/Docker-%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAMySQL-8-0-20-%E7%BB%84%E5%A4%8D%E5%88%B6/</loc>
+    <lastmod>2020-07-13T02:31:58.515Z</lastmod>
+    <data>
+        <display>
+        <title>Docker 环境下搭建MySQL 8.0.20 组复制</title>
+        <pubTime>2020-06-12T16:57:03.000Z</pubTime>
+        
+        <tag>MySQL8.0</tag>
+         
+        <tag>Docker</tag>
+         
+         
+           
+             
+              <breadCrumb title="MySQL" url="http://yoursite.com/categories/MySQL/"/>
           
         </display>
     </data>
