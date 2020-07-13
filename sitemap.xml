@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/06/13/new/MySQL/Docker-%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAMySQL-8-0-20-%E7%BB%84%E5%A4%8D%E5%88%B6/</loc>
+    
+    <lastmod>2020-07-13T02:31:58.515Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2222/07/06/new/MySQL/MySQL%E6%96%87%E7%AB%A0%E8%AE%B0%E5%BD%95/</loc>
     
     <lastmod>2020-07-09T12:41:02.311Z</lastmod>
@@ -68,13 +75,6 @@
     <loc>http://yoursite.com/2020/06/26/new/Go/Go%E5%AD%A6%E4%B9%A0%E4%B9%8BModule%E4%BB%8B%E7%BB%8D/</loc>
     
     <lastmod>2020-06-26T15:32:33.270Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/06/13/new/MySQL/Docker-%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAMySQL-8-0-20-%E7%BB%84%E5%A4%8D%E5%88%B6/</loc>
-    
-    <lastmod>2020-06-15T03:12:45.993Z</lastmod>
     
   </url>
   
