@@ -3,6 +3,74 @@
   
     
     <entry>
+      <title><![CDATA[Redis文章学习记录]]></title>
+      <url>/2222/07/06/new/Redis/Redis%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
+      <content type="html"><![CDATA[<p>这篇博文主用来记录读到的Redis相关的文章</p>
+<h2 id="实践案例"><a href="#实践案例" class="headerlink" title="实践案例"></a>实践案例</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547585&amp;idx=1&amp;sn=9a664b16f656f757632cd4eb29f9a5dc&amp;scene=1&amp;srcid=0726LGdy9zmneqsZyAekKukJ#rd" target="_blank" rel="noopener">近千节点的Redis Cluster高可用集群案例:优酷蓝鲸优化实战</a>：详细的介绍了Redis Cluster下心跳信息对带宽的影响。</li>
+<li><a href="https://mp.weixin.qq.com/s/LeSSdT6bOEFzZyN26PRVzg" target="_blank" rel="noopener">干货 | 携程Redis海外机房数据同步实践</a>：携程开源 Redis 多数据中心复制管理系统 X-Pipe</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486458&amp;idx=1&amp;sn=5d69ab965d84c69516caecbb776f0799&amp;source=41#wechat_redirect" target="_blank" rel="noopener">优酷蓝鲸近千节点的Redis集群运维经验总结</a>：Redis Cluster运维时遇到的一些问题(<font color="red">实用</font>)</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547622&amp;idx=1&amp;sn=199cd6d8e3dff7c839935a7613d43e76&amp;scene=1" target="_blank" rel="noopener">同程旅游缓存系统设计:如何打造Redis时代的完美体系</a>：携程Redis架构发展历程(<font color="red">推荐阅读</font>)</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547053&amp;idx=1&amp;sn=833fddbc83379d9cac8d7f757343412e" target="_blank" rel="noopener">Redis实战：如何构建类微博的亿级社交平台</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MTY5NTk4Ng==&amp;mid=2247489693&amp;idx=1&amp;sn=b3138663029f41744203acf174725feb&amp;source=41#wechat_redirect" target="_blank" rel="noopener">日请求量过亿，谈陌陌的Feed服务优化之路</a></li>
+<li><a href="https://www.infoq.cn/article/2016/06/redis-storage-practise/" target="_blank" rel="noopener">Redis 应用实践：小红书海量 Redis 存储之道</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTg2MDUyMw==&amp;mid=2247483661&amp;idx=1&amp;sn=c924b3a2b098c4211b0044de180a1c0e" target="_blank" rel="noopener">如何实现高可用的redis集群</a>：客户端分片模式的Redis集群方案</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4Nzg5Nzc5OA==&amp;mid=2651660079&amp;idx=1&amp;sn=bca50ad39792deadf167077308120264" target="_blank" rel="noopener">唯品会大规模 Redis Cluster 的生产实践</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296671&amp;idx=1&amp;sn=366de50a6787963517ff6e096c9d1643" target="_blank" rel="noopener">这可能是最全的 Redis 集群方案介绍了</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTEyOTQ5OQ==&amp;mid=402004912&amp;idx=1&amp;sn=7517696a86f54262e60e1b5636d6cbe0" target="_blank" rel="noopener">Redis 集群的合纵与连横</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5NzA0ODA1Nw==&amp;mid=2650513422&amp;idx=1&amp;sn=846550678e98d0ea1adb444579ba558f" target="_blank" rel="noopener">Redis时延问题分析及应对</a></li>
+<li><a href="https://developer.aliyun.com/article/46636#index_section" target="_blank" rel="noopener">干货来袭！Redis技术盛宴——阿里云Redis交流会火热召开</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547160&amp;idx=1&amp;sn=befd195e2aa788775aaf1cc3b6f6fab3" target="_blank" rel="noopener">首发丨360开源的类Redis存储系统:Pika</a></li>
+<li><a href="https://redislabs.com/blog/the-endless-redis-replication-loop-what-why-and-how-to-solve-it/" target="_blank" rel="noopener">The Endless Redis Replication Loop: What, Why and How to Solve It</a></li>
+<li><a href="https://redislabs.com/blog/top-redis-headaches-for-devops-replication-buffer/#.VxzASUC3PqB" target="_blank" rel="noopener">Top Redis Headaches for Devops – Replication Buffer</a></li>
+</ul>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
+<li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
+<li><a href="http://soft.dog/2016/04/28/redis-docker-config/" target="_blank" rel="noopener">Redis 容器与配置</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
+<li><a href="https://juejin.im/entry/579868e80a2b580061e352d2" target="_blank" rel="noopener">使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群</a></li>
+<li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a> （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
+</ul>
+<h2 id="机制、源码"><a href="#机制、源码" class="headerlink" title="机制、源码"></a>机制、源码</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a></li>
+<li><a href="http://antirez.com/news/109" target="_blank" rel="noopener">Random notes on improving the Redis LRU algorithm</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MjExMDMzNQ==&amp;mid=2651113608&amp;idx=1&amp;sn=0d1ec5f7e1201c2fdea72ab2df091cec" target="_blank" rel="noopener">Redis学习系列之八：Redis事务玩法</a>：Redis事务介绍和源码分析</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIwNzEzNDkxNQ==&amp;mid=2650967934&amp;idx=1&amp;sn=1abd598b740ec3b42f76d59a14e4b788" target="_blank" rel="noopener">源码分析redis的sentinel在master宕机时是如何选择新的master的</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296996&amp;idx=2&amp;sn=5f4811d73e74e2a63b1cb0d3d532862a" target="_blank" rel="noopener">深入浅出 Redis Cluster 原理，来自一次干货分享</a>：Redis Cluster原理讲解</li>
+<li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
+<li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5ODM5MDU3MA==&amp;mid=2650861715&amp;idx=1&amp;sn=e30a388f897c8953842fb5e8843048e4" target="_blank" rel="noopener">Redis 缓存失效机制</a></li>
+<li><a href="https://blog.csdn.net/Xiejingfa/article/details/51553370" target="_blank" rel="noopener">Redis源码剖析 - Redis持久化之RDB</a></li>
+<li><a href="https://developer.aliyun.com/article/58703" target="_blank" rel="noopener">Redis源码学习——BIO</a></li>
+<li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
+</ul>
+<h2 id="版本特性"><a href="#版本特性" class="headerlink" title="版本特性"></a>版本特性</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/Gm1EzhbcZEWpw8eXmP_ibw" target="_blank" rel="noopener">Redis 6.0 新特性概览</a></li>
+<li><a href="https://mp.weixin.qq.com/s/OGE2KivQzooNsWKJyvlgzQ" target="_blank" rel="noopener">客户端缓存功能</a>  </li>
+</ul>
+<blockquote>
+<p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a><br><a href="https://github.com/huangz1990/redis-3.0-annotated" target="_blank" rel="noopener">https://github.com/huangz1990/redis-3.0-annotated</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Redis </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[MySQL文章学习记录]]></title>
       <url>/2222/07/06/new/MySQL/MySQL%E6%96%87%E7%AB%A0%E8%AE%B0%E5%BD%95/</url>
       <content type="html"><![CDATA[<p>这篇博文主用来记录读到的MySQL相关的文章</p>
@@ -126,55 +194,21 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Redis文章学习记录]]></title>
-      <url>/2222/07/06/new/Redis/Redis%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
-      <content type="html"><![CDATA[<p>这篇博文主用来记录读到的Redis相关的文章</p>
-<h2 id="实践案例"><a href="#实践案例" class="headerlink" title="实践案例"></a>实践案例</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547585&amp;idx=1&amp;sn=9a664b16f656f757632cd4eb29f9a5dc&amp;scene=1&amp;srcid=0726LGdy9zmneqsZyAekKukJ#rd" target="_blank" rel="noopener">近千节点的Redis Cluster高可用集群案例:优酷蓝鲸优化实战</a>：详细的介绍了Redis Cluster下心跳信息对带宽的影响。</li>
-<li><a href="https://mp.weixin.qq.com/s/LeSSdT6bOEFzZyN26PRVzg" target="_blank" rel="noopener">干货 | 携程Redis海外机房数据同步实践</a>：携程开源 Redis 多数据中心复制管理系统 X-Pipe</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486458&amp;idx=1&amp;sn=5d69ab965d84c69516caecbb776f0799&amp;source=41#wechat_redirect" target="_blank" rel="noopener">优酷蓝鲸近千节点的Redis集群运维经验总结</a>：Redis Cluster运维时遇到的一些问题(<font color="red">实用</font>)</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547622&amp;idx=1&amp;sn=199cd6d8e3dff7c839935a7613d43e76&amp;scene=1" target="_blank" rel="noopener">同程旅游缓存系统设计:如何打造Redis时代的完美体系</a>：携程Redis架构发展历程(<font color="red">推荐阅读</font>)</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547053&amp;idx=1&amp;sn=833fddbc83379d9cac8d7f757343412e" target="_blank" rel="noopener">Redis实战：如何构建类微博的亿级社交平台</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4MTY5NTk4Ng==&amp;mid=2247489693&amp;idx=1&amp;sn=b3138663029f41744203acf174725feb&amp;source=41#wechat_redirect" target="_blank" rel="noopener">日请求量过亿，谈陌陌的Feed服务优化之路</a></li>
-<li><a href="https://www.infoq.cn/article/2016/06/redis-storage-practise/" target="_blank" rel="noopener">Redis 应用实践：小红书海量 Redis 存储之道</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTg2MDUyMw==&amp;mid=2247483661&amp;idx=1&amp;sn=c924b3a2b098c4211b0044de180a1c0e" target="_blank" rel="noopener">如何实现高可用的redis集群</a>：客户端分片模式的Redis集群方案</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4Nzg5Nzc5OA==&amp;mid=2651660079&amp;idx=1&amp;sn=bca50ad39792deadf167077308120264" target="_blank" rel="noopener">唯品会大规模 Redis Cluster 的生产实践</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296671&amp;idx=1&amp;sn=366de50a6787963517ff6e096c9d1643" target="_blank" rel="noopener">这可能是最全的 Redis 集群方案介绍了</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTEyOTQ5OQ==&amp;mid=402004912&amp;idx=1&amp;sn=7517696a86f54262e60e1b5636d6cbe0" target="_blank" rel="noopener">Redis 集群的合纵与连横</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5NzA0ODA1Nw==&amp;mid=2650513422&amp;idx=1&amp;sn=846550678e98d0ea1adb444579ba558f" target="_blank" rel="noopener">Redis时延问题分析及应对</a></li>
-<li><a href="https://developer.aliyun.com/article/46636#index_section" target="_blank" rel="noopener">干货来袭！Redis技术盛宴——阿里云Redis交流会火热召开</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547160&amp;idx=1&amp;sn=befd195e2aa788775aaf1cc3b6f6fab3" target="_blank" rel="noopener">首发丨360开源的类Redis存储系统:Pika</a></li>
-<li><a href="https://redislabs.com/blog/the-endless-redis-replication-loop-what-why-and-how-to-solve-it/" target="_blank" rel="noopener">The Endless Redis Replication Loop: What, Why and How to Solve It</a></li>
-<li><a href="https://redislabs.com/blog/top-redis-headaches-for-devops-replication-buffer/#.VxzASUC3PqB" target="_blank" rel="noopener">Top Redis Headaches for Devops – Replication Buffer</a></li>
-</ul>
+      <title><![CDATA[从Redis源码 acl.c->time_independent_strcmp() 实现谈到 定时攻击]]></title>
+      <url>/2020/07/14/%E5%AE%9A%E6%97%B6%E6%94%BB%E5%87%BB/</url>
+      <content type="html"><![CDATA[<h2 id="问题引出"><a href="#问题引出" class="headerlink" title="问题引出"></a>问题引出</h2><p>在Redis阅读Redis源码的时候，发现acl.c中有个方法<code>time_independent_strcmp</code>。它的作用就是用来对比两个字符串是否相等，如果相等，那么就返回0，如果不相等，那么就返回非0值。<br>是不是很熟悉，没错！这跟C语言中的<code>strcmp</code>功能是一样的。那么为什么Redis的作者需要自己去实现一个呢？</p>
+<p>我们来看一下这个函数的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">int time_independent_strcmp(char *a, char *b) &#123;</span><br><span class="line">    char bufa[CONFIG_AUTHPASS_MAX_LEN], bufb[CONFIG_AUTHPASS_MAX_LEN];</span><br><span class="line">    /* The above two strlen perform len(a) + len(b) operations where either</span><br><span class="line">     * a or b are fixed (our password) length, and the difference is only</span><br><span class="line">     * relative to the length of the user provided string, so no information</span><br><span class="line">     * leak is possible in the following two lines of code. */</span><br><span class="line">    unsigned int alen = strlen(a);</span><br><span class="line">    unsigned int blen = strlen(b);</span><br><span class="line">    unsigned int j;</span><br><span class="line">    int diff = 0;</span><br><span class="line"></span><br><span class="line">    /* We can&apos;t compare strings longer than our static buffers.</span><br><span class="line">     * Note that this will never pass the first test in practical circumstances</span><br><span class="line">     * so there is no info leak. */</span><br><span class="line">    if (alen &gt; sizeof(bufa) || blen &gt; sizeof(bufb)) return 1;</span><br><span class="line"></span><br><span class="line">    memset(bufa,0,sizeof(bufa));        /* Constant time. */</span><br><span class="line">    memset(bufb,0,sizeof(bufb));        /* Constant time. */</span><br><span class="line">    /* Again the time of the following two copies is proportional to</span><br><span class="line">     * len(a) + len(b) so no info is leaked. */</span><br><span class="line">    memcpy(bufa,a,alen);</span><br><span class="line">    memcpy(bufb,b,blen);</span><br><span class="line"></span><br><span class="line">    /* Always compare all the chars in the two buffers without</span><br><span class="line">     * conditional expressions. */</span><br><span class="line">    for (j = 0; j &lt; sizeof(bufa); j++) &#123;</span><br><span class="line">        diff |= (bufa[j] ^ bufb[j]);</span><br><span class="line">    &#125;</span><br><span class="line">    /* Length must be equal as well. */</span><br><span class="line">    diff |= alen ^ blen;</span><br><span class="line">    return diff; /* If zero strings are the same. */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，这个方法会先对比两个字符串的每一位，然后再判断两个字符串的长度是否相等。<br>看到这里，你是不是会想这样实现岂不是每次都会去对比所有字符，效率比<code>strcmp</code>还低！意义在哪呢？没错，我当时也是这么想的。于是去搜索了issue，于是有了意外的收获：<a href="https://github.com/redis/redis/issues/560" target="_blank" rel="noopener">https://github.com/redis/redis/issues/560</a>。<br>Redis作者原来实现也的确使用的是<code>strcmp</code>，在这个issue中，有人提出了《定时攻击》这个安全问题，于是Redis作者就这个问题进行了修复，也就是<code>time_independent_strcmp</code>方法的由来。</p>
+<h2 id="定时攻击"><a href="#定时攻击" class="headerlink" title="定时攻击"></a>定时攻击</h2><p>简单来说，就是通过多次的密码攻击形式进行破解攻击，并根据目标服务返回的时间来确定当前字符是否正确。<br>在<code>strcmp</code>方法中，本质就是将两个字符串从头开始逐一比较，发现不同就立刻停止返回。假如输入的两个串开头有一部分相同，那么判断字符所耗费的时间就要变长一点。这好像就在告诉别人<font color="red">你输入的密码错误，但是前两个字符是正确的</font></p>
+<p>解决这种攻击一般有几种方法：</p>
 <ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
-<li><a href="https://www.iteye.com/blog/zsxxsz-2293332" target="_blank" rel="noopener">使用 redis_builder 管理 redis 集群</a>：C++编写的redis cluster集群工具</li>
-<li><a href="http://soft.dog/2016/04/28/redis-docker-config/" target="_blank" rel="noopener">Redis 容器与配置</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
-<li><a href="https://juejin.im/entry/579868e80a2b580061e352d2" target="_blank" rel="noopener">使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群</a></li>
-<li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a> （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
+<li>随机休眠时间</li>
+<li>估算执行时间，固定返回时间</li>
+<li>固定执行流程，返回时间不受具体字符影响。</li>
 </ul>
-<h2 id="机制、源码"><a href="#机制、源码" class="headerlink" title="机制、源码"></a>机制、源码</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a></li>
-<li><a href="http://antirez.com/news/109" target="_blank" rel="noopener">Random notes on improving the Redis LRU algorithm</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MjExMDMzNQ==&amp;mid=2651113608&amp;idx=1&amp;sn=0d1ec5f7e1201c2fdea72ab2df091cec" target="_blank" rel="noopener">Redis学习系列之八：Redis事务玩法</a>：Redis事务介绍和源码分析</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzIwNzEzNDkxNQ==&amp;mid=2650967934&amp;idx=1&amp;sn=1abd598b740ec3b42f76d59a14e4b788" target="_blank" rel="noopener">源码分析redis的sentinel在master宕机时是如何选择新的master的</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNTI4NzIxMQ==&amp;mid=400500895&amp;idx=1&amp;sn=b27d22914d6b3cedc2fe16ccd02a1a01" target="_blank" rel="noopener">Redis主从同步失败案例的步步深入</a>：redis主从同步的一个bug(已修复)</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzYwNjQ3NA==&amp;mid=2651296996&amp;idx=2&amp;sn=5f4811d73e74e2a63b1cb0d3d532862a" target="_blank" rel="noopener">深入浅出 Redis Cluster 原理，来自一次干货分享</a>：Redis Cluster原理讲解</li>
-<li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
-<li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5ODM5MDU3MA==&amp;mid=2650861715&amp;idx=1&amp;sn=e30a388f897c8953842fb5e8843048e4" target="_blank" rel="noopener">Redis 缓存失效机制</a></li>
-<li><a href="https://blog.csdn.net/Xiejingfa/article/details/51553370" target="_blank" rel="noopener">Redis源码剖析 - Redis持久化之RDB</a></li>
-<li><a href="https://developer.aliyun.com/article/58703" target="_blank" rel="noopener">Redis源码学习——BIO</a></li>
-<li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
-</ul>
-<h2 id="版本特性"><a href="#版本特性" class="headerlink" title="版本特性"></a>版本特性</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/Gm1EzhbcZEWpw8eXmP_ibw" target="_blank" rel="noopener">Redis 6.0 新特性概览</a></li>
-<li><a href="https://mp.weixin.qq.com/s/OGE2KivQzooNsWKJyvlgzQ" target="_blank" rel="noopener">客户端缓存功能</a>  </li>
-</ul>
+<p>在Redis这种高性能服务中，随机休眠以及将命令执行时间固定这两种方式会严重的影响执行效率。<br>所以Redis的作者通过在密码比较时，无论正确与否都正常执行下去，尽可能的返回相同时间，以避免这种攻击来破解密码。</p>
 <blockquote>
-<p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a><br><a href="https://github.com/huangz1990/redis-3.0-annotated" target="_blank" rel="noopener">https://github.com/huangz1990/redis-3.0-annotated</a></p>
+<p><a href="https://github.com/redis/redis/issues/560" target="_blank" rel="noopener">https://github.com/redis/redis/issues/560</a><br><a href="https://eyhn.in/%E5%AF%86%E7%A0%81%E5%AD%A6%E4%B8%AD%E6%81%92%E5%AE%9A%E6%97%B6%E9%97%B4%E8%AE%BE%E8%AE%A1%EF%BC%88%E8%AF%91%E6%96%87%EF%BC%89/" target="_blank" rel="noopener">密码学中恒定时间设计（译文）</a></p>
 </blockquote>
 ]]></content>
       
@@ -4683,39 +4717,6 @@ QUEUED
     </entry>
     
     <entry>
-      <title><![CDATA[Hibernate_一级缓存]]></title>
-      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
-      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
-<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
-<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
-<ul>
-<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 框架 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> hibernate </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Hibernate_持久化类]]></title>
       <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB/</url>
       <content type="html"><![CDATA[<h2 id="Hibernate持久化类"><a href="#Hibernate持久化类" class="headerlink" title="Hibernate持久化类"></a>Hibernate持久化类</h2><p>在Hibernate中持久化的英文名称时Persistent Object（简称PO），PO = POJO+hbm映射配置文件。  </p>
@@ -4741,6 +4742,39 @@ QUEUED
 </li>
 </ul>
 <p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%AF%B9%E8%B1%A1%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.png"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 框架 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hibernate </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hibernate_一级缓存]]></title>
+      <url>/2018/02/04/kuangjia/Hibernate/Hibernate_%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98/</url>
+      <content type="html"><![CDATA[<p>Hibernate的一级缓存就是Session缓存，Session缓存是一块内存空间，用来存放相互管理的java对象，在Hibernate查询对象的时候，首先会使用对象属性的OID值在Hibernate的一级缓存中进行查找，如果找到匹配OID值的对象，就直接将该对象从一级缓存中取出使用，不会再查询数据库；如果没有找到相同OID值对象，则会去数据库中查找相应数据。当从数据库中查询到所需数据时，该数据信息也会放置到一级缓存中。<font color="red">Hibernate的一级缓存的作用就是减少对数据库的访问次数。</font><br><a id="more"></a></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>当应用程序调用Session接口的save()、update()、savaOrUpdate()时，如果Session缓存中没有相应的对象，Hibernate就会自动的把数据库查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接口的load()、get()方法以及Query接口的list()、iterator()方法时，会判断缓存中是否有该对象，有则返回；没有就去数据库中查询并添加到一级缓存中。</li>
+<li>当调用Session的close()方法时。Session缓存会被清空。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        User user1 = session.get(User.class,1);</span><br><span class="line">        System.out.println(user1);</span><br><span class="line"></span><br><span class="line">        System.out.println(user == user1);</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E7%BC%93%E5%AD%98%E6%B5%8B%E8%AF%95.png"><br>测试发现，只执行一次查询操作，并且user和user1是同一个对象。这说明了第二次查询操作时直接从缓存中取的。</p>
+<ul>
+<li>一级缓存的内存结构（快照区）<br>Hibernate向一级缓存放入数据时，同时复制一份数据放入Hibernate快照中，当使用commit()方法提交事务时，同时会清理Session的一级缓存，<font color="red">这时会使用OID判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的数据发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照：如果一致，则不执行update语句。</font>Hibernate快照的作用就是确保一级缓存中的数据和数据库中的数据一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public void test_Cacha_2()&#123;</span><br><span class="line">        Session session = HibernateUtils.openSession();</span><br><span class="line">        Transaction tx = session.beginTransaction();</span><br><span class="line"></span><br><span class="line">        User user = session.get(User.class,1);</span><br><span class="line"></span><br><span class="line">        //先改变姓名后改回去再提交</span><br><span class="line">        user.setName(&quot;haha&quot;);</span><br><span class="line">        //后一个测试时会将此处注释</span><br><span class="line">        user.setName(&quot;xixi&quot;);</span><br><span class="line"></span><br><span class="line">        tx.commit();</span><br><span class="line">        session.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更改姓名后更改回去，Hibernate发现user对象和快照区的一样，不会执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%B5%8B%E8%AF%95.png"><br>更改姓名，Hibernate发现user对象和快照区的不一样，执行update方法。<br><img src="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png" alt="http://ocx5m3vc3.bkt.clouddn.com/Hibernate%E5%BF%AB%E7%85%A7%E6%9B%B4%E6%96%B0%E6%B5%8B%E8%AF%95.png"></p>
 ]]></content>
       
         <categories>
@@ -5627,6 +5661,26 @@ QUEUED
     </entry>
     
     <entry>
+      <title><![CDATA[Linux命令（特殊功能）]]></title>
+      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
+      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux常用命令（简）]]></title>
       <url>/2017/10/24/Linux/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h2 id="目录与文件命令"><a href="#目录与文件命令" class="headerlink" title="目录与文件命令"></a>目录与文件命令</h2><h3 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a><a href="https://omg-by.github.io/1900/01/01/Linux/cd/" title="cd详细介绍" target="_blank" rel="noopener">cd命令</a></h3><p>&ensp;&ensp;跟Windows中一样，进入相应的目录下。<br>&ensp;&ensp;命令格式： cd [目录]</p>
@@ -5660,26 +5714,6 @@ QUEUED
 <h3 id="umount命令"><a href="#umount命令" class="headerlink" title="umount命令"></a>umount命令</h3><p>&ensp;&ensp;磁盘卸载</p>
 <p><br><br><br><br><center> <strong>长期不定时更新中。。。。。。。。。</strong></center></p>
 ]]></content>
-      
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Linux命令（特殊功能）]]></title>
-      <url>/2017/10/24/Linux/Linux%E5%91%BD%E4%BB%A4%EF%BC%88%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD%EF%BC%89/</url>
-      <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if(!($1 in a)) print $0&#125;&apos; file1 file2 找出文件2中不同的值</span><br><span class="line"></span><br><span class="line">awk  &apos;NR==FNR&#123;a[$0]&#125;NR&gt;FNR&#123; if($1 in a)    print $0&#125;&apos; file1 file2 找出两文件中相同的值</span><br></pre></td></tr></table></figure>]]></content>
       
         <categories>
             

@@ -307,6 +307,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/04/new/MySQL/pt-osc死锁分析记录两则/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/04/new/MySQL/pt-osc死锁分析记录两则/" itemprop="url">pt-osc死锁分析记录两则</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-04T23:56:06+08:00">
+                2020-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>今天看到叶老师公众号推送文章《<a href="!https://mp.weixin.qq.com/s/mJ6a-sV2C2ru5pA5QNAAZQ">pt-osc在线重建表导致死锁的分析及对应的优化方案</a>》，让我想起了前段时间同样遇到了pt-osc改表导致的死锁。故此记录一下。</p>
+<h2 id="pt-osc"><a href="#pt-osc" class="headerlink" title="pt-osc"></a>pt-osc</h2><p>pt-online-schema-change：PERCONA提供的在线改表工具，避免MySQL在执行改表操作时造成的锁表和主从延迟情况发生。</p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>1、创建一个跟原表表结构一样的新表。取名为<code>_oldTableNmae_new</code><br>2、修改新表结构<br>3、在原表中创建insert、update、delete三个类型的触发器，用于做增量数据迁移。原表SQL和触发器触发SQL在同一事务当中。<br>4、以一定块大小(chunk-size)从原表拷贝数据到新表<br>5、数据拷贝完后，修改表名：<code>rename table to table_old; rename _table_new to table</code><br>6、删除old表，删除三个触发器</p>
+<h3 id="版本变化"><a href="#版本变化" class="headerlink" title="版本变化"></a>版本变化</h3><p>3.0.2之前的update触发器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE INTO `lc`.`_hb_new` (`id`, `ts`, `ts2`, `c1`) VALUES (NEW.`id`, NEW.`ts`, NEW.`ts2`, NEW.`c1`)</span><br></pre></td></tr></table></figure></p>
+<p>3.0.2之后的update触发器:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">    DELETE IGNORE FROM `lc`.`_hb_new` WHERE !(OLD.`id` &lt;=&gt; NEW.`id`) AND `lc`.`_hb_new`.`id` &lt;=&gt; OLD.`id`;</span><br><span class="line">    REPLACE INTO `lc`.`_hb_new` (`id`, `ts`, `ts2`) VALUES (NEW.`id`, NEW.`ts`, NEW.`ts2`);</span><br><span class="line">END</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/04/new/MySQL/pt-osc死锁分析记录两则/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/31/new/MySQL/MySQL机制之index-merge/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1681,181 +1831,11 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/03/new/MySQL/MySQL参数之innodb-fast-shutdown、innodb-force-recovery/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/03/new/MySQL/MySQL参数之innodb-fast-shutdown、innodb-force-recovery/" itemprop="url">MySQL参数之innodb_fast_shutdown、innodb_force_recovery</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-03T16:37:49+08:00">
-                2020-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="innodb-fast-shutdown"><a href="#innodb-fast-shutdown" class="headerlink" title="innodb_fast_shutdown"></a>innodb_fast_shutdown</h2><p>MySQL在平时工作时，会将大量的数据都保存在内存当中。那么在关闭的时候，什么东西需要持久化？什么东西不需要持久化呢？<br>在MySQL中，<code>innodb_fast_shutdown</code>参数控制着关闭行为。它的可取值有0、1、2。</p>
-<p>顾名思义，fast_shutdown，0表示不需要快速关闭、1需要快速关闭。</p>
-<ul>
-<li>0：在关闭时需要将内存与磁盘中数据不一致的数据页都进行刷盘行为。主要包含有：<ul>
-<li>删除无用的undo页。</li>
-<li>将log buffer中的日志都flush到log files。</li>
-<li>merge change buffer。</li>
-<li>flush dirty page</li>
-</ul>
-</li>
-<li>1：在关闭时，只进行刷新脏页行为。不需要purge all、merge change buffer。</li>
-<li>2：在关闭时，只进行flush log buffer。不需要purge all、merge change buffer、flush dirty。</li>
-</ul>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ol>
-<li>在进行大版本升级时，需要将该参数设置为0</li>
-<li>该参数默认值为1</li>
-<li>该参数设置为2时，下次重启将会做<code>crash recovery</code>行为</li>
-</ol>
-<h2 id="innodb-force-recovery"><a href="#innodb-force-recovery" class="headerlink" title="innodb_force_recovery"></a>innodb_force_recovery</h2><p>有的时候由于MySQL在关闭前存在一些重操作行为，导致MySQL启动需要消耗大量的时间，但是我们需要能够尽可能快速的启动MySQL服务。<br>MySQL提供了参数<code>innodb_force_recovery</code>来规定MySQL启动过程中需要做的行为动作。</p>
-<p>该参数可选值为0~6，当该参数设置值大于0时，可以对表执行select、create、drop操作，但insert、update或者delete这类操作是不允许的。</p>
-<ul>
-<li>0：表示恢复时执行所有的恢复操作。</li>
-<li>1：（SRV_FORCE_IGNORE_CORRUPT）忽略检查到的corrupt页</li>
-<li>2：（SRV_FORCE_NO_BACKGROUND）阻止主线程的运行，如主线程需要执行full purge操作，会导致crash</li>
-<li>3：（SRV_FORCE_NO_TRX_UNDO）不执行事务回滚操作</li>
-<li>4：（SRV_FORCE_NO_IBUF_MERGE）不执行插入缓冲的合并操作</li>
-<li>5：（SRV_FORCE_NO_UNDO_LOG_SCAN）不查看撤销日志（Undo Log），InnoDB存储引擎会将未提交的事务视为已提交</li>
-<li>6：（SRV_FORCE_NO_LOG_REDO）不执行前滚的操作</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1903,7 +1883,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">131</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
