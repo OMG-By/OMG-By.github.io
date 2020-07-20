@@ -307,6 +307,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/07/new/MySQL/MySQL机制之Double-Write/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/" itemprop="url">MySQL机制之Double Write</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-07T17:11:55+08:00">
+                2020-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。<br>一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为<code>页断裂</code> 。在这种情况下，我们并不知道会出现什么未知的现象。<br>为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了<code>两次写（Double Write）</code>机制。</p>
+<h2 id="什么是两次写"><a href="#什么是两次写" class="headerlink" title="什么是两次写"></a>什么是两次写</h2><p>简单来说，就是在对数据页刷盘操作之前，先将该数据页写到一块独立的物理文件位置(ibdata)中。然后再将数据页进行刷盘操作。这样在宕机时，如果出现物理文件损坏，就能够利用ibdata中的副本文件进行修复行为。</p>
+<p>Double Write由两部分组成；一部分是内存中的double write buffer，其大小为2M。另一部分由共享表空间(ibdata)中连续的128页，即2个区组成，大小也是2M。<br>其刷盘流程为：</p>
+<ol>
+<li>当多个数据页需要进行刷盘时，并不直接写入到磁盘的物理文件中，而是先拷贝到内存中的double write buffer中。</li>
+<li>接着从double write buffer中分两次写入到磁盘的共享表空间中(连续存储，顺序写，性能很高)，每次写1M。</li>
+<li>等第二步完成后，再将double write buffer中的脏页数据写入到实际的各个表空间中(离散写)</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/04/new/MySQL/pt-osc死锁分析记录两则/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1684,153 +1838,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/19/new/other/《线上管理的艺术》小结/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/19/new/other/《线上管理的艺术》小结/" itemprop="url">《向上管理的艺术》小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-19T20:53:03+08:00">
-                2020-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活杂记/" itemprop="url" rel="index">
-                    <span itemprop="name">生活杂记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>20%的向上管理，决定了80%的工作效率和工作成果。</p>
-<p>在之前的一篇博客<a href="https://omg-by.github.io/2020/01/05/new/other/%E5%90%AC%E3%80%8A%E5%B7%A5%E4%BD%9C%E4%B8%89%E5%B9%B4%E6%88%91%E5%AD%A6%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">听《工作三年我学到了什么》总结</a>提到的音频中，讨论者推荐了《向上管理的艺术》这本书。于是便买了（我才不会告诉你是凑单），利用了一周的睡前时间把它给读完，在读的过程中，回想自己这一年半的工作经历，的确是在无意间触犯到了好几条禁忌行为。。。感谢领导的包容和支持。<br>利用周末空余时间将这本书做个简单的总结，尽量从自身层面优化。不仅是与领导沟通，在生活中也处处需要注意。</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gdz9w4eciyj31dv0u07g4.jpg" alt=""></p>
-<p>一个人的汇报反馈机制，往往能影响到上司对你的态度和看法。上司也有自己的事要做，并不会时时刻刻的盯着你；<br>领导负责下发任务，如果没有反馈，那么他将无法掌控任务的进度，甚至最终因没有反馈而导致任务失败，则会大大降低领导对你的看法。<br>领导的经验摆在那，有很多在我们看来比较困难的事，也许领导几句话、一个想法、一个电话就能轻松的解决。<font color="red">领导在一定意义上，也是我们的资源</font>。</p>
-<p>领导也是一个人，也会有各种各样的性格和情绪。<font color="red">如何在合适时机、选择合适方式才式获取到到正反馈信息？</font>这不仅仅跟领导反馈，在生活中，这也是一门需要时时需要注意的地方。<br>毕竟是有求于人，往往就是那么一个不经意的小点，导致了事情的失败，影响的只会是自己，徒增非常多的人力物力。</p>
-<p><font color="red">多站在别人的角度上思考</font>，别人是怎么看待这件事，需要我做什么，希望我怎么做。才能以更好的姿势、更快的效率去做好一件事。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1883,7 +1890,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">131</span>
+                  <span class="site-state-item-count">132</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

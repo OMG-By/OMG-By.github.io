@@ -702,6 +702,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/new/Redis/Redis-ACL从使用到实现/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/20/new/Redis/Redis-ACL从使用到实现/" itemprop="url">Redis ACL从使用到实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-20T20:02:31+08:00">
+                2020-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Redis ACL是6.0版本中推出的新功能。是一项可以限制用户连接可执行命令和键访问操作的功能。<br>客户端在连接服务器之后，客户端需要提供用户名和密码用于验证身份，如果验证成功，客户端连接会关联特定用户以及用户相应的权限。Redis可以配置新的客户端连接自动使用默认用户(default)进行验证(默认选项)。<br>此外，ACL功能对旧版客户端和应用都是向后兼容的，对于旧版配置用户密码的方式(requirepass)也是支持的。该命令设置的是default用户的密码，即<code>auth password</code> 等价于 <code>auth default password</code>。没有指定用户的客户端连接使用的都是default，可以通过控制defalut用户权限来兼容老版本。</p>
+<h2 id="ACL使用场景"><a href="#ACL使用场景" class="headerlink" title="ACL使用场景"></a>ACL使用场景</h2><ol>
+<li>你希望限制用户访问命令和键以提高安全性。不在信任列表中的用户没有权限访问，而在信任列表中的用户拥有完成工作的最小访问权限。例如一些客户端只可以执行只读的命令。</li>
+<li>你希望提供运维安全。避免程序出错或者人为操作失误导致数据或者配置受到损坏。比如执行flush、keys等。在之前版本中都是通过命令重命令的方式来对使用者隐藏，但是这样可能会存在其他隐患。</li>
+</ol>
+<h2 id="ACL使用"><a href="#ACL使用" class="headerlink" title="ACL使用"></a>ACL使用</h2><h3 id="ACL规则"><a href="#ACL规则" class="headerlink" title="ACL规则"></a>ACL规则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">on：启用用户</span><br><span class="line">off：禁止用户</span><br><span class="line">+：添加命令到用户允许执行命令列表</span><br><span class="line">-：从用户允许执行命令列表删除命令</span><br><span class="line">+@：允许用户执行定义在category类别中的命令</span><br><span class="line">-@：删除用户拥有的category类别命令权限</span><br><span class="line">+|subcommand：允许用户启用一个被禁止类别下的子命令。</span><br><span class="line">allcommands：+@all 的别名. </span><br><span class="line">nocommands：-@all 的别名。</span><br><span class="line">~：添加一个键值模式的权限</span><br><span class="line">allkeys：是 ~* 的别名</span><br><span class="line">resetkeys：在键模式列表里面清空所有的键模式</span><br><span class="line">&gt;：添加密码到用户有效密码列表里</span><br><span class="line">&lt;：从用户有效密码列表中删除密码</span><br><span class="line">#：添加 SHA-256 形式哈希值到用户有效密码列表里</span><br><span class="line">!：从有效的密码列表中删除哈希值密码</span><br><span class="line">nopass：删除所有与用户关联的密码</span><br><span class="line">resetpass：清除用户所有密码</span><br><span class="line">reset：用户将返回和它被默认创建时同样的状态。</span><br></pre></td></tr></table></figure>
+<h3 id="ACL命令使用"><a href="#ACL命令使用" class="headerlink" title="ACL命令使用"></a>ACL命令使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* ACL -- show and modify the configuration of ACL users.</span><br><span class="line"> * ACL HELP                                         // 获取帮助信息</span><br><span class="line"> * ACL LOAD                                         // 从外部ACL文件导入用户信息</span><br><span class="line"> * ACL LIST                                         // 所有用户权限信息</span><br><span class="line"> * ACL USERS                                        // 所有用户的列表</span><br><span class="line"> * ACL CAT [&lt;category&gt;]                             // 命令分类，及分类下的具体命令列表</span><br><span class="line"> * ACL SETUSER &lt;username&gt; ... acl rules ...         // 添加用户、权限修改等操作</span><br><span class="line"> * ACL DELUSER &lt;username&gt; [...]                     // 删除用户</span><br><span class="line"> * ACL GETUSER &lt;username&gt;                           // 获取指定用户的信息</span><br><span class="line"> * ACL GENPASS                                      // 生成一个密码</span><br><span class="line"> * ACL WHOAMI                                       // 获取当前用户</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/20/new/Redis/Redis-ACL从使用到实现/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/14/定时攻击/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1776,160 +1928,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/07/new/MySQL/MySQL机制之Double-Write/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/" itemprop="url">MySQL机制之Double Write</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-07T17:11:55+08:00">
-                2020-06-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们知道MySQL在更新数据的时候，会先写入到内存中的数据页，然后再在一定的时机时，将脏页给刷新到磁盘中。<br>一个数据页默认为16k，但是由于操作系统的限制，每次需要多次才能将数据页给刷新到磁盘；如果在这个过程中发生故障，导致一个数据页并没有完整的给刷新到磁盘中。我们就称为<code>页断裂</code> 。在这种情况下，我们并不知道会出现什么未知的现象。<br>为了在页断裂场景发生时，能够对损坏的数据页进行修复工作。就引入了<code>两次写（Double Write）</code>机制。</p>
-<h2 id="什么是两次写"><a href="#什么是两次写" class="headerlink" title="什么是两次写"></a>什么是两次写</h2><p>简单来说，就是在对数据页刷盘操作之前，先将该数据页写到一块独立的物理文件位置(ibdata)中。然后再将数据页进行刷盘操作。这样在宕机时，如果出现物理文件损坏，就能够利用ibdata中的副本文件进行修复行为。</p>
-<p>Double Write由两部分组成；一部分是内存中的double write buffer，其大小为2M。另一部分由共享表空间(ibdata)中连续的128页，即2个区组成，大小也是2M。<br>其刷盘流程为：</p>
-<ol>
-<li>当多个数据页需要进行刷盘时，并不直接写入到磁盘的物理文件中，而是先拷贝到内存中的double write buffer中。</li>
-<li>接着从double write buffer中分两次写入到磁盘的共享表空间中(连续存储，顺序写，性能很高)，每次写1M。</li>
-<li>等第二步完成后，再将double write buffer中的脏页数据写入到实际的各个表空间中(离散写)</li>
-</ol>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfio3072ivj30j60dmabz.jpg" alt=""></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/06/07/new/MySQL/MySQL机制之Double-Write/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1982,7 +1980,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">131</span>
+                  <span class="site-state-item-count">132</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
