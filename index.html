@@ -702,6 +702,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/29/new/Redis/Redis-6-0新特性-客户端缓存/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OMG_By">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OMG_By">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/29/new/Redis/Redis-6-0新特性-客户端缓存/" itemprop="url">Redis 6.0新特性-客户端缓存</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-29T19:52:38+08:00">
+                2020-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>你见过5点半的曼哈顿街头吗？一年前，当antirez在参加完纽约Redis大会后，5:30就在旅店中醒来了，面对曼哈顿街头的美丽景色，在芸芸众生中思索Redis的未来。包括客户端缓存。</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Redis实现的是一个服务端协助的客户端缓存，叫做tracking。用法是：<br><code>CLIENT TRACKING ON|OFF [REDIRECT client-id] [PREFIX prefix] [BCAST] [OPTIN] [OPTOUT] [NOLOOP]</code><br>当tracking开启时，Redis客户端会“记住”每个请求过的key；当服务端key发生修改命令操作时，就会发送失效消息给客户端。失效消息可以通过RESP3协议发送给请求的客户端，或者转发给一个订阅频道<code>__redis__:invalidate</code>的连接。</p>
+<ul>
+<li>REDIRECT：将失效消息转发给另外一个客户端。当我们使用的是老的RESP2和Redis通讯时，client本身不支持处理失效消息，所以可以开启一个Pub/Sub客户端处理失效消息。</li>
+<li>BCAST：使用广播模式开始tracking，在这种模式下客户端需要设置将track的key前缀，这些key的失效消息会广播给所有参与的客户端，不管这些客户端是否请求/缓存了这些key。不开启广播模式的时候，Redis只会Track那些只读命令请求的key，并且只会报告一次失效消息。</li>
+<li>PREFIX：只应用了广播模式，注册一个key的前缀。所有以这个前缀开始的key有修改时，都会发送失效消息。可以注册多个前缀，如果不设置前缀，那么广播模式会track每一个key。</li>
+<li>OPTIN：当广播模式没有开启时，正常不会track只读命令的key，除非它们在CLIENT CACHING yes之后被调用。</li>
+<li>OPTPUT：当广播模式没有开启时，正常会track只读命令的key，除非它们在CLIENT CACHING off之后被调用。</li>
+<li>NOLOOP：不发送自身修改的key失效消息给自己。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/29/new/Redis/Redis-6-0新特性-客户端缓存/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/new/Redis/Redis-ACL从使用到实现/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1779,155 +1936,6 @@
 
 
     
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="OMG_By">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OMG_By">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/" itemprop="url">Docker 环境下搭建MySQL 8.0.20 组复制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T00:57:03+08:00">
-                2020-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在学习MySQL 8.0 新特性，以及MGR。于是想在搭建一套环境来测试。<br>本来在买的阿里云服务器上进行搭建，结果好像是一台机器搭建不了，至少需要三台，于是就放弃了。<br>正好小伙伴分享了docker，于是就利用docker在本地搭建了一套8.0的MGR环境。</p>
-<h2 id="准备docker镜像"><a href="#准备docker镜像" class="headerlink" title="准备docker镜像"></a>准备docker镜像</h2><p>运行一个test名称的centos系统镜像<br><code>➜  ~ docker run -d -it --name test centos</code><br>进入容器<br><code>➜  ~ docker exec -it test bash</code><br>在容器内安装MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@c610b533f3dc /]# yum install yum-utils wget -y</span><br><span class="line">[root@c610b533f3dc /]# wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# rpm -ivh mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line">[root@c610b533f3dc /]# yum install -y mysql-server</span><br></pre></td></tr></table></figure></p>
-<p>安装完后退出容器，并生成镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@c610b533f3dc /]# exit</span><br><span class="line">➜  ~ docker commit 容器ID mysql8.0.20</span><br></pre></td></tr></table></figure></p>
-<h2 id="启动MySQL容器"><a href="#启动MySQL容器" class="headerlink" title="启动MySQL容器"></a>启动MySQL容器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -it --privileged --name=mysql-mgr-node1 mysql8.0.20 /usr/sbin/init</span><br><span class="line">docker run -d -it --privileged --name=mysql-mgr-node2 mysql8.0.20 /usr/sbin/init</span><br><span class="line">docker run -d -it --privileged --name=mysql-mgr-node3 mysql8.0.20 /usr/sbin/init</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/06/13/new/MySQL/Docker-环境下搭建MySQL-8-0-20-组复制/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1980,7 +1988,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">133</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2002,7 +2010,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
