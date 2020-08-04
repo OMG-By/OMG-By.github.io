@@ -23,6 +23,10 @@
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&amp;mid=2653547160&amp;idx=1&amp;sn=befd195e2aa788775aaf1cc3b6f6fab3" target="_blank" rel="noopener">首发丨360开源的类Redis存储系统:Pika</a></li>
 <li><a href="https://redislabs.com/blog/the-endless-redis-replication-loop-what-why-and-how-to-solve-it/" target="_blank" rel="noopener">The Endless Redis Replication Loop: What, Why and How to Solve It</a></li>
 <li><a href="https://redislabs.com/blog/top-redis-headaches-for-devops-replication-buffer/#.VxzASUC3PqB" target="_blank" rel="noopener">Top Redis Headaches for Devops – Replication Buffer</a></li>
+<li><a href="https://mp.weixin.qq.com/s/g_OE7i66R9LqFgXmL9XvVg" target="_blank" rel="noopener">一次教科书级别的Redis高可用架构设计实践</a></li>
+<li><a href="https://www.iteye.com/blog/carlosfu-2254566" target="_blank" rel="noopener">美团在Redis上踩过的一些坑-1.客户端周期性出现connect timeout</a></li>
+<li><a href="https://mp.weixin.qq.com/s/l9A-z-Ol8FaSXg8Q0NU1UQ" target="_blank" rel="noopener">美团点评万亿级 KV 存储架构演进</a></li>
+<li><a href="https://mp.weixin.qq.com/s/otae8hHeY-3Xb048ZSLJfQ" target="_blank" rel="noopener">牛逼！完美解密Redis与秒杀系统！！！</a></li>
 </ul>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwODg3MDk0OQ==&amp;mid=2247483698&amp;idx=1&amp;sn=9f82dcf764c86948a2ad5339d295cae4" target="_blank" rel="noopener">浅谈redis超时(二)</a>：翻译官方的redis延迟排查步骤。学习到了新命令(latency)</li>
@@ -31,6 +35,8 @@
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NTE4NjA0OQ==&amp;mid=2658351573&amp;idx=2&amp;sn=fb194491852b84b793233b2bebc456dc" target="_blank" rel="noopener">Docker化高可用redis集群</a>：docker搭建Redis主从+sentinel教程</li>
 <li><a href="https://juejin.im/entry/579868e80a2b580061e352d2" target="_blank" rel="noopener">使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群</a></li>
 <li><a href="https://www.cnblogs.com/zhoujinyi/p/5585723.html" target="_blank" rel="noopener">Redis Sentinel 高可用实现说明</a> （要是早半个月看到这篇文章多好。自需求+正好遇到了文中提到的坑。PS：加一个坑：主从实例不能重命名config命令）</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486425&amp;idx=1&amp;sn=c3aa5e3983b2320eecdda995b4fc81b6" target="_blank" rel="noopener">怎样打造一个分布式数据库 | 数据库功能深度解析</a></li>
+<li><a href="https://blog.huangz.me/2020/redisraft.html" target="_blank" rel="noopener">使用 RedisRaft 构建强一致的 Redis 集群</a></li>
 </ul>
 <h2 id="机制、源码"><a href="#机制、源码" class="headerlink" title="机制、源码"></a>机制、源码</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzAwNjQwNzU2NQ==&amp;mid=2650342814&amp;idx=1&amp;sn=aba5c247a8c726cea3a86bac64d4a339" target="_blank" rel="noopener">Redis压缩列表原理与应用分析</a></li>
@@ -42,13 +48,25 @@
 <li><a href="https://www.jianshu.com/p/48b0d96740a5" target="_blank" rel="noopener">Redis和IO多路复用</a></li>
 <li><a href="https://yq.aliyun.com/live/1153?spm=a2c4e.11154022.liveshowinfo.11.4022ebc42plKm5" target="_blank" rel="noopener">Redis主从复制演变过程</a>  （很好的讲解了Redis各版本中复制的演变）</li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzA5ODM5MDU3MA==&amp;mid=2650861715&amp;idx=1&amp;sn=e30a388f897c8953842fb5e8843048e4" target="_blank" rel="noopener">Redis 缓存失效机制</a></li>
+<li><a href="http://zhangtielei.com/posts/blog-redis-quicklist.html" target="_blank" rel="noopener">Redis内部数据结构详解(5)——quicklist</a></li>
 <li><a href="https://blog.csdn.net/Xiejingfa/article/details/51553370" target="_blank" rel="noopener">Redis源码剖析 - Redis持久化之RDB</a></li>
 <li><a href="https://developer.aliyun.com/article/58703" target="_blank" rel="noopener">Redis源码学习——BIO</a></li>
 <li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
+<li><a href="https://hk.v2ex.com/t/646669" target="_blank" rel="noopener">Redis 多线程 IO 模型</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4NTg1MjM0Mg==&amp;mid=2657261425&amp;idx=1&amp;sn=d840079ea35875a8c8e02d9b3e44cf95&amp;scene=0&amp;key=c50f8b988e61749ab65cb6b9c037598ca0bafdf899895598f2904791c26b5e4283079646ce247da25d76658cd815b833&amp;ascene=0&amp;uin=MzM4Njg2NDU1" target="_blank" rel="noopener">Redis为什么用跳表而不用平衡树？</a></li>
+<li><a href="https://developer.aliyun.com/article/62593" target="_blank" rel="noopener">Redis短连接性能优化</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIzNjUxMzk2NQ==&amp;mid=2247483989&amp;idx=1&amp;sn=c1aac5b3eca9cb3f9e177d88ba189719" target="_blank" rel="noopener">深入浅出 Redis client/server交互流程</a></li>
 </ul>
 <h2 id="版本特性"><a href="#版本特性" class="headerlink" title="版本特性"></a>版本特性</h2><ul>
 <li><a href="https://mp.weixin.qq.com/s/Gm1EzhbcZEWpw8eXmP_ibw" target="_blank" rel="noopener">Redis 6.0 新特性概览</a></li>
 <li><a href="https://mp.weixin.qq.com/s/OGE2KivQzooNsWKJyvlgzQ" target="_blank" rel="noopener">客户端缓存功能</a>  </li>
+<li><a href="https://mp.weixin.qq.com/s/Mc9SpVeuRIe8Pi2HkPQWjQ" target="_blank" rel="noopener">带你100% 地了解 Redis 6.0 的客户端缓存</a></li>
+<li><a href="https://www.infoq.cn/article/fe97cBWx6Hqk9qVvoW7r" target="_blank" rel="noopener">Redis 干货分享 | Redis 访问控制列表 (ACL)</a></li>
+</ul>
+<h2 id="Redis相关工具"><a href="#Redis相关工具" class="headerlink" title="Redis相关工具"></a>Redis相关工具</h2><ul>
+<li><a href="https://developer.aliyun.com/article/691794" target="_blank" rel="noopener">数据迁移工具-redisSheke</a></li>
+<li><a href="https://developer.aliyun.com/article/690463" target="_blank" rel="noopener">数据对比工具-redisFullCheck</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MjM5NzM0MjcyMQ==&amp;mid=2650068463&amp;idx=2&amp;sn=d9aa4cc763a6b0554b031a4451fe09aa" target="_blank" rel="noopener">nredis-proxy 高性能Redis 服务中间件</a></li>
 </ul>
 <blockquote>
 <p><a href="https://toutiao.io/tags/Redis" target="_blank" rel="noopener">https://toutiao.io/tags/Redis</a><br><a href="https://github.com/huangz1990/redis-3.0-annotated" target="_blank" rel="noopener">https://github.com/huangz1990/redis-3.0-annotated</a></p>
@@ -80,6 +98,7 @@
 <li><a href="https://blog.csdn.net/n88Lpo/article/details/81187372" target="_blank" rel="noopener">图解MySQL MySQL组提交(group commit)</a></li>
 </ul>
 <h2 id="故障及优化案例系列"><a href="#故障及优化案例系列" class="headerlink" title="故障及优化案例系列"></a>故障及优化案例系列</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/VS534q8wv_rJxZ0EawhU9Q" target="_blank" rel="noopener">大规模多存储场景的数据库选型与服务平台建设</a></li>
 <li><a href="https://mp.weixin.qq.com/s/hYsxeevggxwkObJyOqy3iA" target="_blank" rel="noopener">引号错位引起的故障</a> （我才不会告诉你踩过的一个坑：update xx set a=’x’ and b=’x’ where …）</li>
 <li><a href="https://mp.weixin.qq.com/s/snJcudytuW4_BvgVk86IXw" target="_blank" rel="noopener">一个事务中调整语句顺序</a> （MySQL45讲中也说过：一个事务中，只有需要锁的时候才会去申请锁，事务提交时才会释放锁。所以将锁资源较多的语句放在后面执行。） </li>
 <li><a href="https://mp.weixin.qq.com/s/wFath89f3xXDR1Nxd5g-mw" target="_blank" rel="noopener">库表字符集修改后，老字段仍为原来字符集</a>   （修改库表字符集后，只会改变新增的字符集）</li>
@@ -133,7 +152,8 @@
 <li><a href="!https://www.cnblogs.com/yulibostu/articles/9844061.html">一个最不可思议的死锁分析</a>  （并发delete语句造成的死锁情况，里面引用了很多好文章，需要细品）</li>
 </ul>
 <p>分析死锁单从<code>show engines innodb status</code>中往往只能看到最后执行的语句，并不能很好的了解整个死锁形成过程。所以在分析死锁时，需要先了解两个死锁事务的具体逻辑和语句过程。<br>了解MySQL不同操作的加锁过程非常重要，这是对死锁形成过程分析的基础。</p>
-<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg" alt=""> <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmwiccwj30iq0bita5.jpg" alt=""><br><a id="more"></a></p>
+<a id="more"></a>
+<h2 id="MySQL8-0系列"><a href="#MySQL8-0系列" class="headerlink" title="MySQL8.0系列"></a>MySQL8.0系列</h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmoolzdj311s0mg0wp.jpg" alt=""> <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gglqmwiccwj30iq0bita5.jpg" alt=""></p>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/-k99IVJ8tjFYZ4C1V_3nAQ" target="_blank" rel="noopener">MySQL8.0到目前为止有哪些真香特性</a></li>
 <li><a href="https://opensource.actionsky.com/category/%e6%8a%80%e6%9c%af%e5%b9%b2%e8%b4%a7/mysql-new/" target="_blank" rel="noopener">8.0 新特性</a></li>
@@ -150,7 +170,8 @@
 <li><a href="https://opensource.actionsky.com/20190520-mysql8-0-index3/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性3 -倒序索引</a></li>
 <li><a href="https://opensource.actionsky.com/20190507-mysql8-0-index2/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 索引特性2-索引跳跃扫描</a></li>
 <li><a href="https://mp.weixin.qq.com/s/rQ7og6iXoOofFrnnz7vgbg" target="_blank" rel="noopener">MySQL 8.0 之Index Skip Scan</a></li>
-<li><p><a href="https://blog.csdn.net/vkingnew/article/details/81267320" target="_blank" rel="noopener">MySQL 8.0.12 instant add column 体验，亿级数据秒速增加字段</a></p>
+<li><a href="https://blog.csdn.net/vkingnew/article/details/81267320" target="_blank" rel="noopener">MySQL 8.0.12 instant add column 体验，亿级数据秒速增加字段</a></li>
+<li><p><a href="http://mysql.taobao.org/monthly/2018/11/09/" target="_blank" rel="noopener">MySQL · 最佳实践 · 8.0 CTE和窗口函数的用法</a></p>
 </li>
 <li><p><a href="https://opensource.actionsky.com/20200709-mysql/" target="_blank" rel="noopener">新特性解读 | MySQL 8.0 之原子 DDL</a></p>
 </li>
